@@ -1,0 +1,19 @@
+*** Variables ***
+${dropdown.teacherSignUp.classTitles}    //select[@id='teacherSignUpDlg-classTitles']
+${dropdown.studentSignUp.GradeLevel}    //table[@id='studentSignUpDlg-grade_menu']/tbody/tr[contains(@id,'MenuItem') and contains(@class,'MenuItem')]
+${dropdown.studentHomePage.JoinClassDrpDwnCount}    //table[contains(@id,'dijit_DropDownMenu')]//tr
+${dropdown.adminSignUp.jobTitleDrpDwn}    //table[@id='adminSignUpDlg-jobTitle']//input[@class='dijitReset dijitInputField dijitArrowButtonInner']
+${dropdown.addStudent.GradeLevel}    //table[@id='newUserGrade_menu']/tbody/tr[contains(@id,'MenuItem') and contains(@class,'MenuItem')]
+${dropdown.Classdetails.Teacherdrpdwn}    //table[@id='groupLeader']//span
+${dropdown.newUser}    //table[@id="newUserGrade"]
+${dropdown.newuserGrade.menu}    //table[@id="newUserGrade_menu"]//td[text()="Not Available"]
+${dropdown.userGrade}    //table[@id="userGrade"]//div//span
+${dropdown.teacherSignup.Zipcodes}    //div[@id='widget_teacherSignUpDlg-zip']//input[@value='? ']
+${Dropdown.welcomeView.switchRoles}    //div[@id="welcomeView"]//div//span[contains(@id,'DropDownButton')]//span[@class='dijitReset dijitInline dijitArrowButtonInner']
+${Dropdown.switchRole.Teacher}    //tbody[@class="dijitReset"]//td[text()="Teacher"]
+${dropDown.adminSignUp.jobTitleMenu}    //table[@id='adminSignUpDlg-jobTitle_menu']//tr
+${dropdown.addstudent.gradevalues}    //table[@id='newUserGrade_menu']/tbody/tr[contains(@id,'MenuItem')]
+${dropDown.archiveStudents.Grade}    //table[contains(@id,'gradeDropSelect')]//td/input[contains(@class,'ArrowButtonInner')]
+${dropdown.management.printOrExport}    //table[@id='userPEDlgClassSelector']//input[@class='dijitReset dijitInputField dijitArrowButtonInner']
+${dropdown.printOrExport.menu}    //table[@id='userPEDlgClassSelector_menu']//tr
+${dropDown.classDetails.Teacher}    //table[@id='groupLeader']

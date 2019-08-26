@@ -1,0 +1,36 @@
+*** Variables ***
+${testStudentUid}    r.student4
+${testStudentPwd}    r.student44
+${nwTestStudentUid}    nwstudent
+${nwTestStudentPwd}    nwstudent1
+${testInstructorUid}    tinstructor
+${testInstructorPwd}    tinstructor1
+${studentRole}    Student
+${classCode}      CY5
+${welcomeMessage}    Congratulations!\n You are all set up.
+${toolTipMsg}     This value is required.
+${duplicateUidToolTip}    "${testStudentUid}" is already being used. Please choose another User ID.
+${teacherRole}    Teacher
+${schoolZipCode}    78621
+${AssessmentTitle}    Motivation Geometry Assessments
+${schoolAdmin}    School Admin
+${districtAdmin}    District Admin
+${SchoolAdminRegCodePrevious}    BU2B-2112
+${DistrictAdminRegCodePrevious}    P65A-G9PA
+${globalTeacherUId}    txteacher1@tx.com
+${globalTeacherPassword}    txteacher1
+${globalDistrictAdminPwd}    rhwpte+DataDA164644
+${globalDistrictAdminUid}    rhwpte+DataDA164644@gmail.com    # Temporary value to use until the routine is built to try codes
+${districtAdminRegCode}    5878305-113383    # move "Other" to switch between values \ 4923-4744 "District Admin" Frank's Test District \ and 706732-4744" "District Admin" Frank's Test District and \ 795249-4744 "District Admin" Frank's Test District
+${SchoolAdminRegCode}    6420222-137277    # previously was 1896774-1896773 "School Admin" George Washington Elementary TEST and ToMo Test School
+${SignUpTitleMenu}    CCS Motivation Math Level 02
+${activitySelectMenu}    Unit 2 - Use Mental Strategies to Add and Subtract Within 20    # Unit 1 - Introduction: Interpret Products of Whole Numbers (3.OA.A.1)
+${newAssmtGridName}    Page 7 - Introduction
+${TeacherNAdminSchoolName}    Vandagriff Elementary    #This school name depends on ${schoolZipCode} value
+${DistrictAdminSchoolName}    Aledo Indep School District
+${globalSchoolAdminUid}    rhwpte+ElginMidSA@gmail.com    # temporary value to use until SAs are set algorithmically.
+${globalSchoolAdminPwd}    rhwpte+ElginMidSA    # Temporary value to use until SAs are assigned dynamically
+${AssignmentActivitySubName}    Partner Practice
+${DemoQSignUpTitleMenu}    Questions for Testing 2014
+${DemoQTeacherNAdminSchoolName}    Elgin Middle School
+${DemoQDistrictAdminSchoolName}    Elgin Isd

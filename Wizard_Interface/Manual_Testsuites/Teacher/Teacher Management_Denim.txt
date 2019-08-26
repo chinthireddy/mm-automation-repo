@@ -1,0 +1,509 @@
+*** Test Cases ***
+Add Titles for New Class from Teacher Management
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Click on 'Add' class button    \    "New Class" window should be displayed.
+    Enter class name>Add students and titles    Class999
+    Click on OK button    \    Class should be created with the added titles and it should display the class information code
+
+Edit Titles for Existing Class from Teacher Management
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Select an Existing Class under Classes table    Class991    Existing Class should display the class details in Details table
+    Click on 'Edit' button.    \    Details table should be Editable
+    Click on 'Edit' Titles button    \    "Edit Syllabus of Class" window should be opened
+    Enter some text in search field to search titles    \    "Subscription Titles" Header should display the entered valid tiltles
+    Click on checkbox to select titles from the list of titles
+    Click on 'Save' button    \    "Please confirm" alert message should be displayed.
+    Clcik on 'Proceed' button    \    Titles Panel should display the selected titles
+    Click on 'OK' button    \    Class should be editable with the changes.
+
+Add Titles for New Group from Teacher Management
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on Show Groups button>"ADD" group button    \    New group window should be displayed
+    Enter group name    Group999    New Group pop up should accept the valid details
+    Click on Edit button in Titles Panel    \    "Edit Syllabus of Group" Window should be opened
+    Enter Valid title in search text field    \    Subscription Titles Header should display the entered valid tiltles
+    Click on Name Checkbox in Subscription Titles Header    \    Subscription Titles Header should select all the Titles under it and the same thing should be displayed in New Group Syllabus Header
+    Click different Titles checkboxs Manually in Subscription Titles Header    \    Subscription Titles Header should select the Titles under it and the same thing should be displayed in New Group Syllabus Header
+    Click on 'Save' button    \    "Please confirm" alert message should be displayed.
+    Clcik on 'Proceed' button    \    Titles Panel should display the selected titles
+    Click on 'OK' button    \    Group should be added in Groups window.
+
+Add Titles for Existing Group from Teacher Management
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on Show Groups button    \    List of groups window should be displayed
+    Select existing group    Group999    Group details should be displayed
+    Click on Edit button in Titles    \    "Edit Syllabus of Group" window should be opened
+    Enter some text in search field to search titles    \    "Subscription Titles" Header should display the entered valid tiltles
+    Click on checkbox to select titles from the list of titles
+    Click on Save button    \    "Please confirm" alert message should be displayed.
+    Clcik on "Proceed" button    \    Titles Panel should display the selected titles
+    Click on OK button    \    Title should be added to the group.
+
+Delete Class from Management in Teacher Role
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Select one Class from Classes table
+    Click on "Delete" button    \    Alert message should be displayed as"Are you sure you want to delete the class 'class name"
+    Click on "Yes" button    \    Selected Class should be deleted from classes window.
+
+Delete Group from Management in Tecaher.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Clcik on "Show Groups" button    \    Groups window should be displayed
+    Select one group from groups table
+    Click on "Delete" button    \    Alert message should be displayed as "Are you sure you want to delete the group 'group name'?"
+    Click on "Yes" button    \    Selected \ group should be deleted from the list groups.
+
+Add New Student from Management in Teacher.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Click on 'Add' button in All user table    \    "New User" pop up should be displayed with its screen elements
+    Enter First, Middle & Last Name and Select Grade from autocomplete    First Name: StudentFN , Middle Name: StudentMN , Last Name: StudentLN
+    Enter UserId and Password    User Id: Student21 , password:Student021
+    Click on 'Edit' button in the "Classes and groups" Tab    \    "Edit Student's Classes and groups" popup should be displayed
+    Check the checkboxs to select the classes in Available classes and groups Tab    \    Selected classes should be displayed in " New User's Classes and groups" Tab
+    Click on Save button in "Edit Student's Classes and groups" popup    \    Classes should be added to the student and display in 'Classes and groups' Tab
+    Click on Save button    \    Student should be added in the All users grid.
+
+Verify 'Show All users' and 'Show my students' buttons are working or not
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    Teacher User ID: rhwpte+teacher2505@gmail.com password:test1234
+    Click on 'Sign In' button    \    Teacher Home page should be displayed
+    Click on "Management" button    \    Management Page should be displayed
+    Click on 'Show All Users' button.    \    All users should be displayed
+    Click on 'Show My Students' button.    \    Students should be displayed who belongs to the login teacher.
+
+Validate Print functionality of 'All of my students' level for Teacher
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management Page should be displayed
+    Click on "Print/Export" button    \    'Print/Export Students" pop up window should be displayed.
+    Select All of My Student from 'Make a selection' dropdown    \    All of My Students should be highlighted
+    Click on "Continue" button    \    "Select Users to be printed or Exported " window should be displayed.
+    Select users in "Select Users to be printed or Exported " window    \    Selected users should be highlated
+    Click on "Print" button    \    "Roster Report for Selected Users" should be displayed with selected users in another tab.
+
+Validate export functionality of 'All of my students' level for Teacher
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management Page should be displayed.
+    Click on "Print/Export" button    \    'Print/Export Students" pop up should be displayed.
+    Select All of My Student from 'Make a selection' dropdown    \    All of My Students should be highlighted
+    Click on 'continue'button    \    "Select Users to be printed or Exported " window should be displayed.
+    Select users in "Select Users to be printed or Exported " window    \    Selected users should be highlated
+    Click on "Export" button    \    Template should be downloaded with all user details.
+
+Validate print functionality for individual class level on teacher module
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management Page should be displayed
+    Click on "Print/Export" button    \    'Print/Export Students" pop up window should be displayed.
+    Select a class from 'Make a selection' dropdown    \    Selected Class should be highlighted
+    Click on "Continue" button    \    "Select Users to be printed or Exported " window should be displayed.
+    Select users in "Select Users to be printed or Exported " window    \    Selected users should be highlated
+    Click on "Print" button    \    "Roster Report for Selected Users" should be displayed with selected users in another tab.
+
+Validate export functionality for individual class level on teacher module
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management Page should be displayed.
+    Click on "Print/Export" button    \    'Print/Export Students" pop up should be displayed.
+    Select a class from 'Make a selection' dropdown    \    Selected Class should be highlighted
+    Click on 'continue' button    \    "Select Users to be printed or Exported " window should be displayed.
+    Select users in "Select Users to be printed or Exported " window    \    Selected users should be highlated
+    Click on "Export" button    \    Template should be downloaded with selected user details.
+
+Validate 'Print One Student Per Page' functionality for individual class level
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management Page should be displayed
+    Click on "Print/Export" button    \    'Print/Export Students" pop up window should be displayed.
+    Select a class from 'Make a selection' dropdown    Class999    Selected Class should be highlighted
+    Click on "Continue" button    \    "Select Users to be printed or Exported " window should be displayed.
+    Select users in "Select Users to be printed or Exported " window    \    Selected users should be highlated
+    Select/Check print one student per page
+    Click on "Print" button    \    "Roster Report for Selected Users" should be displayed with one student per page in another tab.
+
+Validate search functionality in 'Edit students in class' window for teacher
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on "Edit" button in students panel    \    "Edit students in class" window \ should be displayed.
+    Enter some text in search field to search students.    \    Students list should be displyed with matching text in search field.
+
+Validate search functionality in 'Edit students in group' window for teacher
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on "Show Groups" button    \    Groups should be displayed
+    Select an Existing group under groups panel    Class991    Existing group should display the group details in Details table
+    Click on "Edit" button in students panel    \    "Edit students in group" window \ should be displayed.
+    Enter some text in search field to search students.    \    Students list should be displyed with matching text in search field.
+
+Validate search functionality in 'Edit syllabus of class' window for teacher
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Select an Existing Class under Classes panel    Class991    Existing Class should display the class details in Details table
+    Click on "Edit" button in students panel    \    "Edit students in class" window \ should be displayed.
+    Enter some text in search field to search Titles.    \    Matching title list should be displayed.
+
+Validate search functionality in 'Edit syllabus of group' window for teacher
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on "Show Groups" button    \    Groups should be displayed
+    Select an Existing group under groups panel    Class991    Existing group should display the group details in Details table
+    Click on "Edit" button in Titles panel    \    "Edit syllabus of group" window \ should be displayed.
+    Enter some text in search field to search Titles.    \    Matching title list should be displayed.
+
+Validate search functionality in print & export window for teacher
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management Page should be displayed
+    Click on "Print/Export" button    \    'Print/Export Students" pop up window should be displayed.
+    Select a class from 'Make a selection' dropdown    \    Selected Class should be highlighted
+    Click on "Continue" button    \    "Selected students to be printed or Exported " window should be displayed.
+    Enter some text in search field to search students.    \    Students list should be displayed with matching text in search field.
+
+Verify the alert message while adding a student without giving 'grade'
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Click on 'Add' button in All user table    \    "New User" pop up should be displayed with its screen elements
+    Enter First, Middle & Last Name    First Name: StudentFN , Middle Name: StudentMN , Last Name: StudentLN
+    Enter UserId and Password    User Id: Student211 , password:Student0211
+    Click on 'Edit' button in the "Classes and groups" Tab    \    "Edit Student's Classes and groups" popup should be displayed
+    Check the checkboxs to select the classes in Available classes and groups Tab    \    Selected classes should be displayed in " New User's Classes and groups" Tab
+    Click on Save button in "Edit Student's Classes and groups" popup    \    Classes should be added to the student and display in 'Classes and groups' Tab
+    Click on Save button    \    Student should be added in the All users grid.
+    Observe the alert message    \    Alert message \ should be displayed as 'Grade level is required for students'
+
+Validate teacher can add classes and groups while adding a student
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Click on 'Add' button in All user table    \    "New User" pop up should be displayed with its screen elements
+    Enter First, Middle & Last Name and Select Grade    First Name: StudentFN , Middle Name: StudentMN , Last Name: StudentLN , Grade: 1
+    Enter UserId and Password    User Id: Student212 , password:Student0212
+    Click on 'Edit' button in the "Classes and groups" Tab    \    "Edit Student's Classes and groups" popup should be displayed
+    Choose a class from the Available classes and groups Tab    \    Selected classes should be displayed in " New User's Classes and groups" Tab
+    Click on Save button in "Edit Student's Classes and groups" popup    \    Classes should be added to the student and display in 'Classes and groups' Tab
+    Click on Save button    \    Student should be added in the All users grid.
+    Search the added student in 'Search' box    Student212    Student details should be displayed based on the search criteria.
+    Validate Classes and groups list in student details window    \    Selected list of classes and groups should be displayed
+
+Validate remove title functionality for class
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management Page should be displayed
+    Select one Class from Classes table    ClassName:Class1
+    Click on 'Edit' button in 'Details' panel
+    Click on 'Edit' button fot titles.    \    'Edit syllabus of class' window should be displayed
+    Uncheck the selected title    CCS Math Assessment level 04    Title should be unchecked/unselected
+    Click on 'Save' button    \    Details should be saved
+    Validate the 'titles' window    \    Unchecked title should not be displayed in 'Titles' window
+
+Validate remove title functionality for Group
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management Page should be displayed
+    Select a Group from Groups table    GroupName:Group1
+    Click on 'Edit' button in 'Details' panel
+    Click on 'Edit' button of titles.    \    'Edit syllabus of group' window should be displayed
+    Uncheck the selected title    CCS Math Assessment level 04    Title should be unchecked/unselected
+    Click on 'Save' button    \    Details should be saved
+    Validate the 'titles' window    \    Unchecked title should not be displayed in 'Titles' window
+
+Add Class from teacher management
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Click on 'Add' class button    \    "New Class" window should be displayed.
+    Enter class name    Class999
+    Click on OK button    \    Class should be created.
+
+Add Group from teacher management
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Click on Show Groups button>"Add" group button    \    New group window should be displayed
+    Enter group name    Group999    New Group pop up should accept the valid details
+    Click on OK button    \    Group should be created.
+
+Add a student in details class window
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Select an Existing Class under Classes table    Class991    Existing Class should display the class details in Details table
+    Click on 'Edit' button.    \    Details table should be Editable
+    Click on 'Edit' for Students window    \    'Edit Students in a class' window should be displayed
+    Select students from 'Available Students'    \    Selected students should be displayed in 'Class Members'
+    Click on 'Save' button    \    selected students should be added to the Class
+
+Add a student in details Group window
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Click on Show Groups button    \    List of groups window should be displayed
+    Select existing group    Group999    Group details should be displayed
+    Click on 'Edit' button.    \    Details table should be Editable
+    Click on 'Edit' for Students window    \    'Edit Students in a Group' window should be displayed
+    Select students from 'Available Students'    \    Selected students should be displayed in 'Group Members'
+    Click on 'Save' button    \    selected students should be added to the selected group
+
+Remove a student in Existing Class from Teacher Management
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Select an Existing Class under Classes table    Class991    Existing Class should display the class details in Details table
+    Click on 'Edit' button.    \    Details table should be Editable
+    Click on 'Edit' for Students window    \    'Edit Students in a class' window should be displayed
+    UnSelect students from 'Available Students'    \    Selected students should not be displayed in 'Class Members'
+    Click on 'Save' button    \    Student should be removed from the selected Class
+
+Remove a \ student in Existing Group from Teacher Management
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Click on Show Groups button    \    List of groups window should be displayed
+    Select existing group    Group999    Group details should be displayed
+    Click on 'Edit' button.    \    Details table should be Editable
+    Click on 'Edit' for Students window    \    'Edit Students in a Group' window should be displayed
+    UnSelect students from 'Available Students'    \    Selected students should not be displayed in 'Group Members'
+    Click on 'Save' button    \    Student should be removed from the selected Group
+
+Verify teacher can change user id and password for a student
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Click on 'Show my students' button    \    List of students who belongs to the tacher should be displayed
+    Select a student and click on 'edit' button    Student: studentreports
+    Edit userID and Password and click on 'save' button    UserID: Studentreports12 , Password : test12345    Edited details should be saved and updated
+
+Verify teacher can change user id and password for another teacher
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Click on 'Show all users' button    \    List of users should be displayed
+    Select a teacher and click on 'edit' button    Teacher:teacher    Edit button should be disabled
+
+Verify teacher can change user id and password forSchool Admin
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Click on 'Show all users' button    \    List of users should be displayed
+    Select a school admin and click on 'edit' button    School Admin:rhwpte+sa@gmail.com    Edit button should be disabled
+
+Verify teacher can change user id and password for District Admin
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Click on 'Show all users' button    \    List of users should be displayed
+    Select a district admin role and click on 'edit' button    District Admin:rhwpte+da@gmail.com    Edit button should be disabled.
+
+Validate 'Print One Student Per Page' functionality for individual Grouplevel
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management Page should be displayed
+    Click on "Print/Export" button    \    'Print/Export Students" pop up window should be displayed.
+    Select a Group from 'Make a selection' dropdown    Group999    Selected Group should be highlighted
+    Click on "Continue" button    \    "Select Users to be printed or Exported " window should be displayed.
+    Select users in "Select Users to be printed or Exported " window    \    Selected users should be highlated
+    Select/Check print one student per page    \    Print one student per page check box should be selected
+    Click on "Print" button    \    "Roster Report for Selected Users" should be displayed with one student per page in another tab.
+
+Validate 'Print One Student Per Page' functionality for'All Of My Students'
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management Page should be displayed
+    Click on "Print/Export" button    \    'Print/Export Students" pop up window should be displayed.
+    Select All Of My Students from 'Make a selection' dropdown    All Of My Students
+    Click on "Continue" button    \    "Select Users to be printed or Exported " window should be displayed.
+    Select all users check box in "Select Users to be printed or Exported " window    \    All users should be selected
+    Select print one student per page    \    Print one student per page check box should be selected
+    Click on "Print" button    \    "Roster Report for Selected Users" should be displayed with one student per page in another tab.
+
+Validate export functionality for individual Group level on teacher module
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management Page should be displayed.
+    Click on "Print/Export" button    \    'Print/Export Students" pop up should be displayed.
+    Select a group from 'Make a selection' dropdown    Group999    Selected Group should be highlighted
+    Click on 'continue' button    \    "Select Users to be printed or Exported " window should be displayed.
+    Select users in "Select Users to be printed or Exported " window    \    Selected users should be highlated
+    Click on "Export" button    \    User details should be downloaded in csv format
+
+Validate export functionality for 'All Of My Students'
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management Page should be displayed.
+    Click on "Print/Export" button    \    'Print/Export Students" pop up should be displayed.
+    Select 'All of my students' \ from 'Make a selection' dropdown    All Of My Students
+    Click on 'continue' button    \    "Select Users to be printed or Exported " window should be displayed.
+    Select all users check box in "Select Users to be printed or Exported " window    \    All users should be selected
+    Click on "Export" button    \    User details should be downloaded in csv format
+
+Validate print functionality for individual Group level on teacher module
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management Page should be displayed
+    Click on "Print/Export" button    \    'Print/Export Students" pop up window should be displayed.
+    Select a group \ from 'Make a selection' dropdown    \    Selected group should be highlighted
+    Click on "Continue" button    \    "Select Users to be printed or Exported " window should be displayed.
+    Select users in "Select Users to be printed or Exported " window    \    Selected users should be highlighted
+    Click on "Print" button    \    "Roster Report for Selected Users" should be displayed with selected users in another tab.
+
+Verify search functionality in 'Show All Users' details tab.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on 'Show All Users' button    \    List of all users should be displayed
+    Enter valid user details in search field to search users.    \    Matching user should be displayed based on the search criteria
+
+Verify search functionality in 'Show My Students' details tab.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on 'Show My Students' button    \    List of all students should be displayed
+    Enter valid user details in search field to search users.    \    Matching user should be displayed based on the search criteria
+
+Verify sort functionality for classes panel
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on Name column header    \    Records should be sorted in ascending and descending order
+    Click on \ teacher clumn header    \    Records should be sorted in ascending and descending order
+    Click on description column header    \    Records should be sorted in ascending and descending order
+    Click on class code column header    \    Records should be sorted in ascending and descending order
+    Click on created column header    \    Records should be sorted in ascending and descending order
+
+Verify sort functionality for Group panel
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on 'Show Groups'    \    List of groups should be displayed
+    Click on Name column header    \    Records should be sorted in ascending and descending order
+    Click on \ teacher clumn header    \    Records should be sorted in ascending and descending order
+    Click on description column header    \    Records should be sorted in ascending and descending order
+    Click on created column header    \    Records should be sorted in ascending and descending order
+
+Verify sort functionality for 'Edit Students in class'
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Select a Class under Classes table    Class991    Existing Class should display the class details in Details table
+    Click on 'Edit' button.    \    Details table should be Editable
+    Click on "Edit" button in students panel    \    "Edit students in class" window should be displayed.
+    Click on last Name column header    \    Records should be sorted in ascending and descending order
+    Click on \ first name clumn header    \    Records should be sorted in ascending and descending order
+    Click on grade column header    \    Records should be sorted in ascending and descending order
+    Click on user id column header    \    Records should be sorted in ascending and descending order
+    Click on role column header    \    Records should be sorted in ascending and descending order
+
+Verify sort functionality for 'Edit Students in Group'
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on 'Show Groups' button
+    Select a group under groups table    Group999    Existing group should display the group details in Details table
+    Click on 'Edit' button.    \    Details table should be Editable
+    Click on "Edit" button in students panel    \    "Edit students in Group" window should be displayed.
+    Click on last Name column header    \    Records should be sorted in ascending and descending order
+    Click on \ first name clumn header    \    Records should be sorted in ascending and descending order
+    Click on grade column header    \    Records should be sorted in ascending and descending order
+    Click on user id column header    \    Records should be sorted in ascending and descending order
+    Click on role column header    \    Records should be sorted in ascending and descending order
+
+Verify sort functionality for 'printed or exported' window
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management Page should be displayed
+    Click on "Print/Export" button    \    'Print/Export Students" pop up window should be displayed.
+    Select a class from 'Make a selection' dropdown    \    Selected Class should be highlighted
+    Click on "Continue" button    \    "Selected students to be printed or Exported " window should be displayed.
+    Click on last Name column header    \    Records should be sorted in ascending and descending order
+    Click on \ first name clumn header    \    Records should be sorted in ascending and descending order
+    Click on grade column header    \    Records should be sorted in ascending and descending order
+    Click on user id column header    \    Records should be sorted in ascending and descending order
+    Click on role column header    \    Records should be sorted in ascending and descending order
+
+Verify sort functionality for show my students panel
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on 'Show My Students' button    \    List of all students should be displayed
+    Click on last Name column header    \    Records should be sorted in ascending and descending order
+    Click on first name clumn header    \    Records should be sorted in ascending and descending order
+    Click on status column header    \    Records should be sorted in ascending and descending order
+    Click on grade column header    \    Records should be sorted in ascending and descending order
+    Click on role column header    \    Records should be sorted in ascending and descending order
+    Click on created column header    \    Records should be sorted in ascending and descending order
+
+Verify sort functionality for show all users panel
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+teacher2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on 'Show All Users' button    \    List of all users should be displayed
+    Click on last Name column header    \    Records should be sorted in ascending and descending order
+    Click on first name clumn header    \    Records should be sorted in ascending and descending order
+    Click on status column header    \    Records should be sorted in ascending and descending order
+    Click on grade column header    \    Records should be sorted in ascending and descending order
+    Click on role column header    \    Records should be sorted in ascending and descending order
+    Click on created column header    \    Records should be sorted in ascending and descending order

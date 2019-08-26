@@ -1,0 +1,10 @@
+schoolString = [2015-05-20T21:53:45.001Z,153372,Kendrick Elementary School,76711,01be4d89,TX Elementary,New]
+zip = 76711
+schoolSetupTaskId = 01be4d89
+schoolName = Kendrick Elementary School
+taskCreatedTimestamp = 2015-05-20T21:53:45.001Z
+bundle = TX Elementary
+taskStatus = New]
+Teststatus = FAIL
+NewSchoolsAdded = True
+password = 153372

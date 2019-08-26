@@ -1,0 +1,1814 @@
+*** Settings ***
+Resource          super.txt
+
+*** Keywords ***
+Select The Row
+    [Arguments]    ${tableLocator}    ${rowNo}
+    [Documentation]    Keyword used to selects the given row in a table
+    : FOR    ${index}    IN RANGE    1    5
+    \    ${bStatus}=    Run Keyword And Return Status    Click On Element    ${tableLocator}/div[@class="dgrid-scroller"]/div[contains(@class,"dgrid-content")]//div[contains(@id,"-row")][${rowNo}]/table/tr
+    \    Sleep    2s
+    \    ${rowClassValue}    Get Element Attribute    ${tableLocator}/div[@class="dgrid-scroller"]/div[contains(@class,"dgrid-content")]//div[contains(@id,"-row")][${rowNo}]@class
+    \    ${rowSelectionStatus}    String Should Contain    ${rowClassValue}    selected
+    \    Exit For Loop If    ${rowSelectionStatus}
+    [Return]    ${bStatus}
+
+Clear All Checkboxes
+    [Arguments]    ${tableTitle}
+    [Documentation]    Key word do uncheck all the marked check boxes for students ,titles based on passed argument "table title".
+    ${class}=    Get Value    groupName
+    Run Keyword If    '${tableTitle}'=='Students'    Wait Until Element Is Visible    //div[@id='editGroupUsersBtn']    ${Delay}
+    ...    ELSE    Wait Until Element Is Visible    //div[@id='editGroupSyllabusBtn']    ${Delay}
+    Run Keyword If    '${tableTitle}'=='Students'    Wait And Click Element    //div[@id='editGroupUsersBtn']
+    ...    ELSE    Click On Element    //div[@id='editGroupSyllabusBtn']
+    Run Keyword And Continue On Failure    Run Keyword If    '${tableTitle}'=='Students'    Element Should Contain    //span[@id='listEditorDlg_title']    Edit Students in Class - ${class}
+    ...    ELSE    Element Should Contain    //span[@id='listEditorDlg_title']    Edit Syllabus of Class - ${class}
+    : FOR    ${iConter}    IN RANGE    1    5
+    \    ${at}=    Get Element Attribute    //div[contains(@class,'fromInlineDijit')]//th/input[@type='checkbox']@aria-checked
+    \    Run Keyword If    '${at}'=='false'    Exit For Loop
+    \    Click On Element    //div[contains(@class,'fromInlineDijit')]//th/input[@type='checkbox']
+    Wait And Click Element    //div[@id='listEditorDlg']//span[contains(text(),'Save')]
+    Wait Until Element is Invisible    //div[@id='listEditorDlg']//span[contains(text(),'Save')]
+    ${studentsCount}    Get Text    //span[contains(@class,'subpanel-header-label') and contains(text(),'Students')]//following-sibling::span
+    ${titlesCount}    Get Matching Xpath Count    //div[contains(@id,'groupSyllabusList-row')]
+    Run Keyword And Continue On Failure    Run Keyword If    '${tableTitle}'=='Students'    Should Be Equal As Strings    ${studentsCount}    (0)
+    ...    ELSE    Should Be Equal As Integers    ${titlesCount}    0
+
+Select Student From A Class
+    [Arguments]    ${nameOfClass}
+    [Documentation]    Selects the First student of the given class & returns the studentname.
+    Wait Until Element Is Visible    ${table.classesAndGroups}    ${Delay}
+    @{classesNames}=    Get Table Values Into List    ${table.classesAndGroups}    Name
+    ${classesNames}=    Set Variable    @{classesNames}
+    : FOR    ${class}    IN    @{classesNames}
+    \    ${rowNo}=    Get Index From List    ${classesNames}    ${class}
+    \    ${rowNumber}=    Evaluate    ${rowNo}+1
+    \    Sleep    1s
+    \    ${className}=    Get Table Cell Value    ${table.classesAndGroups}    ${rowNumber}    Name
+    \    ${bStatus}=    Run Keyword If    "${className}"=="${nameOfClass}"    Common.Select The Row    ${table.classesAndGroups}    ${rowNumber}
+    \    Run Keyword If    ${bStatus}==True    Sleep    3s
+    \    ${studentName}=    Run Keyword If    ${bStatus}==True    Get Text    //div[contains(@id,'groupUsersList-row')]
+    \    Run Keyword If    "${studentName}"!="None"    Click On Element    //div[contains(@id,'groupUsersList-row')]
+    \    Run Keyword If    "${studentName}"!="None"    Exit For Loop
+    [Return]    ${studentName}
+
+Get Selected Row Cell Value
+    [Arguments]    ${tableName}    ${columnName}
+    [Documentation]    returns the given column value of the selected row in the given table.
+    [Timeout]
+    ${columnNo}=    CommonLibrary.Table Get Column No    ${tableName}    ${columnName}
+    ${text}=    Get Text    ${tableName}/div[@class="dgrid-scroller"]/div[contains(@class,"dgrid-content")]//div[contains(@id,'-row') and contains(@class,'dgrid-selected')]/table/tr/td[${columnNo}]
+    [Teardown]
+    [Return]    ${text}
+
+Get Table Column Headers Into List
+    [Arguments]    ${tableLocator}
+    [Documentation]    Returns all the table column headers into a list
+    ${columnCount}=    Get Matching Xpath Count    ${tableLocator}//div[contains(@class,'dgrid-header dgrid-header-row')]/table/tr/th
+    ${columnHeadersList}=    Create List
+    : FOR    ${col}    IN RANGE    1    ${columnCount}+1
+    \    ${columnName}=    Get Text    ${tableLocator}//div[contains(@class,'dgrid-header dgrid-header-row')]/table/tr/th[${col}]
+    \    Append To List    ${columnHeadersList}    ${columnName}
+    ${listLength}=    Get Length Of List    ${columnHeadersList}
+    Log    ${listLength}
+    [Return]    ${columnHeadersList}
+
+UnSelect Column
+    [Arguments]    ${tableLocator}    ${columnName}
+    [Documentation]    Unselects the 'ColumnName' of the given by unchecking the radio button
+    Click On Element    ${tableLocator}//button[contains(@class,'dgrid-hider-toggle')]
+    Sleep    2s
+    Click On Element    ${tableLocator}//div[contains(@id,'dgrid-hider-menu')]//input[contains(@id,'hider-menu-check-${columnName}')]
+    Sleep    2s
+
+Check Box Selection Status
+    [Arguments]    ${tablelocator}    ${columnName}
+    [Documentation]    Keyword returns the checkbox selection status.
+    Wait Until Element Is Visible    ${tablelocator}//label[contains(text(),'${columnName}')]/preceding-sibling::input    ${Delay}
+    ${checkboxidVal}    Get Element Attribute    ${tablelocator}//label[contains(text(),'${columnName}')]/preceding-sibling::input@id
+    Set Suite Variable    ${checkboxidVal}    ${checkboxidVal}
+    ${ckSt}    Run Keyword And Return Status    Checkbox Should Be Selected    ${checkboxidVal}
+    [Return]    ${ckSt}
+
+Change Status Of User
+    [Arguments]    ${firstName}    ${lastName}    ${role}    ${requiredStatus}
+    [Documentation]    Changes the status of the user to the '${reqiredStatus}' ie:Active/Inactive
+    Comment    Users table should appear
+    Wait And Select Frame    iframeSchoolAdmin
+    Wait Until Element Is Visible    ${table.users}    ${Delay}    The 'UsersGrid' is not visible.
+    Comment    Select the given user.
+    ${usersCount}=    Get Matching Xpath Count    ${table.users}/div[@class='dgrid-scroller']/div[contains(@class,'dgrid-content')]//div[contains(@id,'Grid-row')]
+    : FOR    ${user}    IN RANGE    1    ${usersCount}+1
+    \    ${userFirstName}=    Get Table Cell Value    ${table.users}    ${user}    First Name
+    \    ${userLastName}=    Get Table Cell Value    ${table.users}    ${user}    Last Name
+    \    ${userRole}=    Get Table Cell Value    ${table.users}    ${user}    Role
+    \    ${userStatus}=    Run Keyword If    "${userRole}"=="${role}" and "${userFirstName}"=="${firstName}" and "${userLastName}"=="${lastname}"    Get Table Cell Value    ${table.users}    ${user}
+    \    ...    Status
+    \    Run Keyword If    "${userRole}"=="${role}" and "${userFirstName}"=="${firstName}" and "${userLastName}"=="${lastname}"    Common.Select The Row    ${table.users}    ${user}
+    \    Exit For Loop If    "${userRole}"=="${role}" and "${userFirstName}"=="${firstName}" and "${userLastName}"=="${lastname}"
+    Comment    Click on the 'Edit' button of the 'UserDetails' table.
+    ${bStatus}=    Run Keyword And Return Status    Click On Element    editUserBtn
+    Run Keyword If    "${bStatus}"!="True"    Fail    The given User details are not there in 'Users' table.
+    Comment    Get the user credentials by clicking on the "ShowPassword" button.
+    Click On Element    togglePassword
+    ${userId}    Get Value    userUserId
+    Set Global Variable    ${userId}    ${userId}
+    ${password}=    Get Value    userPassword
+    Set Global Variable    ${password}    ${password}
+    Comment    Change the status of the user to the desired state.
+    Run Keyword If    "${requiredStatus}"=="active" and "${requiredStatus}"!="${userStatus}"    Click On Element    //label[@for='userActive']
+    Run Keyword If    "${requiredStatus}"=="inactive" and "${requiredStatus}"!="${userStatus}"    Click On Element    //label[@for='userInactive']
+    Comment    Click on the "Save" button of the "UserDetails" window.
+    Click On Element    saveUserBtn
+    Wait Until Element is Invisible    saveUserBtn
+
+Add A Class Or Group
+    [Arguments]    ${className}    ${instructorFullName}=${EMPTY}    ${description}=${EMPTY}    ${type}=Class
+    [Documentation]    keyword Adds a class to the classes table
+    ${classStatus}    Set Variable    False
+    Comment    MYS-3394:Updated with wait for element visible keyword.
+    Comment    ${bStatus}    Wait For Element Visible    ${button.management.showGroups}
+    Comment    MYS-2389:Updated the code to wait until click action on the "Show Groups" suceeds.
+    Comment    Run Keyword If    ${bStatus}==True and '${type}'=='Group'    Wait Until Keyword Succeeds    2m    5s    Click On Element
+    ...    ${button.management.showGroups}
+    ${bStatus}    Wait For Element Visible    ${button.classesAndUsers.add}
+    Comment    MYS-2389:Updated the code to wait until click action on the "Show Classes" suceeds.
+    Comment    Run Keyword If    ${bStatus}==True and '${type}'=='Class'    Wait Until Keyword Succeeds    2m    5s    Click On Element
+    ...    ${button.management.showClasses}
+    Comment    The 'Classes & Groups' table should appear with 'Add' button it.
+    Comment    Click 'Add' button.
+    Wait And Click Element    ${button.classesAndUsers.add}    ${TimeOut}    Add
+    Comment    MYS-3394:Updated with wait for element visible keyword.
+    Wait For Element Visible    ${text.newClass.Name}    ${Delay}
+    Input Text    ${text.newClass.Name}    ${className}
+    Run Keyword If    '${instructorFullName}'!='${Empty}'    Select The Desired Instructor    ${instructorFullName}
+    Run Keyword If    '${description}'!='${Empty}'    Input Text    newGroupDescription    ${description}
+    Wait And Click Element    newGroupOK    ${TimeOut}    newGroupOK
+    Wait Until Element is Invisible    newGroupOK
+    Comment    MYS-3394:Updated with wait for element visible keyword.
+    ${infoStatus}    Run Keyword If    '${type}'=='Class'    Wait For Element Visible    ${label.management.ClassCodeDlgMessage}    ${TimeOut}
+    ${classcode}    Run Keyword If    '${type}'=='Class'    Get Text    ${label.management.ClassCode}
+    ${cButtonStatus}    Run Keyword If    '${type}'=='Class'    Wait For Element Visible    ${button.management.ClassCodeDlgMessage.Close}    ${TimeOut}
+    Run Keyword And Continue On Failure    Run Keyword If    ${cButtonStatus}    Click On Element    ${button.management.ClassCodeDlgMessage.Close}
+    Run Keyword And Continue On Failure    Run Keyword If    ${infoStatus}==False and ${bStatus}==True    Fail    Newly created Class Code Information is not displayed.
+    ${classStatus}    Verify Values In Table    ${table.classesAndGroups}    Name    ${className}
+    Capture Page Screenshot And Log    ${OUTPUTDIR}    ${className}_01.png
+    Set Global Variable    ${classCode}    ${classcode}
+    [Return]    ${classStatus}
+
+Select The Desired Instructor
+    [Arguments]    ${desiredInstructorName}
+    [Documentation]    Keyword Selects the desired instructor from the instructor drop down in the 'New Class' page.
+    Wait Until Element Is Visible    //table[@id='newGroupLeader']//td[contains(@class,'ArrowButton')]//input[contains(@class,'InputField') and contains(@class,'ArrowButtonInner')]    ${TimeOut}    The newGroupLeader dropdown was not displayed after ${TimeOut} timeout.
+    Wait And Click Element    //table[@id='newGroupLeader']//td[contains(@class,'ArrowButton')]//input[contains(@class,'InputField') and contains(@class,'ArrowButtonInner')]
+    Wait Until Element Is Visible    //table[contains(@id,'newGroupLeader')]/tbody/tr/td[text()='${desiredInstructorName}']    ${TimeOut}    The newGroupLeader option: ${desiredInstructorName} was not displayed after ${TimeOut} timeout.
+    Wait And Click Element    //table[contains(@id,'newGroupLeader')]/tbody/tr/td[text()='${desiredInstructorName}']
+
+Delete The Record
+    [Arguments]    ${tableLocator}    ${columnName}    ${columnValue}
+    [Documentation]    Keyword delete's the desired record based on "Table_Locator","Column_Name","Column_Value".
+    Wait Until Element Is Visible    ${tableLocator}    ${TimeOut}
+    ${count}=    Get Matching Xpath Count    ${tableLocator}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]//div[contains(@id,'Grid-row-')]
+    ${columnNo}=    Table Get Column No    ${tableLocator}    ${columnName}
+    : FOR    ${row}    IN RANGE    1    ${count}+1
+    \    ${value}=    Get Text    ${tableLocator}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]//div[contains(@id,'Grid-row-')][${row}]/table/tr/td[${columnNo}]
+    \    Run Keyword If    "${columnValue}"=="${value}"    Common.Select The Row    ${tableLocator}    ${row}
+    \    ${recordNo}=    Run Keyword If    "${columnValue}"=="${value}"    Set Variable    ${row}
+    \    Exit For Loop If    "${columnValue}"=="${value}"
+    Run Keyword If    "${tableLocator}"=="${table.classesAndGroups}"    Click On Element    deleteGroupBtn
+    ...    ELSE    Click On Element    deleteUserBtn
+    [Return]    ${recordNo}
+
+Select Sub Menu Item
+    [Arguments]    ${subMenuItem}
+    [Documentation]    Keyword selects Submenu under Help Menu based on passed argument "subMenuItem".
+    Wait Until Element Is Visible    ${subMenuItem}    ${Delay}    The submenu item - ${subMenuItem} is not visible.
+    Click On Element    ${subMenuItem}
+
+Select The Record
+    [Arguments]    ${tableLocator}    ${columnName}    ${value}    ${selectState}=true
+    [Documentation]    Keyword Selects the record from "table" based on the "columnname","columnvalue".
+    [Timeout]
+    Wait Until Element Is Visible    ${tableLocator}/div[@class='dgrid-scroller']/div[contains(@class,'dgrid-content')]    1m
+    Run Keyword And Ignore Error    Wait Until Element Is Visible    ${tableLocator}/div[@class='dgrid-scroller']/div[contains(@class,'dgrid-content')]/div[@role='row']    10s
+    ${length}    Get Matching Xpath Count    ${tableLocator}/div[@class='dgrid-scroller']/div[contains(@class,'dgrid-content')]/div[@role='row']
+    Run Keyword If    '${length}'=='0'    Return From Keyword    0
+    : FOR    ${row}    IN RANGE    1    ${length}+1
+    \    ${columnValue}=    Get Table Cell Value    ${tableLocator}    ${row}    ${columnName}
+    \    Run Keyword If    "${columnValue}"=="${value}" and "${selectState}"=="true"    Common.Select The Row    ${tableLocator}    ${row}
+    \    Exit For Loop If    "${columnValue}"=="${value}"
+    ${rowNo}    Run Keyword If    "${columnValue}"!="${value}"    Set Variable    0
+    ...    ELSE    Set Variable    ${row}
+    [Return]    ${rowNo}
+
+Edit Students Or Titles
+    [Arguments]    ${list}    ${statusList}    ${columnName}    ${buttonName}=Save
+    [Documentation]    Keyword selects the Students or Titles based on students list,columnName ie:"${list}"."${columnName}".
+    ${kwStatus}    Set Variable    False
+    ${selectedStdDetails}    Create Dictionary
+    Comment    MYS-3211:Workaround to run script against page refresh issue when details saved anonymously without script action on it.
+    ${saveClassDetailsBtnVisib}    Wait For Element Visible    //div[@id='saveGroupBtn' and text()='Save']    ${Delay}
+    ${classDetailsEdittnVsb}    Run Keyword Unless    ${saveClassDetailsBtnVisib}    Verify Element Visible    ${button.classDetail.edit}
+    Run Keyword If    ${classDetailsEdittnVsb}    Wait And Click Element    ${button.classDetail.edit}
+    Comment    MYS-2528: Updated the code to wait until the "classDetail" window comes into editable mode after clicking on "Edit" button.
+    : FOR    ${val}    IN RANGE    1    10
+    \    ${classAttribute}    Get Element Attribute    //div[@id='saveGroupBtn' and text()='Save']/parent::div/parent::div@class
+    \    ${bStatus}    String Should Contain    ${classAttribute}    dirtyProps
+    \    Run Keyword If    ${bStatus}    Exit For Loop
+    \    ...    ELSE    Sleep    5s
+    Run Keyword If    "${columnName}"=="User Id"    Wait And Click Element    //div[contains(@id,'editGroupUsersBtn')]    ${Delay}
+    Run Keyword If    "${columnName}"=="Title Name"    Wait And Click Element    //div[contains(@id,'editGroupSyllabusBtn')]    ${Delay}
+    Comment    MYS-2765 : Update to wait untill "Save" button appears on Students/Titles window.
+    ${saveBtnStaus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.editStudentOrEditClass.save}    ${TimeOut}    To wait untill save button visible.
+    Comment    MYS-2765 : Update to click on "Edit" button of Students window based on "save" button visibility and passed argument.
+    Run Keyword If    "${saveBtnStaus}"!="True" and "${columnName}"=="User Id"    Wait And Click Element    //div[contains(@id,'editGroupUsersBtn')]    ${Delay}
+    Comment    MYS-2765 : Update to click on "Edit" button of Titles window based on "save" button visibility and passed argument.
+    Run Keyword If    "${saveBtnStaus}"!="True" and "${columnName}"=="Title Name"    Wait And Click Element    //div[contains(@id,'editGroupSyllabusBtn')]    ${Delay}
+    Comment    MYS-2765 : Update to wait until save button visible incase failed to open the edit Students/Titles window in first attempt.
+    Run Keyword Unless    ${saveBtnStaus}    Wait Until Element Is Visible    ${button.editStudentOrEditClass.save}    ${TimeOut}    To wait untill save button visible.
+    ${sdtStatus}    Run Keyword And Return Status    Should Be Equal    ${list}    ALL
+    Comment    MYS-3329 : Replaced with wait for element visible keyword.
+    Wait For Element Visible    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']    ${Delay}
+    Run Keyword If    ${sdtStatus}    Select Checkbox    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']
+    ${cbStatus}    Run Keyword If    ${sdtStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox' and @aria-checked='true']    10s
+    Run Keyword If    '${cbStatus}'=='False' and '${sdtStatus}'=='True'    Select Checkbox    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']
+    Comment    MYS-2765: Updated the "save" button locator and clicking on Save button of class details until action succeeds.
+    Run Keyword If    ${sdtStatus}    Wait And Click Element    ${button.editStudentOrEditClass.save}
+    ${saveBtnVisb}    Run Keyword If    ${sdtStatus}    Run Keyword And Return Status    Wait Until Element is Invisible    ${button.editStudentOrEditClass.save}
+    Comment    MYS-2765 : Update to click on "save" button, when visibility of class details "Save" button still visible based on previous condition.
+    Run Keyword If    "${sdtStatus}"=="True" and "${saveBtnVisb}"!="True"    Wait And Click Element    ${button.editStudentOrEditClass.save}
+    Run Keyword If    "${sdtStatus}"=="True" and "${saveBtnVisb}"!="True"    Wait Until Element is Invisible    ${button.editStudentOrEditClass.save}    1s
+    Run Keyword If    ${sdtStatus}    Return From Keyword    ${selectedStdDetails}
+    @{statusList}    Set Variable    ${statusList}
+    ${selectedValues}    Create List
+    : FOR    ${studentValue}    IN    @{list}
+    \    Comment    MYS-3191 : Removed "run keyword and return status" keyword to avoid false status and capture actual status returning by "wait for element visible" keyword.
+    \    ${stduentSatus}    Wait For Element Visible    //div[contains(@class,'fromInlineDijit')]//div[@class='header']/following-sibling::div/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@id,'row')]//table/tr/td[text()='${studentValue}']    ${TimeOut}
+    \    ${stdLName}    Run Keyword If    '${stduentSatus}'=='True' and "${columnName}"=="User Id"    Get Text    //div[contains(@class,'fromInlineDijit')]//div[@class='header']/following-sibling::div/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@id,'row')]//table/tr/td[text()='${studentValue}']/parent::tr/td[2]
+    \    ${stdFName}    Run Keyword If    '${stduentSatus}'=='True' and "${columnName}"=="User Id"    Get Text    //div[contains(@class,'fromInlineDijit')]//div[@class='header']/following-sibling::div/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@id,'row')]//table/tr/td[text()='${studentValue}']/parent::tr/td[3]
+    \    Comment    Mys-3717 : Below lines will read the Student Middle name in student Edit details window.
+    \    ${stdMName}    Run Keyword If    '${stduentSatus}'=='True' and "${columnName}"=="User Id"    Get Text    //div[contains(@class,'fromInlineDijit')]//div[@class='header']/following-sibling::div/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@id,'row')]//table/tr/td[text()='${studentValue}']/parent::tr/td[4]
+    \    Run Keyword If    '${stduentSatus}'=='True' and "${columnName}"=="User Id"    Set To Dictionary    ${selectedStdDetails}    ${studentValue}    ${stdLName}, ${stdFName} ${stdMName}
+    \    Run Keyword If    '${stduentSatus}'=='True' and "${columnName}"=="Title Name"    Set To Dictionary    ${selectedStdDetails}    ${studentValue}    ${studentValue}
+    \    Run Keyword If    ${stduentSatus}    Append To List    ${selectedValues}    ${studentValue}
+    \    Comment    MYS-2765 : Clicking on respective checkbox to select the Student/Title based on iterating list value irrespective of browser.
+    \    Focus    //div[contains(@class,'fromInlineDijit')]//div[@class='header']/following-sibling::div/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@id,'row')]//table/tr/td[text()='${studentValue}']/parent::tr/td/input
+    \    Click On Element    //div[contains(@class,'fromInlineDijit')]//div[@class='header']/following-sibling::div/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@id,'row')]//table/tr/td[text()='${studentValue}']/parent::tr/td/input    Unable to select the respective checkbox of "${studentValue}".
+    \    Sleep    2s
+    \    Run Keyword If    ${stduentSatus}    Select Checkbox    //div[contains(@class,'fromInlineDijit')]//div[@class='header']/following-sibling::div/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@id,'row')]//table/tr/td[text()='${studentValue}']/parent::tr/td/input
+    ${firstName}=    Run Keyword If    "${columnName}"=="User Id"    Get Table Values Into List    ${table.toTable}    First Name
+    ${lastName}=    Run Keyword If    "${columnName}"=="User Id"    Get Table Values Into List    ${table.toTable}    Last Name
+    Comment    Mys-3717 : Returns the middle name value \ to list which is displayed under 'columnName' from the table located at 'locator'
+    ${middleName}=    Run Keyword If    "${columnName}"=="User Id"    Get Table Values Into List    ${table.toTable}    Middle Name
+    ${delimeter}=    Run Keyword If    "${columnName}"=="User Id"    Set Variable    ${SPACE}
+    ${userIdList}=    Run Keyword If    "${columnName}"=="User Id"    Concate Two Lists with Delimeter    ${lastName}    ${firstName}    ${middleName}
+    ...    ${delimeter}
+    ${name}=    Run Keyword If    "${columnName}"=="Title Name"    Get Table Values Into List    ${table.toTable}    Title Name
+    Capture Page Screenshot And Log    ${OUTPUTDIR}
+    Comment    MYS-2765: Updated the "save" button locator after editing the stdents or classes in the class details window.
+    Click On Element    ${button.editStudentOrEditClass.save}
+    ${seatsAuthorizationAlert}    Run Keyword And Return Status    Wait Until Element Is Visible    //button[@id='mysPromptBtnYes']    10s    Specified element is not visible in given time.
+    Run Keyword If    ${seatsAuthorizationAlert}    Wait And Click Element    //button[@id='mysPromptBtnYes']
+    Comment    MYS-2765: Updated the "save" button locator after editing the stdents or classes in the class details window.
+    ${saveBtnInvisib}    Run Keyword And Return Status    Wait Until Element is Invisible    ${button.editStudentOrEditClass.save}
+    Comment    MYS-2528: Updated the script to click on "Save" button once again if it is not clicked properly first time.
+    Run Keyword Unless    ${saveBtnInvisib}    Click Element    ${button.editStudentOrEditClass.save}
+    Run Keyword Unless    ${saveBtnInvisib}    Wait Until Element is Invisible    ${button.editStudentOrEditClass.save}    500ms
+    Lists Should Be Equal    ${list}    ${selectedValues}    The required Students/Tiles: ${list} are not selected from the "Available Students/Titles" list.\n Selected records are :${selectedValues}
+    [Teardown]
+    [Return]    ${selectedStdDetails}
+
+Concate Two Lists with Delimeter
+    [Arguments]    ${list1}    ${list2}    ${list3}    ${delimeter}
+    [Documentation]    Keyword concatenates two lists using a delimeter argument.
+    ${list1Length}=    Get Length Of List    ${list1}
+    ${list2Length}=    Get Length Of List    ${list2}
+    ${list3Length}=    Get Length Of List    ${list3}
+    @{list1}=    Set Variable    ${list1}
+    @{list2}=    Set Variable    ${list2}
+    comment    Mys-3717: Creating a list with middle name and separtating values with delimeter
+    @{list3}=    Set Variable    ${list3}
+    Run Keyword If    "${list1Length}"!="${list2Length}"    Fail    The length of the two lists are not equal.
+    ${list4}    Create List
+    : FOR    ${no}    IN RANGE    0    ${list1Length}
+    \    ${value}    Set Variable    @{list1}[${no}]${delimeter}@{list2}[${no}]${delimeter}@{list3}[${no}]
+    \    Append To List    ${list4}    ${value}
+    [Return]    ${list4}
+
+Get Matching Xpath Into List
+    [Arguments]    ${xpath}
+    [Documentation]    Keyword is used to get matching X-paths into List based on parent X-path argument.
+    Run Keyword And Ignore Error    Wait Until Element Is Visible    ${xpath}
+    ${count}=    Get Matching Xpath Count    ${xpath}
+    ${list}=    Create List
+    : FOR    ${element}    IN RANGE    1    ${count}+1
+    \    ${value}=    Get Text    ${xpath}[${element}]
+    \    Append To List    ${list}    ${value}
+    [Return]    ${list}
+
+Enter Class Details
+    [Arguments]    ${className}    ${instructorFullName}='${EMPTY}'    ${description}=${EMPTY}
+    [Documentation]    Keyword used to Enter Class details.
+    Comment    The 'Classes & Groups' table should appear with 'Add' button it.
+    Wait Until Element Is Visible    ${button.classesAndUsers.add}    ${Delay}    The 'Add' button on 'Classes & Users' table is not visible.
+    Comment    Click 'Add' button.
+    Click On Element    ${button.classesAndUsers.add}
+    Wait Until Element Is Visible    ${text.newClass.Name}    ${Delay}
+    Input Text    ${text.newClass.Name}    ${className}
+    Run Keyword If    "${instructorFullName}"!='${Empty}'    Select The Desired Instructor    ${instructorFullName}
+    Run Keyword If    "${description}"!='${Empty}'    Input Text    newGroupDescription    ${description}
+
+Enter User Details
+    [Arguments]    ${listOfMandatoryFields}    ${middleName}=${EMPTY}    ${grade}=${EMPTY}    ${gender}=${EMPTY}    ${status}=${EMPTY}    ${role}=${EMPTY}
+    [Documentation]    Enters the user details in the specific fields.
+    @{listOfMandatoryFields}    Set Variable    ${listOfMandatoryFields}
+    Wait Until Element Is Visible    ${table.users}    ${Delay}
+    Wait And Click Element    newUserBtn
+    Wait Until Element Is Visible    ${text.newUser.firstName}    ${Delay}
+    Input Text    ${text.newUser.firstName}    @{listOfMandatoryFields}[0]
+    Input Text    ${text.newUser.lastName}    @{listOfMandatoryFields}[1]
+    Input Text    ${text.newUser.userId}    @{listOfMandatoryFields}[2]
+    Input Text    ${text.newUser.password}    @{listOfMandatoryFields}[3]
+    Comment    Selecte student grade value
+    Select DropDown Values    ${image.addStudent.gradeArrow}    ${dropdown.addStudent.GradeLevel}    ${grade}
+    Run Keyword If    "${middleName}"!="${EMPTY}"    Input Text    newUserMiddleName    ${middleName}
+    Run Keyword If    "${gender}"!="${EMPTY}"    Click On Element    newUser${gender}
+    Run Keyword If    "${status}"!="${EMPTY}"    Click On Element    //label[contains(@for,'newUserInactive')]
+    Run Keyword If    "${role}"!="${EMPTY}"    Wait And Click Element    //input[@name='newUserRole${role}']/parent::div/following-sibling::label[contains(@for,'newUser')]
+    Capture Page Screenshot And Log    ${OUTPUTDIR}
+
+Edit User Classes
+    [Arguments]    ${list}    ${statusList}    ${columnName}    ${button}=Save
+    [Documentation]    1. Edits the classes of the \ selected user based on the status list.
+    Wait And Click Element    editUserBtn
+    Wait Until Element Is Visible    saveUserBtn    ${TimeOut}
+    Wait And Click Element    editUserGroupsBtn
+    @{list}    Set Variable    ${list}
+    ${count}=    Get Length Of List    ${list}
+    @{statusList}    Set Variable    ${statusList}
+    : FOR    ${row}    IN RANGE    0    ${count}
+    \    ${value}=    Set Variable    @{list}[${row}]
+    \    ${rowNo}=    Select The Record    ${table.fromTable}    ${columnName}    ${value}    false
+    \    ${checkStatus}=    Run Keyword If    "${rowNo}"!="0"    Get Element Attribute    ${table.fromTable}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@class,'dgrid-row')][${rowNo}]/table//td[contains(@class,'field-sel')]/input@aria-checked
+    \    ...    ELSE    Fail    The given value ${value} doesnot exists in from table.
+    \    ${statusValue}=    Set Variable    @{statusList}[${row}]
+    \    Run Keyword If    "${checkStatus}"!="${statusValue}"    Click On Element    ${table.fromTable}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@class,'dgrid-row')][${rowNo}]/table//td[contains(@class,'field-sel')]/input
+    \    @{toList}=    Get Table Values Into List    ${table.toTable}    ${columnName}
+    \    ${toList}=    Set Variable    @{toList}
+    \    Run Keyword If    "${statusValue}"=="true"    List Should Contain Value    ${toList}    ${value}    The to table doesnot contain value - ${value}
+    \    Run Keyword If    "${statusValue}"=="false"    List Should Not Contain Value    ${toList}    ${value}    The to table contains the value - ${value}
+    ${classNames}=    Get Table Values Into List    ${table.toTable}    Name
+    Click On Element    //div[@id='listEditorDlg']//span[contains(text(),'${button}')]
+    [Return]    ${classNames}
+
+ValidationForSpecialChars
+    [Arguments]    ${fieldvalue}    ${charvalue}
+    [Documentation]    Keyword checks for the given special character in given string and resturns status.
+    ${value}    Set Variable    ${fieldvalue}
+    ${length}    Get Length    ${value}
+    : FOR    ${index}    IN RANGE    0    ${length}
+    \    ${char}    Set Variable    ${value[${index}:${index}+1]}
+    \    ${status}    String Should Contain    ${char}    ${charvalue}
+    \    Run Keyword If    ${status}==False    Exit For Loop
+    Log    ${status}
+
+Assign Assignment To A Class
+    [Arguments]    ${className}    ${subjectName}    ${levelName}    ${assignmentName}
+    [Documentation]    Keyword is used to select activity based on selection of subject/level/assignment name.
+    Sleep    2s
+    Click On Element    //ul[@id='raClassList']/li/div[contains(text(),'${className}')]/following-sibling::input
+    Sleep    5s
+    Wait Until Element Is Visible    //ul[@id='raSubjects']/li[1]    30s
+    Click Element At Coordinates    //ul[@id='raSubjects']/li[contains(@style,'${subjectName}')]    -20    20
+    Sleep    5s
+    Click Element At Coordinates    //ul[@id='raTitles']/li[contains(@style,'${levelName}')]    -20    20
+    Sleep    5s
+    ${bStatus}=    Run Keyword And Return Status    Should Contain    ${assignmentName}    .png
+    Run Keyword If    ${bStatus}==True    Click Element At Coordinates    //ul[@id='raActivitiesList']//li[contains(@style,'${assignmentName}')]    -20    20
+    ...    ELSE    Click On Element    //ul[@id='raActivitiesList']//li/div[contains(text(),'${assignmentName}')]
+    Sleep    5s
+    ${bStatus}=    Verify Element Visible    addAssmtsBtn
+    Run Keyword If    ${bStatus}==True    Click On Element    addAssmtsBtn
+    ...    ELSE    Fail    The "Add to Selected Classes" button is not displayed.
+    Sleep    10s
+    ${bStatus}=    Verify Element Visible    doneAddAssmtsBtn
+    Run Keyword If    ${bStatus}==True    Click On Element    doneAddAssmtsBtn
+    ...    ELSE    Fail    The "Done" button is not displayed.
+    Sleep    5s
+
+Sign Out From Application
+    [Documentation]    Keyword is used to select \ and Click on SignOut of an Application.
+    ${kwStatus}    Run Keyword And Return Status    SignOut
+    Run Keyword If    ${kwStatus}==False    Set Test Message    The SignOut is not completed.
+
+Enter Text In Text Field
+    [Arguments]    ${elementLocator}    ${textData}
+    [Documentation]    Keyword is used to wait and enter data in the specified textbox identified by element locator.
+    ${elementStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${elementLocator}    ${Delay}
+    Run Keyword If    ${elementStatus}==True    Input Text    ${elementLocator}    ${textData}
+    ...    ELSE    Fail    The '${elementLocator}' text field is not visible.
+    [Return]    ${elementStatus}
+
+Add A Class For New User Test
+    [Arguments]    ${className}    ${instructorFullName}='${EMPTY}'    ${description}='${EMPTY}'
+    ${userId}    AddStudentTest
+    Enter Class Details    ${className}    \    ${description}
+    ${userIdList}    Create List    ${userId}
+    ${userStatusList}    Create List    true
+    ${titleList}    Create List    CCS Motivation Reading Level 04
+    Comment    ${titleList}    Create List    ${AssessmentTitle}
+    ${titleListStatus}    Create List    true
+    ${list}=    Add Users For New Class    ${userIdList}    ${userStatusList}    User Id    Add
+    ${titleList}=    Add Titles For New Class    ${titleList}    ${titleListStatus}    Name    Add
+    ${list}    Set Global Variable    ${list}
+    ${titleList}    Set Global Variable    ${titleList}
+    Wait Until Element Is Visible    //span[@id='newGroupOK']//span[contains(text(),'OK')]    ${Delay}    'OK' Button in New Class window is not visible.
+    Click On Element    //span[@id='newGroupOK']//span[contains(text(),'OK')]
+    Sleep    15s
+    @{classesNames}=    Get Table Values Into List    ${table.classesAndGroups}    Name
+    ${classesNames}=    Set Variable    @{classesNames}
+    List Should Contain Value    ${classesNames}    ${className}    The newly added class is not shown in the 'Classes' table.
+    @{classCodesFromMgt}    Get Table Values Into List    ${table.classesAndGroups}    Class Code
+    ${classCodesFromMgt}    Set Variable    @{classCodesFromMgt}
+    Return From Keyword    ${classCodesFromMgt}
+
+Add Users For New Class
+    [Arguments]    ${list}    ${statusList}    ${columnName}    ${Operation}    ${buttonName}=Save
+    [Documentation]    Keyword is used to select Users for a class from Edit Classes table.
+    Run Keyword If    '${Operation}'=='Add' and "${columnName}"=="User Id"    Click On Element    //div[contains(@id,'editNewGroupUsersBtn')]
+    Sleep    2s
+    @{list}    Set Variable    ${list}
+    ${count}=    Get Length Of List    ${list}
+    @{statusList}    Set Variable    ${statusList}
+    : FOR    ${row}    IN RANGE    0    ${count}
+    \    ${value}=    Set Variable    @{list}[${row}]
+    \    ${rowNo}=    Select The Record    ${table.fromTable}    ${columnName}    ${value}    false
+    \    ${checkStatus}=    Run Keyword If    "${rowNo}"!="0"    Get Element Attribute    ${table.fromTable}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@class,'dgrid-row')][${rowNo}]/table//td[contains(@class,'field-sel')]/input@aria-checked
+    \    ...    ELSE    Fail    The given value ${value} doesnot exists in from table.
+    \    ${statusValue}=    Set Variable    @{statusList}[${row}]
+    \    Run Keyword If    "${checkStatus}"!="${statusValue}"    Click On Element    ${table.fromTable}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@class,'dgrid-row')][${rowNo}]/table//td[contains(@class,'field-sel')]/input
+    \    @{toList}=    Get Table Values Into List    ${table.toTable}    ${columnName}
+    \    ${toList}=    Set Variable    @{toList}
+    \    Run Keyword If    "${statusValue}"=="true"    List Should Contain Value    ${toList}    ${value}    The to table doesnot contain value - ${value}
+    \    Run Keyword If    "${statusValue}"=="false"    List Should Not Contain Value    ${toList}    ${value}    The to table contains the value - ${value}
+    ${firstName}=    Run Keyword If    "${columnName}"=="User Id"    Get Table Values Into List    ${table.toTable}    First Name
+    ${lastName}=    Run Keyword If    "${columnName}"=="User Id"    Get Table Values Into List    ${table.toTable}    Last Name
+    ${delimeter}=    Run Keyword If    "${columnName}"=="User Id"    Set Variable    ${SPACE}
+    ${userIdList}=    Run Keyword If    "${columnName}"=="User Id"    Concate Two Lists with Delimeter    ${firstName}    ${lastName}    ${delimeter}
+    Wait Until Element Is Visible    //span[contains(@id,'saveListEditor_label') and contains(text(),'${buttonName}')]    ${Delay}    'Save' Button in Edit Student/Title window is not visible.
+    Click On Element    //span[contains(@id,'saveListEditor_label') and contains(text(),'${buttonName}')]
+    Sleep    5s
+    ${returnData}    Run Keyword If    "${columnName}"=="User Id"    Set Variable    ${userIdList}
+    [Return]    ${returnData}
+
+Add Titles For New Class
+    [Arguments]    ${list}    ${statusList}    ${columnName}    ${Operation}    ${buttonName}=Save
+    [Documentation]    Keyword is used to select Titles for a class from Edit Classes table.
+    Run Keyword If    '${Operation}'=='Add' and "${columnName}"=="Name"    Click On Element    //div[contains(@id,'editNewGroupSyllabusBtn')]
+    @{list}    Set Variable    ${list}
+    ${count}=    Get Length Of List    ${list}
+    @{statusList}    Set Variable    ${statusList}
+    : FOR    ${row}    IN RANGE    0    ${count}
+    \    ${value}=    Set Variable    @{list}[${row}]
+    \    ${rowNo}=    Select The Record    ${table.fromTable}    ${columnName}    ${value}    false
+    \    ${checkStatus}=    Run Keyword If    "${rowNo}"!="0"    Get Element Attribute    ${table.fromTable}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@class,'dgrid-row')][${rowNo}]/table//td[contains(@class,'field-sel')]/input@aria-checked
+    \    ...    ELSE    Fail    The given value ${value} doesnot exists in from table.
+    \    ${statusValue}=    Set Variable    @{statusList}[${row}]
+    \    Run Keyword If    "${checkStatus}"!="${statusValue}"    Click On Element    ${table.fromTable}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@class,'dgrid-row')][${rowNo}]/table//td[contains(@class,'field-sel')]/input
+    \    @{toList}=    Get Table Values Into List    ${table.toTable}    ${columnName}
+    \    ${toList}=    Set Variable    @{toList}
+    \    Run Keyword If    "${statusValue}"=="true"    List Should Contain Value    ${toList}    ${value}    The to table doesnot contain value - ${value}
+    \    Run Keyword If    "${statusValue}"=="false"    List Should Not Contain Value    ${toList}    ${value}    The to table contains the value - ${value}
+    ${name}=    Run Keyword If    "${columnName}"=="Name"    Get Table Values Into List    ${table.toTable}    Name
+    Wait Until Element Is Visible    //span[contains(@id,'saveListEditor_label') and contains(text(),'${buttonName}')]    ${Delay}    'Save' Button in Add Student/Title window is not visible.
+    Click On Element    //span[contains(@id,'saveListEditor_label') and contains(text(),'${buttonName}')]
+    Sleep    5s
+    ${returnData}    Run Keyword If    "${columnName}"=="Name"    Set Variable    ${name}
+    [Return]    ${returnData}
+
+AddStudent
+    [Arguments]    ${studentDetails}
+    [Documentation]    Keyword is used to Add student.
+    ${kwStatus}    Set Variable    False
+    ${studentUId}    Get From Dictionary    ${studentDetails}    User Name
+    ${studentPassword}    Get From Dictionary    ${studentDetails}    Password
+    ${studentFName}    Get From Dictionary    ${studentDetails}    First Name
+    ${studentLName}    Get From Dictionary    ${studentDetails}    Last Name
+    ${studentMName}    Get From Dictionary    ${studentDetails}    Middle Name
+    ${grade}    Get From Dictionary    ${studentDetails}    Grade Level
+    Wait Until Keyword Succeeds    2m    5s    Click On Element    ${button.users.add}
+    Wait And Click Element    ${text.newUser.firstName}
+    Input Text    ${text.newUser.firstName}    ${studentFName}
+    Input Text    ${text.newUser.lastName}    ${studentLName}
+    Input Text    ${text.newUser.userId}    ${studentUId}
+    Input Text    ${text.newUser.password}    ${studentPassword}
+    Input Text    newUserMiddleName    ${studentMName}
+    Comment    start of code to add grade to a student
+    ${roleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //input[@name='newUserRoleStudent']/parent::div/following-sibling::label[contains(@for,'newUser')]
+    Run Keyword If    ${roleStatus}    Click On Element    //input[@name='newUserRoleStudent']/parent::div/following-sibling::label[contains(@for,'newUser')]
+    Select DropDown Values    ${image.addStudent.gradeArrow}    ${dropdown.addStudent.GradeLevel}    ${grade}
+    Wait And Click Element    ${button.newUser.oK}    ${Delay}    ${button.newUser.oK}
+    Wait Until Element is Invisible    ${button.newUser.oK}
+    ${kwStatus}    Set Variable    True
+    [Return]    ${kwStatus}
+
+AddClassToStudent
+    [Arguments]    ${studentDetails}    ${classesList}
+    [Documentation]    Keyword is used to Add A Class To student.
+    ${kwStatus}    Set Variable    False
+    ${studentUId}    Get From Dictionary    ${studentDetails}    User Name
+    ${studentPassword}    Get From Dictionary    ${studentDetails}    Password
+    ${studentFName}    Get From Dictionary    ${studentDetails}    First Name
+    ${studentLName}    Get From Dictionary    ${studentDetails}    Last Name
+    ${studentMName}    Get From Dictionary    ${studentDetails}    Middle Name
+    ${studentPassword}    Get From Dictionary    ${studentDetails}    Password
+    ${grade}    Get From Dictionary    ${studentDetails}    Grade Level
+    Comment    MYS-2451: Updated the code to click on the "Add" button of users table in the IE browser.
+    Wait Until Keyword Succeeds    1m    10s    Click Element    //div[@id='newUserBtn' and text() = 'Add']
+    Wait And Click Element    newUserFirstName
+    Input Text    newUserFirstName    ${studentFName}
+    Input Text    newUserLastName    ${studentLName}
+    Input Text    newUserUserId    ${studentUId}
+    Input Text    newUserPassword    ${studentPassword}
+    Input Text    newUserMiddleName    ${studentMName}
+    Comment    start of code to add grade to a student
+    Select DropDown Values    ${image.addStudent.gradeArrow}    ${dropdown.addStudent.GradeLevel}    ${grade}
+    ${kwStatus}    Edit Classes Frame    ${classesList}
+    Wait And Click Element    ${button.newUser.oK}    ${Delay}    newUserOK_label
+    Comment    MYS-3211:Update to wait till save button is invisible.
+    wait element invisible    ${common.Loading.PleaseWait...}
+    Wait Until Keyword Succeeds    ${Max Delay}    5s    Element Should Not Be Visible    ${button.newUser.oK}    The add New user window is still in visible state, application might have got stalled.
+    [Return]    ${kwStatus}
+
+Edit Classes Frame
+    [Arguments]    ${classesList}
+    [Documentation]    Keyword selects the list of classes based on passed classes list argument and returns the keyword succeding status.
+    ${kwStatus}    Set Variable    False
+    Wait And Click Element    //div[@id='editNewUserGroupsBtn']
+    Comment    MYS-3329 : Replaced with wait for element visible keyword \ and updated locators to identify more precisely.
+    Wait For Element Visible    ${button.editStudentOrEditClass.save}    ${TimeOut}
+    ${selectedClassList}    Create List
+    : FOR    ${class}    IN    @{classesList}
+    \    ${bStatus}    Verify Element Visible    ${table.fromTable}//td[text()='${class}']
+    \    Run Keyword If    ${bStatus}==True    Select Checkbox    ${table.fromTable}//td[text()='${class}']/preceding-sibling::td/input
+    \    Run Keyword If    ${bStatus}==True    Append To List    ${selectedClassList}    ${class}
+    Wait And Click Element    ${button.editStudentOrEditClass.save}
+    Wait Until Element is Invisible    ${button.editStudentOrEditClass.save}
+    ${kwStatus}    Run Keyword And Return Status    Lists Should Be Equal    ${classesList}    ${selectedClassList}
+    [Return]    ${kwStatus}
+
+GetUniqueValue
+    [Arguments]    ${value}=${EMPTY}
+    [Documentation]    Keyword is used to generate Unique value based on timestamp.
+    Comment    ${time}    Get Time
+    Comment    @{temp}    Split String    ${time}    ${SPACE}
+    Comment    ${timeStamp}    Replace String    @{temp}[1]    :    ${EMPTY}
+    ${timeStamp}    Get Unique Id
+    ${timeStamp}    Set Variable    ${value}${timeStamp}
+    Log    ${timeStamp}
+    [Return]    ${timeStamp}
+
+GetAssignmentName
+    [Arguments]    ${text1}    ${text2}
+    [Documentation]    Keyword returns the name of assignments by catenating two arguments ie: "assignment_title","activity_name".
+    ${text}    Replace String    ${text1}    :    ${EMPTY}
+    ${textStatus}    String Should Contain    ${text2}    :
+    ${text}    Set Variable If    ${textStatus}    ${text2}${SPACE}${text}    ${text2}:${SPACE}${text}
+    [Return]    ${text}
+
+InitializeStudents
+    [Arguments]    ${filePath}    ${sheetName}
+    [Documentation]    Keyword takes file path & \ sheetname as arguments and returns student details dictionary.
+    ${count}=    Get Ms Excel File Rows Count    ${filePath}    ${sheetName}
+    Log    ${count}
+    ${studentsDictionary}=    Create Dictionary
+    : FOR    ${row}    IN RANGE    2    ${count}+1
+    \    ${list}=    Get Ms Excel Row Values Into List    ${filePath}    ${row}    ${sheetName}
+    \    ${key}    Evaluate    ${row}-1
+    \    Set To Dictionary    ${studentsDictionary}    ${key}    ${list}
+    Log    ${studentsDictionary}
+    [Return]    ${studentsDictionary}
+
+InitializeCorrectAnswers
+    [Arguments]    ${filePath}    ${sheetName}
+    [Documentation]    Keyword Takes file path & sheetnames as arguments and returns the correct answer dictionary.
+    ${count}=    Get Ms Excel File Rows Count    ${filePath}    ${sheetName}
+    Log    ${count}
+    ${correctAnswersDictionary}=    Create Dictionary
+    : FOR    ${row}    IN RANGE    2    ${count}+1
+    \    ${tuple}=    Get Ms Excel Row Values Into List    ${filePath}    ${row}    ${sheetName}
+    \    @{list}=    Convert To List    ${tuple}
+    \    ${key}=    Set Variable    @{list}[0]
+    \    ${value}=    Set Variable    @{list}[1]
+    \    Set To Dictionary    ${correctAnswersDictionary}    ${key}    ${value}
+    Log    ${correctAnswersDictionary}
+    [Return]    ${correctAnswersDictionary}
+
+Read Test Data
+    [Arguments]    ${filePath}=${InitializeStudentsTestDataFile}    ${sheetName}=StudentDetails
+    [Documentation]    Keyword reads the 'Test Data' for 'Assignment'.
+    Comment    Initialize the set of Student Details and the corresponding row numbers.
+    log    ${filepath}    info
+    log    ${sheetName}
+    ${StudentsDictionary}=    Initialize Students Test Data    ${filePath}    ${sheetName}
+    Set Suite Variable    ${StudentsDictionary}    ${StudentsDictionary}
+    Comment    Initialize the set of png file names and the corresponding correct answer. Use 0 for A, 1 for B, 2 for C, and 3 for D.
+    ${CorrectAnswersDictionary}=    AlgorithmLibrary.Initialize Correct Answers    ${CorrectAnswerTestDataFilePath}    MC_Dictionary
+    Set Suite Variable    ${CorrectAnswersDictionary}    ${CorrectAnswersDictionary}
+
+Fail and Capture Screenshot
+    [Arguments]    ${FailMessage}    ${ScreenshotName}=${EMPTY}
+    [Documentation]    Keyword is Used to Fail the condition and Take a screen shot based on Failure.
+    Run Keyword If    '${ScreenshotName}'!='${EMPTY}'    Capture Page Screenshot And Log    ${OUTPUTDIR}    ${ScreenshotName}
+    ...    ELSE    Capture Page Screenshot And Log    ${OUTPUTDIR}
+    Fail    ${FailMessage}
+
+Wait Until Element is Invisible
+    [Arguments]    ${Element}    ${TimeOut}=5s
+    [Documentation]    Keyword is Used to wait until the specified element invisible.
+    : FOR    ${iCounter}    IN RANGE    1    150
+    \    ${ElementStatus}=    Verify Element Visible    ${Element}
+    \    Run Keyword If    ${ElementStatus}!=True    Exit For Loop
+    \    Comment    MYS-2346 The code waits 149 times the ${WaitUntilInvisibleLoopTime} value for an element to disappear, such as when waiting for a report. \ Modify the scalar at run time to adjust time waited. \ Previous value was 6s.
+    \    Sleep    ${WaitUntilInvisibleLoopTime}
+    Run Keyword If    ${ElementStatus}==True    Fail and Capture Screenshot    The element : ${Element} is still visible even after waiting some time.
+
+Click and Wait Until Element is Invisible
+    [Arguments]    ${Element}    ${TimeOut}=5s
+    [Documentation]    Keyword is used to wait until a click on an element is effective and is verified by the element becoming invisible.
+    : FOR    ${iCounter}    IN RANGE    1    150
+    \    ${ElementStatus}=    Verify Element Visible    ${Element}
+    \    Comment    MYS-3394:Updated the keyword to handle page overlay blocker which prevents the interaction with the elements.
+    \    Exit For Loop If    '${ElementStatus}'!='True'
+    \    ${click_performed_status}    Run Keyword And Return Status    Click On Element    ${Element}
+    \    Comment    MYS-3394:Corrected syntactical mistake in condition check.
+    \    Continue For Loop If    '${click_performed_status}'=='False'
+    \    Sleep    ${TimeOut}
+    Run Keyword If    ${ElementStatus}==True    Fail and Capture Screenshot    The element : ${Element} is still visible even after waiting some time.
+
+Get Classes Of Student From Management View
+    [Arguments]    ${StudentUserId}
+    [Documentation]    Keyword is used to get Classes List from management View of corresponding 'studentUserID'.
+    ${StudentCount}=    Get Matching Xpath Count    //div[@id='userGrid']/div[@class='dgrid-scroller']//div[@role='row']
+    Run Keyword If    '${StudentCount}'=='0'    Fail    No students are available to get the classes
+    : FOR    ${iCounter}    IN RANGE    1    ${StudentCount}+1
+    \    Selenium2Library.Mouse Down    //div[@id='userGrid']/div[@class='dgrid-scroller']/div/div[${iCounter}+1]
+    \    Sleep    3s
+    \    ${ActualId}=    Get Value    id=userUserId
+    \    Exit For Loop If    '${ActualId}'=='${StudentUserId}'
+    ${ClassCount}=    Get Matching Xpath Count    //div[@id='userGroupsList']//div[@class='dgrid-content ui-widget-content']/div
+    ${ClassList}    Create List
+    : FOR    ${iCounter}    IN RANGE    1    ${ClassCount}+1
+    \    ${Class}=    Get Text    //div[@id='userGroupsList']//div[@class='dgrid-content ui-widget-content']/div[${iCounter}]
+    \    Append To List    ${ClassList}    ${Class}
+    [Return]    ${ClassList}
+
+Get Student Classes From Student Login
+    [Documentation]    Keyword returns 'classes list' for the corresponding logged in student from dropdown in which student is joined.
+    Wait Until Keyword Succeeds    2m    5s    Click On Element    ${image.studentHomePage.sittingDeskArrow}
+    Comment    MouseDown on arrow mark beside the User ID.
+    ${JoinClassStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${image.studentHomePage.sittingDeskArrow}
+    Run Keyword If    ${JoinClassStatus}!=True    Fail and Capture Screenshot    Arrow down is not visible to add a student into a new class
+    Selenium2Library.Mouse Down    ${image.studentHomePage.sittingDeskArrow}
+    ${bStatus}=    Verify Element Visible    //table[@id='dijit_DropDownMenu_0']//tr
+    Run Keyword Unless    ${bStatus}    Selenium2Library.Mouse Down    ${image.studentHomePage.sittingDeskArrow}
+    ${ClassesCount}    Get Matching Xpath Count    //table[@id='dijit_DropDownMenu_0']//tr
+    Run Keyword If    '${ClassesCount}'=='1'    Fail    No classes are availabale to the student
+    ${ClassList}    Create List
+    : FOR    ${iCounter}    IN RANGE    1    ${ClassesCount}
+    \    ${ClassName}    Get Element Attribute    //table[@id='dijit_DropDownMenu_0']//tr[${iCounter}]@aria-label
+    \    ${ClassName}    Set Variable    ${ClassName.strip()}
+    \    Append To List    ${ClassList}    ${ClassName}
+    [Return]    ${ClassList}
+
+Add Role From Management
+    [Arguments]    ${fName}    ${lName}    ${userId}    ${password}    ${role}    ${middleName}=${EMPTY}
+    ...    ${grade}=${EMPTY}    ${gender}=${EMPTY}    ${status}={EMPTY}
+    [Documentation]    Keyword is used to select Role From Management.
+    ${newUserWindowStatus}=    Verify Element Visible    ${label.newUser.newUser}
+    Comment    Verifying the visibility of 'Student', 'Instructor', 'School Admin' role.
+    Comment    MYS-2577: Updated the objects inplace of the locator's.
+    Wait And Click Element    newUserBtn
+    Wait And Click Element    ${text.newUser.firstName}    ${TimeOut}
+    Input Text    ${text.newUser.firstName}    ${fName}
+    Input Text    ${text.newUser.lastName}    ${lName}
+    Input Text    ${text.newUser.userId}    ${userId}
+    Input Text    ${text.newUser.password}    ${password}
+    Comment    Select DropDown Values    //table[contains(@id,'newUserGrade')]//td/input[contains(@class,'ArrowButtonInner')]    //table[@id='newUserGrade_menu']//tr[contains(@id,'MenuItem')]
+    ${varType}    Type Of Variable    ${role}
+    Log    ${varType}
+    ${isListVariable}    String Should Contain    ${varType}    list
+    ${tempList}    Run Keyword If    ${isListVariable}==False    Create List    ${role}
+    ${role}    Set Variable If    ${isListVariable}==False    ${tempList}    ${role}
+    Run Keyword If    "${middleName}"!="${EMPTY}"    Input Text    newUserMiddleName    ${middleName}
+    : FOR    ${roleName}    IN    @{role}
+    \    ${roleName}    Set Variable If    '${roleName}'=='Teacher'    Instructor    ${roleName}
+    \    ${roleName}    Replace String    ${roleName}    ${SPACE}    ${EMPTY}
+    \    Comment    Run Keyword If    '${roleName}'=='Student'    Select DropDown Values    //table[contains(@id,'newUserGrade')]//td/input[contains(@class,'ArrowButtonInner')]    //table[@id='newUserGrade_menu']//tr[contains(@id,'MenuItem')]
+    \    Comment    MYS-2577 : Updated script to resolve check box selection issue.
+    \    Wait Until Page Contains Element    //input[@name='newUserRole${roleName}']/parent::div/following-sibling::label[contains(@for,'newUser')]    ${TimeOut}    Check box for role"${roleName}" is not visible in given time.
+    \    Click On Element    //input[@name='newUserRole${roleName}']/parent::div/following-sibling::label[contains(@for,'newUser')]
+    \    Comment    MYS-2577 : Updated keyword to select the checkbox of respective user role when failed in first attempt to select.
+    \    Comment    MYS-3329:Updated with wait for element visible keyword and updated to select the checck box if not performed on first attempt.
+    \    ${chkBoxStatus}    Wait For Element Visible    //input[@name='newUserRole${roleName}' and @aria-checked='true']    10s
+    \    Run Keyword If    "${chkBoxStatus}"!="True"    Click On Element    //input[@name='newUserRole${roleName}']/parent::div/following-sibling::label[contains(@for,'newUser')]
+    \    Wait For Element Visible    //input[@name='newUserRole${roleName}' and @aria-checked='true']    10s
+    \    Select Checkbox    //input[@id='newUserRole${roleName}']
+    \    ${aria_Checked_Status}    Get Element Attribute    //input[@name='newUserRole${roleName}']@aria-checked
+    \    Select Checkbox    //input[@id='newUserRole${roleName}']
+    ${adminUserId}    Set Variable    ${userId}@gmail.com
+    ${bStatus}    Run Keyword And Return Status    List Should Contain Value    ${role}    Student
+    ${rolesCount}    Get Length Of List    ${role}
+    ${bStatus}    Evaluate    '${bStatus}'=='True' and '${rolesCount}'=='1'
+    Run Keyword If    ${bStatus}==True    Select DropDown Values    //table[contains(@id,'newUserGrade')]//td/input[contains(@class,'ArrowButtonInner')]    //table[@id='newUserGrade_menu']//tr[contains(@id,'MenuItem')]
+    Run Keyword If    ${bStatus}==False    Clear Text    newUserUserId
+    Run Keyword If    ${bStatus}==False    Input Text    newUserUserId    ${adminUserId}
+    Wait And Click Element    ${button.newUser.oK}    ${Delay}
+    Comment    MYS-3587 : Updated script to run the click and wait keyword if no alert present.
+    ${isAlert_Present}    Wait For Element Visible    ${label.login.AlertMsg}    5s
+    Comment    MYS-3587 : Updated script to click and verify till the "save" button go invisible.
+    Run Keyword If    '${isAlert_Present}'=='False'    Click and Wait Until Element is Invisible    ${button.newUser.oK}    15s
+    Run Keyword If    ${bStatus}==False    Return From Keyword    ${adminUserId}
+    Run Keyword If    ${bStatus}==True    Return From Keyword    ${userId}
+
+Get Default Download Path
+    [Arguments]    ${filename}=${EMPTY}
+    [Documentation]    Keyword is Used to select Default Downloaded path of a file.
+    ${osName}=    OperatingSystem.Get Environment Variable    OS    none
+    Log    OperatingSystem Name :${osName}    INFO
+    ${bStatus}=    String Should Contain    ${osName}    Windows
+    ${WindowsFilePath}=    Set Variable    ${WINDOWSDEFAULTDOWNLOADPATH}${filename}
+    ${MacFilePath}=    Set Variable    ${MACDEFAULTDOWNLOADPATH}${filename}
+    ${filePath}=    Set Variable If    ${bStatus}==True    ${WindowsFilePath}    ${MacFilePath}
+    [Return]    ${filePath}
+
+SignOut
+    [Documentation]    Keyword is used to SignOut from the Application.
+    ${kwStatus}    Set Variable    False
+    Run Keyword And Ignore Error    Unselect Frame
+    ${viewStatus}    Verify Element Visible    //div[contains(@id,'View') and contains(@style,'visibility')]
+    ${idValue}    Run Keyword If    ${viewStatus}    Get Element Attribute    //div[contains(@id,'View') and contains(@style,'visibility')]@id
+    ${signoutLocator}    Set Variable If    ${viewStatus}    //div[@id='${idValue}']//td[text()='Sign Out']/preceding-sibling::td[contains(@class,'ToolBarButtonIcon')]//img    //td[text()='Sign Out']/preceding-sibling::td[contains(@class,'ToolBarButtonIcon')]//img
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${signoutLocator}    ${TimeOut}    The sign out button is not visible
+    Return From Keyword If    ${bStatus}==False    ${bStatus}
+    Run Keyword And Ignore Error    Mouse Over    ${signoutLocator}
+    ${Status}    Run Keyword And Return Status    Wait And Click Element    ${signoutLocator}
+    Run Keyword If    ${Status}    Sleep    3s
+    Run Keyword If    ${Status}    Run Keyword And Ignore Error    Wait Until Element is Invisible    ${image.common.Loading}    ${Delay}
+    ${kwStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${text.wizard.userID}    ${TimeOut}    The login page was not dsiplayed after clicking on sign out button
+    Return From Keyword If    ${kwStatus}    ${kwStatus}
+    ${signOutVisibilityStatus}    Verify Element Visible    ${signoutLocator}
+    ${signOutClickingStatus}    Run Keyword If    ${signOutVisibilityStatus}    Run Keyword And Return Status    Wait And Click Element    ${signoutLocator}
+    ...    ELSE    Fail    The "Signout" buton is not visible.
+    Run Keyword If    ${signOutClickingStatus}    Sleep    3s
+    Run Keyword If    ${signOutClickingStatus}    Run Keyword And Ignore Error    Wait Until Element is Invisible    ${image.common.Loading}    ${Delay}
+    ${kwStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${text.wizard.userID}    ${TimeOut}    The login page was not dsiplayed after clicking on sign out button
+    [Return]    ${kwStatus}
+
+Stop Application
+    [Documentation]    Keyword do :
+    ...    1.Closes the browser
+    ...    2.Closes the 'IEDRIVERSERVER'
+    ...    3.Closes the 'chromedriver'.
+    Comment    closes the browser.
+    Run Keyword And Ignore Error    Capture Page Screenshot And Log    ${OUTPUTDIR}
+    Comment    Sign Out From Application
+    Close Browser
+    Run Keyword If    '${BROWSER}'=='ie'    Process Close    IEDriverServer.exe
+    Run Keyword If    '${BROWSER}'=='gc'    Process Close    chromedriver.exe
+    Comment    Run Keyword If    '${BROWSER}'=='gc'    Process Close    chrome.exe
+    ${testCaseName}    Replace String    ${TEST_NAME}    '    ${SPACE}
+    ${isTestDataSetupProcess}    Run Keyword And Return Status    Should Be Equal As Strings    ${testCaseName}    TestDataSetupForSchools_Inprogress
+    Run Keyword If    ${isTestDataSetupProcess}    Build Text File
+
+Wait until for Attribute
+    [Arguments]    ${locator}    ${AttrName}    ${expectedAttr}    ${timeout}
+    [Documentation]    Keyword is used to wait until element attribute loaded.
+    ${Status}=    Verify Element Visible    ${locator}
+    Run Keyword If    ${Status}!=True    Fail    The ${locator} is not visible
+    : FOR    ${iCounter}    IN RANGE    1    ${timeout}
+    \    ${ActualAttr}=    Get Element Attribute    ${locator}@${AttrName}
+    \    ${Status}=    String Should Contain    ${ActualAttr}    ${expectedAttr}
+    \    Run Keyword If    ${Status}==True    Exit For Loop
+    \    Sleep    2s
+    Run Keyword If    ${Status}!=True    Fail    waited till ${timeout} secs .Dint get the expected attribute
+
+Table Column Sorting
+    [Arguments]    ${tableLocator}    ${columnName}    ${sortType}=descend
+    [Documentation]    Keyword is used to column sorting based on table and column value.
+    Wait Until Element Is Visible    ${tableLocator}/div[contains(@class,'dgrid-header-row')]/table/tr/th    ${TimeOut}
+    ${columnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${tableLocator}/div[contains(@class,'dgrid-header-row')]/table/tr/th[text()='${columnName}']    ${Delay}
+    Run Keyword If    ${columnStatus}==False    Return From Keyword    ${columnStatus}
+    : FOR    ${index}    IN RANGE    1    5
+    \    ${columnClass}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${tableLocator}/div[contains(@class,'dgrid-header-row')]/table/tr/th[text()='${columnName}' and contains(@class,'dgrid-sort-down')]
+    \    ${sortStatus}    String Should Contain    ${sortType}    descend
+    \    Run Keyword If    ${columnClass}==True and ${sortStatus}==True    Exit For Loop
+    \    Run Keyword If    ${columnClass}==False and ${sortStatus}==False    Exit For Loop
+    \    Wait And Click Element    ${tableLocator}/div[contains(@class,'dgrid-header-row')]/table/tr/th[text()='${columnName}']
+    \    Sleep    2s
+    Return From Keyword    ${columnStatus}
+    [Return]    ${columnStatus}
+
+Delete The Record From table
+    [Arguments]    ${tableLocator}    ${ColName}    ${Colvalue}    ${tableType}=Group    ${sortingStatus}=True
+    [Documentation]    Keyword is used to delete the record from a table based on given value.
+    ${Rowno}=    Select The Record In Table    ${tableLocator}    ${ColName}    ${Colvalue}    ${sortingStatus}
+    Run Keyword If    '${Rowno}'=='0'    Fail    No ${Colvalue} is selected for the class
+    Run Keyword If    '${tableType}'!='Group'    Choose Ok On Next Confirmation
+    Wait Until Keyword Succeeds    1m    3s    Click On Element    //div[@class='adminButtonGreen2d' and @id='delete${tableType}Btn']
+    Comment    Run Keyword If    '${tableType}'!='Group'    Wait Until Keyword Succeeds    1m    10s    Confirm Action
+    Wait Until Element Is Visible    //div[@id='promptMessage']    ${TimeOut}
+    Wait And Click Element    //div[@id="promptYesBtn"]/button
+    Comment    MYS-3329:Updated script to verify page overlay blocker and if present wait until it disappear.
+    ${page_Overlay_Blocker_Status}    Wait For Element Visible    //div[contains(@id,'dojox_widget_Standby_')]//div[contains(@style,'display: block;')]    10s
+    Run Keyword If    ${page_Overlay_Blocker_Status}    Wait Until Keyword Succeeds    3m    3s    Element Should Not Be Visible    //div[contains(@id,'dojox_widget_Standby_')]//div[contains(@style,'display: block;')]
+
+Select DropDown Values
+    [Arguments]    ${ArrowLocator}    ${OptionLocator}    ${option}=${EMPTY}
+    [Documentation]    Keyword is used to select dropdown values randomly.
+    Wait And Click Element    ${ArrowLocator}
+    Wait Until Element Is Visible    ${OptionLocator}
+    ${xpathCount}    Get Matching Xpath Count    ${OptionLocator}
+    ${randomNoValue}    Get Random Number In Given Range    3    ${xpathCount}
+    ${randomNoValue}    Set Variable If    ${randomNoValue}>5    4    ${randomNoValue}
+    ${StudentSgnUpGradeLevel}    Get Text    ${OptionLocator}[${randomNoValue}]
+    ${option}    Set Variable If    '${option}'=='${EMPTY}'    ${StudentSgnUpGradeLevel}    ${option}
+    Click On Element    ${OptionLocator}//td[contains(text(),'${option}')]
+    [Return]    ${option}
+
+Select The School Name
+    [Arguments]    ${schoolName}
+    [Documentation]    Used to select the school Name from Login based on Zip Code.
+    ${kwStatus}    Set Variable    False
+    ${sName}    Get Text    //div[@class='dashLink']/div[@class='headerLabelSchool']
+    ${bStatus}    String Should Contain    ${sName}    ${schoolName}
+    Return From Keyword If    ${bStatus}    True
+    Comment    MYS-3394:Updated with looping statements to perform action on schools dropdown and continue till found the drop down in focus.
+    Wait And Click Element    //div[@id='welcomeView']//span[text()='Schools']    ${TimeOut}    Schools
+    : FOR    ${itr}    IN RANGE    0    30
+    \    ${bStatus}    Wait For Element Visible    //div[@id='menuSchoolsOptions']//ol[contains(@class,'menu-schools-options')]//a    10s
+    \    Exit For Loop If    ${bStatus}
+    \    ${schools_ddl_click_Status}    Run Keyword And Return Status    Click On Element    //div[@id='welcomeView']//span[text()='Schools']
+    Wait And Click Element    //div[@id='menuSchoolsOptions']//ol[contains(@class,'menu-schools-options')]//a[contains(text(),'${schoolName}')]    ${TimeOut}    ${schoolName}
+    Wait Until Element is Invisible    ${common.homepage.Loading}    ${TimeOut}
+    Comment    MYS-3394: Replaced witth wait for element visible keyword.
+    Comment    ${enhancementAlertStatus}    Wait For Element Visible    ${common.window.Enhancements}    5s
+    Comment    Run Keyword If    "${enhancementAlertStatus}"!="False"    Run Keyword And Ignore Error    Click On Element    ${button.Alert.OK}
+    ${kwStatus}    Wait For Element Visible    //div[@class='dashLink']/div[@class='headerLabelSchool' and text()='${schoolName}']    ${Delay}
+    [Return]    ${kwStatus}
+
+Wait And Click Element
+    [Arguments]    ${menuItem}    ${TimeOut}=90s    ${buttonName}=${EMPTY}    ${default_timeout}=2m
+    [Documentation]    Keyword is used to wait for a specified element visibility and if it is visible click on that element.
+    Comment    MYS-3191 : Removed "run keyword and return status" keyword to avoid false status and capture actual status returning by "wait for element visible" keyword.
+    ${status}    Wait For Element Visible    ${menuItem}    ${TimeOut}    The button '${menuItem}' is not visible.
+    Run Keyword If    ${status}==True    Wait Until Keyword Succeeds    ${default_timeout}    5s    Click On Element    ${menuItem}
+    Run Keyword If    ${status}==True or ${status}==False    Return From Keyword    ${status}
+    ${errorMessage}    Set Variable If    '${buttonName}'=='${EMPTY}'    The specifed element was not clickable after 2m time out also.    The specifed element : ${buttonName} was not clickable after 2m time out also.
+    Fail    ${errorMessage}
+    [Return]    ${status}
+
+Wait And Select Frame
+    [Arguments]    ${locator}    ${TimeOut}=30s
+    [Documentation]    Keyword is used to wait and Select the frame at corresponding page.
+    Wait Until Keyword Succeeds    3m    5s    Wait Until Element Is Visible    ${locator}    ${TimeOut}
+    Wait Until Keyword Succeeds    2m    5s    Select Frame    ${locator}
+
+Get Report for A Class or Group
+    [Arguments]    ${reportType}    ${GroupType}    ${GroupValue}    ${Subject}    ${SchoolName}=${EMPTY}    ${Activity}=${EMPTY}
+    ...    ${fromDate}=${EMPTY}    ${toDate}=${EMPTY}
+    [Documentation]    Keyword is used to generats report based on selection creteria.
+    ${from}    Run Keyword If    "${fromDate}"=="${EMPTY}"    Get Current Date
+    ...    ELSE    Set Variable    ${fromDate}
+    ${to}    Run Keyword If    "${toDate}"=="${EMPTY}"    Get Current Date
+    ...    ELSE    Set Variable    ${toDate}
+    Navigate To Report Filters Page
+    Select The Drop Down Value    Report Type    ${reportType}
+    ${loaderVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${common.spinner.loadingIcon}    10s
+    Run Keyword If    ${loaderVisibleStatus}    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    ${schoolStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[contains(@id,'School')]/span[contains(text(),'School')]    10s
+    Run Keyword If    "${SchoolName}"!="${EMPTY}" and '${schoolStatus}'=='True'    Select The Drop Down Value    School    ${SchoolName}
+    ${loaderVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${common.spinner.loadingIcon}    10s
+    Run Keyword If    ${loaderVisibleStatus}    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Comment    ${cStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    toggleClassesGroupsReportBtn    5s
+    Comment    Run Keyword If    "${GroupType}"=="Groups" and '${cStatus}'=='True'    Wait And Click Element    toggleClassesGroupsReportBtn
+    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Comment    ${type}    Set Variable If    "${GroupType}"!="Groups"    Classes    Groups
+    ${cStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='selectReportText']//span[contains(text(),'Classes/Groups')]//parent::div[contains(@id,'report') and contains(@id,'Select')]//div[@role='presentation']
+    Run Keyword If    '${cStatus}'=='True'    Select The Drop Down Value    Classes/Groups    ${GroupValue}
+    ${loaderVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${common.spinner.loadingIcon}    10s
+    Run Keyword If    ${loaderVisibleStatus}    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Select The Drop Down Value    Title    ${Subject}
+    ${loaderVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${common.spinner.loadingIcon}    10s
+    Run Keyword If    ${loaderVisibleStatus}    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    ${status}    Run Keyword And Return Status    Wait Until Element Is Visible    //span[contains(text(),'Select An Activity')]    10s
+    Run Keyword If    "${Activity}"!="${EMPTY}" and '${status}'=='True'    Sleep    3s
+    Run Keyword If    "${Activity}"!="${EMPTY}" and '${status}'=='True'    Select The Drop Down Value    Activity    ${Activity}
+    ${loaderVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${common.spinner.loadingIcon}    5s
+    Run Keyword If    ${loaderVisibleStatus}    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Wait Until Element Is Visible    ${textbox.reports.myFromDate}    ${TimeOut}
+    Input Text    ${textbox.reports.myFromDate}    ${from}
+    Input Text    ${textbox.reports.myToDate}    ${to}
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.reports.Generate Report}    ${TimeOut}
+    Run Keyword If    ${bStatus}    Send    {TAB}
+    Comment    MYS-4864:updated the code by replacing click element with Click Element using javascript
+    Click Element Using Javascript    ${button.reports.Generate Report}
+    Comment    Wait And Click Element    ${button.reports.Generate Report}
+    Comment    MYS-3211:Updated keyword to wait until Generate Report button invisible to confirm it is being navigated to report page.
+    Wait Until Keyword Succeeds    1m    3s    Element Should Not Be Visible    ${button.reports.Generate Report}    Generate Reports button is not yet went invisible.
+
+Export or Print All Users Data
+    [Arguments]    ${Operation}    ${ClassName}=${EMPTY}    ${UserList}=${EMPTY}
+    [Documentation]    Keyword is used to Print or Export All users data in management page.Depends on UsersList and Classname.
+    Comment    Run Keyword And Ignore Error    Wait And Click Element    //div[@id='exportUsersBtn']    30s
+    Run Keyword If    "${ClassName}"!="${EMPTY}"    Select DropDown Values    //table[@id='userPEDlgClassSelector']//input[@class='dijitReset dijitInputField dijitArrowButtonInner']    //table[@id='userPEDlgClassSelector_menu']//tr    ${ClassName}
+    Run Keyword If    "${ClassName}"=="${EMPTY}"    Select DropDown Values    //table[@id='userPEDlgClassSelector']//input[@class='dijitReset dijitInputField dijitArrowButtonInner']    //table[@id='userPEDlgClassSelector_menu']//tr    Entire School
+    Wait And Click Element    //span[@class='dijitReset dijitInline dijitButtonText' and text()='Continue']
+    Run Keyword If    "${UserList}"=="${EMPTY}"    Wait And Click Element    //div[@id='listEditor']/div[1]//th[1]/input
+    Run Keyword If    "${UserList}"!="${EMPTY}"    Select Students from List Editor    ${UserList}
+    : FOR    ${icounter}    IN RANGE    1    5
+    \    Wait Until Element Is Visible    //span[@id='${Operation}ListEditor_label']/parent::span[@aria-disabled='false']
+    \    Wait And Click Element    //span[@id='${Operation}ListEditor_label']/parent::span[@aria-disabled='false']
+    \    ${IAgreeStatus}    Wait For Element Visible    ${label.deleteClassOrGroup.promptMsg}    20s
+    \    Exit For Loop If    ${IAgreeStatus}
+    \    Comment    Wait Until Element Is Visible    //span[@id='${Operation}ListEditor_label']/parent::span[@aria-disabled='false']    90s
+    \    Comment    Wait And Click Element    //span[@id='${Operation}ListEditor_label']/parent::span[@aria-disabled='false']
+    Comment    MYS-2514 : Updated script to handle alert on print or export.
+    Comment    MYS-2969: Updated script wait for element visble instead of wait until element is visible.
+    ${printOrExportAlert}    Run Keyword And Return Status    Wait For Element Visible    ${label.deleteClassOrGroup.promptMsg}    ${TimeOut}    Alert is not displayed while exportt or print.
+    Comment    MYS-2969 : Updated Alert message handling code to resolve DOM exceptions
+    ${okButtonStatus}    Run Keyword And Return Status    Wait For Element Visible    //button[@id='mysPromptBtnYes' and text()='Ok']    ${TimeOut}    Ok button is not Visible to confirm the alert.
+    Comment    MYS-2969 : Updated script to focus on the alert handling button.
+    Capture Page Screenshot And Log    ${OUTPUTDIR}
+    Focus    //button[@id='mysPromptBtnYes' and text()='Ok']
+    Run Keyword If    ${okButtonStatus}    Wait And Click Element    //button[@id='mysPromptBtnYes' and text()='Ok']
+    Comment    MYS-2969 : Updated the script when alert is not handle in first time then again clicking on the Ok button untill button is invisible.
+    : FOR    ${iCounter}    IN RANGE    1    30
+    \    ${ElementStatus}=    Verify Element Visible    //button[@id='mysPromptBtnYes' and text()='Ok']
+    \    Run Keyword If    ${ElementStatus}!=True    Exit For Loop
+    \    Sleep    1s
+    Run Keyword If    ${ElementStatus}==True    Wait And Click Element    //button[@id='mysPromptBtnYes' and text()='Ok']
+    Comment    MYS-2514 : Updated script to wait until print users window appear or exported users file created.
+    Sleep    15s
+
+Select Students from List Editor
+    [Arguments]    ${UserList}
+    [Documentation]    Keyword is used to select the students from List Editor.
+    : FOR    ${studentValue}    IN    @{UserList}
+    \    Comment    MYS-2969: Updated the script wait for element visible instead of wait until element is visible.
+    \    ${stduentStatus}    Run Keyword And Return Status    Wait For Element Visible    //div[contains(@class,'fromInlineDijit')]//div[@class='header']/following-sibling::div/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@id,'row')]//table/tr//td[text()='${studentValue}']/parent::tr/td/input    ${Delay}
+    \    Sleep    2s
+    \    Mouse Over    //div[contains(@class,'fromInlineDijit')]//div[@class='header']/following-sibling::div/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@id,'row')]//table/tr//td[text()='${studentValue}']/parent::tr/td/input
+    \    Run Keyword If    ${stduentStatus}    Select Checkbox    //div[contains(@class,'fromInlineDijit')]//div[@class='header']/following-sibling::div/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@id,'row')]//table/tr//td[text()='${studentValue}']/parent::tr/td/input
+    \    ...    ELSE    Continue For Loop
+
+Exported File with PrefixFileName
+    [Arguments]    ${FileDir}    ${ExpFileName}
+    [Documentation]    Keyword is used to verifies the Exported File with PrefixFile name in given directory.
+    ${matcingFileName}    Set Variable    ${EMPTY}
+    ${bStatus}    Set Variable    False
+    ${totalFiles}    OperatingSystem.List Files In Directory    ${FileDir}
+    : FOR    ${fileName}    IN    @{totalFiles}
+    \    ${bStatus}    String Should Contain    ${fileName}    ${ExpFileName}
+    \    ${matcingFileName}    Set Variable If    ${bStatus}    ${FileDir}${fileName}    ${matcingFileName}
+    \    Exit For Loop If    ${bStatus}
+    [Return]    ${matcingFileName}
+
+Remove Files with PrefixFileName
+    [Arguments]    ${FileDir}    ${ExpFileName}
+    [Documentation]    Keyword is used to remove the file with prefixfilename from given directory.
+    ${bStatus}    Set Variable    False
+    ${totalFiles}    OperatingSystem.List Files In Directory    ${FileDir}
+    : FOR    ${fileName}    IN    @{totalFiles}
+    \    ${bStatus}    String Should Contain    ${fileName}    ${ExpFileName}
+    \    Run Keyword If    ${bStatus}    Remove File    ${FileDir}${fileName}
+    [Return]    ${bStatus}
+
+Validate The Sub Menus Under Help Menu
+    [Arguments]    ${subMenuLocator}    ${expectedLocator}
+    [Documentation]    Keyword is used to validate the Sub Menus under the Help Menu.
+    Wait And Click Element    ${button.home.help}    ${TimeOut}    Help
+    Comment    Verify the Quick Tips in the help menu
+    ${bStatus}    Verify Element Visible    ${subMenuLocator}
+    Run Keyword Unless    ${bStatus}    Click On Element    ${button.home.help}
+    ${subMenuSelectionStatus}    Run Keyword And Return Status    Wait And Click Element    ${subMenuLocator}
+    Run Keyword Unless    ${subMenuSelectionStatus}    Wait And Click Element    ${button.home.help}    ${TimeOut}    Help
+    Run Keyword Unless    ${subMenuSelectionStatus}    Wait And Click Element    ${subMenuLocator}
+    Wait And Click Element    ${expectedLocator}
+    Comment    ${bStatus}    Verify Element Visible    ${expectedLocator}
+    Comment    Run Keyword If    ${bStatus}    Click On Element    ${expectedLocator}
+
+Save Exported File
+    [Arguments]    ${fileDir}    ${lengthOFList}
+    [Documentation]    Keyword is used to save the exported file.(in management)
+    Capture Whole Screen And Log    ${OUTPUTDIR}
+    Sleep    5s
+    Comment    ${lengthOFList}    OperatingSystem.Count Files In Directory    ${fileDir}
+    Comment    MYS-4993: Updated time out from 6 mints to 12 minutes
+    : FOR    ${iCount}    IN RANGE    1    20
+    \    Run Keyword If    '${BROWSER}'=='ie'    Send    !S
+    \    Sleep    5s
+    \    ${lengthOFList2}    OperatingSystem.Count Files In Directory    ${fileDir}
+    \    ${difference}=    Evaluate    ${lengthOFList2}-${lengthOFList}
+    \    Sleep    10s
+    \    Run Keyword If    ${difference}==1    Exit For Loop
+    Capture Whole Screen And Log    ${OUTPUTDIR}
+
+Select the desired window
+    [Arguments]    ${windowNames}    ${desiredwindow}
+    [Documentation]    Keyword is used to select the desired window.
+    @{windowNames}=    Set Variable    ${windowNames}
+    : FOR    ${windowName}    IN    @{windowNames}
+    \    ${bStatus}=    String Should Contain    ${windowName}    ${desiredwindow}
+    \    Run Keyword If    ${bStatus}==True    Select Window    ${windowName}
+    \    Run Keyword If    ${bStatus}==True    Exit For Loop
+    [Return]    ${bStatus}
+
+Select desired role of the record from Table
+    [Arguments]    ${role}
+    [Documentation]    Keyword is used to select the desired role of the record from table
+    ...    Sorting the table colomn and select the record.
+    ${columns}=    Create List    Created    Grade    Role
+    : FOR    ${cName}    IN    @{columns}
+    \    ${rStatus}=    Run Keyword And Return Status    Select The Record In Table    ${table.users}    Role    ${role}
+    \    Run Keyword If    ${rStatus}!=True    Table Column Sorting    ${table.users}    ${cName}    ascend
+    \    Run Keyword If    ${rStatus}    Exit For Loop
+    \    ${rStatus}=    Run Keyword And Return Status    Select The Record In Table    ${table.users}    Role    ${role}
+    \    Run Keyword If    ${rStatus}!=True    Table Column Sorting    ${table.users}    ${cName}
+    \    Run Keyword If    ${rStatus}    Exit For Loop
+    Run Keyword If    ${rStatus}!=True    ${role} record not found from table.
+
+Remove Spaces in Names
+    [Arguments]    ${SignUpTitle}
+    [Documentation]    Keyword is used to remove spaces in Names.
+    ${SignUpTitle}    Split String    ${SignUpTitle}    ${SPACE}
+    ${len}=    Get Length    ${SignUpTitle}
+    ${title}    Set Variable    ${EMPTY}
+    : FOR    ${icount}    IN RANGE    0    ${len}
+    \    ${title}=    Set Variable    ${title}${SignUpTitle[${iCount}]}
+    Log    ${title}
+    [Return]    ${title}
+
+Get ToolTip Value
+    [Arguments]    ${locator}
+    [Documentation]    Get the ToolTip value for perticular position on the field.
+    AutoItLibrary.Mouse Move    384    30
+    CommonLibrary.Mouse Move    ${locator}
+    Wait Until Element Is Visible    ${label.toolTip}    3m
+    : FOR    ${iCount}    IN RANGE    0    100
+    \    Mouse Over    ${locator}
+    \    ${bStatus}    Verify Element Present    ${label.toolTip}
+    \    ${text}    Run Keyword If    ${bStatus}    Get Text    ${label.toolTip}
+    \    ${length}    Get Length    ${text}
+    \    Run Keyword If    ${length}==0    Continue For Loop
+    \    Run Keyword If    ${length}!=0    Exit For Loop
+    [Return]    ${text}
+
+Add Titles to the Teacher from Management
+    [Arguments]    ${AssignmentTitle}
+    [Documentation]    Keyword is used to Add Titles to the Teacher From Management.
+    Wait And Click Element    ${button.userDetails.edit}
+    Wait And Click Element    ${button.Details.AddRegCode}
+    ${teacherRegCode}    Get Teacher Registration Code    ${CODES_URL}
+    Run Keyword If    '${BROWSER}'=='ie'    TypeCharactertoTextBox    ${text.management.addTeCode}    ${teacherRegCode}
+    Run Keyword If    '${BROWSER}'!='ie'    Enter Text In Text Field    ${text.management.addTeCode}    ${teacherRegCode}
+    Wait And Click Element    ${table.management.chooseTitleArrowButton}
+    : FOR    ${icount}    IN RANGE    1    100
+    \    Sleep    2s
+    \    ${SignUpTitleMenuStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //td[contains(@id,'dijit_MenuItem') and contains(text(),'${AssignmentTitle}')]
+    \    Run Keyword If    ${SignUpTitleMenuStatus}    Wait And Click Element    //td[contains(@id,'dijit_MenuItem') and contains(text(),'${AssignmentTitle}')]
+    \    ${bStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    //div/span[contains(text(),'Choose a title')]
+    \    Run Keyword If    ${bStatus}==True    Continue For Loop
+    \    Run Keyword If    ${SignUpTitleMenuStatus}==True and ${bStatus}!=True    Wait And Click Element    ${button.signUp.next}
+    \    Run Keyword If    ${SignUpTitleMenuStatus}==True and ${bStatus}!=True    Exit For Loop
+    Wait And Click Element    ${button.management.addTEcodeButtonNo}
+
+ScrollDownAndClick
+    [Arguments]    ${elementToBeClicked}
+    [Documentation]    Keyword is used to perform ScrollDown and click operations
+    : FOR    ${val}    IN RANGE    1    100
+    \    Send    {DOWN}
+    \    ${bStatus}    Verify Element Visible    ${elementToBeClicked}
+    \    Exit For Loop If    ${bStatus}
+    Wait And Click Element    ${elementToBeClicked}
+
+Verify Whether The Prerequisites Modifed
+    [Documentation]    Returns True if the "SalesTestData.xls" and "Initialize_Students.xls" sheet has been modified
+    ${prereqFileModifyDate1}    Run Keyword If    ${isPupulatingSalesDBFirstTime}    OperatingSystem.Get Modified Time    ${testDataFilePath}    epoch
+    ${prereqFileModifyDate2}    Run Keyword If    ${isPupulatingSalesDBFirstTime}    OperatingSystem.Get Modified Time    ${InitializeStudentsTestDataFile}    epoch
+    ${filePath}    Set Variable    ${EXECDIR}\\Automation_Testsuites\\TestData\\DO_NOT_DELETE_POPULATING_DATA_FILE_MODIFIED_TIME.csv
+    ${lastModifiedDetails}    Run Keyword If    ${isPupulatingSalesDBFirstTime}    Create Dictionary    salesTestData    ${prereqFileModifyDate1}    initializeStudentsData
+    ...    ${prereqFileModifyDate2}
+    ${2DdictOfLastModifyDetails}    Run Keyword If    ${isPupulatingSalesDBFirstTime}    Create Dictionary    1    ${lastModifiedDetails}
+    ${creationStatus}    Run Keyword If    ${isPupulatingSalesDBFirstTime}    Create Csv File Using Dictionary Values    ${filePath}    ${2DdictOfLastModifyDetails}
+    ${prereqFileModifyDateEnvValue}    Get Csv File Row Values Into List    ${filePath}    2
+    ${testFileModifyDate1}    OperatingSystem.Get Modified Time    ${testDataFilePath}    epoch
+    ${testFileModifyDate2}    OperatingSystem.Get Modified Time    ${InitializeStudentsTestDataFile}    epoch
+    ${status}    Run Keyword If    "${isPupulatingSalesDBFirstTime}"!="True"    Evaluate    @{prereqFileModifyDateEnvValue}[1]<${testFileModifyDate1} and @{prereqFileModifyDateEnvValue}[0]<${testFileModifyDate2}
+    ...    ELSE    Set Variable    False
+    Run Keyword If    "${status}"!="True" and "${isPupulatingSalesDBFirstTime}"!="True"    Return From Keyword    False
+    Run Keyword If    "${status}"=="True"    Remove File    ${filePath}
+    ${lastModifiedDetails1}    Run Keyword If    "${status}"=="True"    Create Dictionary    salesTestData    ${prereqFileModifyDate1}    initializeStudentsData
+    ...    ${prereqFileModifyDate2}
+    ${2DdictOfLastModifyDetails1}    Run Keyword If    "${status}"=="True"    Create Dictionary    1    ${lastModifiedDetails1}
+    ${creationStatus1}    Run Keyword If    "${status}"=="True"    Create Csv File Using Dictionary Values    ${filePath}    ${2DdictOfLastModifyDetails1}
+    Return From Keyword    True
+
+Delete users and Classes of School
+    [Documentation]    Keyword is used to delete all classes,Groups and Users of School.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    ${cStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.classesAndGroups}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]//div[contains(@id,'Grid-row-')]    ${TimeOut}
+    Sleep    5s
+    : FOR    ${iCount}    IN RANGE    0    500
+    \    Run Keyword Unless    ${cStatus}    Exit For Loop
+    \    ${classCount}    Get Matching Xpath Count    ${table.classesAndGroups}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]//div[contains(@id,'Grid-row-')]
+    \    Exit For Loop If    '${classCount}'=='0'
+    \    ${rStatus}    Verify Element Present    ${table.classesAndGroups}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]//div[contains(@id,'Grid-row-')]
+    \    Run Keyword Unless    ${rStatus}    Exit For Loop
+    \    Wait Until Element is Invisible    ${common.whiledelete.loading}
+    \    CommonLibrary.Select The Row    ${table.classesAndGroups}    1
+    \    Wait And Click Element    ${button.classes.delete}
+    \    Wait Until Element Is Visible    //div[@id='promptMessage']    ${TimeOut}
+    \    Wait And Click Element    ${button.prompt.Yes}
+    \    Wait Until Element is Invisible    ${common.whiledelete.loading}
+    Wait And Click Element    ${button.management.showGroups}
+    ${gStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.classesAndGroups}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]//div[contains(@id,'Grid-row-')]    ${TimeOut}
+    Sleep    5s
+    : FOR    ${iCount}    IN RANGE    0    500
+    \    Run Keyword Unless    ${gStatus}    Exit For Loop
+    \    ${groupsCount}    Get Matching Xpath Count    ${table.classesAndGroups}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]//div[contains(@id,'Grid-row-')]
+    \    Exit For Loop If    '${groupsCount}'=='0'
+    \    ${rStatus}    Verify Element Present    ${table.classesAndGroups}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]//div[contains(@id,'Grid-row-')]
+    \    Run Keyword Unless    ${rStatus}    Exit For Loop
+    \    Wait Until Element is Invisible    ${common.whiledelete.loading}
+    \    CommonLibrary.Select The Row    ${table.classesAndGroups}    1
+    \    Wait And Click Element    ${button.classes.delete}
+    \    Wait Until Element Is Visible    //div[@id='promptMessage']    ${TimeOut}
+    \    Wait And Click Element    ${button.prompt.Yes}
+    \    Wait Until Element is Invisible    ${common.whiledelete.loading}
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.users}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]//div[contains(@id,'Grid-row-')]    10s
+    Sleep    2s
+    : FOR    ${iCount}    IN RANGE    0    2500
+    \    Run Keyword Unless    ${bStatus}    Exit For Loop
+    \    ${usersCount}    Get Matching Xpath Count    ${table.users}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]//div[contains(@id,'Grid-row-')]
+    \    Exit For Loop If    '${usersCount}'=='0'
+    \    ${rStatus}    Verify Element Present    ${table.users}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]//div[contains(@id,'Grid-row-')]
+    \    Run Keyword Unless    ${rStatus}    Exit For Loop
+    \    ${bSttus}    Verify Element Visible    //p[@id="alertMessage" and contains(text(),'There was a problem removing this user.')]
+    \    Run Keyword If    ${bSttus}    Click On Element    //div[@id="alertOkBtn"]
+    \    Comment    ${bStatus}    Verify Element Visible    //div[@id='userGrid']/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]//div[contains(@id,'userGrid-row-')]//tr/td[contains(text(),'${role}')]
+    \    Wait Until Element is Invisible    ${common.whiledelete.loading}
+    \    CommonLibrary.Select The Row    ${table.users}    1
+    \    Wait And Click Element    ${button.users.delete}
+    \    Wait Until Element Is Visible    //div[@id='promptMessage']    ${TimeOut}
+    \    Wait And Click Element    ${button.prompt.Yes}
+    \    Wait Until Element is Invisible    ${common.whiledelete.loading}
+    ${cStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.classesAndGroups}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]//div[contains(@id,'Grid-row-')]    ${TimeOut}
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.users}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]//div[contains(@id,'Grid-row-')]    10s
+    Run Keyword Unless    ${cStatus} and ${bStatus}    Navigate BackTo Home Page    Management
+
+Pick First School With Later Timestamp
+    [Arguments]    ${teacherId}    ${teacherPwd}    ${className}    ${className2}
+    [Documentation]    Keyword is used to pick First school name with later timestamp.
+    Comment    Login as a teacher and navigate to management
+    ${loginStatus}    LoginToWizardApp    ${teacherId}    ${teacherPwd}
+    Run Keyword Unless    ${loginStatus}    Fail    The teacher is unable to login with valid credentails
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Comment    Select the record with the given classname
+    ${rowNo}    Select The Record In Table    ${table.classesAndGroups}    Name    ${className}
+    ${descriptionData}    Get Table Cell Value    ${table.classesAndGroups}    ${rowNo}    Description
+    ${rowNo}    Select The Record In Table    ${table.classesAndGroups}    Name    ${className2}
+    ${latestSchoolSetUpTime}    Get Table Cell Value    ${table.classesAndGroups}    ${rowNo}    Description
+    ${schoolList}    Split String    ${descriptionData}    ;
+    ${listLength}    Get Length Of List    ${schoolList}
+    : FOR    ${val}    IN RANGE    1    ${listLength}
+    \    ${index}    Evaluate    ${val}-1
+    \    Comment    Watch the math here. \ Because the string ends wth a ":" the listlength is one larger than you would expect.
+    \    ${schoolDetailsList}    Split String    @{schoolList}[${index}]    ,
+    \    ${schoolTimestamp}    Replace String    @{schoolDetailsList}[0]    [    ${EMPTY}
+    \    ${bStatus}    Evaluate    "${schoolTimestamp}">"${latestSchoolSetUpTime}"
+    \    Comment    Run Keyword If    ${bStatus}    Select The Record In Table    ${table.classesAndGroups}    Name
+    \    ...    ${className2}
+    \    Run Keyword If    ${bStatus}    Wait And Click Element    ${button.classDetail.edit}
+    \    Run Keyword If    ${bStatus}    Input Text    ${text.classDetails.description}    ${schoolTimestamp}
+    \    Run Keyword If    ${bStatus}    Wait And Click Element    ${button.classDetails.save}
+    \    Run Keyword If    ${bStatus}    Sleep    5s
+    \    Run Keyword If    ${bStatus}    Close Browser
+    \    ${selectedSchoolDictionary}    Run Keyword If    ${bStatus}    Create Dictionary    taskCreatedTimestamp    ${schoolTimestamp}
+    \    ...    password    @{schoolDetailsList}[1]    schoolName    @{schoolDetailsList}[2]    zip
+    \    ...    @{schoolDetailsList}[3]    schoolSetupTaskId    @{schoolDetailsList}[4]    bundle    @{schoolDetailsList}[5]
+    \    ...    taskStatus    @{schoolDetailsList}[6]    schoolString    @{schoolList}[${index}]
+    \    Exit For Loop If    ${bStatus}
+    Set Global Variable    ${newSchoolsFound}    ${bStatus}
+    Run Keyword Unless    ${bStatus}    Fail    No school found.
+    [Return]    ${selectedSchoolDictionary}
+
+Get Date Without Zeros At Pos Zero In Day And Month
+    [Arguments]    ${examdate}
+    [Documentation]    Keyword is used to get date(Exam Date) without zeros in Day and Month.Deleting zeros if Day and Month values contains zeros.
+    @{splittedDateChars}    Split String To Characters    ${examdate}
+    Return From Keyword If    "@{splittedDateChars}[0]"!="0" and "@{splittedDateChars}[3]"!="0"    ${examdate}
+    ${finalDateString}    Set Variable    ${EMPTY}
+    Run Keyword If    "@{splittedDateChars}[0]"=="0"    Set List Value    ${splittedDateChars}    0    ${EMPTY}
+    Run Keyword If    "@{splittedDateChars}[3]"=="0"    Set List Value    ${splittedDateChars}    3    ${EMPTY}
+    : FOR    ${item}    IN    @{splittedDateChars}
+    \    ${finalDateString}    Catenate    SEPARATOR=    ${finalDateString}    ${item}
+    Log    ${finalDateString}
+    [Return]    ${finalDateString}
+
+Convert Reports Tooltip Fraction Values Into Floating Value
+    [Arguments]    ${tooltipmessage}
+    [Documentation]    Keyword is used to convert tooltip fraction values into floating values
+    ${tooltipValue}    Set Variable    ${tooltipmessage}
+    ${leftFetchVal}    Fetch From Left    ${tooltipValue}    (
+    ${rightFetchVal}    Fetch From Right    ${tooltipValue}    )
+    ${finalString}    Replace String    ${tooltipValue}    ${leftFetchVal}    ${EMPTY}
+    ${finalString}    Replace String    ${finalString}    ${rightFetchVal}    ${EMPTY}
+    ${finalString}    Replace String    ${finalString}    (    ${EMPTY}
+    ${finalString}    Replace String    ${finalString}    )    ${EMPTY}
+    @{splittedValues}    Split String    ${finalString}    /
+    ${fractionStatusInNemerator}    String Should Contain    @{splittedValues}[0]    .
+    ${fractionStatusInDenominator}    String Should Contain    @{splittedValues}[1]    .
+    ${numerator}    Set Variable If    ${fractionStatusInNemerator}!=True    @{splittedValues}[0].0    @{splittedValues}[0]
+    ${denominator}    Set Variable If    ${fractionStatusInDenominator}!=True    @{splittedValues}[1].0    @{splittedValues}[1]
+    ${numarator_and_denominator}    Create List    ${numerator}    ${denominator}
+    Comment    ${floatValue}    Evaluate    ${numerator}/${denominator}*100
+    [Return]    ${numarator_and_denominator}
+
+Get Tooltip Message Of Score Indicators In Reports
+    [Arguments]    ${locator}    ${ToolTipSubText}=${EMPTY}
+    [Documentation]    Keyword is used to getting tooltip text of score indicator in Reports.
+    : FOR    ${iCount}    IN RANGE    0    100
+    \    CommonLibrary.Mouse Move    ${locator}
+    \    Focus    ${locator}
+    \    Wait And Click Element    ${locator}
+    \    ${bStatus}    Verify Element Present    ${label.toolTip}
+    \    ${text}    Run Keyword If    ${bStatus}    Get Text    ${label.toolTip}
+    \    ${length}    Get Length    ${text}
+    \    ${actualToolTipMsgPresentStatus}    String Should Contain    ${text}    ${ToolTipSubText}
+    \    Continue For Loop If    ${length}==0 or ${actualToolTipMsgPresentStatus}!=True
+    \    Exit For Loop If    ${length}!=0 and ${actualToolTipMsgPresentStatus}!=False
+    [Return]    ${text}
+
+DeleteTheTeacherDetailForSchool
+    [Arguments]    ${schoolAdminDetails}    ${schoolPassword}    ${salesTestDataFilePath}    ${teacherRecordNo}
+    ${scoolAdminUserId}    Get From Dictionary    ${schoolAdminDetails}    UserName
+    ${teacherDetails}    Get Ms Excel Row Values Into Dictionary Based On Key    ${salesTestDataFilePath}    TestTeacher${teacherRecordNo}    TeacherDetails
+    ${bStatus}    LoginToWizardApp    ${scoolAdminUserId}    ${schoolPassword}
+    Run Keyword Unless    ${bStatus}    Fail    The school admin is unable to login to the application.
+    Navigate To Management Page
+    Wait And Select Frame    iframeSchoolAdmin
+    ${classNames}    Get From Dictionary    ${teacherDetails}    ClassName
+    ${classesList}    Split String    ${classNames}    ,
+    ${classesCount}    Get Length Of List    ${classesList}
+    : FOR    ${val}    IN RANGE    0    ${classesCount}
+    \    ${recordNo}    Select The Record In Table    ${table.classesAndGroups}    Name    @{classesList}[${val}]
+    \    Continue For Loop If    "${recordNo}"=="0"
+    \    Wait And Click Element    ${button.classes.delete}
+    \    Wait And Click Element    promptYesBtn
+    \    Wait Until Element is Invisible    ${common.whiledelete.loading}
+    ${studentLastNameList}    Get Ms Excel Column Values Into List By Column Name    ${salesTestDataFilePathCCS}    StudentDetails${teacherRecordNo}    Last Name
+    ${studentsCount}    Get Length Of List    ${studentLastNameList}
+    : FOR    ${val}    IN RANGE    0    ${studentsCount}
+    \    ${recordNo}    Select The Record In Table    ${table.users}    Last Name    @{studentLastNameList}[${val}]
+    \    Continue For Loop If    "${recordNo}"=="0"
+    \    Wait And Click Element    ${button.users.delete}
+    \    Wait And Click Element    promptYesBtn
+    \    Wait Until Element is Invisible    ${common.whiledelete.loading}
+    ${teacherLName}    Get From Dictionary    ${teacherDetails}    LastName
+    ${recordNo}    Select The Record In Table    ${table.users}    Last Name    ${teacherLName}
+    Run Keyword If    "${recordNo}"=="0"    Close Browser
+    Return From Keyword If    "${recordNo}"=="0"    True
+    Wait And Click Element    ${button.users.delete}
+    Wait And Click Element    promptYesBtn
+    Wait Until Element is Invisible    ${common.whiledelete.loading}
+    Close Browser
+
+Select All Titles In Management
+    [Arguments]    ${aria-checkedStatus}
+    Comment    test this code
+    Wait And Click Element    ${button.classDetails.editTitles}    ${Delay}
+    Wait Until Element Is Visible    ${check.editStudentsorTitles.selectAllCheckbox}    ${Delay}
+    : FOR    ${val}    IN RANGE    1    5
+    \    Wait Until Page Contains Element    ${check.editStudentsorTitles.selectAllCheckbox}    ${Delay}
+    \    ${allTitlesSelectionStatus}    Get Element Attribute    ${check.editStudentsorTitles.selectAllCheckbox}@aria-checked
+    \    Exit For Loop If    "${allTitlesSelectionStatus}"=="${aria-checkedStatus}" or "${allTitlesSelectionStatus}"=="mixed"
+    Run Keyword If    "${allTitlesSelectionStatus}"=="${aria-checkedStatus}" or "${allTitlesSelectionStatus}"=="mixed"    Wait And Click Element    ${button.editStudentsAndTitles.save}
+    ${seatsAuthorizationAlert}    Run Keyword And Return Status    Wait Until Element Is Visible    //button[@id='mysPromptBtnYes']    10s    0
+    Run Keyword If    ${seatsAuthorizationAlert}    Wait And Click Element    //button[@id='mysPromptBtnYes']
+    Run Keyword If    ${seatsAuthorizationAlert}    Wait Until Element is Invisible    //button[@id='mysPromptBtnYes']    ${Delay}
+    Wait Until Element Is Visible    ${button.classDetails.save}    ${Delay}
+    Return From Keyword    ${allTitlesSelectionStatus}
+
+Build Text File
+    ${vabStatus}    Run Keyword And Return Status    Variable Should Exist    ${TEST_STATUS}
+    ${tcStatus}    Set Variable If    ${vabStatus}    ${TEST_STATUS}    FAIL
+    Set To Dictionary    ${schoolDetailsDictionary}    Teststatus    ${tcStatus}
+    Set To Dictionary    ${schoolDetailsDictionary}    NewSchoolsAdded    ${newSchoolsFound}
+    Write School Details Into Text File    ${EXECDIR}\\Automation_Testsuites\\Test.txt    ${schoolDetailsDictionary}
+
+Archive The Users
+    [Arguments]    ${usersList}    ${type}
+    ${kwStatus}    Set Variable    False
+    Comment    To select the Archive students or Teachers and Admins
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    ${bStatus}    Wait For Element Visible    //div[@id='teacherAdminArchiveBtn']
+    Run Keyword If    ${bStatus}==True and '${type}'=='TeachersAdmins'    Wait And Click Element    //div[@id='teacherAdminArchiveBtn']
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    ${bStatus}    Wait For Element Visible    //div[@id='studentArchiveBtn']
+    Run Keyword If    ${bStatus}==True and '${type}'=='Student'    Wait And Click Element    //div[@id='studentArchiveBtn']
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    ${listEditorTable}    Wait For Element Visible    ${table.fromTable}    ${TimeOut}    All Teachers and Admins list editor table is not visble.
+    ${checkAllStatus}    Get Element Attribute    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']@aria-checked
+    ${selectionStatus}    Evaluate    '${checkAllStatus}'=='true' or '${checkAllStatus}'=='mixed'
+    Run Keyword If    ${selectionStatus}    Click On Element    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']
+    Run Keyword If    '${checkAllStatus}'=='mixed' and '${selectionStatus}'=='True'    Click On Element    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']
+    Comment    To select the all the users in list editor.
+    ${selectionStatus}    Run Keyword And Return Status    Should Be Equal    ${usersList}    ALL
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    Wait For Element Visible    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']    ${Delay}
+    ${bStatus}    Run Keyword If    ${selectionStatus}    Select Checkbox    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']
+    Run Keyword If    ${selectionStatus}    Wait And Click Element    ${button.editStudentsAndTitles.save}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    ${ProceedAlertStatus}    Run Keyword If    ${selectionStatus}    Wait For Element Visible    ${label.deleteClassOrGroup.promptMsg}    ${TimeOut}    Alert is not diplayed when Archive the record.
+    ...    ELSE    Set Variable    False
+    Run Keyword If    ${ProceedAlertStatus}    Wait And Click Element    ${button.management.Proceed}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    Run Keyword If    ${ProceedAlertStatus}    Wait For Element Visible    ${label.login.AlertMsg}    ${TimeOut}    completed alert message is not displayed when proceed to archive the record
+    Run Keyword If    ${ProceedAlertStatus}    Wait And Click Element    ${button.alert.mysAlertBtn}
+    ${kwStatus}    Set Variable If    ${selectionStatus}    True    False
+    Return From Keyword If    ${selectionStatus}    ${kwStatus}
+    Comment    MYS-3329:Updated script to verify page overlay blocker and if present wait until it disappear.
+    ${page_Overlay_Blocker_Status}    Wait For Element Visible    //div[contains(@id,'dojox_widget_Standby_')]//div[contains(@style,'display: block;')]    10s
+    Run Keyword If    ${page_Overlay_Blocker_Status}    Wait Until Keyword Succeeds    3m    3s    Element Should Not Be Visible    //div[contains(@id,'dojox_widget_Standby_')]//div[contains(@style,'display: block;')]
+    Comment    To select the individual users in list editor
+    ${noOfUsers}    Get Length Of List    ${usersList}
+    : FOR    ${itr}    IN RANGE    0    ${noOfUsers}
+    \    ${recordStatus}    Run Keyword And Return Status    Select The Record In Table    ${table.fromTable}    Last Name    @{usersList}[${itr}]
+    \    ${userStatus}    Run Keyword Unless    ${recordStatus}    Fail    The record is not added.
+    Wait And Click Element    ${button.editStudentsAndTitles.save}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    ${ProceedAlertStatus}    Wait For Element Visible    ${label.deleteClassOrGroup.promptMsg}    ${TimeOut}    Alert is not diplayed when Archive the record.
+    Run Keyword If    ${ProceedAlertStatus}    Wait And Click Element    ${button.management.Proceed}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    Wait For Element Visible    ${label.login.AlertMsg}    ${TimeOut}    completed alert message is not displayed when proceed to archive the record
+    Wait And Click Element    ${button.alert.mysAlertBtn}
+    ${kwStatus}    Set Variable    True
+    [Return]    ${kwStatus}
+
+DeArchive The Users
+    [Arguments]    ${usersList}    ${type}
+    ${kwStatus}    Set Variable    False
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    ${bStatus}    Wait For Element Visible    //div[@id='teacherAdminArchiveBtn']
+    Run Keyword If    ${bStatus}==True and '${type}'=='TeachersAdmins'    Wait And Click Element    //div[@id='teacherAdminArchiveBtn']
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    ${bStatus}    Wait For Element Visible    //div[@id='studentArchiveBtn']
+    Run Keyword If    ${bStatus}==True and '${type}'=='Student'    Wait And Click Element    //div[@id='studentArchiveBtn']
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    ${listEditorTable}    Wait For Element Visible    ${table.fromTable}    ${TimeOut}    All Teachers and Admins list editor table is not visble.
+    ${checkAllStatus}    Get Element Attribute    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']@aria-checked
+    ${selectionStatus}    Evaluate    '${checkAllStatus}'=='true' or '${checkAllStatus}'=='mixed'
+    Comment    ${recordStatus}    Run Keyword If    '${checkAllStatus}'=='mixed' and '${selectionStatus}'=='True'    Select The Record In Table    ${table.fromTable}    Last Name
+    ...    ${usersList}
+    Comment    Run Keyword Unless    ${recordStatus}    Fail    The record is not added.
+    Comment    Wait And Click Element    ${button.editStudentsAndTitles.save}
+    Comment    ${ProceedAlertStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.deleteClassOrGroup.promptMsg}    ${TimeOut}    Alert is not diplayed when Archive the record.
+    Comment    Run Keyword If    ${ProceedAlertStatus}    Wait And Click Element    ${button.management.Proceed}
+    Comment    Wait Until Element Is Visible    ${label.login.AlertMsg}    ${TimeOut}    completed alert message is not displayed when proceed to archive the record
+    Comment    Wait And Click Element    ${button.alert.mysAlertBtn}
+    Comment    ${kwStatus}    Set Variable    True
+    Comment    To select the all the users in list editor.
+    ${selectionStatus}    Run Keyword And Return Status    Should Be Equal    ${usersList}    ALL
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    Wait For Element Visible    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']    ${Delay}
+    Run Keyword If    ${selectionStatus}    Unselect Checkbox    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']
+    Run Keyword If    ${selectionStatus}    Wait And Click Element    ${button.editStudentsAndTitles.save}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    ${ProceedAlertStatus}    Run Keyword If    ${selectionStatus}    Wait For Element Visible    ${label.deleteClassOrGroup.promptMsg}    ${TimeOut}    Alert is not diplayed when Archive the record.
+    ...    ELSE    Set Variable    False
+    Run Keyword If    ${ProceedAlertStatus}    Wait And Click Element    ${button.management.Proceed}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    Run Keyword If    ${ProceedAlertStatus}    Wait For Element Visible    ${label.login.AlertMsg}    ${TimeOut}    completed alert message is not displayed when proceed to archive the record
+    Run Keyword If    ${ProceedAlertStatus}    Wait And Click Element    ${button.alert.mysAlertBtn}
+    ${kwStatus}    Set Variable If    ${selectionStatus}    True    False
+    Return From Keyword If    ${selectionStatus}    ${kwStatus}
+    Comment    MYS-3329:Updated script to verify page overlay blocker and if present wait until it disappear.
+    ${page_Overlay_Blocker_Status}    Wait For Element Visible    //div[contains(@id,'dojox_widget_Standby_')]//div[contains(@style,'display: block;')]    10s
+    Run Keyword If    ${page_Overlay_Blocker_Status}    Wait Until Keyword Succeeds    3m    3s    Element Should Not Be Visible    //div[contains(@id,'dojox_widget_Standby_')]//div[contains(@style,'display: block;')]
+    Comment    To select the individual users in list editor
+    ${noOfUsers}    Get Length Of List    ${usersList}
+    : FOR    ${itr}    IN RANGE    0    ${noOfUsers}
+    \    ${recordStatus}    Run Keyword And Return Status    Select The Record In Table    ${table.fromTable}    Last Name    @{usersList}[${itr}]
+    \    ${userStatus}    Run Keyword Unless    ${recordStatus}    Fail    The record is not added.
+    Wait And Click Element    ${button.editStudentsAndTitles.save}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    ${ProceedAlertStatus}    Wait For Element Visible    ${label.deleteClassOrGroup.promptMsg}    ${TimeOut}    Alert is not diplayed when Archive the record.
+    Run Keyword If    ${ProceedAlertStatus}    Wait And Click Element    ${button.management.Proceed}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    Wait For Element Visible    ${label.login.AlertMsg}    ${TimeOut}    completed alert message is not displayed when proceed to archive the record
+    Wait And Click Element    ${button.alert.mysAlertBtn}
+    ${kwStatus}    Set Variable    True
+    [Return]    ${kwStatus}
+
+Archive Classes And Groups
+    [Arguments]    ${ClassOrGroupList}
+    [Documentation]    Keyword is used to Archive classes and Groups and returns True status.
+    ${kwStatus}    Set Variable    False
+    Comment    To select the Archiving Classes Or Groups.
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    ${bStatus}    Wait For Element Visible    ${button.management.groupArchiveBtn}    ${TimeOut}    Archive Class Or Group button is not visible in given timeout.
+    Wait And Click Element    //div[@id='groupGrid']//div[@class='dgrid-scroller']//div[2]//table//tr//td[1]
+    Wait And Click Element    ${button.management.groupArchiveBtn}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    Wait For Element Visible    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']    ${TimeOut}
+    ${checkAllStatus}    Get Element Attribute    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']@aria-checked
+    ${selectionStatus}    Evaluate    '${checkAllStatus}'=='true' or '${checkAllStatus}'=='mixed'
+    Run Keyword If    ${selectionStatus}    Click On Element    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']
+    Run Keyword If    '${checkAllStatus}'=='mixed' and '${selectionStatus}'=='True'    Click On Element    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']
+    Comment    To select the all the Classes And Groups in list editor.
+    ${selectionStatus}    Run Keyword And Return Status    Should Be Equal    ${ClassOrGroupList}    ALL
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    Wait For Element Visible    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']    ${Delay}
+    ${bStatus}    Run Keyword If    ${selectionStatus}    Select Checkbox    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']
+    Run Keyword If    ${selectionStatus}    Wait And Click Element    ${button.editStudentsAndTitles.save}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    ${ProceedAlertStatus}    Run Keyword If    ${selectionStatus}    Wait For Element Visible    ${label.deleteClassOrGroup.promptMsg}    ${TimeOut}    Alert is not diplayed when Archive the record.
+    ...    ELSE    Set Variable    False
+    Run Keyword If    ${ProceedAlertStatus}    Wait And Click Element    ${button.management.Proceed}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    Run Keyword If    ${ProceedAlertStatus}    Wait For Element Visible    ${label.login.AlertMsg}    ${TimeOut}    completed alert message is not displayed when proceed to archive the record
+    Run Keyword If    ${ProceedAlertStatus}    Wait And Click Element    ${button.alert.mysAlertBtn}
+    ${kwStatus}    Set Variable If    ${selectionStatus}    True    False
+    Return From Keyword If    ${selectionStatus}    ${kwStatus}
+    Comment    To select the individual users in list editor
+    ${noOfClasses}    Get Length Of List    ${ClassOrGroupList}
+    ${selectedClassList}    Create List
+    : FOR    ${class}    IN    @{ClassOrGroupList}
+    \    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    \    ${bStatus}    Wait For Element Visible    ${table.fromTable}//td[text()='${class}']
+    \    Comment    MYS-2410 : Updated code to select the required archiving class checkbox.
+    \    Run Keyword If    ${bStatus}==True    Click On Element    //div[contains(@class,'fromInlineDijit')]//div[@class='header']/following-sibling::div/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@id,'row')]//table/tr/td[text()='${class}']/parent::tr/td/input
+    \    Run Keyword If    ${bStatus}==True    Append To List    ${selectedClassList}    ${class}
+    ${selectionStatus}    Run Keyword And Return Status    Lists Should Be Equal    ${ClassOrGroupList}    ${selectedClassList}
+    Run Keyword If    ${selectionStatus}==False    Fail    Passed classes or groups list is not selected completely.
+    Wait And Click Element    ${button.editStudentsAndTitles.save}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    ${ProceedAlertStatus}    Wait For Element Visible    ${label.deleteClassOrGroup.promptMsg}    ${TimeOut}    Alert is not diplayed when Archive the record.
+    Run Keyword If    ${ProceedAlertStatus}    Wait And Click Element    ${button.management.Proceed}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    Wait For Element Visible    ${label.login.AlertMsg}    ${TimeOut}    completed alert message is not displayed when proceed to archive the record
+    Wait And Click Element    ${button.alert.mysAlertBtn}
+    Wait Until Element is Invisible    ${button.alert.mysAlertBtn}
+    Comment    MYS-2410 : Waiting for the loading icon to disappear and also wait for the action to complete.
+    Comment    MYS-3329:Updated script to verify page overlay blocker and if present wait until it disappear.
+    ${page_Overlay_Blocker_Status}    Wait For Element Visible    //div[contains(@id,'dojox_widget_Standby_')]//div[contains(@style,'display: block;')]    10s
+    Run Keyword If    ${page_Overlay_Blocker_Status}    Wait Until Keyword Succeeds    3m    3s    Element Should Not Be Visible    //div[contains(@id,'dojox_widget_Standby_')]//div[contains(@style,'display: block;')]
+    ${kwStatus}    Set Variable    True
+    [Return]    ${kwStatus}
+
+De-Archive Classes Or Groups
+    [Arguments]    ${ClassOrGroupList}
+    [Documentation]    Keyword is used to DeArchive classes and Groups and returns True status.
+    ${kwStatus}    Set Variable    False
+    Comment    To select the Archiving Classes Or Groups.
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    ${bStatus}    Wait For Element Visible    ${button.management.groupArchiveBtn}    ${TimeOut}    Archive Class Or Group button is not visible in given timeout.
+    Wait And Click Element    ${button.management.groupArchiveBtn}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    Wait For Element Visible    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']    ${TimeOut}
+    ${checkAllStatus}    Get Element Attribute    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']@aria-checked
+    ${selectionStatus}    Evaluate    '${checkAllStatus}'=='true' or '${checkAllStatus}'=='mixed'
+    Run Keyword If    ${selectionStatus}    Click On Element    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']
+    Run Keyword If    '${checkAllStatus}'=='mixed' and '${selectionStatus}'=='True'    Click On Element    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']
+    Comment    To select the all the Classes And Groups in list editor.
+    ${selectionStatus}    Run Keyword And Return Status    Should Be Equal    ${ClassOrGroupList}    ALL
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    Wait For Element Visible    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']    ${Delay}
+    ${bStatus}    Run Keyword If    ${selectionStatus}    Unselect Checkbox    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']
+    Run Keyword If    ${selectionStatus}    Wait And Click Element    ${button.editStudentsAndTitles.save}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    ${ProceedAlertStatus}    Run Keyword If    ${selectionStatus}    Wait For Element Visible    ${label.deleteClassOrGroup.promptMsg}    ${TimeOut}    Alert is not diplayed when Archive the record.
+    ...    ELSE    Set Variable    False
+    Run Keyword If    ${ProceedAlertStatus}    Wait And Click Element    ${button.management.Proceed}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    Run Keyword If    ${ProceedAlertStatus}    Wait For Element Visible    ${label.login.AlertMsg}    ${TimeOut}    completed alert message is not displayed when proceed to archive the record
+    Run Keyword If    ${ProceedAlertStatus}    Wait And Click Element    ${button.alert.mysAlertBtn}
+    ${kwStatus}    Set Variable If    ${selectionStatus}    True    False
+    Return From Keyword If    ${selectionStatus}    ${kwStatus}
+    Comment    MYS-3329:Updated script to verify page overlay blocker and if present wait until it disappear.
+    ${page_Overlay_Blocker_Status}    Wait For Element Visible    //div[contains(@id,'dojox_widget_Standby_')]//div[contains(@style,'display: block;')]    10s
+    Run Keyword If    ${page_Overlay_Blocker_Status}    Wait Until Keyword Succeeds    3m    3s    Element Should Not Be Visible    //div[contains(@id,'dojox_widget_Standby_')]//div[contains(@style,'display: block;')]
+    Comment    To select the individual users in list editor
+    ${noOfClasses}    Get Length Of List    ${ClassOrGroupList}
+    ${selectedClassList}    Create List
+    : FOR    ${class}    IN    @{ClassOrGroupList}
+    \    Comment    MYS-3329:Replaced with wait for element visible keyword
+    \    ${bStatus}    Wait For Element Visible    ${table.fromTable}//td[text()='${class}']    10s
+    \    Run Keyword If    ${bStatus}==True    Unselect Checkbox    ${table.fromTable}//td[text()='${class}']/preceding-sibling::td/input
+    Wait And Click Element    ${button.editStudentsAndTitles.save}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    ${ProceedAlertStatus}    Wait For Element Visible    ${label.deleteClassOrGroup.promptMsg}    ${TimeOut}    Alert is not diplayed when Archive the record.
+    Run Keyword If    ${ProceedAlertStatus}    Wait And Click Element    ${button.management.Proceed}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    Wait For Element Visible    ${label.login.AlertMsg}    ${TimeOut}    completed alert message is not displayed when proceed to archive the record
+    Wait And Click Element    ${button.alert.mysAlertBtn}
+    Wait Until Element is Invisible    ${button.alert.mysAlertBtn}
+    Comment    MYS-3329:Updated script to verify page overlay blocker and if present wait until it disappear.
+    ${page_Overlay_Blocker_Status}    Wait For Element Visible    //div[contains(@id,'dojox_widget_Standby_')]//div[contains(@style,'display: block;')]    10s
+    Run Keyword If    ${page_Overlay_Blocker_Status}    Wait Until Keyword Succeeds    3m    3s    Element Should Not Be Visible    //div[contains(@id,'dojox_widget_Standby_')]//div[contains(@style,'display: block;')]
+    ${kwStatus}    Set Variable    True
+    [Return]    ${kwStatus}
+
+Promote Or Demote Students
+    [Arguments]    ${studentsIDList}    ${isPromoteOrDemote}=Promote
+    [Documentation]    Keyword is used to check the "Promoting" Or "Demoting" status of Students based on the given arguments Opearation type "Promote" / "Demote", "StudentsIdList" and returns the appropriate status i.e. "True" / "False" regards the operation performed.
+    ${promoteOrDemoteStatus}    Set Variable    False
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    ${studentListEditorTableStatus}    Wait For Element Visible    ${table.fromTable}    ${TimeOut}    Student list editor table is not visible.
+    Comment    Selecting the students records from student list editor table to promote or demote.
+    ${GradesListToCompare}    Create List
+    : FOR    ${uid}    IN    @{studentsIDList}
+    \    ${recordStatus}    Run Keyword And Return Status    Select The Record In Table    ${table.fromTable}    User Id    ${uid}
+    \    ...    False
+    \    Run Keyword Unless    ${recordStatus}    Fail    The record is not found in list editors table.
+    \    ${gradeBeforeRevertOrPromot}    Get Text    //div[contains(@class,'fromInlineDijit')]//div[@class='header']/following-sibling::div//div[@class='dgrid-content ui-widget-content']//div[@role='row']//table//tr//td[text()='${uid}']//following-sibling::td
+    \    Append To List    ${GradesListToCompare}    ${gradeBeforeRevertOrPromot}
+    Log List    ${GradesListToCompare}
+    Run Keyword If    "${isPromoteOrDemote}"=="Promote"    Wait And Click Element    ${button.listEditor.promoteListEditor}
+    Run Keyword If    "${isPromoteOrDemote}"=="Demote"    Wait And Click Element    ${button.listEditor.demoteListEditor}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    ${deOrPro_moteAlertMsg}    Wait For Element Visible    ${label.login.AlertMsg}    ${TimeOut}    When demote the student alert message is not displayed
+    Wait And Click Element    ${button.login.AlertMsg.Ok}
+    Wait Until Element is Invisible    ${button.login.AlertMsg.Ok}
+    Wait And Click Element    ${button.managment.promoteStudents}
+    Comment    MYS-3329:Replaced with wait for element visible keyword.
+    Wait For Element Visible    ${button.listEditor.promoteListEditor}    ${TimeOut}    List Editor window is not displayed after clicking on promoting students button.
+    ${noOfStudents}    Get Length Of List    ${studentsIDList}
+    : FOR    ${itr}    IN RANGE    0    ${noOfStudents}
+    \    ${recordStatus}    Run Keyword And Return Status    Select The Record In Table    ${table.fromTable}    User Id    @{studentsIDList}[${itr}]
+    \    ...    False
+    \    Run Keyword Unless    ${recordStatus}    Fail    The student record is not found in user details table
+    \    ${gradeAfterRevertOrPromot}    Get Text    //div[contains(@class,'fromInlineDijit')]//div[@class='header']/following-sibling::div//div[@class='dgrid-content ui-widget-content']//div[@role='row']//table//tr//td[text()='@{studentsIDList}[${itr}]']//following-sibling::td
+    \    Log    ${gradeAfterRevertOrPromot}
+    \    Comment    Conditions for validating whether the "Demote" functionality working or not.
+    \    ${isDemotedToValid}    Run Keyword If    '${isPromoteOrDemote}'=='Demote' and '@{GradesListToCompare}[${itr}]'!='Pre-K' and '@{GradesListToCompare}[${itr}]'!='K' and '@{GradesListToCompare}[${itr}]'!='1'    Evaluate    ${gradeAfterRevertOrPromot}==@{GradesListToCompare}[${itr}]-1    ${EMPTY}
+    \    ...    ELSE    Run Keyword If    '${isPromoteOrDemote}'=='Demote' and '@{GradesListToCompare}[${itr}]'=='Pre-K'    Evaluate    '${gradeAfterRevertOrPromot}'=='Pre-K'
+    \    ...    \    ELSE    Run Keyword If    '${isPromoteOrDemote}'=='Demote' and '@{GradesListToCompare}[${itr}]'=='K'    Evaluate
+    \    ...    '${gradeAfterRevertOrPromot}'=='Pre-K'    ${EMPTY}
+    \    ...    ELSE    Run Keyword If    '${isPromoteOrDemote}'=='Demote' and '@{GradesListToCompare}[${itr}]'=='1'    Evaluate    '${gradeAfterRevertOrPromot}'=='K'
+    \    Log    ${isDemotedToValid}
+    \    Run Keyword If    '${isPromoteOrDemote}'=='Demote' and '${isDemotedToValid}'=='False'    Fail    Demoting Student to valid grade was not done.
+    \    Comment    Conditions for validating whether the "Promote" functionality working or not.
+    \    ${isPromotedToValid}    Run Keyword If    '${isPromoteOrDemote}'=='Promote' and '@{GradesListToCompare}[${itr}]'!='Pre-K' and '@{GradesListToCompare}[${itr}]'!='K'    Evaluate    ${gradeAfterRevertOrPromot}==@{GradesListToCompare}[${itr}]+1    ${EMPTY}
+    \    ...    ELSE    Run Keyword If    '${isPromoteOrDemote}'=='Promote' and '@{GradesListToCompare}[${itr}]'=='K'    Evaluate    '${gradeAfterRevertOrPromot}'=='1'
+    \    ...    \    ELSE    Run Keyword If    '${isPromoteOrDemote}'=='Promote' and '@{GradesListToCompare}[${itr}]'=='Pre-K'    Evaluate
+    \    ...    '${gradeAfterRevertOrPromot}'=='K'
+    \    Log    ${isPromotedToValid}
+    \    Run Keyword If    '${isPromoteOrDemote}'=='Promote' and '${isPromotedToValid}'=='False'    Fail    Promoting Student to valid grade was not done.
+    ${promoteOrDemoteStatus}    Set Variable If    '${isPromotedToValid}'=='True' or '${isDemotedToValid}'=='True'    True    False
+    [Return]    ${promoteOrDemoteStatus}
+
+Add Classes And Return Class Codes
+    [Arguments]    ${type}    ${classList}    ${SignUpTitleMenus}    ${instructorFullName}=${EMPTY}    ${description}=${EMPTY}
+    ${assignedClassesDictionary}    Create Dictionary
+    ${classStatus}    Set Variable    False
+    Comment    Comment    MYS-3394:Updated with wait for element visible keyword.
+    Comment    ${bStatus}    Wait For Element Visible    ${button.management.showGroups}
+    Comment    Comment    MYS-2389:Updated the code to wait until click action on the "Show Groups" suceeds.
+    Comment    Run Keyword If    ${bStatus}==True and '${type}'=='Group'    Wait Until Keyword Succeeds    2m    5s    Click On Element
+    ...    ${button.management.showGroups}
+    Comment    ${bStatus}    Wait For Element Visible    ${button.management.showClasses}
+    Comment    Comment    MYS-2389:Updated the code to wait until click action on the "Show Classes" suceeds.
+    Comment    Run Keyword If    ${bStatus}==True and '${type}'=='Class'    Wait Until Keyword Succeeds    2m    5s    Click On Element
+    ...    ${button.management.showClasses}
+    Comment    Comment    The 'Classes & Groups' table should appear with 'Add' button it.
+    Wait For Element Visible    ${button.classesAndUsers.add}    ${Delay}
+    Comment    Click 'Add' button.
+    : FOR    ${className}    IN    @{classList}
+    \    Wait And Click Element    ${button.classesAndUsers.add}    ${TimeOut}    Add
+    \    Comment    MYS-3394:Updated with wait for element visible keyword.
+    \    Wait For Element Visible    ${text.newClass.Name}    ${Delay}
+    \    Input Text    ${text.newClass.Name}    ${className}
+    \    Run Keyword If    '${instructorFullName}'!='${Empty}'    Select The Desired Instructor    ${instructorFullName}
+    \    Run Keyword If    '${description}'!='${Empty}'    Input Text    newGroupDescription    ${description}
+    \    AddTitles    ${SignUpTitleMenus}
+    \    Wait And Click Element    newGroupOK    ${TimeOut}    newGroupOK
+    \    Wait Until Element is Invisible    newGroupOK
+    \    Comment    MYS-3394:Updated with wait for element visible keyword.
+    \    ${infoStatus}    Run Keyword If    '${type}'=='Class'    Wait For Element Visible    ${label.management.ClassCodeDlgMessage}    ${TimeOut}
+    \    ${cButtonStatus}    Run Keyword If    '${type}'=='Class'    Wait For Element Visible    ${button.management.ClassCodeDlgMessage.Close}    ${TimeOut}
+    \    ${classcode}    Run Keyword If    '${type}'=='Class'    Get Text    ${label.management.ClassCode}
+    \    Run Keyword If    '${type}'=='Class'    Set To Dictionary    ${assignedClassesDictionary}    ${className}    ${classcode}
+    \    Run Keyword And Continue On Failure    Run Keyword If    ${cButtonStatus}    Click On Element    ${button.management.ClassCodeDlgMessage.Close}
+    \    Run Keyword And Continue On Failure    Run Keyword If    ${infoStatus}==False    Fail    Newly created Class Code Information is not displayed.
+    \    ${classStatus}    Verify Values In Table    ${table.classesAndGroups}    Name    ${className}
+    \    Capture Page Screenshot And Log    ${OUTPUTDIR}    ${className}_01.png
+    [Return]    ${assignedClassesDictionary}
+
+AddTitles
+    [Arguments]    ${SignUpTitleMenus}
+    Wait And Click Element    ${button.newclass.Edit}
+    Wait For Element Visible    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']    ${Delay}
+    : FOR    ${TitleSelection}    IN    @{SignUpTitleMenus}
+    \    Wait And Click Element    //div[contains(@class,'fromInlineDijit')]//td[@role='gridcell' and text()='${TitleSelection}']
+    \    Wait Until Element Is Visible    //div[contains(@class,'toInlineDigit')]//td[@role='gridcell' and text()='${TitleSelection}']    ${Delay}
+    Wait And Click Element    //span[@id='saveListEditor_label']
+    Wait For Element Visible    //div[@id='globalYesNoPopup']//button[@id='mysPromptBtnYes']    ${Delay}
+    Wait And Click Element    //div[@id='globalYesNoPopup']//button[@id='mysPromptBtnYes']
+    Wait Until Element is Invisible    //div[@id='globalYesNoPopup']//button[@id='mysPromptBtnYes']
+    ${titleaddstatus}    Set Variable    True
+    [Return]    ${titleaddstatus}
+
+doFillCommonRegistrationWizardDetails
+    [Arguments]    ${role}    ${zipCode}    ${SchoolOrDistrictName}    ${FirstName}    ${LastName}    ${UserName}
+    ...    ${Password}    ${EmailSubscription}='true'
+    [Documentation]    ${role} => User Role, ${ZipCode} => ZipCode, ${SchoolOrDistrictName} => SchoolName/DistrictName w.r.t school/district admin's ${FirstName} => first name, ${LastName} => last name, ${UserName} => User Name, ${Password} = > Password, ${EmailSubscription} => true/false to mark check box for email subscription.
+    ${bStatus}    Set Variable    true
+    Enter Zip Code And Select School    ${zipCode}    ${role}    ${SchoolOrDistrictName}
+    Enter Text In Text Field    //input[@id='adminSignUpDlg-first']    ${FirstName}
+    Enter Text In Text Field    //input[@id='adminSignUpDlg-last']    ${LastName}
+    Enter Text In Text Field    //input[@id='adminSignUpDlg-email']    ${UserName}
+    Enter Text In Text Field    //input[@id='adminSignUpDlg-emailConfirm']    ${UserName}
+    Enter Text In Text Field    //input[@id='adminSignUpDlg-password']    ${Password}
+    Enter Text In Text Field    //input[@id='adminSignUpDlg-passwordConfirm']    ${Password}
+    Select DropDown Values    ${dropdown.adminSignUp.jobTitleDrpDwn}    //table[@id='adminSignUpDlg-jobTitle_menu']//tr
+    Run Keyword If    ${EmailSubscription}=='true'    Wait And Click Element    //input[@id='adminSignUpDlg-subscribe']
+    Wait And Click Element    ${button.signUp.next}
+
+wait element invisible
+    [Arguments]    ${Element}    ${TimeOut}=5s
+    : FOR    ${iCounter}    IN RANGE    1    15
+    \    ${ElementStatus}=    Verify Element Visible    ${Element}
+    \    Run Keyword If    ${ElementStatus}==False or '${ElementStatus}'=='None'    Exit For Loop
+    \    Comment    MYS-2346 The code waits 149 times the ${WaitUntilInvisibleLoopTime} value for an element to disappear, such as when waiting for a report. \ Modify the scalar at run time to adjust time waited. \ Previous value was 6s.
+    \    Sleep    ${WaitUntilInvisibleLoopTime}
+    Run Keyword If    ${ElementStatus}==True    Fail and Capture Screenshot    The element : ${Element} is still visible even after waiting some time.
+
+Make a class in Guided help
+    [Arguments]    ${className}    ${SignUpTitleMenus}    ${instructorFullName}=${EMPTY}    ${description}=${EMPTY}
+    Comment    Click on help drop down and select make a class in guided help
+    Validate The Sub Menus Under Help Menu    //a[@id='linkToGuidedHelp' and contains(text(),'Guided Help')]    //div[@id='guidedHelpDlg']
+    ${bStatus}    Wait For Element Visible    //a[@id='guidedHelpLinkToCreateClass' and contains(text(),'Go to Step 1')]
+    Run Keyword If    ${bStatus}    Click On Element    //a[@id='guidedHelpLinkToCreateClass' and contains(text(),'Go to Step 1')]
+    Comment    Navigating to management page
+    Wait For Element Visible    //button[contains(@class,'Btn')]//parent::span[text()='Management']
+    ${tooltipStatus}    Wait For Element Visible    //div[@id='guidedHelpTooltip']//div[@class='guidedHelpMsg']    15s
+    ${toolTipMsg}    Run Keyword If    ${tooltipStatus}    Get Text    //div[@id='guidedHelpTooltip']//div[@class='guidedHelpMsg']
+    : FOR    ${itr}    IN RANGE    0    15
+    \    ${mangBtnVisb}    Wait For Element Visible    ${button.home.management}    5s
+    \    Exit For Loop If    "${mangBtnVisb}"!="True"
+    \    Run Keyword If    "${mangBtnVisb}"=="True"    Run Keyword And Ignore Error    Click Element    //button[contains(@class,'Btn')]//parent::span[text()='Management']
+    Run Keyword And Ignore Error    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Comment    Add new class
+    Wait For Element Visible    //div[@id='newGroupBtn']
+    ${tooltip}    Wait For Element Visible    //div[@id='guidedHelpTooltip']//div[@class='guidedHelpMsg']    15s
+    ${toolTip}    Run Keyword If    ${tooltipStatus}    Get Text    //div[@id='guidedHelpTooltip']//div[@class='guidedHelpMsg']
+    Wait And Click Element    ${button.classesAndUsers.add}
+    Wait For Element Visible    ${text.newClass.Name}    ${Delay}
+    Input Text    ${text.newClass.Name}    ${className}
+    Wait And Click Element    //div[@class='guidedHelpTooltipFooter']/div[contains(text(),'Next')]
+    Run Keyword If    '${instructorFullName}'!='${EMPTY}'    Select The Desired Instructor    ${instructorFullName}
+    Run Keyword If    '${description}'!='${EMPTY}'    Input Text    newGroupDescription    ${description}
+    Wait And Click Element    //div[@class='guidedHelpTooltipFooter']/div[contains(text(),'Next')]
+    Comment    ADD titles to created class
+    Wait For Element Visible    ${button.newclass.Edit}
+    Wait And Click Element    ${button.newclass.Edit}
+    Wait For Element Visible    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']    ${Delay}
+    : FOR    ${TitleSelection}    IN    @{SignUpTitleMenus}
+    \    Wait And Click Element    //div[contains(@class,'fromInlineDijit')]//td[@role='gridcell' and text()='${TitleSelection}']
+    \    Wait For Element Visible    //div[contains(@class,'toInlineDigit')]//td[@role='gridcell' and text()='${TitleSelection}']    ${Delay}
+    Wait And Click Element    //div[@class='guidedHelpTooltipFooter']/div[contains(text(),'Next')]
+    Wait For Element Visible    //span[@id='saveListEditor_label']
+    Wait And Click Element    //span[@id='saveListEditor_label']
+    Wait For Element Visible    //div[@id='globalYesNoPopup']//button[@id='mysPromptBtnYes']    ${Delay}
+    ${tStatus}    Wait For Element Visible    //div[@id='guidedHelpTooltip']//div[@class='guidedHelpMsg']    15s
+    ${tooMsg}    Run Keyword If    ${tooltipStatus}    Get Text    //div[@id='guidedHelpTooltip']//div[@class='guidedHelpMsg']
+    Wait And Click Element    //div[@id='globalYesNoPopup']//button[@id='mysPromptBtnYes']
+    Wait Until Element is Invisible    //div[@id='globalYesNoPopup']//button[@id='mysPromptBtnYes']
+    Comment    ADD students to the class
+    Wait For Element Visible    //div[contains(@id,'editNewGroupUsersBtn')]
+    Click On Element    //div[contains(@id,'editNewGroupUsersBtn')]
+    Wait For Element Visible    ${header.Class.Student}
+    Wait And Click Element    //div[@class='listEditor']//div[@class='dgrid-content ui-widget-content']/div[contains(@class,'dgrid-row')][1]//tr/td/input[@aria-checked='false']
+    Wait And Click Element    //div[@class='guidedHelpTooltipFooter']/div[contains(text(),'Next')]
+    Wait For Element Visible    //span[contains(@id,'saveListEditor_label') and contains(text(),'Save')]    ${Delay}
+    Click On Element    //span[contains(@id,'saveListEditor_label') and contains(text(),'Save')]
+    Wait And Click Element    newGroupOK    ${TimeOut}    newGroupOK
+    Wait Until Element is Invisible    newGroupOK
+    ${isAlert_Present}    Wait For Element Visible    ${label.login.AlertMsg}    5s
+    Run Keyword If    '${isAlert_Present}'=='False'    Fail and Capture Screenshot    duplicate classes are created
+    ${errorMsg}    Get Text    ${label.login.AlertMsg}
+    Log    ${errorMsg}
+    Wait And Click Element    //div[@id='globalAlertPopup']//div[@id='alertOkBtn']
+    ${classcode}    Get Text    //div[@id='classCodeNotification']//div[@class='mysCloseButton']/following-sibling::p/span
+    ${cButtonStatus}    Wait For Element Visible    ${button.management.ClassCodeDlgMessage.Close}
+    Run Keyword And Continue On Failure    Run Keyword If    ${cButtonStatus}    Click On Element    ${button.management.ClassCodeDlgMessage.Close}
+    Set Global Variable    ${classCode}    ${classcode}
+
+Adding Users to Classes/Groups in Guided help
+    [Arguments]    ${class_Name}
+    Comment    Click on help drop down and select classes/groups in guided help
+    Validate The Sub Menus Under Help Menu    //a[@id='linkToGuidedHelp' and contains(text(),'Guided Help')]    //div[@id='guidedHelpDlg']
+    ${bStatus}    Wait For Element Visible    //a[@id='guidedHelpLinkToAddUsersToClasses' and contains(text(),'Go to Step 1')]
+    Run Keyword If    ${bStatus}    Click On Element    //a[@id='guidedHelpLinkToAddUsersToClasses' and contains(text(),'Go to Step 1')]
+    Wait For Element Visible    //button[contains(@class,'Btn')]//parent::span[text()='Management']
+    Comment    Navigating to management page
+    ${tooltipStatus}    Wait For Element Visible    //div[@id='guidedHelpTooltip']//div[@class='guidedHelpMsg']    15s
+    ${toolTipMsg}    Run Keyword If    ${tooltipStatus}    Get Text    //div[@id='guidedHelpTooltip']//div[@class='guidedHelpMsg']
+    : FOR    ${itr}    IN RANGE    0    15
+    \    ${mangBtnVisb}    Wait For Element Visible    ${button.home.management}    5s
+    \    Exit For Loop If    "${mangBtnVisb}"!="True"
+    \    Run Keyword If    "${mangBtnVisb}"=="True"    Run Keyword And Ignore Error    Click Element    //button[contains(@class,'Btn')]//parent::span[text()='Management']
+    Run Keyword And Ignore Error    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Comment
+    ${rowNumber}    Select The Record In Table    //div[@id='groupGrid']    Name    ${class_Name}    True
+    Run Keyword If    ${rowNumber}!=0    Wait Until Element Is Visible    ${button.classDetail.edit}    ${Delay}
+    ...    ELSE    Fail    Class '${class_Name}' is not displayed in Class Table
+    ${bstatus}    Wait For Element Visible    //div[@id='editGroupBtn' and contains(@class,'FocusElement')]
+    Run Keyword Unless    ${bstatus}    Fail    Edit group button is not highlited and tooltip message is not dispalyed
+    ${Edittooltip}    Wait For Element Visible    //div[@id='guidedHelpTooltip']//div[@class='guidedHelpMsg']    15s
+    ${EditclassMsg}    Run Keyword If    ${tooltipStatus}    Get Text    //div[@id='guidedHelpTooltip']//div[@class='guidedHelpMsg']
+    Run Keyword And Continue On Failure    Should Be Equal    ${EditclassMsg}    Select Edit to make changes to the Class/Group.
+    Wait And Click Element    //div[@id='editGroupBtn' and contains(@class,'FocusElement')]
+    Wait For Element Visible    //div[@id='editGroupUsersBtn']
+    ${Edituserstooltip}    Wait For Element Visible    //div[@id='guidedHelpTooltip']//div[@class='guidedHelpMsg']    15s
+    ${EditusersMsg}    Run Keyword If    ${tooltipStatus}    Get Text    //div[@id='guidedHelpTooltip']//div[@class='guidedHelpMsg']
+    Wait And Click Element    //div[@id='editGroupUsersBtn' and contains(@class,'FocusElement')]
+    Wait For Element Visible    ${header.Class.Student}
+    Wait And Click Element    //div[@class='listEditor']//div[@class='dgrid-content ui-widget-content']/div[contains(@class,'dgrid-row')][1]//tr/td/input[@aria-checked='false']
+    Wait And Click Element    //div[@class='guidedHelpTooltipFooter']/div[contains(text(),'Next')]
+    Wait For Element Visible    //span[contains(@id,'saveListEditor_label') and contains(text(),'Save')]    ${Delay}
+    Click On Element    //span[contains(@id,'saveListEditor_label') and contains(text(),'Save')]
+    Wait For Element Visible    //div[@id='saveGroupBtn']
+    ${finaltooltip}    Wait For Element Visible    //div[@id='guidedHelpTooltip']//div[@class='guidedHelpMsg']    15s
+    ${finalMsg}    Run Keyword If    ${tooltipStatus}    Get Text    //div[@id='guidedHelpTooltip']//div[@class='guidedHelpMsg']
+    Wait And Click Element    //div[@id='saveGroupBtn']
+    ${isAlert_Present}    Wait For Element Visible    ${label.login.AlertMsg}    5s
+    Run Keyword If    '${isAlert_Present}'=='False'    Fail and Capture Screenshot    students are not added to your class!
+    ${errorMsg}    Get Text    ${label.login.AlertMsg}
+    Log    ${errorMsg}
+    Wait And Click Element    //div[@id='globalAlertPopup']//div[@id='alertOkBtn']
+
+Manual Entry of Students
+    [Arguments]    ${fName}    ${lName}    ${userId}    ${password}    ${role}    ${middleName}=${EMPTY}
+    ...    ${grade}=${EMPTY}    ${status}={EMPTY}
+    Comment    Click on help drop down and select Manual Entry of students in guided help
+    Validate The Sub Menus Under Help Menu    //a[@id='linkToGuidedHelp' and contains(text(),'Guided Help')]    //div[@id='guidedHelpDlg']
+    ${bStatus}    Wait For Element Visible    //a[@id='guidedHelpLinkToManuallyEnterStudents' and contains(text(),'Go to Step 1')]
+    Run Keyword If    ${bStatus}    Click On Element    //a[@id='guidedHelpLinkToManuallyEnterStudents' and contains(text(),'Go to Step 1')]
+    Wait For Element Visible    //button[contains(@class,'Btn')]//parent::span[text()='Management']
+    Comment    Navigating to management page
+    ${tooltipStatus}    Wait For Element Visible    //div[@id='guidedHelpTooltip']//div[@class='guidedHelpMsg']    15s
+    ${toolTipMsg}    Run Keyword If    ${tooltipStatus}    Get Text    //div[@id='guidedHelpTooltip']//div[@class='guidedHelpMsg']
+    : FOR    ${itr}    IN RANGE    0    15
+    \    ${mangBtnVisb}    Wait For Element Visible    ${button.home.management}    5s
+    \    Exit For Loop If    "${mangBtnVisb}"!="True"
+    \    Run Keyword If    "${mangBtnVisb}"=="True"    Run Keyword And Ignore Error    Click Element    //button[contains(@class,'Btn')]//parent::span[text()='Management']
+    Run Keyword And Ignore Error    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Wait And Click Element    //div[@id='newUserBtn' and contains(@class,'FocusElement')]
+    ${newUserWindowStatus}=    Verify Element Visible    ${label.newUser.newUser}
+    Wait And Click Element    ${text.newUser.firstName}    ${TimeOut}
+    Input Text    ${text.newUser.firstName}    ${fName}
+    Input Text    ${text.newUser.lastName}    ${lName}
+    Input Text    ${text.newUser.userId}    ${userId}
+    Input Text    ${text.newUser.password}    ${password}
+    Select DropDown Values    //table[contains(@id,'newUserGrade')]//td/input[contains(@class,'ArrowButtonInner')]    //table[@id='newUserGrade_menu']//tr[contains(@id,'MenuItem')]
+    Wait And Click Element    ${button.newUser.oK}    ${Delay}
+    ${Edituserstooltip}    Wait For Element Visible    //div[@id='guidedHelpTooltip']//div[@class='guidedHelpMsg']    15s
+    ${EditusersMsg}    Run Keyword If    ${tooltipStatus}    Get Text    //div[@id='guidedHelpTooltip']//div[@class='guidedHelpMsg']
+    Wait And Click Element    //div[@class='guidedHelpTooltipFooter']/div[contains(text(),'I am finished for now.')]
+    ${isAlert_Present}    Wait For Element Visible    ${label.login.AlertMsg}    5s
+    Run Keyword If    '${isAlert_Present}'=='False'    Fail and Capture Screenshot    students are not created in management view
+    ${errorMsg}    Get Text    ${label.login.AlertMsg}
+    Log    ${errorMsg}
+    Wait And Click Element    //div[@id='globalAlertPopup']//div[@id='alertOkBtn']
+
+update student grade
+    Wait And Click Element    ${table.Management.userGradeArrowButton}
+    ${xpathCount}    Get Matching Xpath Count    ${table.schoolAdmin.userGradeMenuItem}
+    Comment    MYS-4923: Updated test script according to the changes in application (not available grade is displayed)
+    ${randomNoValue}    Get Random Number In Given Range    3    ${xpathCount}
+    ${StudentSgnUpGradeLevel}    Get Text    //table[@id='userGrade_menu']//tr[contains(@id,'MenuItem')][${randomNoValue}]
+    Wait And Click Element    //table[@id='userGrade_menu']//tr[contains(@id,'MenuItem')][${randomNoValue}]
+
+Get TE Code For Current Test URL
+    [Documentation]    Mys - 5313 : Scripted this keyword as a part of reading TE_Codes based on the URL and respective DB being used to test the application.
+    ${currentURL}    Get Location
+    Log    ${currentURL}
+    ${allSplits}    Split String    ${currentURL}    /
+    ${sURL}    Set Variable    @{allSplits}[2]
+    Log    ${sURL}
+    ${sDBName}    Set Variable    @{allSplits}[3]
+    Log    ${sDBName}
+    ${sTECode}    Get Teacher Code    ${sURL}    ${sDBName}    ${DBUserName}    ${DBPassword}
+    Log    ${sTECode}
+    [Return]    ${sTECode}

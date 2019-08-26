@@ -1,0 +1,408 @@
+*** Test Cases ***
+Validate New Assignments
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed
+
+Validate show groups and show classes button
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed
+    Click on 'Show groups' button    \    Goups list should be displayed
+    Click on 'Show classes' button    \    Classes list should be displayed
+
+Teacher handout an assignment to selected Students for a class
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed
+    Select any class,Student,Subject,Level, Assignments
+    Click on 'Assign Now' button    \    Assignments should be assigned to selected students
+
+Teacher handout book assignments to selected Students for a class
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed
+    Select any class,Student,Subject,Level, Assignments
+    Click on 'Students will complete in book' and click on 'Assign now' button    \    Book Assignments should be assigned to selected students
+
+Validate Preview and Close Preview Button
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed
+    Select any class,Student,Subject,Level, Assignments
+    Click on 'Preview' button    \    Student Edition and Teacher Editions should be displayed
+    Click on 'Close Preview' button    \    Navigate to New Assignments page
+
+Verify 'Hide student edition' and 'hide teacher edition' buttons are working.
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed
+    Select any class,Subject,Level, Assignments    Class: Class2502; Subject: Motivation Math;Level:01 and Assignment : Unit 1
+    Click on 'Preview' button    \    Student Edition and Teacher Editions should be displayed
+    Click on 'Hide Student Edition' button    \    'Teacher Edition' only should be displayed
+    Click on 'Hide Teacher Edition' button    \    'Student Edition' only should be displayed
+
+Verify student edition and teacher edition in new assignment page
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed
+    Select any class,Student,Subject,Level, Assignments    Class: Class2502; Subject: Motivation Math;Level:01 and Assignment : Unit 1
+    Click on 'Preview' button    \    Student Edition and Teacher Editions should be displayed
+    Click on Arrow button for 'Student Edition'    \    'Student Edition' should be displayed in a new window
+    Click on Arrow button for 'Teacher Edition'    \    'Teacher Edition' should be displayed in a new window
+
+Verify pop up is displayed or not when mouse over on 'help(?)' icon
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed
+    Mouse hover on 'help(?)' icon    \    'Select to manually record offline scores in the online system. Use this for assignments that were completed on paper in the Student Edition. Access these assignments by clicking the "Grade Assignments" icon located on your home page' Pop up should be displayed
+
+Verify \ 'select Individual' functionality while assigning assignments to class
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed
+    Select any class and click on 'Select Individuals' link    Class: Class2502    'Edit Students that get assignments' window should be displayed
+    Select students from 'Available Students'     \    Selected students should be displayed in 'Assigned to' table
+    Click on 'Save' button    \    Selected students should be added.
+
+Verify \ 'select All' functionality while assigning assignments to a class
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed
+    Select any class and click on 'Select All' link    Class: Class2502    All Students should be added to the class to write assignments
+
+Verify 'select Individual' functionality in new assignments page
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed
+    Click on 'Show Groups'    \    List of groups should be displayed
+    Select any group and click on 'Select Individuals' link    Group: Group999    'Edit Students that get assignments' window should be displayed
+    Select students from 'Available Students'     \    Selected students should be displayed in 'Assigned to' table
+    Click on 'Save' button    \    Selected students should be added.
+
+Verify \ 'select All' functionality in new assignments page
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed
+    Click on 'Show Groups'    \    List of groups should be displayed
+    Select any group and click on 'Select All' link    Group: Group999    All Students should be added to the group to write assignments
+
+Teacher handout an assignment to selected Students to a Group
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed
+    Click on 'Show Groups'    \    List of groups should be displayed
+    Select any Group,Student,Subject,Level, Assignments    Group:Group999; Subject: Motivation Math;Level:01 and Assignment : Unit 1Subject
+    Click on 'Assign Now' button    \    Assignments should be assigned to selected students
+
+Teacher handout book assignments to selected Students to a Group
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed
+    Click on 'Show Groups'    \    List of groups should be displayed
+    Select any Group,Student,Subject,Level, Assignments    Group:Group999; Subject: Motivation Math;Level:01 and Assignment : Unit 1Subject
+    Click on 'Students will complete in book' and click on 'Assign now' button    \    Book Assignments should be assigned to selected students
+
+Verify sort functionality for "Editstudentsthat get assignment" window for class.
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed
+    Select any class and click on 'Select Individuals' link    Class: Class2502    'Edit Students that get assignments' window should be displayed
+    Click on last Name column header    \    Records should be sorted in ascending and descending order
+    Click on first name clumn header    \    Records should be sorted in ascending and descending order
+    Click on grade column header    \    Records should be sorted in ascending and descending order
+    Click on user id column header    \    Records should be sorted in ascending and descending order
+    Click on role column header    \    Records should be sorted in ascending and descending order
+
+Verify sort functionality for "Editstudentsthat get assignment" window forgroup.
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed
+    Click on 'Show Groups'    \    List of groups should be displayed
+    Select any group and click on 'Select Individuals' link    Group: Group999    'Edit Students that get assignments' window should be displayed
+    Click on last Name column header    \    Records should be sorted in ascending and descending order
+    Click on first name clumn header    \    Records should be sorted in ascending and descending order
+    Click on grade column header    \    Records should be sorted in ascending and descending order
+    Click on user id column header    \    Records should be sorted in ascending and descending order
+    Click on role column header    \    Records should be sorted in ascending and descending order
+
+Verify search functionality in "Editstudents that get assignment" window for class
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed
+    Select any class and click on 'Select Individuals' link    Class: Class2502    'Edit Students that get assignments' window should be displayed
+    Enter valid user details in search field to search users.    \    Matching user should be displayed based on the search criteria
+
+Verify search functionality in "Editstudents that get assignment" window for group
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed
+    Click on 'Show Groups'    \    List of groups should be displayed
+    Select any group and click on 'Select Individuals' link    Group: Group999    'Edit Students that get assignments' window should be displayed
+    Enter valid user details in search field to search users.    \    Matching user should be displayed based on the search criteria
+
+Validate New Assignments with out giving any Class and Group
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Teacher Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be opened and Message should be displayed as \ ' You are not the instructor for any classes.'
+
+Verify New Assignments with out giving any Group
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Teacher Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    Class:class2520    New Assignments page should be opened and 'Show Groups' button should not be displayed.
+
+Verify New Assignments with out giving any Class
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Teacher Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    Group:Group0520    New Assignments page should be opened and 'Show Groups' button should be displayed with no classes.
+
+Validate New Assignments with out giving any student and Title for class
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Teacher Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    Class:class2520    New Assignments page should be displayed.
+    Select any 'Class'    \    Alert message should be displayed as 'There are no students in this class. You must add students to the class before making an assignment.'
+
+Validate New Assignments with out giving any student for class
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    Class:class2520    New Assignments page should be displayed.
+    Select 'Class'    Title:CCS Motivation Math Level 01    Alert message should be displayed as 'There are no students in this class. You must add students to the class before making an assignment.'
+
+Validate New Assignments with out giving any Title for class
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    Class:class2520    New Assignments page should be displayed.
+    Select 'Class'    Student User ID:std2505k/Password:test1234    Pop Up should be displayed as 'This class is disable because it has no Titles.'
+
+Validate New Assignments with out giving any student and Title for Group
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    Group:Group0520    New Assignments page should be displayed.
+    Select 'Group'    \    Pop Up should be displayed as 'This group is disable because it has no Titles and Students.'
+
+Validate New Assignments with out giving any student for Group
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    Group:Group0520    New Assignments page should be displayed.
+    Select 'Group'    Title:CCS Motivation Math Level 01    Pop Up should be displayed as 'This group is disable because it has no Students.'
+
+Validate New Assignments with out giving any Title for Group
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    Group:Group0520    New Assignments page should be displayed.
+    Select 'Group'    Student User ID:std2505k/Password:test1234    Pop Up should be displayed as 'This group is disable because it has no Titles.'
+
+Validate the different classes with same titles
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed.
+    Select 'Class'    Class:class2520 \ Title:CCS Motivation Math Level 01 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ class2502a Title:CCS Motivation Math Level 01    User should be able to assign assignments for different classes with same Title.
+
+Verify different classes with different titles
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed.
+    Select any \ 'Class'    Class:class2520 \ Title:CCS Motivation Math Level 01 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ class2502a Title:CCS Motivation Math Level 01    User should be able to assign assignments for Selected class only.
+
+Verify different Groups with same titles
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed.
+    Select 'Class'    Group:Group0520 \ Title:CCS Motivation Math Level 05 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Group05 Title:CCS Motivation Math Level 05    User should be able to assign assignments for different Groups with same Title.
+
+Verify different Groups with different Titles
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed.
+    Select any 'group'    Group:Group0520 \ Title:CCS Motivation Math Level 05 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Group05 Title:CCS Motivation Math Level 06    User should be able to assign assignments for selected Group for one Title.
+
+Validate Teacher handout assignments to selected student for particular class in Manage Assignment page
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed.
+    Select any class,Student,Subject,Level, Assignments
+    Click on 'Assign Now' button    \    Assignments should be assigned to selected students
+    Navigate to 'Manage Assignments' page and select Class,Student and Title    \    List of Assignments for selected student should be dispalyed in Assignments Window
+
+Validate Teacher handout book assignments to selected student for particular class in Manage Assignment page
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed.
+    Select any class,Student,Subject,Level, Assignments
+    Click on 'Students will complete in book' and click on 'Assign now' button    \    Book Assignments should be assigned to selected students
+    Navigate to 'Manage Assignments' page and select Class,Student and Title    \    List of Assignments for selected student should be dispalyed in Assignments Window
+
+Validate Teacher handout assignments to All students for particular class in Manage Assignment page
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed.
+    Select any Class,All Student,Subject,Level, Assignments
+    Click on 'Assign Now' button    \    Assignments should be assigned to selected students
+    Navigate to 'Manage Assignments' page and select Class,AllStudent and Title    \    List of Assignments for selected student should be dispalyed in Assignments Window
+
+Validate Teacher handout book assignments to All students for particular class in Manage Assignment page
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed.
+    Select any Class,AllStudent,Subject,Level, Assignments
+    Click on 'Students will complete in book' and click on 'Assign now' button    \    Book Assignments should be assigned to selected students
+    Navigate to 'Manage Assignments' page and select Class,All Student and Title    \    List of Assignments for selected student should be dispalyed in Assignments Window
+
+Validate Teacher handout assignments to selected student for particular Group in Manage Assignment page
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed.
+    Select any Group,Student,Subject,Level, Assignments
+    Click on 'Assign Now' button    \    Assignments should be assigned to selected students
+    Navigate to 'Manage Assignments' page and select Group,Student and Title    \    List of Assignments for selected student should be dispalyed in Assignments Window
+
+Validate Teacher handout book assignments to selected student for particular Group in Manage Assignment page
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed.
+    Select any Group,Student,Subject,Level, Assignments
+    Click on 'Students will complete in book' and click on 'Assign now' button    \    Book Assignments should be assigned to selected students
+    Navigate to 'Manage Assignments' page and select Group,Student and Title    \    List of Assignments for selected student should be dispalyed in Assignments Window
+
+Validate Teacher handout assignments to All students for particular Group in Manage Assignment page
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed.
+    Select any Group,All Student,Subject,Level, Assignments
+    Click on 'Assign Now' button    \    Assignments should be assigned to selected students
+    Navigate to 'Manage Assignments' page and select Group,AllStudent and Title    \    List of Assignments for selected student should be dispalyed in Assignments Window
+
+Validate Teacher handout book assignments to All students for particular Group in Manage Assignment page
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    \    New Assignments page should be displayed.
+    Select any Group,AllStudent,Subject,Level, Assignments
+    Click on 'Students will complete in book' and click on 'Assign now' button    \    Book Assignments should be assigned to selected students
+    Navigate to 'Manage Assignments' page and select Group,All Student and Title    \    List of Assignments for selected student should be dispalyed in Assignments Window
+
+Validate the close (x) functionality in the New Assignment window
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'New Assignments' button in Assignments page    Class:class2520    New Assignments page should be opened.
+    Select 'Class'    Title:CCS Motivation Math Level 01    Alert should be displayed as 'There are no students in this class. You must add students to the class before making an assignment.'
+    Click on 'x' Button or Clock on 'Ok' Button.    \    'There are no students in this class. You must add students to the class before making an assignment.' Alert should be closed and 'New Assignments' page should be displayed
+

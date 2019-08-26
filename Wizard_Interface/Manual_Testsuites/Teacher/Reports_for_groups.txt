@@ -1,0 +1,138 @@
+*** Test Cases ***
+MTC138-Standard Mastery report for group
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard Mastery report \ from 'Report Type' drop down list    \    Standard Mastery Report should be selected and classes drop down and "Show Groups" button should be displayed .
+    Clcik on "Show Groups" button    \    Groups drop down list should be displayed
+    Select group from 'groups' drop down list    \    Group should be selected and Subject/Level drop down should be displayed .
+    Select title from 'Subject/Level' drop down list    \    Title should be selected and Date Range should be displayed
+    Enter 'Date Range' using date format    \    "Generate Report" button should be displayed
+    Click on "Generate Report" \ button    \    Standard Mastery Rreport should be displayed.
+
+MTC139-Item Analysis report for group
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on Reports Button    \    Expected result: Reports filter page should be displayed
+    Select Item Analysis report \ from 'Report Type' drop down list    \    Item Analysis Report should be selected and classes drop down and "Show Groups" button should be displayed .
+    Click on "Show Groups" button    \    Groups drop down list should be displayed
+    Select group from 'groups' drop down list    \    group should be selected and Subject/Level drop down should be displayed .
+    Select title from 'Subject/Level' drop down list    \    Title should be selected and Activity drop down \ should be displayed
+    Select Activity from 'Activity' drop down list    \    Activity should be selected and Date Range should be displayed.
+    Enter 'Date Range' using date format    \    "Generate Report" button should be displayed
+    Click on "Generate Report" \ button    \    Item Analysis Rreport should be displayed.
+
+Generating a Standard Mastery Report which doesn't have any records
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on Reports Button    \    Expected result: Reports filter page should be displayed
+    Select Standard Mastery report \ from 'Report Type' drop down list    \    Standard Mastery Report should be selected and classes drop down and "Show Groups" button should be displayed .
+    Clcik on "Show Groups" button    \    Groups drop down list should be displayed
+    Select group from 'groups' drop down list    \    Group should be selected and Subject/Level drop down should be displayed .
+    Select title from 'Subject/Level' drop down list in which title assignments are not done by students    \    Title should be selected and Date Range should be displayed
+    Enter 'Date Range' using date format    \    "Generate Report" button should be displayed
+    Click on "Generate Report" \ button    \    Message should be displayed as " There is no information to display for the current selection."
+
+Generating an Item analysis report which doesnt have any records
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on Reports Button    \    Reports filter page should be displayed
+    Select Item Analysis report \ from 'Report Type' drop down list    \    Item Analysis Report should be selected and classes drop down and "Show Groups" button should be displayed .
+    Clcik on "Show Groups" button    \    Groups drop down list should be displayed
+    Select group from 'groups' drop down list    \    group should be selected and Subject/Level drop down should be displayed .
+    Select title from 'Subject/Level' drop down list    \    Title should be selected and Activity drop down \ should be displayed
+    Select Activity from 'Activity' drop down list which assignments are not done by students    \    Activity should be selected and Date Range should be displayed.
+    Enter 'Date Range' using date format    \    "Generate Report" button should be displayed
+    Click on "Generate Report" \ button    \    Message should be displayed as "There is no information to display for the current selection."
+
+Generating report with no groups
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on Reports Button    \    Reports filter page should be displayed
+    Select Item Analysis report \ from 'Report Type' drop down list    \    Item Analysis Report should be selected and classes drop down and "Show Groups" button should be displayed .
+    Click on "Show Groups" button    \    "No groups" message should be displayed
+
+Verify when click on pencil icon to go to grading page for item analysis report
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on Reports Button    \    Expected result: Reports filter page should be displayed
+    Select Item Analysis report \ from 'Report Type' drop down list    \    Item Analysis Report should be selected and classes drop down and "Show Groups" button should be displayed .
+    Click on "Show Groups" button    \    Groups drop down list should be displayed
+    Select group from 'groups' drop down list    \    group should be selected and Subject/Level drop down should be displayed .
+    Select title from 'Subject/Level' drop down list    \    Title should be selected and Activity drop down \ should be displayed
+    Select Activity from 'Activity' drop down list    \    Activity should be selected and Date Range should be displayed.
+    Enter 'Date Range' using date format    \    "Generate Report" button should be displayed
+    Click on "Generate Report" \ button    \    Item Analysis Rreport should be displayed.
+    Click on 'Pencil' icon    \    Grading page should be displayed when click on 'pencil' icon.
+
+Verify when click on pencil icon to go to grading page for Standard mastery report
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard Mastery report from 'Report Type' drop down list    \    Standard Mastery Report should be selected and classes drop down and "Show Groups" button should be displayed .
+    Clcik on "Show Groups" button    \    Groups drop down list should be displayed
+    Select group from 'groups' drop down list    \    Group should be selected and Subject/Level drop down should be displayed .
+    Select title from 'Subject/Level' drop down list    \    Title should be selected and Date Range should be displayed
+    Enter 'Date Range' using date format    \    "Generate Report" button should be displayed
+    Click on "Generate Report" \ button    \    Standard Mastery Rreport should be displayed.
+    Click on 'Pencil' icon    \    Grading page should be displayed when click on 'pencil' icon.
+
+Verify Can see hover message on each cell for item analysis report
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on Reports Button    \    Expected result: Reports filter page should be displayed
+    Select Item Analysis report \ from 'Report Type' drop down list    \    Item Analysis Report should be selected and classes drop down and "Show Groups" button should be displayed .
+    Click on "Show Groups" button    \    Groups drop down list should be displayed
+    Select group from 'groups' drop down list    \    group should be selected and Subject/Level drop down should be displayed .
+    Select title from 'Subject/Level' drop down list    \    Title should be selected and Activity drop down \ should be displayed
+    Select Activity from 'Activity' drop down list    \    Activity should be selected and Date Range should be displayed.
+    Enter 'Date Range' using date format    \    "Generate Report" button should be displayed
+    Click on "Generate Report" \ button    \    Item Analysis Rreport should be displayed.
+    Mouse hover on each cell    \    Tool tip message should be displayed while mouse hover on each cell
+
+Verify Can see hover message on each cell for Standard Mastery Report
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard Mastery report from 'Report Type' drop down list    \    Standard Mastery Report should be selected and classes drop down and "Show Groups" button should be displayed .
+    Clcik on "Show Groups" button    \    Groups drop down list should be displayed
+    Select group from 'groups' drop down list    \    Group should be selected and Subject/Level drop down should be displayed .
+    Select title from 'Subject/Level' drop down list    \    Title should be selected and Date Range should be displayed
+    Enter 'Date Range' using date format    \    "Generate Report" button should be displayed
+    Click on "Generate Report" button    \    Standard Mastery Rreport should be displayed.
+    Mouse hover on each cell    \    Tool tip message should be displayed while mouse hover on each cell
+
+Verify ' sort by %' in Standards Mastery Report for a Group
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard Mastery report from 'Report Type' drop down list    \    Standard Mastery Report should be selected and classes drop down and "Show Groups" button should be displayed .
+    Clcik on "Show Groups" button    \    Groups drop down list should be displayed
+    Select group from 'groups' drop down list    \    Group should be selected and Subject/Level drop down should be displayed .
+    Select title from 'Subject/Level' drop down list    \    Title should be selected and Date Range should be displayed
+    Enter 'Date Range' using date format    \    "Generate Report" button should be displayed
+    Click on "Generate Report" \ button    \    Standard Mastery Rreport should be displayed.
+    Click on 'Sort By %' button    \    values should be sorted bases on the percentage(%)
+
+Verify ' sort by name' in Standards Mastery Report for a Group
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard Mastery report from 'Report Type' drop down list    \    Standard Mastery Report should be selected and classes drop down and "Show Groups" button should be displayed .
+    Clcik on "Show Groups" button    \    Groups drop down list should be displayed
+    Select group from 'groups' drop down list    \    Group should be selected and Subject/Level drop down should be displayed .
+    Select title from 'Subject/Level' drop down list    \    Title should be selected and Date Range should be displayed
+    Enter 'Date Range' using date format    \    "Generate Report" button should be displayed
+    Click on "Generate Report" \ button    \    Standard Mastery Rreport should be displayed.
+    Click on 'Sort By name' button    \    values should be sorted bases on the class names

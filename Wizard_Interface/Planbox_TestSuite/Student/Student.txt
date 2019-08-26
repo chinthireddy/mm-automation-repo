@@ -1,0 +1,410 @@
+*** Test Cases ***
+8489655-Verify whether Highlighter is displaying or not \ in resources,Passage and Lessons Panels
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment: \ CCS Motivation Math Level 04: Page 19 - Introduction    Expected Result : Assignment should beassigned to perticular student.
+    Login as Student    (Test Data :student1s3b/test1234).    Expected Result:Student Home Page should be display
+    Click on 'start' or 'continue' button to start assignment.    (Test Data: CCS Motivation Math Level 04: Page 19 - Introduction )
+    Verify the highlighter in Resources,lesson,passage panels    \    Expected result: Highlighter should not be present in resources,lessons and passage. It should be in questions.
+
+8489976-Verify Student is created without giving 'Retypepassword' while new User registration.
+    [Documentation]    Steps to reproduce:
+    ...
+    ...    1. Enter Url : b11test1.mentoringmindsonline.com .
+    ...
+    ...    2. Click on "New User" and select “student”
+    ...    3. Enter valid data in the fields.
+    ...
+    ...    4. Edit the password fields 3 to 4 times
+    ...
+    ...    5. Observe the next button.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Click on 'Student' in Newuser
+    Enter Class code and Click on 'next' button    TestData: bnr    Expected Result: Student registration page should be display
+    Enter Valid data in all field
+    Edit Password fields 3 to 4 times    \    Expected Result: 'Next' button should be disabled without enter 'retype password' and should not allow user to register.
+
+8489927-Verify 'E' or 'O' displayed in Textbox while writting Assignment
+    [Documentation]    Steps to reproduce:
+    ...
+    ...    1.Enter URL b11test1.mentoringmindsonline.com
+    ...
+    ...    2.Login as Teacher using credentials (Test Data : rhwpte+ta1313@gmail.com/test1234)
+    ...
+    ...    3.Assign an assignment for the student.(Assignment name: CCS Motivation Math Level 03: Page 12 - Motivation Station: Interpret Products of Whole Numbers (3.OA.A.1).
+    ...
+    ...    4.Login as student using credentials (Test Data : Student4321/student43) and start the assignment.
+    ...
+    ...    5.Fill in the blanks and place "E" if the product is even number, place "O" if the product is odd number.
+    ...
+    ...    6.Observed that after filling the blank and when "E" or "O" is placed in the blank, it is not visible.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment:CCS Motivation Math Level 03: Page 12 - Motivation Station: Interpret Products of Whole Numbers (3.OA.A.1).    Expected Result : Assignment should beassigned to perticular student.
+    Login As Student    Test Data:student134/test1234
+    Click on 'Start/Continue' buttons to start the Assignment.    Test Data : CCS Motivation Math Level 03: Page 12 - Motivation Station: Interpret Products of Whole Numbers (3.OA.A.1).
+    Fill the blanks    Test Data: Fill \ "E" if the product is even number, place "O" if the product is odd number.    Expected Result : When user places "E" or "O" in the blanks, it should be visible.
+
+8489891-Verify Student is able to write answer in the Textarea or not.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment:CCS Motivation Math Level 02: Page 13 - Introduction: Use Mental Strategies to Add and Subtract Within 20 (2.OA.B.2)    Expected Result : Assignment should beassigned to perticular student.
+    Login As Student    Test Data:student134/test1234
+    Click on 'Start/Continue' buttons to start the Assignment.    Test Data : CCS Motivation Math Level 02: Page 13 - Introduction: Use Mental Strategies to Add and Subtract Within 20 (2.OA.B.2).
+    Write the answers for \ Openended type questions    \    Student should be able to write the answer in the Textarea.
+
+8489879-Verify Assignment report for Computer Graded items.
+    [Documentation]    Steps to reproduce:
+    ...    1.Open Url b11test1.mentoringmindsonline.com
+    ...    2.Login as student(student0810/test1234).
+    ...    3.Write the assignments (“Page 13 - Introduction: Use Mental Strategies to Add and Subtract Within 20 (2.OA.B.2)”
+    ...    and “Page 23 - Critical Thinking: Analysis: Understanding Odd and Even Numbers to 20 (2.OA.C.3)”)
+    ...    4.Verify the Assignment report for both assignments.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment :Page 13 - Introduction: Use Mental Strategies to Add and Subtract Within 20 (2.OA.B.2)    Expected Result : Assignment should beassigned to perticular student.
+    Login As Student    Test Data:student134/test1234
+    Click on 'Start/Continue' buttons to start the Assignment.    Test Data : Page 13 - Introduction: Use Mental Strategies to Add and Subtract Within 20 (2.OA.B.2
+    Answer the questions and click on 'Submit button' and observe the Assignment Report.    \    Correct message should be displayed for Computer graded items in Assignment Report.
+
+8489871-Verify whether Gray color is displayed or not when select \ more than one choice at a time.
+    [Documentation]    Steps to reproduce:
+    ...    1.Login with student credentials.
+    ...    Environment:b11test1.mentoringmindsonline.com
+    ...    username : rpstudent1006a
+    ...    password : rpstudent1006a1
+    ...    2.Click on "Continue" button for the assignment "CCS Motivation Math Level 01: Page 10 - Assessment: Solve Word Problems: Addition and Subtraction(1.OA.A.1)" .
+    ...    3.Click on any question in the left pane of the window.
+    ...    4.Change the choice by selecting A,B or C
+    ...    5.Verify the previously selected answer .
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment: CCS Motivation Math Level 01: Page 10 - Assessment: Solve Word Problems: Addition and Subtraction(1.OA.A.1)" .    Expected Result : Assignment should beassigned to perticular student.
+    Login As Student    Test Data:student134/test1234
+    Click on 'Start/Continue' buttons to start the Assignment.    Test Data : CCS Motivation Math Level 01: Page 10 - Assessment: Solve Word Problems: Addition and Subtraction(1.OA.A.1)" .
+    Click on any question and answer the question
+    Change the choice by selecting A or B or C and observe.    \    Only one answer should be in gray color.
+
+8489861-ClassDropdown is disappeared or not when clicked on any other parts of the screen.
+    [Documentation]    Steps to reproduce:
+    ...    1. Login with student credentials ( userid:StudentA12 \ \ \ , \ password: Student0A12)
+    ...    2.Click on "Join a class" drop down.
+    ...    3.Click on any other part of the screen.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as student    studentnew1711/test1234    Student Home page should be displayed.
+    Click on 'Join' button and click on any other part of the screen.    \    Class drop down should disappear when click on any other part of the screen. \
+
+8489835-'An Update is available.please reload' alert message is displayed or not for every 10 mints.
+    [Documentation]    Steps to reproduce:
+    ...    1.Enter URL b11test.mentoringmindsonline.com
+    ...    2. Login with Student.
+    ...    3.Observed that Alert is displayed
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as student    studentnew1711/test1234    Student Home page should be displayed.
+    Observe the alert messgae for 5 to 10 mints    \    Alert message should not be displayed.
+
+8046125-Verify whetherThe weight(w) column is \ displayed or not under Score Card
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment: CCS Motivation Math Level 01: Page 111 - Independent Practice: Represent and Interpret Data(1.MD.C.4)    Expected Result : Assignment should beassigned to perticular student.
+    Login as Student    testdata: std144/std123    Expected Result: Student home page should be display
+    Select any assignment and click on the “Start/Continue” button to start Assignment
+    Verify Flag,Question Number,Score,Skip,Number of Attempts,Number of items in the question,Number of teacher” columns are displayed in the score card.    \    Expected Result: It should display the “Weight of the question” column in the score card.
+
+7777100-Verify wheather Data in Answer filed is displayed out of the box when more than 30 characters are entered.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment:Title:Motivation math level 4 , Activity:Page11-Critical thinking analysis-2    Expected Result : Assignment should beassigned to perticular student.
+    Login As Student    Test Data:student134/test1234    Expected Result: Student home page should be displayed
+    Click on Start button to start the Assignment    Test Data:Title:Motivation math level 4 , Activity:Page11-Critical thinking analysis-2
+    Enter more than 30 characters in Answer field and click out side of the box    \    Expected result: Answer field should have limit.
+
+7953700-Verify wheather Periodically getting booted to login screen in Firefox and Chrome
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment:CCS Motivation Math Level 04: Page 19 - Introduction : \    Expected Result : Assignment should beassigned to perticular student.
+    Login As Student    Test Data:student134/test1234
+    Click On Start button to start the assignment
+    Click On "Next" and "previous" buttons multiple times    \    Expected Result: It should work accordingly and not booted to login screen
+
+7431836-Verify whether Cut Copy and Paste icons of Note Editor are working differently in each browser or not.
+    [Documentation]    Steps to Reproduce:
+    ...
+    ...    1.Open url: b11test1.mentoringmindsonline.com
+    ...    2.Login with student credentials.(test10/test100)
+    ...    3.Select any assignment(ex:CCS Math Assessments Level 3:02 Form B) & click on the start/continue button of it.
+    ...    4.Click on the Highlighter from the tools .
+    ...    5.In the highlighter window Click on the Note icon of the highlighter window then you should see the Note Editor window.
+    ...    6.Enter some text in the note editor
+    ...    7.Select the entered text & try to click on the "Cut,Copy & Paste" icons .
+    ...    8.Here the "Cut,Copy & Paste" icons of Note Editor behaves differently on different browsers.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment:CCS Motivation Math Level 04: Page 19 - Introduction :    Expected Result : Assignment should beassigned to perticular student.
+    Login As Student    Test Data:student134/test1234
+    Click on 'Start/Continue' buttons to start the Assignment.
+    Click On 'NoteEditor' in Highlighter from Tool    \    Expected Resullt: Note Editor should be displayed
+    Enter Some Text in the Note Editor.
+    Select the text and click on 'Cut,Copy and Paste' icons    \    Expected Result:"Cut,Copy & Paste" icons should behave similarly in all browsers.
+
+7424999-Verify whether Student is able to select both Yes and No options at a time or not.
+    [Documentation]    Steps To Reproduce:
+    ...
+    ...    1.Open url: b11test1.mentoringmindsonline.com
+    ...
+    ...    2.Login as student (r.student4/r.student44)
+    ...
+    ...    3.Select the assignment (Test data:CCSMath Assessments Level 3:02 Form B) and click on Start button
+    ...
+    ...    4.Answers all the questions till student get the Yes or No option type question (Test data:for CCSMath Assessments Level 3:02 Form B, it is displayed in the 14 question)
+    ...
+    ...    5.Verify whether Student is able to select both Yes and No options at a time or not.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment:CCSMath Assessments Level 3:02 Form B)    Expected Result : Assignment should beassigned to perticular student.
+    Login As Student    Test Data:student134/test1234
+    Click on 'Start/Continue' buttons to start the Assignment.
+    Answer the question(which have 'Yes' or 'No' type options)    \    ExpectedResult:Either Yes or No should be selected at a time
+
+7376304-Verify whether Home and Help controls are displayed when the screen size is decreased to 50%
+    [Documentation]    1.Login to b11test1.mentoringmindsonline.com with Student Credentials.
+    ...    2.Decrease the size of the screen to 50%
+    ...    3.Verify whether Home and Help controls are displayed when the screen size is decreased to 50%
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login As Student    Test Data:student134/test1234
+    Decrease the Screen size to 50%    \    Expected Result:All the controls should be shown on the screen with scroll bars to the page.
+
+6597020-Student is unable to scroll or navigate to first question.
+    [Documentation]    Steps to reproduce:
+    ...
+    ...    1.Enter URL b11test1.mentoringmindsonline.com
+    ...    2.Login as Student (Test Data : studentzxc\123qwe).
+    ...
+    ...    3.Select assignment(Test data:CCS Math assessment level 5: 01 form A).
+    ...
+    ...    4.Select the question (Eg-35), try to navigate to the first question.
+    ...
+    ...    5.Observed that user whether he is able to scroll/navigate or view the first question.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment: CCS Math assessment level 5: 01 form A    Expected Result : Assignment should beassigned to perticular student.
+    Login As Student    Test Data:student134/test1234
+    Click on Start button.    \    List of assignments should be display
+    Answer the questions    \    Answered questions should be saved
+    Scroll or navigate to first question    \    questions should be navigate.
+
+8046125-Verify whetherThe weight(w) column is \ displayed or not under Score Card
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment: CCS Motivation Math Level 01: Page 111 - Independent Practice: Represent and Interpret Data(1.MD.C.4)    Expected Result : Assignment should beassigned to perticular student.
+    Login as Student    testdata: std144/std123    Expected Result: Student home page should be display
+    Select any assignment and click on the “Start/Continue” button to start Assignment
+    Verify Flag,Question Number,Score,Skip,Number of Attempts,Number of items in the question,Number of teacher” columns are displayed in the score card.    \    Expected Result: It should display the “Weight of the question” column in the score card.
+
+7777100-Verify wheather Data in Answer filed is displayed out of the box when more than 30 characters are entered.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment:Title:Motivation math level 4 , Activity:Page11-Critical thinking analysis-2    Expected Result : Assignment should beassigned to perticular student.
+    Login As Student    Test Data:student134/test1234    Expected Result: Student home page should be displayed
+    Click on Start button to start the Assignment    Test Data:Title:Motivation math level 4 , Activity:Page11-Critical thinking analysis-2
+    Enter more than 30 characters in Answer field and click out side of the box    \    Expected result: Answer field should have limit.
+
+7953700-Verify wheather Periodically getting booted to login screen in Firefox and Chrome
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment:CCS Motivation Math Level 04: Page 19 - Introduction : \    Expected Result : Assignment should beassigned to perticular student.
+    Login As Student    Test Data:student134/test1234
+    Click On Start button to start the assignment
+    Click On "Next" and "previous" buttons multiple times    \    Expected Result: It should work accordingly and not booted to login screen
+
+7431836-Verify whether Cut Copy and Paste icons of Note Editor are working differently in each browser or not.
+    [Documentation]    Steps to Reproduce:
+    ...
+    ...    1.Open url: b11test1.mentoringmindsonline.com
+    ...    2.Login with student credentials.(test10/test100)
+    ...    3.Select any assignment(ex:CCS Math Assessments Level 3:02 Form B) & click on the start/continue button of it.
+    ...    4.Click on the Highlighter from the tools .
+    ...    5.In the highlighter window Click on the Note icon of the highlighter window then you should see the Note Editor window.
+    ...    6.Enter some text in the note editor
+    ...    7.Select the entered text & try to click on the "Cut,Copy & Paste" icons .
+    ...    8.Here the "Cut,Copy & Paste" icons of Note Editor behaves differently on different browsers.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment:CCS Motivation Math Level 04: Page 19 - Introduction :    Expected Result : Assignment should beassigned to perticular student.
+    Login As Student    Test Data:student134/test1234
+    Click on 'Start/Continue' buttons to start the Assignment.
+    Click On 'NoteEditor' in Highlighter from Tool    \    Expected Resullt: Note Editor should be displayed
+    Enter Some Text in the Note Editor.
+    Select the text and click on 'Cut,Copy and Paste' icons    \    Expected Result:"Cut,Copy & Paste" icons should behave similarly in all browsers.
+
+7424999-Verify whether Student is able to select both Yes and No options at a time or not.
+    [Documentation]    Steps To Reproduce:
+    ...
+    ...    1.Open url: b11test1.mentoringmindsonline.com
+    ...
+    ...    2.Login as student (r.student4/r.student44)
+    ...
+    ...    3.Select the assignment (Test data:CCSMath Assessments Level 3:02 Form B) and click on Start button
+    ...
+    ...    4.Answers all the questions till student get the Yes or No option type question (Test data:for CCSMath Assessments Level 3:02 Form B, it is displayed in the 14 question)
+    ...
+    ...    5.Verify whether Student is able to select both Yes and No options at a time or not.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment:CCSMath Assessments Level 3:02 Form B)    Expected Result : Assignment should beassigned to perticular student.
+    Login As Student    Test Data:student134/test1234
+    Click on 'Start/Continue' buttons to start the Assignment.
+    Answer the question(which have 'Yes' or 'No' type options)    \    ExpectedResult:Either Yes or No should be selected at a time
+
+7376304-Verify whether Home and Help controls are displayed when the screen size is decreased to 50%
+    [Documentation]    1.Login to b11test1.mentoringmindsonline.com with Student Credentials.
+    ...    2.Decrease the size of the screen to 50%
+    ...    3.Verify whether Home and Help controls are displayed when the screen size is decreased to 50%
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login As Student    Test Data:student134/test1234
+    Decrease the Screen size to 50%    \    Expected Result:All the controls should be shown on the screen with scroll bars to the page.
+
+6597020-Student is unable to scroll or navigate to first question.
+    [Documentation]    Steps to reproduce:
+    ...
+    ...    1.Enter URL b11test1.mentoringmindsonline.com
+    ...    2.Login as Student (Test Data : studentzxc\123qwe).
+    ...
+    ...    3.Select assignment(Test data:CCS Math assessment level 5: 01 form A).
+    ...
+    ...    4.Select the question (Eg-35), try to navigate to the first question.
+    ...
+    ...    5.Observed that user whether he is able to scroll/navigate or view the first question.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment: CCS Math assessment level 5: 01 form A    Expected Result : Assignment should beassigned to perticular student.
+    Login As Student    Test Data:student134/test1234
+    Click on Start button.    \    List of assignments should be display
+    Answer the questions    \    Answered questions should be saved
+    Scroll or navigate to first question    \    questions should be navigate.
+
+8405087-Verify Whether Option name is displayed along with the answer under the Correct answer tab.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as Teacher    (Test Data : rhwpte+ta2710@gmail.com/test4321).    Expected Result:Teacher Home Page should be display
+    Click on New Assignments and \ Assign an assignment    Test Data:15-07 Revision : No puedo vivir sin ti!
+    Login as Student and Start the Assignment    Test Data :Student2710/test4321    Expected Result:Student home page should be display
+    Answer the question and click on "Save Answer" button.    \    Expected Result:Correct answer should be displayed with Option.
+
+8359963-Verify whether loading issue and error in console Browser database not responding is displayed or not when click on Signout button.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login As Student    Test Data:student134/test1234    Expected Result: Student home page should be displayed
+    Click On 'Signout' button    \    Expected Result: Login page should be display without error in console and without getting loading issue.
+
+8359066-Verify whether the application is freezes or not when click on 'NoteEditor'.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment: CCS Motivation Math Level 01: Page 111 - Independent Practice: Represent and Interpret Data(1.MD.C.4)    Expected Result : Assignment should beassigned to perticular student.
+    Login as Student    Test Data:student1s3b/test1234    Expected Result: Student home page should be displayed
+    Click on 'Start' or 'Continue' button to Start the Assignment
+    Click on 'NoteEditor' \ in Highlighter    \    Expected Result: Note Editor should be work
+
+8243225-Verify whether Page is split when clicked on “solnLayoutBtn ” button.
+    [Documentation]    Steps to reproduce:
+    ...
+    ...    1.Enter URL b11test1.mentoringmindsonline.com
+    ...
+    ...    2.Login as Teacher(rhwpte+taa1314@gmail.com/test1234) and assign assignment (Page 56 - Partner Practice: Add and Subtract Within 100).
+    ...
+    ...    3.Login as Student(std0210/std123)
+    ...
+    ...    4. Write assignment (Page 56 - Partner Practice: Add and Subtract Within 100 ) .
+    ...
+    ...    5.Click on Start button to start the assignment.
+    ...
+    ...    6.Answer the question(And click on “solnLayoutBtn ” button and observe).
+    ...
+    ...    7.Click on next button.
+    ...
+    ...    8.Now click on previous button and observe the question and click on the “solnLayoutBtn ” button twice or thrice.
+    ...
+    ...    9.Verify whether Page is split when clicked on “solnLayoutBtn ” button.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment: Page 56 - Partner Practice: Add and Subtract Within 100    Expected Result : Assignment should be assigned to perticular student.
+    Login as Student    Test Data:student134/test1234    Expected Result: Student home page should be displayed
+    Click on 'Start' or 'Continue' button to Start the Assignment
+    Answer the question and Click on 'SolnLayoutBtn'    \    Expected Result: Correct Answer is displayed
+    Click on 'Next' button and Click on 'Previous' button.
+    Click on 'SalnLayoutbtn' twice or thrice    \    Expected Result: 'SalnLayoutbtn' should be work and Page should be splitt.
+
+8243221-Verify whether Item Count is correct or not in 'Number Of items' column.
+    [Documentation]    Steps to reproduce:
+    ...
+    ...    1.Enter URL b11test1.mentoringmindsonline.com
+    ...
+    ...    2.Login as Teacher(Test Data : rhwpte+taa1314@gmail.com/test1234).
+    ...
+    ...    3.Assign an assignment (Page 96 - Motivation Station: Measure Lengths in Different Units (2.MD.A.2))
+    ...
+    ...    5.Login as Student (std0210/std123) and write the assignment.
+    ...
+    ...    6.Observe the “Number Of Items in a question “
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment: (Page 96 - Motivation Station: Measure Lengths in Different Units (2.MD.A.2)    Expected Result : Assignment should be assigned to perticular student.
+    Login as Student    Test Data:student134/test1234    Expected Result: Student home page should be displayed
+    Click on 'Start' or 'Continue' button to Start the Assignment
+    Observe the 'Number of items in a question'    \    Expected Result:Items Count should be displayed correctly.
+
+8202027-Verify whether Assignment report calculation is displayed in Round/in Decimal under Computer Graded.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment:Page 15 :Introduction 2.2.B    Expected Result : Assignment should be assigned to perticular student.
+    Login as Student    Test Data:student134/test1234    Expected Result: Student home page should be displayed
+    Click on 'Start' or 'Continue' button to Start the Assignment
+    Answer all the Questions and Click On Submit Button.    \    Expected Result: Activty report should be display with Round figure(Number should be rounded instead of 8.33)
+
+8054644-Verify whether School name, student names \ are displayed while writing the exam(in ipad2)
+    [Documentation]    Steps to reproduce:
+    ...
+    ...    1.Enter URL b11test.mentoringmindsonline.com
+    ...
+    ...    2. Login with student Credentials (testdata: std300/std123)
+    ...
+    ...    3.Start any assignments
+    ...
+    ...    4.Verify whether School name, student names \ are displayed while writing the exam.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment:Page 15 :Introduction 2.2.B    Expected Result : Assignment should be assigned to perticular student.
+    Login as Student    Test Data:student134/test1234    Expected Result: Student home page should be displayed
+    Click on 'Start' or 'Continue' button to Start the Assignment    \    Expected result:School name,First name ,Last name of Student Should be displayed.
+
+7658891-check whether the student is sign up or not when enter Create password,retype password differently while Newuser Register
+    [Documentation]    Steps to reproduce:
+    ...
+    ...    1.Enter URL "b11test1.mentoringmindsonline.com"
+    ...
+    ...    2.Click on New user>student
+    ...
+    ...    3.Enter all student details till create a password text field
+    ...
+    ...    4.Enter same data in the create password field,retype password field(testdata: student123)
+    ...
+    ...    5.Change the create password field data (testdata:student12345)
+    ...
+    ...    6. Click on 'next' button, and check whether the student is successfully sign up or not.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Click on 'Student' under "new user'
+    Enter ClassCode and Click on Next button.    Test data: y2f
+    Enter all student details    Test Data:FN,MN,LN,Studenttest,Pwd:student123,RetypePWD:Student123
+    Click on 'Create PWD' and change the pwd    TestData:PWD:student12345
+    Click on 'next' button    \    Expected result: it should not Accept when the password mismatched ,It should display an error message.
+
+8234419-“Submit” button \ is displayed instead of “Save Answer” button for student assignments.
+    [Documentation]    Steps to reproduce:
+    ...
+    ...    1.Enter URL b11test1.mentoringmindsonline.com
+    ...
+    ...    2.Login as Student( studentnew1314/test1234) .
+    ...
+    ...    3. Write assignment (Unit 7 - Page 54 - Motivation Station) .
+    ...
+    ...    4.Click on Start button to start the assignment.
+    ...
+    ...    5.Verify \ “Submit” button \ is displayed instead of “Save Answer” button or not.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment : Unit 7 - Page 54 - Motivation Station    Expected Result : Assignment should be assigned to perticular student.
+    Login as Student    Test data: studentnew1314/test1234)    Expected Result:Student home page should be display.
+    Click On Start button to start assignment.    Test data:Unit 7 - Page 54 - Motivation Station
+    Answer the question    \    Expected result : “Save Answer” button should be display.
+
+7692091-Mentoringminds Logo is displayed or not at the home page(Ipad)
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Check the MMlogo at the top left    \    Expected Result:Logo should be displayed
+
+8115358-Verify 'text field' is cleared or not when clicked on 'Reset' button.
+    [Documentation]    Steps to reproduce:
+    ...
+    ...    1)Login to “b11test1.mentoringmindsonline.com” as a student.
+    ...    2)Start/Continue the assignment “CCS Motivation Math Level 01: Page 111 - Independent Practice: Represent and Interpret Data(1.MD.C.4) “.
+    ...    3)Choose the second question and answer the all the text fields and draw the bar chart according to the number of fruits.
+    ...    4)Click on the “Reset” button which is on the top of “Favorite type of fruit” bar chat and observe.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login with valid teacher credentials and assign the assignment.    TestData For Teacher: rhwpte+ta1s3@gmail.com/test1234 TestDat For Assignment: CCS Motivation Math Level 01: Page 111 - Independent Practice: Represent and Interpret Data(1.MD.C.4)    Expected Result : Assignment should beassigned to perticular student.
+    Login as Student    Test Data: student1s3b/test1234    Expected result: Student home page should be display
+    Click on 'start' button and start the assignment
+    Enter data in text field and click on 'Reset' button.    \    Expected Result : Data should be cleared when click on 'reset' button.

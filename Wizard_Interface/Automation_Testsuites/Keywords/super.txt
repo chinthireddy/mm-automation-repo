@@ -1,0 +1,21 @@
+*** Settings ***
+Library           Selenium2Library
+Library           AutoItLibrary
+Library           String
+Library           OperatingSystem
+Library           ../Library/CommonLibrary.py
+Library           ../Library/AlgorithmLibrary.py
+Resource          ../Objects/Objects.txt
+Resource          global.txt
+Resource          login.txt
+Resource          newuser.txt
+Library           Collections
+Resource          common.txt
+Resource          testdata.txt
+Resource          student_assignments.txt
+Resource          reports.txt
+Resource          prerequisitesstudentassignment.txt
+Resource          teacher.txt
+Resource          schooladmin.txt
+Library           Screenshot
+Resource          pagenavigation.txt

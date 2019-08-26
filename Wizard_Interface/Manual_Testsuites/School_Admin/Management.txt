@@ -1,0 +1,1279 @@
+*** Test Cases ***
+Display all the users details of the school
+    [Documentation]    This Test Case describes whether all User details are displayed or not? in the Management page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sadmin2505@gmail.com, Password: test1234
+    Click on Sign In button    \    School Admin Home page should be displayed
+    Click on Management    \    Management Page should be displayed with all the users of that perticular school in the All Users Tab
+
+Create Student user from Management-MTC76
+    [Documentation]    This Test Case describes whether New student user is created or not? using Add button in the All users grid from the Management page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > All Users > Add    \    New User pop up should be displayed with its screen elements
+    Select Role as Student    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name and Select Grade from autocomplete    First Name: student , Middle Name: std , Last Name: std87
+    Enter UserId and Password    User Id: student87 , password:test1234
+    Click on Add button in the Class Tab    \    Edit Student's Class popup should be displayed
+    Check the checkboxs to select the classes in Available classes Tab    \    Selected classes should be displayed in New User's Classes Tab
+    Click on Save button in Edit Student's Class popup    \    Classes should be added to the student and display in Classes Tab
+    Click on Save button    \    Student should be added in the All users grid
+
+Create School Admin from Management-MTC77
+    [Documentation]    This Test Case describes whether New School Admin user is created or not? using Add button in the All users grid from the Management page
+    Steps    Test Data    Expected result    Actual result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sadmin2505@gmail.com, Password: test1234
+    Click on Sign In button    \    School Admin Home page should be displayed
+    Click on Management > All User Tab > Add    \    New User pop up should be displayed with its screen elements
+    Select Role as School Admin    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name    First Name: school , Middle Name: admin , Last Name: sch87
+    Enter UserId and Password    User Id: rhwpte+sch87@gmail.com \ Password: test1234
+    Click on Add button in the Class Tab    \    Edit Student's Class popup should be displayed
+    Check the checkboxs to select the classes in Available classes Tab    \    Selected classes should be displayed in New User's Classes Tab
+    Click on Save button in Edit Student's Class popup    \    Classes should be added to the student and display in Classes Tab
+    Click on Save button    \    School Admin should be added in the All users grid
+
+Display Details Tab for All Users
+    [Documentation]    This Test Case describes whether the User details are displayed or not? when we select the user record in the all users grid
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > All Users > Select any record in the grid    \    Details Tab should be displayed
+
+Verify Student,Teacher and Admin credentials are editable-MTC73
+    [Documentation]    This Test Case describes whether the Student,Teacher and admin credentials are Editable or not? in the Details grid
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sadmin2505@gmail.com, Password: test1234
+    Click on Sign In button    \    School Admin Home page should be displayed
+    Click on Management > All Users > Select any record in the grid    \    Details Tab should be displayed with User details.
+    Click on Edit button    \    All the fields should get enabled.
+    Update the details(credentials ,User Name) and Click on Save button    \    Updated details should be saved.
+
+Verify district admin credentials are editable
+    [Documentation]    This Test Case describes whether the District admin credentials are Editable or not? in the Details grid
+    Steps    Test Data    Expected result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sadmin2505@gmail.com, Password: test1234
+    Click on Sign In button    \    School Admin Home page should be displayed
+    Click on Management > All Users > Select District Admin record    \    Details Tab should be displayed with Edit button in disable mode.
+
+Verify district admin credentials are displayed in '*' symbol-MTC75
+    [Documentation]    This Test Case describes whether the District admin credentials are displayed with the Mandatory(*) fields or not? in the Details grid
+    Steps    Test Data    Expected result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sadmin2505@gmail.com, Password: test1234
+    Click on Sign In button    \    School Admin Home page should be displayed
+    Click on Management > All Users > Select District Admin record    \    Admin Credentials should be displayed in * symbols in Details Tab.
+
+Validate the Show and Hide password button
+    [Documentation]    This Test Case describes whether the functionality of Show and Hide password button in the Student,Teacher and admin Details grid
+    Steps    Test Data    Expected result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sadmin2505@gmail.com, Password: test1234
+    Click on Sign In button    \    School Admin Home page should be displayed
+    Click on Management > All Users > Select any record in the grid    \    Details Tab should be displayed with User details.
+    Click on Show Password button    \    Password should be displayed
+    Click on Hide Password button    \    Password field should move to hidden state
+
+Validate the cancel button in Management Module
+    [Documentation]    This Test Case validates whether the Student,Teacher and admin Details are updated or not? even after selecting Cancel button in the details grid \
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sadmin2505@gmail.com, Password: test1234
+    Click on Sign In button    \    School Admin Home page should be displayed
+    Click on Management > All Users / Classes / Show Groups > Select any record in the grid    \    Details Tab should be displayed with User details.
+    Click on Edit button    \    All the fields should get enabled.
+    Update the details and Click on Cancel button    \    Updated details should not be updated.
+
+Validate the grid elements in the All Users Tab
+    [Documentation]    This Test Case decribes whether the User details(Last Name,First Name,Grade,Status,Role,Last Created and Time) are displayed or not? in the All users grid
+    Steps    Test Data    Expected result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sadmin2505@gmail.com, Password: test1234
+    Click on Sign In button    \    School Admin Home page should be displayed
+    Click on Management > All Users    \    Display Last Name , First Name , Grade , Status , Role and Created Date and Time in the grid
+
+Verify Delete User in School Admin
+    [Documentation]    This Test Case validates whether the selected User is able to delete or not? Using Delete button in the All users grid
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sadmin2505@gmail.com, Password: test1234
+    Click on Sign In button    \    School Admin Home page should be displayed
+    Click on Management > All Users    \    All User details should be displayed
+    Select a record in the All Users grid    \    Selected record should be highlighted
+    Click on Delete button    \    Alert message should be displayed \ as "Are you sure you want to delete the user "User Name"?"
+    Click on OK button in the alert message    \    Record should get deleted from the grid.
+
+Verify Print/Export using admin credentials-MTC80
+    [Documentation]    This Test Case validates whether the User details(All Class/School) are able to Print/Export? Using Print/Export button in the All users grid
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > All Users    \    All User details should be displayed
+    Click on Print/Export button    \    Pop up should be displayed in which user can select the Whole School or Classes.
+    Select the School or class in the drop down and click on Continue button    \    Select User to be printed or Exported popup should be displayed
+    select the records in \ ' Select User' tab    \    selected record should be displayed in 'Users Ready to Print / Export ' tab
+    Click on Export button    \    The records in the 'Users Ready to Print / Export ' tab should be exported.
+    Click on Print button    \    The records in the 'Users Ready to Print / Export ' tab should be Printed.
+
+Print one user details per page
+    [Documentation]    This Test Case describes whether the Users in the Class/School can be Printed or not? using 'Print one user per page' checkbox in the "Print/Export" pop-up page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > All Users    \    All User details should be displayed
+    Click on Print/Export button    \    Pop up should be displayed in which user can select the Whole School or Classes.
+    Select the School or class in the drop down and click on Continue button    \    Select User to be printed or Exported popup should be displayed
+    Check/selected the records in ' Select User' tab    \    selected/checked record should be displayed in 'Users Ready to Print / Export ' tab
+    Check the checkbox "Print One User Per Page" and Click on print button    \    The records in the 'Users Ready to Print / Export ' tab should be Printed in Each page per user.
+
+By default display all the classes of the school
+    [Documentation]    This Test Case validates whether All Classes are displayed or not? by default in the Classes grid on the Management page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Classes    \    Management Page should be displayed with all classes in the Classes Tab
+
+Display all Groups of the school
+    [Documentation]    This Test Case validates whether All Groups are displayed or not? in the Groups grid on the Management page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Show Groups    \    Display all the existing groups in Groups Tab.
+
+Add Classes to the teacher
+    [Documentation]    This Test Case describes whether newly created Class is added to the respective Teacher \
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Classes > Add    \    New Classes pop up should be displayed .
+    Enter / Select Mandatory fields    Name: class87 , Teacher: ts85, teacher
+    Click on OK button    \    Class should be added to the selected teacher and Class Code Information should be displayed.
+
+Create Class from Management and add Student and Titles to the class-MTC78
+    [Documentation]    This Test Case describes whether the Student and Titles are able add or not? to the newly created class
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Classes > Add    \    New Classes pop up should be displayed .
+    Enter / Select Mandatory fields to create class    Name: class87 , Teacher: ts85, teacher
+    Click on Edit button in the student Tab to Add student    \    'Edit Students in the class' popup should be displayed.
+    Select the students in 'Avaliable students' grid    \    Selected students should be displayed in 'New class members ' grid
+    Click on Save button    \    Selected students should be displayed in 'Student' Tab.
+    Click on Edit button in the Title Tab    \    Edit Syllabus of the class popup should be displayed
+    Select the Title in the Available Title grid    \    Selected title should be displayed in New class Syllabus
+    Click on Save button    \    Selected students should be displayed in 'Titles' Tab.
+    Click on OK button    \    Class should be added to the selected teacher
+
+Display Details Tab for Classes
+    [Documentation]    This Test Case describes whether the Class details are displayed or not? when we Select a Class in the Classes Grid on the Management page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Classes > Select any record in the grid    \    Details Tab should be displayed
+
+Add additional students and Titles to the existing class
+    [Documentation]    This Test Case describes whether the additional Students and Titles can be added or not? to the existing class in the Class grid on the Management page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Classes    \    Classes records should be displayed.
+    Select the particular record in the classes Tab to which students and title is going to be added    \    Details Tab should be displayed
+    Click on Edit button    \    Details Tab should be highlighted with different colour and Save , Cancel button should get enabled
+    Click on Edit button in the student Tab to Add student    \    'Edit Students in the class' popup should be displayed.
+    Select the students in 'Avaliable students' grid    \    Selected students should be displayed in 'New class members ' grid
+    Click on Save button    \    Selected students should be displayed in 'Student' Tab.
+    Click on Edit button in the Title Tab    \    Edit Syllabus of the class popup should be displayed
+    Select the Title in the Available Title grid    \    Selected title should be displayed in New class Syllabus
+    Click on Save button    \    Selected students should be displayed in 'Titles' Tab.
+    Click on Save button in the details tab    \    Students and Title should be added to the class
+
+Delete Class from Management-MTC82
+    [Documentation]    This Test Case describes whether a Class can be deleted or not? using Delete button in the Classes Grid on the Management page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on Management > Classes    \    Management Page should be displayed with all classes in the Classes Tab
+    Select the a record in the classes Tab and Click on Delete button    \    Alert message should be displayed \ as "Are you sure you want to delete the class 'class Name'?"
+    Click on OK button    \    Record should get deleted.
+
+Auto generated Class Code
+    [Documentation]    This Test Case describes whether the Class Code is generated or not? when we create a New Class in the Classes Grid on the Management page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Classes > Add button    \    New Classes pop up should be displayed .
+    Enter / Select Mandatory fields    Name: class87 , Teacher: ts85, teacher
+    Click on OK button    \    Class should be added to the selected teacher.
+
+Validate the grid elements in the Class Tab
+    [Documentation]    This Test Case describes whether a Class displays all the Grid elements of a class in the Classes grid on the Management page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Classes    \    Display Name of the class , Teacher Full Name , Description , Class Code and Created Date and Time in the grid
+
+Create Group from Management-MTC79
+    [Documentation]    This Test Case describes whether a Group is created or not? in the Groups grid on the Management page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Show Groups > Add button    \    New Group pop up should be displayed .
+    Enter / Select Mandatory fields    Name: group87 , Teacher: ts85, teacher
+    Click on OK button    \    Group should be added to the selected teacher.
+
+Validate the grid elements in the Groups Tab
+    [Documentation]    This Test Case describes whether a Group displays all the Grid elements of a group in the Groups grid on the Management page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Show Groups    \    Display Name of the class , Teacher Full Name , Description , Class Code and Created Date and Time in the grid
+
+Delete a particular Group record
+    [Documentation]    This Test Case describes whether a Group can be deleted or not? using Delete button in the Groups Grid on the Management page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Show Groups    \    Group details should be displayed
+    Select the particular record in the Group Tab and Click on Delete button    \    Alert message should be displayed \ as "Are you sure you want to delete the group 'Group Name'?"
+    Click on OK button    \    Record should get deleted.
+
+Add Group, student and Title to the teacher
+    [Documentation]    This Test Case describes whether newly created Group along with Students and Titles are added to the respective Teacher \
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Show Groups > Add button    \    New Group pop up should be displayed .
+    Enter / Select Mandatory fields    Name: group87 , Teacher: ts85, teacher
+    Click on Edit button in the student Tab to Add student    \    'Edit Students in the class' popup should be displayed.
+    Select the students in 'Avaliable students' grid    \    Selected students should be displayed in 'New class members ' grid
+    Click on Save button    \    Selected students should be displayed in 'Student' Tab.
+    Click on Edit button in the Title Tab    \    Edit Syllabus of the class popup should be displayed
+    Select the Title in the Available Title grid    \    Selected title should be displayed in New class Syllabus
+    Click on Save button    \    Selected students should be displayed in 'Titles' Tab.
+    Click on OK button    \    Group should be added to the selected teacher
+
+Display Details Tab for Groups
+    [Documentation]    This Test Case describes whether the Group details are displayed or not? when we Select a Group in the Groups Grid on the Management page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Groups > Select any record in the grid    \    Details Tab should be displayed
+
+Verify whether students and Titles are added to group-MTC129,MTC131
+    [Documentation]    This Test Case describes whether the additional Students and Titles can be added or not? to the existing Group in the Groups grid on the Management page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Show Groups    \    Groups records should be displayed.
+    Select the a record in the Groups Tab to which students and title is going to be added    \    Details Tab should be displayed
+    Click on Edit button    \    Details Tab should be highlighted with different colour and Save , Cancel button should get enabled
+    Click on Edit button in the student Tab to Add student    \    'Edit Students in the class' popup should be displayed.
+    Select the students in 'Avaliable students' grid    \    Selected students should be displayed in 'New class members ' grid
+    Click on Save button    \    Selected students should be displayed in 'Student' Tab.
+    Click on Edit button in the Title Tab    \    Edit Syllabus of the class popup should be displayed
+    Select the Title in the Available Title grid    \    Selected title should be displayed in New class Syllabus
+    Click on Save button    \    Selected students should be displayed in 'Titles' Tab.
+    Click on Save button in the details tab    \    Students and Title should be added to the class
+
+Validate the sorting order in Management Module
+    [Documentation]    This Test Case validate the Sorting functionality for all grid elements on the Management page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > All Users / Classes / Show Groups    \    User details should be displayed.
+    Click on grid column headers    \    Records should be sorted in ascending and descending order
+
+Verify whether Alert message is displayed when school admin creates multiple roles like (Student and Teacher)-MTC153
+    [Documentation]    This Test Case describes whether an Alert message is displayed or not? when school admin creates multiple roles(Student and teacher)
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > All Users > Add    \    New User pop up should be displayed with its screen elements
+    Select Role as Student & Teacher    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name and Select Grade from autocomplete    First Name: StudentFN , Middle Name: StudentMN , Last Name: StudentLN
+    Enter UserId and Password    User Id: rhwpte+Student21@gmail.com, password:Student021
+    Click on Save button    \    "Teachers can only have a teacher role. All other roles are not allowed" alert message should be displayed.
+
+Verify whether School Admin is able to add another School admin from New User window-MTC148
+    [Documentation]    This Test Case describes whether a School Admin can add another school admin in the All Users grid on th Management \ Page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > All Users > Add    \    New User pop up should be displayed with its screen elements
+    Select Role as School Admin    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name    First Name: school , Middle Name: admin , Last Name: sch87
+    Enter UserId and Password    User Id: rhwpte+sch87@gmail.com \ Password: test1234
+    Click on Save button    \    School Admin should be added in the All users grid
+
+Verify whether "Terms and Conditions" window is displayed when the user is first time logged into application-MTC149
+    [Documentation]    This Test Case describes whether the Terms and Condition window is displayed or not? for Newly created School Admin
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > All Users > Add    \    New User pop up should be displayed with its screen elements
+    Select Role as School Admin    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name    First Name: school , Middle Name: admin , Last Name: sch87
+    Enter UserId and Password    User Id: rhwpte+sch87@gmail.com \ Password: test1234
+    Click on Save button    \    School Admin should be added in the All users grid
+    Click on Sign out button    \    User should get logged off
+    Login with New added User ID and \ password    User Id: rhwpte+sch87@gmail.com \ Password: test1234    "Terms and Condition" window should be displayed.
+
+Verify whether "Terms and Conditions" window is displaying or not when the user is second time logged into application-MTC150
+    [Documentation]    This Test Case describes whether the Terms and Condition window is displayed or not? for Newly created School Admin when logged into the application for the second time
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > All Users > Add    \    New User pop up should be displayed with its screen elements
+    Select Role as School Admin    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name    First Name: school , Middle Name: admin , Last Name: sch87
+    Enter UserId and Password    User Id: rhwpte+sch87@gmail.com \ Password: test1234
+    Click on Save button    \    School Admin should be added in the All users grid
+    Click on Sign out button    \    User should get logged off
+    Login with New added User ID and \ password    User Id: rhwpte+sch87@gmail.com \ Password: test1234    "Terms and Condition" window should be displayed.
+    Click on Sign out button    \    User should get logged off
+    Again Login with previous User ID and \ password    User Id: rhwpte+sch87@gmail.com \ Password: test1234    "Terms and Condition" window should not displayed.
+
+Verify whether "Terms and Conditions" window is displayed when logged in with multiple role like Teacher and school admin for the first time-MTC151
+    [Documentation]    This Test Case describes whether the Terms and Condition window is displayed or not? for Newly created multiple roles(Teacher,School Admin) when logged into the application for the first time
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > All Users > Add    \    New User pop up should be displayed with its screen elements
+    Select Role as Teacher & School Admin    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name    First Name: school , Middle Name: admin , Last Name: sch87
+    Enter UserId and Password    User Id: rhwpte+sch87@gmail.com \ Password: test1234
+    Click on Save button    \    User should be added in the All users grid
+    Click on Sign out button    \    User should get logged off
+    Login with New added User ID and \ password    User Id: rhwpte+sch87@gmail.com \ Password: test1234    "Terms and Condition" window should be displayed.
+
+Verify whether "Terms and Conditions" window is not displayed when logged in with multiple role like Teacher and school admin for the second time-MTC152
+    [Documentation]    This Test Case describes whether the Terms and Condition window is displayed or not? for Newly created Multiple roles(Teacher,School Admin) when logged into the application for second time
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > All Users > Add    \    New User pop up should be displayed with its screen elements
+    Select Role as Teacher & School Admin    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name    First Name: school , Middle Name: admin , Last Name: sch87
+    Enter UserId and Password    User Id: rhwpte+sch87@gmail.com \ Password: test1234
+    Click on Save button    \    User should be added in the All users grid
+    Click on Sign out button    \    User should get logged off
+    Login with New added User ID and \ password    User Id: rhwpte+sch87@gmail.com \ Password: test1234    "Terms and Condition" window should be displayed.
+    Click on Sign out button    \    User should get logged off
+    Again Login with previous User ID and \ password    User Id: rhwpte+sch87@gmail.com \ Password: test1234    "Terms and Condition" window should not displayed.
+
+MTC97-Verify whether in 10 seconds a class is added when clicked on "Ok" button in Add Class
+    [Documentation]    This Test Case describes whether the New Class is created in 10 seconds or not? Using Add button in the Classes gird on the management page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Classes > Add    \    New Classes pop up should be displayed .
+    Enter / Select Mandatory fields    Name: class87 , Teacher: ts85, teacher
+    Click on OK button    \    Class should be added to the selected teacher and Class Code Information should be displayed with in less than 10 seconds after ok button
+
+MTC96-Verify whether Management screen is displayed in 10 seconds
+    [Documentation]    This Test Case describes whether the Management Page is displayed in10 seconds or not? when we sign in as School Admin
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management    \    Management Page should be displayed with in 10 seconds.
+
+MTC84-Change the instructor of a class using School Admin credentials
+    [Documentation]    This Test Case describes whether we can change the Teacher for an Existing Class or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Classes    \    Classes records should be displayed.
+    Select the particular record in the classes Tab to which Instructor is going to change    \    Details Tab should be displayed
+    Click on Edit button    \    Details Tab should be highlighted with different colour and Save , Cancel button should get enabled
+    Select Teacher Drop down to change the instructor    \    Teacher drop down should display the list of Teachers
+    Select a Teacher from the drop down    \    Selected teacher should be displayed
+    Click on 'Save' button    \    The class should be saved with the changed teacher and should be displayed in the Classes grid
+
+MTC76-Create Student user from Management
+    [Documentation]    This Test Case describes whether we can create a New Student using Add button in the All Users Grid
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > All Users > Add    \    New User pop up should be displayed with its screen elements
+    Select Role as Student    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name and Select Grade from autocomplete    First Name: student , Middle Name: std , Last Name: std87
+    Enter UserId and Password    User Id: student87 , password:test1234
+    Click on Add button in the All users grid    \    New user Pop-up should be displayed
+    Check the checkboxs according to the student    \    The Checkbox should be selected accordingly
+    Click on Save button    \    Student should be added in the All users grid
+
+MTC77-Create School Admin from Management
+    [Documentation]    This Test Case describes whether we can create a New School Admin using Add button in the All Users Grid
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > All User Tab > Add    \    New User pop up should be displayed with its screen elements
+    Select Role as School Admin    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name    First Name: school , Middle Name: admin , Last Name: sch87
+    Enter UserId and Password    User Id: rhwpte+sch87@gmail.com \ Password: test1234
+    Click on Add button in the All users grid    \    New user Pop-up should be displayed
+    Check the checkboxs according to the School \ Admin    \    The Checkbox should be selected accordingly
+    Click on Save button    \    School Admin should be added in the All users grid
+
+MTC144-Verify whether School admin can edit the teacher role in a class and login with the modified teacher
+    [Documentation]    This Test Case describes whether we can LogIn into the teachers home page using Modified teacher credentials of a class
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Classes    \    Classes records should be displayed.
+    Select the particular record in the classes Tab to which Instructor is going to change    \    Details Tab should be displayed
+    Click on Edit button    \    Details Tab should be highlighted with different colour and Save , Cancel button should get enabled
+    Select Teacher from dropdown    \    Another teacher should be selected.
+    Click on Save button in the details tab    \    Existing Students ,Class should be added to the New Instructor or teacher.
+    Click on Sign Out    \    User should get logged off.
+    Enter Modified teacher User Id & Password and Click on Sign In button    User Id: rhwpte+sch89@gmail.com \ Password: test1234    Home page should be displayed
+    Click on Management    \    Class and Students should be added to the respective \ Classes and My Students \ grid.
+
+MTC146-Verify whether School admin can edit the teacher role in a group and login with the modified teacher
+    [Documentation]    This Test Case describes whether we can LogIn into the teachers home page using Modified teacher credentials of a Group
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > show groups    \    Groups records should be displayed.
+    Select the particular record in the Groups Tab to which Instructor is going to change    \    Details Tab should be displayed
+    Click on Edit button    \    Details Tab should be highlighted with different colour and Save , Cancel button should get enabled
+    Select Teacher from dropdown    \    Another teacher should be selected.
+    Click on Save button in the details tab    \    Existing Students ,Class should be added to the New Instructor or teacher.
+    Click on Sign Out    \    User should get logged off.
+    Enter Modified teacher User Id & Password and Click on Sign In button    Test Data :Url=http://b33test1.mentoringmindsonline.com/ \ User Id: rhwpte+teacher87@gmail.com \ Password: test1234    Home page should be displayed
+    Click on Management > Show groups    \    Groups and Students should be added to the respective \ Groups and My Studnets \ grid.
+
+MTC98-Verify whether in 10 seconds a user is added when clicked on "Save" in New User
+    [Documentation]    This Test Case describes whether we can Add a newly created Student user in 10 seconds to the All users grid \
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > All Users > Add    \    Expected result: New User pop up should be displayed with its screen elements
+    Select Role as Student    \    Expected result: Fields should be changed according to the role selected
+    Enter First, Middle & Last Name and Select Grade from autocomplete    First Name: student , Middle Name: std , Last Name: std87
+    Enter UserId and Password    User Id: student87 , password:test1234
+    Click on Add button in the Class Tab    \    Expected result:Edit Student's Class popup should be displayed
+    Check the checkboxs to select the classes in Available classes Tab    \    Expected result:Selected classes should be displayed in New User's Classes Tab
+    Click on Save button in Edit Student's Class popup    \    Expected result:Classes should be added to the student and display in Classes Tab
+    Click on Save button    \    Expected result:Student should be added in the All users grid with in less than 10 seconds
+
+Create Teacher from Management_Denim
+    [Documentation]    This Test Case describes whether the School Admin can create a New Teacher Role or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > All User Tab > Add    \    New User pop up should be displayed with its screen elements
+    Select Role as Teacher    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name    First Name: teacher , Middle Name: ts , Last Name: ts87
+    Enter UserId and Password    User Id: rhwpte+ts87@gmail.com \ Password: test1234
+    Click on Add button in the Class Tab    \    Edit Student's Class popup should be displayed
+    Check the checkboxs to select the classes in Available classes Tab    \    Selected classes should be displayed in New User's Classes Tab
+    Click on Save button in Edit Student's Class popup    \    Classes should be added to the student and display in Classes Tab
+    Click on Save button    \    Teacher should be added in the All users grid
+
+Validate Archive Classes & Groups from Management
+    [Documentation]    This Test Case describes whether the School Admin can Archive Class & Groups in the Management Page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Archive Classes & Groups    \    "Classes and Groups Archive" pop page should be displayed with its screen elements
+    Click on particular Classes/Groups checkbox to archive in "Classes & Groups" grid    \    Selected Classes/Groups should be displayed in "Archived Classes & Groups"
+    Click on "Save" button    \    "Archiving Classes and Groups Can Only Partially Be Undone" alert message should be displayed
+    Click on "Proceed" button in the alert pop-up    \    "Collecting Assignments" loading pop-up should be displayed along with "The requested action has been completed." alert message
+    Click on "Ok" button in the alert message pop-up    \    Archived Classes/Groups should not be displayed in the Classes/Groups grid list
+
+Validate Re-Archive Classes & Groups from Management
+    [Documentation]    This Test Case describes whether the School Admin can Re-Archive Class & Groups in the Management Page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Archive Classes & Groups    \    "Classes and Groups Archive" pop page should be displayed with its screen elements
+    Click on particular Classes/Groups to uncheck archived classes/groups in "Classes & Groups" grid    \    Unchecked Classes/Groups should not be displayed in "Archived Classes & Groups"
+    Click on "Save" button    \    "Archiving Classes and Groups Can Only Partially Be Undone" alert message should be displayed
+    Click on "Proceed" button in the alert pop-up    \    "The requested action has been completed." alert message is displayed
+    Click on "Ok" button in the alert message pop-up    \    Re-Archived Classes/Groups should be displayed in the Classes/Groups grid list
+
+Validate Search functionality in Archive Classes & Groups from Management
+    [Documentation]    This Test Case describes whether the School Admin can Validate Search functionality in the Archive Class & Groups pop-up page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Archive Classes & Groups    \    "Classes and Groups Archive" pop page should be displayed with its screen elements
+    Enter Valid class/group name in the "Search" field    \    The Particular Class/Group should be displayed in "Classes & Groups" grid with respect to Name entered in the search field
+    Enter Invalid class/group name in the "Search" field    \    "Classes & Group" grid should not display the Invalid Class/Group entered in the Search field
+
+Validate Check All functionality in Archive Classes & Groups from Management
+    [Documentation]    This Test Case describes whether the School Admin can Validate Choose all Class & Groups functionality to Archive in the Archive Class & Groups pop-up page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Archive Classes & Groups    \    "Classes and Groups Archive" pop page should be displayed with its screen elements
+    Click on column header Checkbox in the "Classes & Groups" grid    \    All Classes & Groups in the "Classes & Groups" grid should be selected \ and the selected Classes & Groups should be displayed in the "Archived Classes & Groups" grid
+
+Validate Archive all functionality in Archive Classes & Groups from Management
+    [Documentation]    This Test Case describes whether the School Admin can Validate Archive functionality in Archive Class & Groups pop-up \ page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Archive Classes & Groups    \    "Classes and Groups Archive" pop page should be displayed with its screen elements
+    Click on column header Checkbox in the "Classes & Groups" grid    \    All Classes & Groups in the "Classes & Groups" grid should be selected \ and the selected Classes & Groups should be displayed in the "Archived Classes & Groups" grid
+    Click on "Save" button    \    "Archiving Classes and Groups Can Only Partially Be Undone" alert message should be displayed
+    Click on "Proceed" button in the alert pop-up    \    "Collecting Assignments" loading pop-up should be displayed along with "The requested action has been completed." alert message
+    Click on "Ok" button in the alert message pop-up    \    Archived Classes/Groups should not be displayed in the Classes/Groups grid list
+
+Validate Re-Archive all functionality in Archive Classes & Groups from Management
+    [Documentation]    This Test Case describes whether the School Admin can Validate Re-Archive all \ functionality in Archive Class & Groups pop-up page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Archive Classes & Groups    \    "Classes and Groups Archive" pop page should be displayed with its screen elements
+    Click on column header to uncheck the Checkbox in the "Classes & Groups" grid    \    All Classes & Groups in the "Classes & Groups" grid should be deselected \ and the deselected Classes & Groups should not be displayed in the "Archived Classes & Groups" grid
+    Click on "Save" button    \    "Archiving Classes and Groups Can Only Partially Be Undone" alert message should be displayed
+    Click on "Proceed" button in the alert pop-up    \    "Collecting Assignments" loading pop-up should be displayed along with "The requested action has been completed." alert message
+    Click on "Ok" button in the alert message pop-up    \    Re-Archived Classes/Groups should be displayed in the Classes/Groups grid list
+
+Validate Cancel functionality in "Archiving Classes and Groups Can Only Partially Be Undone" alert Pop-up from Management
+    [Documentation]    This Test Case describes whether the School Admin can Cancel the Alert message in the Archive Class & Groups pop-up page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Archive Classes & Groups    \    "Classes and Groups Archive" pop page should be displayed with its screen elements
+    Click on particular Classes/Groups checkbox to archive in "Classes & Groups" grid    \    Selected Classes/Groups should be displayed in "Archived Classes & Groups"
+    Click on "Save" button    \    "Archiving Classes and Groups Can Only Partially Be Undone" alert message should be displayed
+    Click on "Cancel" button in the alert pop-up    \    Archive functionality should not be performed and the alert pop-up should be closed
+
+Validate Archive Teachers & Admins from Management
+    [Documentation]    This Test Case describes whether the School Admin can Archive Teachers & Admins functionality or not? using Archive Teachers & Admins button in the All Users Grid on the Management Page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Archive Teachers & Admins    \    "Instructor, School Admin Archive" pop page should be displayed with its screen elements
+    Click on particular Teacher/Admin checkbox to archive in "All Teachers and Admins" grid    \    Selected Teacher/Admin should be displayed in "Archived Teachers and Admins"
+    Click on "Save" button    \    "Archiving Teachers and Admins" alert message should be displayed
+    Click on "Proceed" button in the alert pop-up    \    "The requested action has been completed." alert message should be displayed
+    Click on "Ok" button in the alert message pop-up    \    Archived Teacher/Admin should not be displayed in the "All Users" grid list
+
+Validate Re-Archive Teachers & Admins from Management
+    [Documentation]    This Test Case describes whether the School Admin can Re-Archive Teachers & Admins functionality or not? using Archive Teachers & Admins button in the All Users Grid on the Management Page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Archive Teachers & Admins    \    "Instructor, School Admin Archive" pop page should be displayed with its screen elements
+    Click on particular archieved Teacher/Admin to uncheck in "All Teachers and Admins" grid    \    Unchecked Teacher/Admin should not be displayed in "Archived Teachers and Admins"
+    Click on "Save" button    \    "Archiving Teachers and Admins" alert message should be displayed
+    Click on "Proceed" button in the alert pop-up    \    "The requested action has been completed." alert message is displayed
+    Click on "Ok" button in the alert message pop-up    \    Re-Archived Teacher/Admin should be displayed in the Classes/Groups grid list
+
+Validate Search functionality in Archive Teachers & Admins from Management
+    [Documentation]    This Test Case describes whether the School Admin can Validate Search functionality in Archive Teachers & Admins pop-up page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Archive Teachers & Admins    \    "Instructor, School Admin Archive" pop page should be displayed with its screen elements
+    Enter Valid Teacher/Admin name in the "Search" field    \    The Particular Teacher/Admin should be displayed in "All Teachers & Admins" grid with respect to Name entered in the search field
+    Enter Invalid Teacher/Admin name in the "Search" field    \    "All Teachers & Admins" grid should not display the Invalid Teacher/Admin entered in the Search field
+
+Validate Check All functionality in Archive Teachers & Admins from Management
+    [Documentation]    This Test Case describes whether the School Admin can Validate Choose all Teachers & Admins functionality to Archive in Archive Class & Groups in \ pop-up page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Archive Teachers & Admins    \    "Instructor, School Admin Archive" pop page should be displayed with its screen elements
+    Click on column header Checkbox in the "All Teachers & Admins" grid    \    All Teachers & Admins in the "All Teachers & Admins" grid should be selected \ and the selected Teachers & Admins should be displayed in the "Archived Teachers and Admins" grid
+
+Validate Archive all functionality in Archive Teachers & Admins from Management
+    [Documentation]    This Test Case describes whether the School Admin can Validate Archive all \ functionality in Archive Teachers & Admins pop-up page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Archive Teachers & Admins    \    "Instructor, School Admin Archive" pop page should be displayed with its screen elements
+    Click on column header Checkbox in the "All Teachers & Admins " grid    \    All Teachers & Admins in the "All Teachers & Admins" grid should be selected and the selected Teachers & Admins should be displayed in the "Archived Teachers and Admins" grid
+    Click on "Save" button    \    "Archiving Teachers and Admins" alert message should be displayed
+    Click on "Proceed" button in the alert pop-up    \    "The requested action has been completed." alert message is displayed
+    Click on "Ok" button in the alert message pop-up    \    Archived Teacher/Admin should not be displayed in the "All Users" grid list
+
+Validate Re-Archive all functionality in Archive Teachers & Admins from Management
+    [Documentation]    This Test Case describes whether the School Admin can Validate Re-Archive all \ functionality in Archive Teachers & Admins pop-up page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Archive Teachers & Admins    \    "Instructor, School Admin Archive" pop page should be displayed with its screen elements
+    Click on column header to uncheck the Checkbox in the "All Teachers & Admins" grid    \    All Teachers & Admins in the "All Teachers & Admins" grid should be deselected \ and the deselected Teachers & Admins should not be displayed in the "Archived Teachers and Admins" grid
+    Click on "Save" button    \    "Archiving Teachers and Admins" alert message should be displayed
+    Click on "Proceed" button in the alert pop-up    \    "The requested action has been completed." alert message is displayed
+    Click on "Ok" button in the alert message pop-up    \    Re-Archived Teacher/Admin should be displayed in the "All Users" grid list
+
+Validate Cancel functionality in "Archiving Teachers and Admins" alert Pop-up from Management
+    [Documentation]    This Test Case describes whether the School Admin can Cancel the Alert message in the Archive Teachers & Admins pop-up page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Archive Teachers & Admins    \    "Instructor, School Admin Archive" pop page should be displayed with its screen elements
+    Click on particular Teacher/Admin checkbox to archive in "All Teachers and Admins" grid    \    Selected Teacher/Admin should be displayed in "Archived Teachers and Admins"
+    Click on "Save" button    \    "Archiving Teachers and Admins" alert message should be displayed
+    Click on "Cancel" button in the alert pop-up    \    Archive functionality should not be performed and the alert pop-up should be closed
+
+Validate Archive Students from Management
+    [Documentation]    This Test Case describes whether the School Admin can Archive Students functionality or not? using Archive Students button in the All Users Grid on the Management Page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Archive Students' button in Management page    \    "Student Archive" pop page should be displayed with Student details
+    Choose Students to Archive from student list    \    Selected Student should be displayed in "Students to be Archived" grid
+    Click on "Save" button    \    Alert message should be displayed as "Archiving Students Can Only Partially Be Undone"
+    Click on "Proceed" button in the alert message    \    Alert message should be displayed as "The requested action has been completed."
+    Click on "Ok" button in the alert message    \    Archived Student should not be displayed in the "All Users" grid list
+
+Validate Re-Archive Students from Management
+    [Documentation]    This Test Case describes whether the School Admin can Re-Archive Students functionality or not? using Archive Students button in the All Users Grid on the Management Page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Archive Students' button in Management page    \    "Student Archive" pop page should be displayed with Student details
+    Choose Archived Students to Re-Archive from student list    \    Re-Archived Student should not be displayed in "Students to be Archived" grid
+    Click on "Save" button    \    Alert message should be displayed as "Archiving Students Can Only Partially Be Undone"
+    Click on "Proceed" button in the alert message    \    Alert message should be displayed as "The requested action has been completed."
+    Click on "Ok" button in the alert message    \    Re-Archived Student should be displayed in the "All Users" grid list
+
+Validate Search functionality in Archive Students from Management
+    [Documentation]    This Test Case describes whether the School Admin can Validate Search functionality in Archive Students pop-up page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Archive Students' button in Management page    \    "Student Archive" pop page should be displayed with Student details
+    Enter Valid Student name in the "Search" field    \    The Particular Student should be displayed in "Choose Students to Archive" grid with respect to Name entered in the search field
+    Enter Invalid Student name in the "Search" field    \    "Choose Students to Archive" grid should not display the Invalid Teacher/Admin entered in the Search field
+
+Validate Check All functionality in Archive Students from Management
+    [Documentation]    This Test Case describes whether the School Admin can Validate Choose all Students functionality to Archive in Archive Students pop-up page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Archive Students' button in Management page    \    "Student Archive" pop page should be displayed with Student details
+    Choose All Students from student list    \    All Students in the Student List should be selected and the selected Students should be displayed in the "Students to be Archived" grid
+
+Validate Archive all functionality in Archive Students from Management
+    [Documentation]    This Test Case describes whether the School Admin can Validate Archive all \ functionality in Archive Students pop-up page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Archive Students' button in Management page    \    "Student Archive" pop page should be displayed with Student details
+    Choose All Students to Archive from student list    \    All Students in the "Choose Students to Archive" grid should be selected and the selected Students should be displayed in the "Students to be Archived" grid
+    Click on "Save" button    \    Alert message should be displayed as "Archiving Students Can Only Partially Be Undone"
+    Click on "Proceed" button in the alert pop-up    \    Alert message should be displayed as "The requested action has been completed."
+    Click on "Ok" button in the alert message pop-up    \    Archived Students should not be displayed in the "All Users" grid list
+
+Validate Re-Archive all functionality in Archive Students from Management
+    [Documentation]    This Test Case describes whether the School Admin can Validate Re-Archive all \ functionality in Archive Students pop-up page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Archive Students' button in Management page    \    "Student Archive" pop page should be displayed with Student details
+    Choose All Archived Students to Re-Archive from student list    \    All Students in the "Choose Students to Archive" grid should be deselected and the deselected Students should not be displayed in the "Students to be Archived" grid
+    Click on "Save" button    \    Alert message should be displayed as "Archiving Students Can Only Partially Be Undone"
+    Click on "Proceed" button in the alert message    \    Alert message should be displayed as "The requested action has been completed."
+    Click on "Ok" button in the alert message    \    Archived Students should be displayed in the "All Users" grid list
+
+Validate Cancel functionality in "Archiving Students" alert Pop-up from Management
+    [Documentation]    This Test Case describes whether the School Admin can Cancel the Alert message in the Archive Students pop-up page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Archive Students' button in Management page    \    "Student Archive" pop page should be displayed with Student details
+    Choose Particular Student to Archive from student list    \    Selected Student should be displayed in "Students to be Archived"
+    Click on "Save" button    \    Alert message should be displayed as "Archiving Students Can Only Partially Be Undone"
+    Click on "Cancel" button in the alert message    \    Archive functionality should not be performed and the alert pop-up should be closed
+
+Validate Promote Students from Management
+    [Documentation]    This Test Case describes whether the School Admin can Promote Students functionality or not? using Promote Students button in the All Users Grid on the Management Page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Promote Students' button in Management page    \    "Promote and Reverting the Grade Level of Students" pop page should be displayed with its screen elements
+    Choose particular Student to Promote from "Promote or Revert" list    \    Selected Students should be displayed in "Students to be Promoted or Reverted"
+    Click on "Promote to Next Grade Level" button    \    Alert Message should be displayed as "Students Have Been Promoted to \ the Next Grade Level"
+    Click on "Ok" button in the alert message    \    Students should be promoted to the next grade level and should be displayed in the "All Users" grid list
+
+Validate Revert Students from Management
+    [Documentation]    This Test Case describes whether the School Admin can Revert Students functionality or not? using Promote Students button in the All Users Grid on the Management Page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Promote Students' button in Management page    \    "Promote and Reverting the Grade Level of Students" pop page should be displayed with its screen elements
+    Choose particular Student to Revert from "Promote or Revert" list    \    Selected Students should be displayed in "Students to be Promoted or Reverted"
+    Click on "Revert to Previous Grade Level" button    \    Alert message should be displayed as "Students Have Been Reverted to the Previous Grade Level"
+    Click on "Ok" button in the alert \ message    \    Students should be reverted to the Previous grade level and should be displayed in the "All Users" grid list
+
+Validate Search functionality in Promote Students from Management
+    [Documentation]    This Test Case describes whether the School Admin can Validate Search functionality in Archive Promote/Revert pop-up page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Promote Students' button in Management page    \    "Promote and Reverting the Grade Level of Students" pop page should be displayed with its screen elements
+    Enter Valid Student name in the "Search" field    \    The \ Student list should be displayed in "Choose Students to Promote or Revert" grid with respect to Name entered in the search field
+    Enter Invalid Student name in the "Search" field    \    "Choose Students to Promote or Revert" grid should display the Empty list
+
+Validate Check All functionality in Promote Students from Management
+    [Documentation]    This Test Case describes whether the School Admin can Validate Choose all Students functionality to Promote in Promote/Revert Students pop-up page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Promote Students' button in Management page    \    "Promote and Reverting the Grade Level of Students" pop page should be displayed with its screen elements
+    Choose All Students from "Promote or Revert" list    \    selected Students should be displayed in the "Students to be Promoted or Reverted" grid
+
+Validate Promote all functionality in Promote Students from Management
+    [Documentation]    This Test Case describes whether the School Admin can Validate Promote all \ functionality in Promote/Revert Students pop-up page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Promote Students' button in Management page    \    "Promote and Reverting the Grade Level of Students" pop page should be displayed with its screen elements
+    Click on Column header checkbox to Promote All Students from "Promote or Revert" list    \    selected Students should be displayed in the "Students to be Promoted or Reverted" grid
+    Click on "Promote to Next Grade Level" button    \    Alert message should be displayed as "Students Have Been Promoted to \ the Next Grade Level"
+    Click on "Ok" button in the alert message    \    All Students should be promoted to the next grade level and should be displayed in the "All Users" grid list
+
+Validate Revert all functionality in Revert Students from Management
+    [Documentation]    This Test Case describes whether the School Admin can Validate Revert all \ functionality in Promote/Revert Students pop-up page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Promote Students' button in Management page    \    "Promote and Reverting the Grade Level of Students" pop page should be displayed with its screen elements
+    Click on Column header checkbox to Revert All Students from "Promote or Revert" list    \    selected Students should be displayed in the "Students to be Promoted or Reverted" grid
+    Click on "Revert to Previous Grade Level" button    \    Alert message should be displayed as "Students Have Been Reverted to the Previous Grade Level"
+    Click on "Ok" button in the alert message    \    All Students should be reverted to the Previous grade level and should be displayed in the "All Users" grid list
+
+Validate whether School admin is able to delete a Teacher
+    [Documentation]    This Test Case describes whether the School Admin can delete a Teacher from All Users grid or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Select Existing Teacher to delete from 'All Users' grid    \    Selected Teacher should be highlighted and details of the teacher should be displayed
+    Click on 'Delete' button to delete the selected teacher in the All Users grid    \    Alert message should be displayed as "Are you sure you want to delete the user "AAAAA CCCCC"?"
+    Click on 'Yes' button in the alert message    \    Alert Message should be displayed as "Please reassign these to another teacher and try again."
+    Click on 'Ok' button in the Alert message    \    Alert message should be closed
+    Reasssign all classes and groups to another teacher    \    All classes and groups should be assigned to the teacher
+    Click on 'Delete' button to delete the same teacher    \    Alert message should be displayed as "Are you sure you want to delete the user "AAAAA CCCCC"?"
+    Click on 'Yes' button in the alert message    \    The teacher should be deleted and should not be displayed in the All Users grid
+
+Validate whether School admin is able to delete a School Admin
+    [Documentation]    This Test Case describes whether the School Admin can delete a School Admin from All Users grid or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Select Existing School Admin to delete from 'All Users' grid    \    Selected School Admin should be highlighted and details of the School Admin should be displayed
+    Click on 'Delete' button to delete the selected School Admin in the All Users grid    \    Alert message should be displayed as "Are you sure you want to delete the user "A Cook"?"
+    Click on 'Yes' button in the alert message    \    The School Admin should be deleted and should not be displayed in the All users grid
+
+Validate whether School admin is able to delete a District Admin
+    [Documentation]    This Test Case describes whether the School Admin can delete a District Admin from All Users grid or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Select Existing District Admin to delete from 'All Users' grid    \    The 'Delete' button should be \ Disable and details of the District Admin should be displayed
+
+Validate whether we can able to add teacher to a class
+    [Documentation]    This Test Case describes whether the School Admin can add a Teacher to the existing Class in the Classes grid
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Select the Existing class in 'Classes' grid to which teacher should be added    \    The selected Class should be highlighted and details of the class should be displayed
+    Click on 'Edit' button in the Details grid    \    The Class should be Edited
+    Select the Teacher from 'Teacher' drop down    \    Selected Teacher should be displayed
+    Click on 'Save' button in the Details grid    \    The Selected Teacher should be added to the Class and the class details should be saved
+
+Validate whether we can able to add School Admin to a class
+    [Documentation]    This Test Case describes whether the School Admin can add a School Admin to the existing Class in the Classes grid
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Select the Existing class in 'Classes' grid to which teacher should be added    \    The selected Class should be highlighted and details of the class should be displayed
+    Click on 'Edit' button in the Details grid    \    The Class should be Edited
+    Select the School Admin from 'Teacher' drop down    \    The 'Teacher' drop down should show only the teacher names
+
+Validate whether we can able to add Multiple Roles(Teacher,School Admin) to a class
+    [Documentation]    This Test Case describes whether the School Admin can add Multiple Roles(Teacher,School Admin) to the existing Class in the Classes grid
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Select the Existing class in 'Classes' grid to which teacher should be added    \    The selected Class should be highlighted and details of the class should be displayed
+    Click on 'Edit' button in the Details grid    \    The Class should be Edited
+    Select the Teacher,School Admin from 'Teacher' drop down    \    Selected Teacher,School Admin should be displayed
+    Click on 'Save' button in the Details grid    \    The Selected Teacher,School Admin should be added to the Class and the class details should be saved
+
+Validate whether school admin is able to create Multiple roles(school admin and student)
+    [Documentation]    This Test Case describes whether the School Admin can create Multiple roles(School Admin and Student) in the All Users grid
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Add' button in the "All Users" grid    \    "New User" pop-up should be displayed
+    Select the Roles as School Admin and Student    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name and Select Grade from autocomplete    First Name: student, Middle Name: school, Last Name: Admin
+    Enter UserId and Password    User Id: rhwpte+studentadmin@gmail.com, password:test1234
+    Click on 'Save' button    \    Alert Message should be displayed as "School Admins can have only teacher role. All other roles are not allowed"
+
+Validate whether school admin is able to create Multiple roles(school admin,Teacher,student)
+    [Documentation]    This Test Case describes whether the School Admin can create Multiple roles(School Admin,Teacher and Student) in the All Users grid
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Add' button in the "All Users" grid    \    "New User" pop-up should be displayed
+    Select the Roles as School Admin, Teacher and Student    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name and Select Grade    First Name: student, Middle Name: school, Last Name: Admin
+    Enter UserId and Password    User Id: rhwpte+studentadmin@gmail.com, password:test1234
+    Click on 'Save' button    \    Alert Message should be displayed as "School Admins can have only teacher role. All other roles are not allowed"
+
+Validate whether school admin is able to create a student without a grade level
+    [Documentation]    This Test Case describes whether the School Admin can create a Student without a grade level in the All users grid
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Add' button in the "All Users" grid    \    "New User" pop-up should be displayed
+    Select the Roles as Student    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name and Select Grade    First Name: student, Middle Name: std, Last Name: std94, Grade:Not Available
+    Enter UserId and Password    User Id: student94, password:test1234
+    Click on 'Save' button    \    Alert Message should be displayed as "Grade Level is required for students"
+
+Validate Search functionality in the All Users grid
+    [Documentation]    This Test Case describes whether the School Admin can Validate the functionality of Search field in the All Users grid
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Enter User Role/First Name/Last Name in the 'Search' field on the "All Users" grid    \    The Entered user in the 'Search' field should be displayed if the data exists under the "All Users" grid
+
+Validate whether school admin is able to add all the users to a class
+    [Documentation]    This Test Case describes whether the School Admin can add all the Users to a Class
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Select the Existing class in 'Classes' grid to which all users should be added    \    The selected Class should be highlighted and details of the class should be displayed
+    Click on 'Edit' button in the Details grid    \    The Class should be Edited
+    Click on 'Edit' button in the Students grid    \    "Edit Student in Class" pop-up should be displayed
+    Click on 'Show All' button in the "Edit Student in Class" pop-up    \    All Users(Students,Teachers,School Admins,District Admins) should be displayed in the "Available Students" List
+    Choose All Users from "Available Students" List    \    All Users should be selected and should be displayed in the "Members" grid
+    Click on 'Save' button in the "Edit Student in Class" pop-up    \    Alert message should be displayed as "Students can only be added to the classes"
+
+Validate whether school admin is able to change the instructor in a group
+    [Documentation]    This Test Case describes whether the School Admin can Change the instructor in a group
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Show Groups' button in the Classes grid    \    "Groups" grid should be displayed
+    Select existing group to change the instructor    \    The selected group should be highlighted and the details of the group should be displayed
+    Click on 'Edit' button in the "Details" grid    \    The group should be edited
+    Select the 'Teacher' drop down to change the teacher    \    'Teacher' drop down should display the list of teachers
+    Select a teacher from the 'Teacher' drop down    \    The selected teacher should be displayed
+    Click on 'Save' button in the details grid    \    The Teacher should be added to the group and the group should be saved
+
+Validate 'print one user per page' functionality for entire school
+    [Documentation]    This Test Case describes whether the School Admin can Print Single user per page for the entire school
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Print/Export' button in the "All Users" grid    \    "Print/Export Students" pop-up should be displayed
+    Select Entire School from 'Make a Selection' drop down in the "Print/Export Students" pop-up    \    Selected Entire School should be displayed
+    Click on 'Continue' button in the "Print/Export Students" pop-up    \    "Select Users to be Printed or Exported" pop-up should be displayed
+    Choose All Users from "Select Users" List    \    All Selected Users should be displayed in the "Users Ready To Print/Export" grid
+    Select 'Print One User Per Page' Checkbox    \    'Print One User Per Page' Checkbox should be changed according to the selection
+    Click on 'Print' button in the "Select Users to be Printed or Exported" pop-up    \    "Roster Report for Selected Users" should be displayed one user per page.
+
+Validate the print functionality for entire school
+    [Documentation]    This Test Case describes whether the School Admin can Print all users for the entire school
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Print/Export' button in the "All Users" grid    \    "Print/Export Students" pop-up should be displayed
+    Select Entire School from 'Make a Selection' drop down in the "Print/Export Students" pop-up    \    Selected Entire School should be displayed
+    Click on 'Continue' button in the "Print/Export Students" pop-up    \    "Select Users to be Printed or Exported" pop-up should be displayed
+    Choose All Users from "Select Users" List    \    All Selected Users should be displayed in the "Users Ready To Print/Export" grid
+    Click on 'Print' button in the "Select Users to be Printed or Exported" pop-up    \    'Roster Report for Selected Users' should be displayed
+
+Validate 'Print one user per page' functionality for single class
+    [Documentation]    This Test Case describes whether the School Admin can Print Single user per page for single class
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Print/Export' button in the "All Users" grid    \    "Print/Export Students" pop-up should be displayed
+    Select a Class from 'Make a Selection' drop down in the "Print/Export Students" pop-up    \    Selected Class should be displayed
+    Click on 'Continue' button in the "Print/Export Students" pop-up    \    "Select Users to be Printed or Exported" pop-up should be displayed
+    Choose All Users from "Select Users" List    \    All Selected Users should be displayed in the "Users Ready To Print/Export" grid
+    Select 'Print One User Per Page' Checkbox    \    'Print One User Per Page' Checkbox should be changed according to the selection
+    Click on 'Print' button in the "Select Users to be Printed or Exported" pop-up    \    "Roster Report for Selected Users" should be displayed one user per page.
+
+Validate the Print functionality for Single class
+    [Documentation]    This Test Case describes whether the School Admin can Print Single all users for single class
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Print/Export' button in the "All Users" grid    \    "Print/Export Students" pop-up should be displayed
+    Select a Class from 'Make a Selection' drop down in the "Print/Export Students" pop-up    \    Selected Class should be displayed
+    Click on 'Continue' button in the "Print/Export Students" pop-up    \    "Select Users to be Printed or Exported" pop-up should be displayed
+    Choose All Users from "Select Users" List    \    All Selected Users should be displayed in the "Users Ready To Print/Export" grid
+    Click on 'Print' button in the "Select Users to be Printed or Exported" pop-up    \    'Roster Report for Selected Users' should be displayed
+
+Validate \ Export functionality for entire school
+    [Documentation]    This Test Case describes whether the School Admin can Export Single users per page for entire school
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Print/Export' button in the "All Users" grid    \    "Print/Export Students" pop-up should be displayed
+    Select Entire School from 'Make a Selection' drop down in the "Print/Export Students" pop-up    \    Selected Entire School should be displayed
+    Click on 'Continue' button in the "Print/Export Students" pop-up    \    "Select Users to be Printed or Exported" pop-up should be displayed
+    Choose All Users from "Select Users" List    \    All Selected Users should be displayed in the "Users Ready To Print/Export" grid
+    Click on 'Export' button in the "Select Users to be Printed or Exported" pop-up    \    Entire school should be exported sucussefully
+
+Validate Export functionality for single class
+    [Documentation]    This Test Case describes whether the School Admin can Export Single users per page for Single class
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Print/Export' button in the "All Users" grid    \    "Print/Export Students" pop-up should be displayed
+    Select a Class from 'Make a Selection' drop down in the "Print/Export Students" pop-up    \    Selected Class should be displayed
+    Click on 'Continue' button in the "Print/Export Students" pop-up    \    "Select Users to be Printed or Exported" pop-up should be displayed
+    Choose All Users from "Select Users" List    \    All Selected Users should be displayed in the "Users Ready To Print/Export" grid
+    Click on 'Export' button in the "Select Users to be Printed or Exported" pop-up    \    List of Students for selected class should be exported sucussefully
+
+Validate search functionality in Print/Export window
+    [Documentation]    This Test Case describes whether the School Admin can Validate Search functionality in Print/Export window
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Print/Export' button in the "All Users" grid    \    "Print/Export Students" pop-up should be displayed
+    Select School/Class from 'Make a Selection' drop down in the "Print/Export Students" pop-up    \    Selected School/Class should be displayed
+    Click on 'Continue' button in the "Print/Export Students" pop-up    \    "Select Users to be Printed or Exported" pop-up should be displayed
+    Enter Valid User First Name/Last Name/User ID in the "Search" field    \    The Users should be displayed in the "Select Users" grid if the enteredUser matches with the "Select Users" list
+    Enter Invalid User Details(First Name/Last Name/User ID) in the "Search" field    \    The "Select Users" grid should be displayed as Empty if the entered user doesn't matches with the "Select Users" list
+
+Validate Close(x) functionality in print/export window
+    [Documentation]    This Test Case describes whether the School Admin can Validate Close(x) functionality in Print/Export window
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Print/Export' button in the "All Users" grid    \    "Print/Export Students" pop-up should be displayed
+    Select School/Class from 'Make a Selection' drop down in the "Print/Export Students" pop-up    \    Selected School/Class should be displayed
+    Click on 'Continue' button in the "Print/Export Students" pop-up    \    "Select Users to be Printed or Exported" pop-up should be displayed
+    Click on 'x' button in the "Select Users to be Printed or Exported" pop-up    \    "Select Users to be Printed or Exported" pop-up should be Closed and \"Print/Export Students" pop-up should be displayed
+
+Validate Close(x) functionality in promote/revert students window
+    [Documentation]    This Test Case describes whether the School Admin can Validate Close(x) functionality in Promote/Revert window
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Promote Students' button in Management page    \    "Promote and Reverting the Grade Level of Students" pop page should be displayed
+    Click on 'x' button in the "Promote and Reverting the Grade Level of Students" pop page    \    "Promote and Reverting the Grade Level of Students" pop page should be closed.
+
+Create a Teacher on Management with same Email Id and Password
+    [Documentation]    This Test Case describes whether a New Teacher in Management is created or not? with same Email ID and Password
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Add' button in the "All Users" grid    \    "New User" pop up should be displayed
+    Select Role as "Teacher"    \    Fields should be changed according to the selected Role
+    Enter First, Middle, Last Name & Grade    First Name: teacher , Middle Name: ts , Last Name: ts87, Grade: Not Available
+    Enter UserId and Password    User Id: rhwpte+ts87@gmail.com \ Password: rhwpte+ts87@gmail.com    An Alert should be displayed in the User Id field as "The User ID must not be the same as the Password" and in the Password field as "The Password must not be the same as the User ID"
+    Click on 'Save' button    \    Alert message should be displayed as "Password must not be same as the User ID"
+
+Create a School Admin on Management with same Email Id and Password
+    [Documentation]    This Test Case describes whether a New School Admin in Management is created or not? with same Email ID and Password
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Add' button in the "All Users" grid    \    "New User" pop up should be displayed
+    Select Role as "School Admin"    \    Fields should be changed according to the selected Role
+    Enter First, Middle, Last Name & Grade    First Name: School , Middle Name: admin , Last Name: sch87, Grade: Not Available
+    Enter UserId and Password    User Id: rhwpte+sch87@gmail.com \ Password: rhwpte+sch87@gmail.com    An Alert should be displayed in the User Id field as "The User ID must not be the same as the Password" and in the Password field as "The Password must not be the same as the User ID"
+    Click on 'Save' button    \    Alert message should be displayed as "Password must not be same as the User ID"
+
+Create a new teacher with existing teacher user id in management
+    [Documentation]    This Test Case describes whether a New Teacher in Management is created or not? with already existing Teacher Email ID and Password
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Add' button in the "All Users" grid    \    "New User" pop up should be displayed
+    Select Role as "Teacher"    \    Fields should be changed according to the selected Role
+    Enter First, Middle, Last Name & Grade    First Name: teacher , Middle Name: ts , Last Name: ts87, Grade: Not Available
+    Enter an Existing Teacher UserId and Password    User Id: rhwpte+ts87@gmail.com \ Password: test1234    An Alert should be displayed in the User Id field as "This User ID already exists"
+    Click on 'Save' button    \    Alert message should be displayed as "The email address entered is already taken. Please choose a different email address"
+
+Create a new school admin with existing teacher user id in management
+    [Documentation]    This Test Case describes whether a New School Admin in Management is created or not? with already existing Teacher Email ID and Password
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Add' button in the "All Users" grid    \    "New User" pop up should be displayed
+    Select Role as "School Admin"    \    Fields should be changed according to the selected Role
+    Enter First, Middle, Last Name & Grade    First Name: School , Middle Name: admin , Last Name: sch87, Grade: Not Available
+    Enter an Existing Teacher UserId and Password    User Id: rhwpte+ts87@gmail.com \ Password: test1234    An Alert should be displayed in the User Id field as "This User ID already exists"
+    Click on 'Save' button    \    Alert message should be displayed as "The email address entered is already taken. Please choose a different email address"
+
+Create a new school admin with existing school admin user id in management
+    [Documentation]    This Test Case describes whether a New School Admin in Management is created or not? with already existing School Admin Email ID and Password
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Add' button in the "All Users" grid    \    "New User" pop up should be displayed
+    Select Role as "School Admin"    \    Fields should be changed according to the selected Role
+    Enter First, Middle, Last Name & Grade    First Name: School , Middle Name: admin , Last Name: sch87, Grade: Not Available
+    Enter an Existing School Admin UserId and Password    User Id: rhwpte+sch87@gmail.com \ Password: test1234    An Alert should be displayed in the User Id field as "This User ID already exists"
+    Click on 'Save' button    \    Alert message should be displayed as "The email address entered is already taken. Please choose a different email address"
+
+Create a new Student with existing teacher user id in management
+    [Documentation]    This Test Case describes whether a New Student in Management is created or not? with already existing Teacher Email ID and Password
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Add' button in the "All Users" grid    \    "New User" pop up should be displayed
+    Select Role as "Student"    \    Fields should be changed according to the selected Role
+    Enter First, Middle, Last Name & Grade    First Name: Student , Middle Name: stud , Last Name: std87, Grade: 2
+    Enter an Existing Teacher UserId and Password    User Id: rhwpte+ts87@gmail.com \ Password: test1234    An Alert should be displayed in the User Id field as "Please enter a student username without spaces, periods, commas, less than or greater than characters"
+    Click on 'Save' button    \    Alert message should be displayed as "The email address entered is already taken. Please choose a different email address"
+
+Create a new Student with existing School Admin user id in management
+    [Documentation]    This Test Case describes whether a New Student in Management is created or not? with already existing School Admin Email ID and Password
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Add' button in the "All Users" grid    \    "New User" pop up should be displayed
+    Select Role as "Student"    \    Fields should be changed according to the selected Role
+    Enter First, Middle, Last Name & Grade    First Name: Student , Middle Name: stud , Last Name: std87, Grade: 2
+    Enter an Existing School Admin User ID and Password    User Id: rhwpte+sch87@gmail.com \ Password: test1234    An Alert should be displayed in the User Id field as "Please enter a student username without spaces, periods, commas, less than or greater than characters"
+    Click on 'Save' button    \    Alert message should be displayed as "The email address entered is already taken. Please choose a different email address"
+
+Create a student in management without entering mandatory fields
+    [Documentation]    This Test Case describes whether a New Student in Management is created or not? without Entering the details in the Mandatory fields
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Add' button in the "All Users" grid    \    "New User" pop up should be displayed
+    Select Role as "Student"    \    Fields should be changed according to the selected Role
+    Do not Enter the data in the Mandatory(*) fields    \    An Alert should be displayed in the Mandatory(*) fields as "This Value is required"
+    Click on 'Save' button    \    Alert message should be displayed as "First Name is not valid"
+
+Create a Teacher in management without entering mandatory fields
+    [Documentation]    This Test Case describes whether a New Teacher in Management is created or not? without Entering the details in the Mandatory fields
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Add' button in the "All Users" grid    \    "New User" pop up should be displayed
+    Select Role as "Teacher"    \    Fields should be changed according to the selected Role
+    Do not Enter the data in the Mandatory(*) fields    \    An Alert should be displayed in the Mandatory(*) fields as "This Value is required"
+    Click on 'Save' button    \    Alert message should be displayed as "A valid email address is required as the User ID for this type of account"
+
+Create a School Admin in management without entering mandatory fields
+    [Documentation]    This Test Case describes whether a New School Admin in Management is created or not? without Entering the details in the Mandatory fields
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Add' button in the "All Users" grid    \    "New User" pop up should be displayed
+    Select Role as "School Admin"    \    Fields should be changed according to the selected Role
+    Do not Enter the data in the Mandatory(*) fields    \    An Alert should be displayed in the Mandatory(*) fields as "This Value is required"
+    Click on 'Save' button    \    Alert message should be displayed as "A valid email address is required as the User ID for this type of account"
+
+Create a User without selecting a role in management
+    [Documentation]    This Test Case describes whether a New User in Management is created or not? without selecting any Role in the New User pop-up
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Add' button in the "All Users" grid    \    "New User" pop up should be displayed
+    Enter the details in the Text fields without selecting any Role     First Name: School , Middle Name: ts , Last Name: std, User Id: schts2 \ Password: test1234
+    Click on 'Save' button    \    Alert message should be displayed as "Select a Role to create New User"
+
+Enter the details in the Text fields without selecting any Role    First Name: School , Middle Name: ts , Last Name: std, User Id: schts2 \ Password: test1234
+    Click on 'Save' button    \    Alert message should be displayed as "Select a Role to create New User"
+
+Verify students are displayed based on grade drop down in student archive window.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Archive Students' button in Management page    \    "Student Archive" pop page should be displayed with Student details
+    Select a grade from 'grade' dropdown    3    List of students who is having given grade level should be displayed in 'Choose students to archive' window
+
+Verify search functionality in print & export window.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management    \    Management Page should be displayed
+    Click on "Print/Export" button    \    'Print/Export Students" pop up should be displayed.
+    Select a class from 'Make a selection' dropdown    \    Class should be selected
+    Click on "Continue" button    \    "Select Users to be printed or Exported " window should be displayed.
+    Enter Valid User First Name/Last Name/User ID in the "Search" field    \    The Users should be displayed in the "Select Users" grid if the enteredUser matches with the "Select Users" list
+    Enter Invalid User Details(First Name/Last Name/User ID) in the "Search" field    \    The "Select Users" grid should be displayed as Empty if the entered user doesn't matches with the "Select Users" list
+
+Verify 'Show all' and 'Show students only' buttons are working 'Edit student class' window
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Select one Class from Classes table    \    Selected class should be highlighted
+    Click on 'edit' button
+    Click on 'Edit' for students    \    'Edit Students in a class' window should be displayed
+    Click on 'Show All' and 'Show students only' buttons    \    List of All users should be displayed when click on 'Show all' and list of students only should displayed when click on 'Show students only' buttons
+
+Verify 'Show all' and 'Show students only' buttons are working 'Edit student group' window
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Show Groups    \    List of groups should be displayed .
+    Select one group from groups table    \    Selected group should be highlighted
+    Click on 'edit' button
+    Click on 'Edit' for students    \    'Edit Students in a group' window should be displayed
+    Click on 'Show All' and 'Show students only' buttons    \    List of All users should be displayed when click on 'Show all' and list of students only should displayed when click on 'Show students only' buttons
+
+Verify search functionality is working in 'Edit students in class' window.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Select one Class from Classes table    \    Selected class should be highlighted
+    Click on 'edit' button
+    Click on 'Edit' for students    \    'Edit Students in a class' window should be displayed
+    Enter Valid User First Name/Last Name/User ID in the "Search" field    \    The Users should be displayed in the "Select Users" grid if the enteredUser matches with the "Select Users" list
+    Enter Invalid User Details(First Name/Last Name/User ID) in the "Search" field    \    The "Select Users" grid should be displayed as Empty if the entered user doesn't matches with the "Select Users" list
+
+Verify search functionality is working in 'Edit students in group' window.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Show Groups    \    List of groups should be displayed .
+    Select one group from groups table    \    Selected group should be highlighted
+    Click on 'edit' button
+    Click on 'Edit' for students    \    'Edit Students in a group' window should be displayed
+    Enter Valid User First Name/Last Name/User ID in the "Search" field    \    The Users should be displayed in the "Select Users" grid if the enteredUser matches with the "Select Users" list
+    Enter Invalid User Details(First Name/Last Name/User ID) in the "Search" field    \    The "Select Users" grid should be displayed as Empty if the entered user doesn't matches with the "Select Users" list
+
+Verify search functionality is working in 'Edit syllabus of class' window.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Select one Class from Classes table    \    Selected class should be highlighted
+    Click on 'edit' button
+    Click on 'Edit' for titles    \    'Edit syllabus of class' window should be displayed
+    Enter Valid User First Name/Last Name/User ID in the "Search" field    \    The Users should be displayed in the "Select Users" grid if the enteredUser matches with the "Select Users" list
+    Enter Invalid User Details(First Name/Last Name/User ID) in the "Search" field    \    The "Select Users" grid should be displayed as Empty if the entered user doesn't matches with the "Select Users" list
+
+Verify search functionality is working in 'Edit syllabus of group' window.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Show Groups    \    List of groups should be displayed .
+    Select one group from groups table    \    Selected group should be highlighted
+    Click on 'edit' button
+    Click on 'Edit' for titles    \    'Edit syllabus of group' window should be displayed
+    Enter Valid User First Name/Last Name/User ID in the "Search" field    \    The Users should be displayed in the "Select Users" grid if the enteredUser matches with the "Select Users" list
+    Enter Invalid User Details(First Name/Last Name/User ID) in the "Search" field    \    The "Select Users" grid should be displayed as Empty if the entered user doesn't matches with the "Select Users" list
+
+Verify search functionality in 'All Users' details tab.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Enter Valid User First Name/Last Name/User ID in the "Search" field    \    The Users should be displayed in the "Select Users" grid if the enteredUser matches with the "Select Users" list
+    Enter Invalid User Details(First Name/Last Name/User ID) in the "Search" field    \    The "Select Users" grid should be displayed as Empty if the entered user doesn't matches with the "Select Users" list
+
+Verify sort functionality for classes panel
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Click on Name column to sort    \    Records should be sorted in ascending and descending order
+    Click on teacher column    \    Records should be sorted in ascending and descending order
+    Click on description columns    \    Records should be sorted in ascending and descending order
+    Click on class code column to sort    \    Records should be sorted in ascending and descending order
+    Click on created column to sort    \    Records should be sorted in ascending and descending order
+
+Verify sort functionality for groups panel
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on 'Show Groups'    \    List of groups should be displayed
+    Click on Name column to sort    \    Records should be sorted in ascending and descending order
+    Click on teacher column    \    Records should be sorted in ascending and descending order
+    Click on description columns    \    Records should be sorted in ascending and descending order
+    Click on created column to sort    \    Records should be sorted in ascending and descending order
+
+Verify sort functionality for 'Edit Students in class'
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Select one Class from Classes table    \    Selected class should be highlighted
+    Click on 'edit' button    \    Details windoe should be editable
+    Click on 'Edit' for students panel    \    'Edit Students in a class' window should be displayed
+    Click on Name column to sort    \    Records should be sorted in ascending and descending order
+    Click on teacher column    \    Records should be sorted in ascending and descending order
+    Click on description columns    \    Records should be sorted in ascending and descending order
+    Click on created column to sort    \    Records should be sorted in ascending and descending order
+
+Verify sort functionality for 'Edit Students in group'
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on Management > Show Groups    \    List of groups should be displayed .
+    Select one group from groups table    \    Selected group should be highlighted
+    Click on 'edit' button
+    Click on 'Edit' for students    \    'Edit Students in a group' window should be displayed
+    Click on Name column to sort    \    Records should be sorted in ascending and descending order
+    Click on teacher column    \    Records should be sorted in ascending and descending order
+    Click on description columns    \    Records should be sorted in ascending and descending order
+    Click on created column to sort    \    Records should be sorted in ascending and descending order
+
+Verify sort functionality for 'printed or exported' window
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on "Management" button    \    Management Page should be displayed
+    Click on "Print/Export" button    \    'Print/Export Students" pop up window should be displayed.
+    Select a class from 'Make a selection' dropdown    \    Selected Class should be highlighted
+    Click on "Continue" button    \    "Selected students to be printed or Exported " window should be displayed.
+    Click on lastName column to sort    \    Records should be sorted in ascending and descending order
+    Click on first name column    \    Records should be sorted in ascending and descending order
+    Click on grade columns    \    Records should be sorted in ascending and descending order
+    Click on user column to sort    \    Records should be sorted in ascending and descending order
+    Click on role column to sort    \    Records should be sorted in ascending and descending order

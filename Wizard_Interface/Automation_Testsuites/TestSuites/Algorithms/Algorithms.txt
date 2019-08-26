@@ -1,0 +1,1028 @@
+*** Settings ***
+Documentation     This algorithm is used to write student assignment.
+...
+...               "Read Test Data" keyword is \ set \ as a suite setup to read all the excel data into the dictionary.It will execute once in suite level.
+Suite Setup       Read Test Data
+Resource          ../../Keywords/super.txt
+
+*** Test Cases ***
+Algorithm Prerequisite
+    OpenBrowserToLoginPage
+    ${districtAdminDetails}    Get Ms Excel Row Values Into Dictionary Based On Key    ${PrerequisitesFilePath}    TestReport    DistrictAdmin
+    ${DAStatus}    Run Keyword And Return Status    Create New District Admin    ${districtAdminDetails}    DADMIN-999999
+    Run Keyword If    ${DAStatus}==False    Fail    New district admin creation failed.
+    ${districtAdminUid}    Get From Dictionary    ${districtAdminDetails}    UserName
+    ${districtAdminPwd}    Get From Dictionary    ${districtAdminDetails}    Password
+    Close All Browsers
+    : FOR    ${val}    IN RANGE    1    11
+    \    LoginToWizardApp    ${districtAdminUid}    ${districtAdminPwd}
+    \    ${globalStudentDetails}    Create Csv File Using Ms Excel File    ${UploadStudentsFile}    ${PrerequisitesFilePath}    StudentDetails${val}
+    \    ${ipmportStatus}    Import Users    ${UploadStudentsFile}
+    \    Run Keyword If    ${ipmportStatus}==False    Fail    The students details uploading fail
+    \    SignOut
+    \    ${teacherDetails}    Get Ms Excel Row Values Into Dictionary Based On Key    ${PrerequisitesFilePath}    TestReport${val}    TeacherDetails
+    \    Set Global Variable    ${preTeacherDetails}    ${teacherDetails}
+    \    Log    ${teacherDetails}
+    \    ${classesList}    Get From Dictionary    ${teacherDetails}    ClassName
+    \    ${classesList}    Split String    ${classesList}    ,
+    \    Set Global Variable    ${preClassesList}    ${classesList}
+    \    ${SignUpTitleMenus}    Get From Dictionary    ${teacherDetails}    Title
+    \    ${SignUpTitleMenus}    Split String    ${SignUpTitleMenus}    ,
+    \    ${titlesCount}    Get Length Of List    ${SignUpTitleMenus}
+    \    Set Global Variable    ${preSignUpTitleMenu}    @{SignUpTitleMenus}[0]
+    \    Set Global Variable    ${preSignUpTitleMenus}    ${SignUpTitleMenus}
+    \    ${preActivityNames}    Get From Dictionary    ${teacherDetails}    Activity
+    \    ${preActivityNames}    Split String    ${preActivityNames}    ,
+    \    ${activityName}    Create List    ${preActivityNames}
+    \    ${preActivitySelectMenus}    Get From Dictionary    ${teacherDetails}    ActivitySelectMenu
+    \    ${preActivitySelectMenus}    Split String    ${preActivitySelectMenus}    ,
+    \    Comment    Open latest URL
+    \    ${assignedClassesDictionary}    Create New Teacher    ${teacherDetails}
+    \    ${classesList}    Get Dictionary Keys    ${assignedClassesDictionary}
+    \    Set Global Variable    ${preClassesAndClassCodes}    ${assignedClassesDictionary}
+    \    ${teacherUId}    Get From Dictionary    ${teacherDetails}    UserName
+    \    ${teacherPwd}    Get From Dictionary    ${teacherDetails}    Password
+    \    ${teacherFirstName}    Get From Dictionary    ${teacherDetails}    FirstName
+    \    ${teacherLastName}    Get From Dictionary    ${teacherDetails}    LastName
+    \    ${teacherFullName}    Set Variable    ${teacherLastName},${SPACE}${teacherFirstName}
+    \    Set Global Variable    ${preTeacherID}    ${teacherUId}
+    \    Set Global Variable    ${preTeacherPassword}    ${teacherPwd}
+    \    Set Global Variable    ${preTeacherFirstName}    ${teacherFirstName}
+    \    Set Global Variable    ${preTeacherLastName}    ${teacherLastName}
+    \    Set Global Variable    ${preTeacherFullName}    ${teacherFullName}
+    \    ${studentsIds}    Get Csv File Column Values Into List    ${UploadStudentsFile}    User ID
+    \    Remove From List    ${studentsIds}    0
+    \    Log    ${studentsIds}
+    \    Set Global Variable    ${preStudentIds}    ${studentsIds}
+    \    Navigate To Management Page
+    \    Wait And Select Frame    iframeSchoolAdmin
+    \    Select The Record In Table    ${table.classesAndGroups}    Name    @{classesList}[0]
+    \    Wait And Click Element    ${button.classDetail.edit}
+    \    ${statusList}    Create List    True    User ID
+    \    Edit Students Or Titles    ${studentsIds}    ${statusList}    User Id
+    \    Edit Students Or Titles    ${SignUpTitleMenus}    ${statusList}    Name
+    \    Wait And Click Element    ${button.classDetails.save}
+    \    Navigate BackTo Home Page    Management
+    \    Navigate To Assignment Page
+    \    Navigate To New Assignments Page
+    \    ${bStatus}    AssignAssignmentsToClass    @{classesList}[0]    ${titlesCount}    ${preSignUpTitleMenus}    ${preActivitySelectMenus}
+    \    ...    ${preActivityNames}
+    \    Run Keyword Unless    ${bStatus}    Fail    The assignment is not handed out properly.
+    \    Sleep    5s
+    \    Close All Browsers
+    [Teardown]    Stop Application
+
+Initialize data sets
+    [Documentation]    Set up dictionaries of students and answers.
+    Log    We had written "Read Test Data" keyword in "Common.txt" for reading all the excel data into the dictionary and marked it as a suite setup. It will execute only once in a regression.
+    Comment    ${UserFilePath}    Set Variable    ${EXECDIR}\\Automation_Testsuites\\TestData\\Initialize_Students.xls
+    Comment    ${CorrectAnswerFilePath}    Set Variable    ${EXECDIR}\\Automation_Testsuites\\TestData\\MC_Dictionary.xls
+    Comment    Initialize the set of students: student name, password, performance
+    Comment    ${StudentsDictionary}=    Common.InitializeStudents    ${UserFilePath}    StudentDetails
+    Comment    Set Suite Variable    ${StudentsDictionary}    ${StudentsDictionary}
+    Comment    Initialize the set of png file names and the corresponding correct answer. Use 0 for A, 1 for B, 2 for C, and 3 for D.
+    Comment    ${CorrectAnswersDictionary}=    AlgorithmLibrary.Initialize Correct Answers    ${CorrectAnswerFilePath}    MC_Dictionary
+    Comment    Set Suite Variable    ${CorrectAnswersDictionary}    ${CorrectAnswersDictionary}
+    [Teardown]    Stop Application
+
+Student 1
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    1
+    Run all activities for student    ${studentKey}
+    [Teardown]    Stop Application
+
+Student 2
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    2
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 3
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    3
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 4
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    4
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 5
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    5
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 6
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    6
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 7
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    7
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 8
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    8
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 9
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    9
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 10
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    10
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 11
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    11
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 12
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    12
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 13
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    13
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 14
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    14
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 15
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    15
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 16
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    16
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 17
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    17
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 18
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    18
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 19
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    19
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 20
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    20
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 21
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    21
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 22
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    22
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 23
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    23
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 24
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    24
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 25
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    25
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 26
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    26
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 27
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    27
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 28
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    28
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 29
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    29
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 30
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    30
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 31
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    31
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 32
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    32
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 33
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    33
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 34
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    34
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 35
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    35
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 36
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    36
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 37
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    37
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 38
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    38
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 39
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    39
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 40
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    40
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 41
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    41
+    Run all activities for student    ${studentKey}
+    [Teardown]    Stop Application
+
+Student 42
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    42
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 43
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    43
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 44
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    44
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 45
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    45
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 46
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    46
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 47
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    47
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 48
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    48
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 49
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    49
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 50
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    50
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 51
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    51
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 52
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    52
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 53
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    53
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 54
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    54
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 55
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    55
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 56
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    56
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 57
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    57
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 58
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    58
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 59
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    59
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 60
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    60
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 61
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    61
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 62
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    62
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 63
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    63
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 64
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    64
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 65
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    65
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 66
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    66
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 67
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    67
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 68
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    68
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 69
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    69
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 70
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    70
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 71
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    71
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 72
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    72
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 73
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    73
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 74
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    74
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 75
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    75
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 76
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    76
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 77
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    77
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 78
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    78
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 79
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    79
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 80
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    80
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 81
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    81
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 82
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    82
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 83
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    83
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 84
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    84
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 85
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    85
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 86
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    86
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 87
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    87
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 88
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    88
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 89
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    89
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 90
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    90
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 91
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    91
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 92
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    92
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 93
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    93
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 94
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    94
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 95
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    95
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 96
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    96
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 97
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    97
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 98
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    98
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 99
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    99
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Student 100
+    [Documentation]    Student sign up to 1 of the newly created classes
+    Comment    Each student is a Test
+    ${studentKey}    Set Variable    100
+    Run all activities for student    ${studentKey}
+    Comment    determine if test passes or fails. It fails if there is an error.
+    [Teardown]    Stop Application
+
+Teacher hand out an assignment
+    [Setup]
+    ${teachersDictionary}=    Teacher SignUp
+    @{keysList}=    Get Dictionary Keys    ${teachersDictionary}
+    Sleep    3s
+    ${bStatus}=    LoginToWizardApp    ${globalTeacherUId}    ${globalTeacherPassword}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials-'${globalTeacherUId},${globalTeacherPassword}'
+    Wait for page load
+    Sleep    3s
+    Wait And Click Element    ${button.home.management}
+    Wait for page load
+    Select Frame    iframeSchoolAdmin
+    ${bStatus}=    Verify Element Visible    //div[text()='Show My Students']
+    Run Keyword If    '${bStatus}'=='True'    Click Element    //div[text()='Show My Students']
+    Sleep    3s
+    ${random}=    Get Random Number In Given Range    1    10000
+    ${StudentDetailsList}=    Create List    FN${random}    LN${random}    UserId${random}    Password${random}
+    Set Global Variable    ${globalStudentName}    FN${random} LN${random}
+    Set Global Variable    ${studentUId}    UserId${random}
+    Set Global Variable    ${studentPWD}    Password${random}
+    ${classList}=    Get From Dictionary    ${teachersDictionary}    @{keysList}[0]
+    AddClassToStudent    ${StudentDetailsList}    ${classList}
+    Set Global Variable    ${globalclassList}    ${classList}
+    Wait Until Element Is Visible    //span[@id='newUserOK_label' and contains(text(),'Save')]    ${Delay}    'OK' Button in New Class window is not visible.
+    Click Element    //span[@id='newUserOK_label' and contains(text(),'Save')]
+    Sleep    10s
+    Comment    Unselect Frame
+    Comment    Wait Until Element Is Visible    //div[@id='schoolAdminView']//div[@class='breadcrumb']//span[contains(@id,'dojox_mobile_ToolBarButton_')]//table//td[contains(text(),'Home')]/parent::tr/td[text()='Home']    ${Delay}
+    Comment    Click Element    //div[@id='schoolAdminView']//div[@class='breadcrumb']//span[contains(@id,'dojox_mobile_ToolBarButton_')]//table//td[contains(text(),'Home')]/parent::tr/td[text()='Home']
+    Comment    Sleep    15s
+    Comment    Wait Until Element Is Visible    ${button.home.assignments}    ${Delay}    Assignment is not visible
+    Comment    Click Element    ${button.home.assignments}
+    Comment    Sleep    5s
+    Close Browser
+    ${bStatus}=    LoginToWizardApp    ${globalTeacherUId}    ${globalTeacherPassword}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials-'${globalTeacherUId},${globalTeacherPassword}'
+    Wait for page load
+    Sleep    3s
+    Wait Until Element Is Visible    ${button.home.assignments}    ${Delay}
+    Click Element    ${button.home.assignments}
+    Wait for page load
+    Click Element    new-assignment-button
+    Wait for page load
+    @{classList}    Set Variable    ${classList}
+    ${classStatus}=    Select Assignment Class    @{classList}[0]
+    ${bStatus}=    Run Keyword If    '${classStatus}'=='True'    Select Individuals    ${studentUId}    ELSE    Fail
+    ...    Selectclass is fail
+    Sleep    10s
+    @{title}=    Split String    ${SignUpTitleMenu}    ${SPACE}Level
+    ${subject}=    Set Variable    @{title}[0]
+    ${subject}=    Replace String    ${subject}    ${SPACE}    ${EMPTY}
+    ${subject}    Replace String    ${subject}    CCS    ${EMPTY}
+    ${bStatus}=    Run Keyword If    '${bStatus}'=='True'    Select Subject    ${subject}    ELSE    Fail
+    ...    Select Individuals is fail
+    Sleep    10s
+    ${bStatus}=    Run Keyword If    '${bStatus}'=='True'    Select Level    ${SignUpTitleMenu}    ELSE    Fail
+    ...    Select Subject is fail
+    Sleep    10s
+    ${bStatus}=    Verify Element Visible    activitySetSelectWrapper
+    Run Keyword If    '${bStatus}'=='True'    Selenium2Library.Mouse Down    activitySetSelect
+    Sleep    5s
+    Comment    ${count}=    Run Keyword If    '${bStatus}'=='True'    Get Matching Xpath Count    //div[@id='activitySetSelect_dropdown']//tr
+    Comment    ${random}=    Run Keyword If    '${bStatus}'=='True'    Get Random Number In Given Range    2    ${count}
+    Run Keyword If    '${bStatus}'=='True'    Click Element    //div[@id='activitySetSelect_dropdown']//tr[contains(@id,'dijit_MenuItem')]//td[contains(text(),'${activitySelectMenu}')]
+    Sleep    10s
+    Comment    ${count}=    Get Matching Xpath Count    //div[@id='newAssmtGrid']//div[contains(@id,'newAssmtGrid-row')]
+    Comment    ${random}=    Get Random Number In Given Range    2    ${count}
+    Comment    ${assignment}=    Run Keyword If    '${bStatus}'=='True'    Get Text    //div[@id='newAssmtGrid']//div[contains(@id,'newAssmtGrid-row')][${random}]//tr/td[2]/span    ELSE
+    ...    Get Text    //div[@id='newAssmtGrid']//div[contains(@id,'newAssmtGrid-row')][${random}]//tr/td[2]
+    ${newAssigmntName}    Split String    ${newAssmtGridName}    -
+    ${newAssignmentStartName}    Set Variable    @{newAssigmntName}[0]
+    ${newAssignmentLastName}    Set Variable    @{newAssigmntName}[1]
+    ${newAssignmentStartName}    Set Variable    ${newAssignmentStartName.strip()}
+    ${newAssignmentLastName}    Set Variable    ${newAssignmentLastName.strip()}
+    Click Element    //div[@id='newAssmtGrid']//span[contains(text(),'${newAssignmentStartName}')]/following-sibling::span[contains(text(),'${newAssignmentLastName}')]/parent::td/parent::tr//input
+    Sleep    10s
+    Click Element    handoutAssmtsBtn
+    Sleep    5s
+    ${status}    Verify Element Visible    //div[@id='newAssmtGrid']//div[@class='dgrid-scroller']//div[@class='dgrid-content ui-widget-content']//div[contains(@id,'newAssmtGrid-row-') and contains(@style,'rgb(174, 207, 131)')]
+    Run Keyword If    ${status}    Set Test Message    Assignment is Handed out.    ELSE    Set Test Message    Assignment is not Handed out.
+    Close Browser
+    ${bStatus}=    LoginToWizardApp    ${studentUId}    ${studentPWD}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials-'UserId${random},Password${random}'
+    Wait for page load
+    Sleep    10s
+    ${bStatus1}=    Verify Element Visible    //span[contains(text(),'${SignUpTitleMenu}')]/following-sibling::span[contains(text(),'${newAssignmentStartName}')]/parent::td
+    ${bStatus2}=    Verify Element Visible    //span[contains(text(),'${SignUpTitleMenu}')]/following-sibling::span[contains(text(),'${newAssignmentStartName}')]/parent::td
+    Run Keyword If    '${bStatus1}'!='True' and '${bStatus2}'!='True'    Fail    The Assignment is not assignd to the student.
+    Set Global Variable    ${activity}    ${newAssignmentStartName}
+    [Teardown]    Stop Application
+
+Student_do_the_Assignment -- should be a keyword
+    Comment    Login into Wizard App with Student Role.
+    ${loginStatus}=    LoginToWizardApp    ${studentUId}    ${studentPWD}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    Sleep    10s
+    Comment    ${activityName}=    DoAssignment    ${SignUpTitleMenu}    Page${SPACE}7
+    ${activityName}=    DoAssignment    ${SignUpTitleMenu}    ${activity}
+    Sleep    10s
+    ${kwStatus}    Run Keyword And Ignore Error    Assignment Writting
+    Run Keyword If    '@{kwStatus}[0]'=='FAIL'    Set Test Message    The Assigment Writting functionality is not done completely because the Next button is clickable but it is not working correctlly during runtime.
+    ${moreBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='navContainer']//div[contains(@id,'dojox_mobile_Heading')]//span[contains(@id,'dojox_mobile_ToolBarButton')]//td[contains(text(),'More')]    10s
+    Run Keyword If    ${moreBtnStatus}    Click Element    //div[@id='navContainer']//div[contains(@id,'dojox_mobile_Heading')]//span[contains(@id,'dojox_mobile_ToolBarButton')]//td[contains(text(),'More')]
+    Comment    Sleep    4s
+    Click Element    //div[@id='navContainer']//div[contains(@id,'dojox_mobile_Heading')]//ul[@id='navToolbar']//li[@id='navBtnTurnIn']//div[contains(text(),'Turn In')]
+    Sleep    6s
+    ${confirmTurnInPromptDlg}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='confirmTurnInPrompt']//button[contains(@id,'dojox_mobile_Button') and contains(text(),'Yes')]    10s
+    Run Keyword If    ${confirmTurnInPromptDlg}    Wait Until Keyword Succeeds    2min    5s    Click Element    //div[@id='confirmTurnInPrompt']//button[contains(@id,'dojox_mobile_Button') and contains(text(),'Yes')]
+    Sleep    10s
+    Comment    ${nextAssmtDlg}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.nextAssmtDlgNo}    10s
+    Comment    Run Keyword If    ${nextAssmtDlg}    Click Element    ${button.studentAssignments.nextAssmtDlgNo}
+    Comment    Sleep    10s
+    Wait Until Element Is Visible    //div[@id='sessionReportDlg']//div[@id='session-report-header']//span[@id='srUserName']
+    ${studentName}=    Get Text    //div[@id='sessionReportDlg']//div[@id='session-report-header']//span[@id='srUserName']
+    ${studentName}=    Replace String    ${studentName}    :    ${EMPTY}
+    ${srCurrentSessionResultDiv}    Set Variable    //div[@id='sessionReportDlg']//div[@id='srCurrentSessionResults']
+    ${srAllSessionsResultDiv}    Set Variable    //div[@id='sessionReportDlg']//div[@id='srAllSessionsResults']
+    ${morStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='sessionReportDlg']//a[text()='More Details']
+    Run Keyword If    ${morStatus}    Click Element    //div[@id='sessionReportDlg']//a[text()='More Details']
+    Wait Until Element Is Visible    ${srAllSessionsResultDiv}//div[contains(text(),'Progress:')]/parent::td/parent::tr/td[2]/div    ${Delay}
+    ${progressResults}    Get Text    ${srAllSessionsResultDiv}//div[contains(text(),'Progress:')]/parent::td/parent::tr/td[2]/div
+    @{progressResults}    Split String    ${progressResults}    ${SPACE}
+    ${progressResultsValue}    Set Variable    @{progressResults}[0]
+    ${overallCorrect}    Get Text    ${srAllSessionsResultDiv}//div[contains(text(),'Overall Correct:')]/parent::td/parent::tr/td[2]/div
+    @{overallCorrect}    Split String    ${overallCorrect}    ${SPACE}
+    ${overallCorrectValue}    Set Variable    @{overallCorrect}[0]
+    Sleep    2s
+    ${AssignementSubmtTodayDate}=    Get Text    ${srCurrentSessionResultDiv}//div[contains(text(),'Today:')]/parent::td/parent::tr/td[2]/div
+    ${AssignementSubmtTodayDate}=    Replace String    ${AssignementSubmtTodayDate}    -    /
+    ${reportDlg}    Run Keyword And Return Status    Wait Until Element Is Visible    ${header.studentAssignments.assignmentReportDlg}    10s
+    Run Keyword If    ${reportDlg}    Click Element    ${header.studentAssignments.assignmentReportDlgClose}
+    ${nextAssmtDlg}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.nextAssmtDlgNo}    10s
+    Run Keyword If    ${nextAssmtDlg}    Click Element    ${button.studentAssignments.nextAssmtDlgNo}
+    Sleep    10s
+    ${assignmentPage}    Run Keyword And Return Status    Verify Element Visible    ${table.studentAssignments.assignments}
+    Run Keyword If    ${assignmentPage}    Set Test Message    Student Assignment Page is displayed.    ELSE    Set Test Message    Student Assignment Page is not displayed.
+    @{AssignementSubmtTodayDate}    Split String    ${AssignementSubmtTodayDate}    /
+    ${AssignementSubmtTodayDate}    Set Variable    @{AssignementSubmtTodayDate}[1]/@{AssignementSubmtTodayDate}[2]/@{AssignementSubmtTodayDate}[0]
+    ${AssignmentDetails}    Create Dictionary    Subject Name    ${SignUpTitleMenu}    Activity    ${activityName}    StudentName
+    ...    ${studentName}    Total Questions    ${progressResultsValue}    OverallCorrectValue    ${overallCorrectValue}    SubmitDate
+    ...    ${AssignementSubmtTodayDate}
+    Set Global Variable    ${AssignmentDetails}    ${AssignmentDetails}
+    [Teardown]    Stop Application

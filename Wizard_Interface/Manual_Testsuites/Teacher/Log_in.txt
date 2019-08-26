@@ -1,0 +1,32 @@
+*** Test Cases ***
+Login as Teacher with Valid User ID and Password
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+
+Login as Teacher with Invalid User ID
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter invalid User ID    dsgfg234
+    Enter valid Password    test1234
+    Click on Sign in button    \    Alert message should be displayed as "The User ID or Password is incorrect. Please try again."
+
+Login as Teacher with Invalid Password
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter valid User ID    rhwpte+ta2505@gmail.com
+    Enter invalid Password    tefdfvcv
+    Click on Sign in button    \    Alert message should be displayed as "The User ID or Password is incorrect. Please try again."
+
+Login as Teacher with Invalid User ID and Password
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter invalid User ID    fgdsfgdf657657
+    Enter invalid Password    tefdfvcv
+    Click on Sign in button    \    Alert message should be displayed as "The User ID or Password is incorrect. Please try again."
+
+Validate Login without giving User ID and Password
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Without giving any values in User ID and Password fields Click on Sign in button    \    Alert message should be displayed as \ "Please enter a User ID and Password."

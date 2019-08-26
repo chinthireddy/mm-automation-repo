@@ -1,0 +1,120 @@
+*** Test Cases ***
+MTC33-Verify whether teacher can grade for TG items “My Grading” for a student who completed assignment
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Grade Assignments' button    \    To Be Graded page should be displayed
+    Choose an assignment which is needs to be grading    \    Selected assignment should be highlighted.
+    Click on 'Grade' button    \    Grade page should be displayed
+    Enter Grade \ for Teacher graded questions    \    Grade should be updated.
+    Click on 'Done' button    \    Navigate to 'To Be Graded' page
+
+MTC66-Verify whether Grade page is displayed in 10 seconds when "Grade" button is clicked for any title for single user
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Grade Assignments' button    \    To Be Graded page should be displayed
+    Choose an assignment which is needs to be grading    \    Selected assignment should be highlighted.
+    Click on 'Grade' button    \    Grade page should be displayed
+
+MTC67-Verify whether Grade page is displayed in 10 seconds when "Review" button is clicked for any title for single user
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Grade Assignments' button    \    To Be Graded page should be displayed
+    Click on 'Show graded assignments' button    \    Graded Assignments should be displayed
+    Choose an assignment which is needs to be reviewing.    \    Selected assignment should be highlighted.
+    Click on 'Review' button    \    Grade page should be displayed in 10 sec for selected title
+
+MTC35-Verify whether graded assignments are displayed when "Show Graded" is clicked
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Grade Assignments' button    \    To Be Graded page should be displayed
+    Click on 'Grade' button    \    Grade page should be displayed
+    Click on 'Show graded assignments' button    \    Graded Assignments should be displayed
+
+MTC36-Verify the Hide Graded Assignment Functionality
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Grade Assignments' button    \    To Be Graded page should be displayed
+    Click on 'Grade' button    \    Grade page should be displayed in 10 sec for selected title
+    Click on 'Show graded assignments' button    \    Graded Assignments should be displayed
+    Click on 'Hide Graded Assignments' button    \    Graded Assignments should be hided from 'To Be Graded' page.
+
+MTC34-Verify the Grade functionality for Non Teacher Graded Questions
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Grade Assignments' button    \    To Be Graded page should be displayed
+    Choose an assignment of non teacher Graded question    \    Selected assignment should be highlighted.
+    Click on 'Grade' button    \    Grade page should be displayed and all questions should be displayed with relevent percentage.
+
+Verify alert message is displaying when click on 'Gray' color Grade button
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Grade Assignments' button    \    To Be Graded page should be displayed
+    Choose an assignment which is no needs to be grading    \    Selected assignment should be highlighted.
+    Click on gray color 'Grade' button    \    Alert message should be displayed as "There is nothing ready to grade. The button will turn green when assignments have been submitted by students."
+
+Verify Show Graded Assignment Functionality
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Grade Assignments' button    \    To Be Graded page should be displayed
+    Click on 'Grade' button    \    Grade page should be displayed in 10 sec for selected title
+    Click on 'Show graded assignments' button    \    Graded Assignments should be displayed
+
+Verify Set,Mark,Next and previous buttons are working while grading.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Grade Assignments' button    \    To Be Graded page should be displayed
+    Choose an assignment which is needs to be grading    \    Selected assignment should be highlighted.
+    Click on 'Grade' button    \    Grade page should be displayed
+    Click on set button    \    Set button should be worked accordingly
+    Click on mark button    \    mark button should be worked accordingly
+    Click on next button    \    Next button should be worked accordingly
+    Click on previous button    \    Previous button should be worked accordingly
+
+Verify passage and Resource buttons are working in grade assignment page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Grade Assignments' button    \    To Be Graded page should be displayed
+    Choose an assignment which is needs to be grading    \    Selected assignment should be highlighted.
+    Click on 'Grade' button    \    Grade page should be displayed
+    Click on passage button    \    Passage should be displayed
+    Click on Resource button    \    Resource page should be displayed
+
+Verify page splitters functionality while grading
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Grade Assignments' button    \    To Be Graded page should be displayed
+    Choose an assignment which is needs to be grading    \    Selected assignment should be highlighted.
+    Click on 'Grade' button    \    Grade page should be displayed
+    Click on 'page splitters'    \    Page should be splitted according to the selected criteria.
+
+Verify 'Sorting' functionality in grade assignments page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Grade Assignments' button    \    To Be Graded page should be displayed
+    Click on \ Action column header    \    Records should be sorted in ascending and descending order
+    Click on type column header    \    Records should be sorted in ascending and descending order
+    Click on class column header    \    Records should be sorted in ascending and descending order
+    Click on title column header    \    Records should be sorted in ascending and descending order
+    Click on assignment column header    \    Records should be sorted in ascending and descending order
+    Click on date created column header    \    Records should be sorted in ascending and descending order
+
+Verify grade functionality for Teacher Graded items
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Grade Assignments' button    \    To Be Graded page should be displayed
+    Choose an assignment of teacher Graded questions    \    Selected assignment should be highlighted.
+    Click on 'Grade' button    \    Grade page should be displayed and all questions should be displayed with relevent percentage.
+    Give grading according to the questions and click on 'Done' button    \    Grading should be done for the selected assignments

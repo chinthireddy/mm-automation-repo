@@ -1,0 +1,28 @@
+*** Settings ***
+Resource          ../Keywords/super.txt
+
+*** Variables ***
+${check.fromTable.firstRowCheckBox}    //div[contains(@id,'row')]/table/tr/td/input
+${check.newUser.studentRole}    newUserRoleStudent
+${check.newUser.instructorRole}    newUserRoleInstructorDiv
+${check.newUser.schoolAdminRole}    newUserRoleSchoolAdminDiv
+${check.userDetail.roles.schoolAdmin}    //input[@id='userRoleSchoolAdmin' and @type='checkbox']
+${check.editStudentsorTitles.selectAllCheckbox}    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox']
+${check.editStudentsOrTitles.checkedBoxes}    //div[@class='listEditor']//div[contains(@class,'dgrid-content')]//table[@class='dgrid-row-table']//td[2]//preceding-sibling::td//input[@aria-checked='true']
+${check.editStudentsOrTitles.uncheckedBoxes}    //div[@class='listEditor']//div[contains(@class,'dgrid-content')]//table[@class='dgrid-row-table']//td[2]//preceding-sibling::td//input[@aria-checked='false']
+${check.editStudentsOrTitles.selectedCheckedBoxesCount}    //div[contains(@class,'dijitReset dijitInline toInlineDigit')]//div[contains(@class,'dgrid-content')]//div[@role='row']//table[@class='dgrid-row-table']//tr//td
+${check.userDetail.roles.student}    userRoleStudent
+${check.editStudents.unselectedCheckBox}    //table[contains(@class,'dgrid-row-table')]//td//input[@type='checkbox']
+${check.editStudents.CheckboxStatus.true}    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@aria-checked='true']
+${check.editStudent.AllSelectedCheckBox}    //table[contains(@class,'dgrid-row-table')]//td//input[@aria-checked='true']
+${check.editStudent.firstRow.selected}    //table[contains(@class,'dgrid-row-table')]//td[1]//input[@aria-checked='true']
+${check.editStudent.Mixed}    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@aria-checked='mixed']
+${check.userDetails.Roles.Teacher}    //input[@name='userRoleInstructor']/parent::div/following-sibling::label[contains(@for,'userRoleInstructor')]
+${check.editStudentsOrTitles.selectCheckbox}    //div[@id="listEditor"]//table//td
+${checkbox.newUser.teacherRole}    //input[@name='newUserRoleInstructor']/parent::div/following-sibling::label[contains(@for,'newUser')]
+${checkbox.newUser.schoolAdminRole}    //input[@name='newUserRoleSchoolAdmin']/parent::div/following-sibling::label[contains(@for,'newUser')]
+${checkbox.editStudentsorTitles.unselectedAllCheckBox}    //div[@class='listEditor']//div[contains(@class,'dgrid-header')]//input[@type='checkbox' and @aria-checked="false"]
+${check.userDetails.Roles.Student}    //input[@name='userRoleStudent']/parent::div/following-sibling::label[contains(@for,'user')]
+${check.editUser.schoolAdminRole}    //input[@name='userRoleSchoolAdmin']/parent::div/following-sibling::label[contains(@for,'userRoleSchoolAdmin')]
+${checkbox.newUser.studentRole}    //input[@name='newUserRoleStudent']/parent::div/following-sibling::label[contains(@for,'newUser')]
+${check.editUser.districtAdminRole}    //input[@name='userRoleDistrictAdmin']/parent::div/following-sibling::label[contains(@for,'user')]

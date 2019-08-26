@@ -1,0 +1,325 @@
+*** Settings ***
+Resource          super.txt
+
+*** Keywords ***
+LoginToWizardApp
+    [Arguments]    ${userID}    ${password}    ${URL}=${WizardURL}
+    [Documentation]    Keyword is Used to Login into the Application.
+    ${loginStatus}=    Set Variable    False
+    OpenBrowserToLoginPage    ${URL}
+    ${privacyLogoStatus}    Verify Element Visible    ${link.loginPage.studentprivacyPledge}
+    Run Keyword And Continue On Failure    Run Keyword If    "${privacyLogoStatus}"=="False" and "${isDemoQURL}"=="False"    Fail    Student privacy pledge logo is not visble in login page.
+    Comment    Enters the login details & click on 'SignIn' button.
+    ${signoutStatus}=    Enter Login Details    ${userID}    ${password}
+    Comment    Checks whether alert message is displayed or not. If displayed, reads the alert message.
+    Comment    MYS-3394:Updated with wait for elementvisiblekeyword and modified condition to set variable either true or false based on the previous keyword return status.
+    Comment    ${alertStatus}    Run Keyword If    ${signoutStatus}==False    Wait For Element Visible    ${label.login.alert.enhancements.Ok}    10s
+    ...    ELSE    Set Variable    False
+    Comment    ${alertText}    Run Keyword If    ${alertStatus}    Get Text    ${label.login.AlertMsg}
+    Comment    Verifying wether the Browser Validaton pop up window is displayed or Not.If it displayed clicks on 'OK' Button
+    Comment    Run Keyword If    ${alertStatus}    Click On Element    ${button.login.AlertMsg.Ok}
+    ${loginStatus}=    Evaluate    ${signoutStatus}==True
+    Comment    Set Global Variable    ${alertText}    ${alertText}
+    Comment    Set Global Variable    ${alertStatus}    ${alertStatus}
+    [Return]    ${loginStatus}
+
+OpenBrowserToLoginPage
+    [Arguments]    ${URL}=${WizardURL}
+    [Documentation]    Keyword is Used to Open the browser with given 'URL'.
+    ${bStatus}    Run Keyword And Return Status    Capture Page Screenshot And Log    ${OUTPUTDIR}
+    Run Keyword If    ${bStatus}    Stop Application
+    Comment    Open Browser    ${URL}    ${BROWSER}
+    ${chromeBrowserStatus}    Evaluate    '${BROWSER.lower()}'=='chrome' or '${BROWSER.lower()}'=='gc'
+    ${chrome_options}    Get Chrome Browser Options
+    ${kwargs}    Create Dictionary    chrome_options=${chrome_options}
+    Run Keyword If    ${chromeBrowserStatus}==True    Create Webdriver    Chrome    kwargs=${kwargs}
+    Run Keyword If    ${chromeBrowserStatus}==True    Go To    ${URL}
+    Run Keyword If    ${chromeBrowserStatus}==False    Open Browser    ${URL}    ${BROWSER}
+    Maximize Browser Window
+    AutoItLibrary.Mouse Move    3    3
+    Comment    Delete All Cookies
+    Wait Until Keyword Succeeds    3m    20s    Wait And Click Element    ${text.wizard.userID}
+    Comment    MYS-3351 : Updated the script to wait for progress bar on launching the browser and without refresh if it present then waiting till it disappear.
+    ${progress_bar_status}    Wait For Element Visible    ${header.login.loadingProgressMonitor}    10s
+    Run Keyword If    ${progress_bar_status}    Wait Until Keyword Succeeds    4m    10s    Element Should Not Be Visible    ${header.login.loadingProgressMonitor}
+    ...    Progress bar still in progressive state after 4m of wait time.
+    Comment    ${kwStatus}    CommonLibrary.Wait For Web App Loading Progress    ${header.login.loadingProgressMonitor}    15s
+    Log    ${progress_bar_status}
+    [Teardown]
+
+Enter Login Details
+    [Arguments]    ${userName}    ${password}
+    [Documentation]    This Keyword is Used to Enter the User Credentials & clicks on the 'Sign-IN' button.
+    Log Many    ${userName}    ${password}
+    Comment    MYS-3394:Updated with wait for elementvisiblekeyword.
+    Wait For Element Visible    ${text.wizard.userID}    ${Delay}
+    Input Text    ${text.wizard.userID}    ${userName}
+    Sleep    1s
+    Selenium2Library.Input Password    ${text.wizard.password}    ${password}
+    Sleep    1s
+    Click On Element    ${button.wizard.signIn}
+    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Comment    MYS-3394:Updated with wait for elementvisiblekeyword.
+    ${alertStatus}    Wait For Element Visible    ${label.login.Alert}    5s
+    Comment    MYS-3191 : Waiting for (loading) spinner icon if invalid login details alert not appears.
+    ${spinner_status}    Run Keyword If    ${alertStatus}!=True    Wait For Element Visible    ${common.spinner.loadingIcon}    10s
+    Comment    MYS-3191 : Updated condition to waite for (loading) spinner icon to disappear if invalid login details alert not present and spinner icon in picture.
+    Run Keyword If    ${alertStatus}!=True and ${spinner_status}==True    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Comment    MYS-3394:Updated with wait for elementvisiblekeyword.
+    Comment    ${enhancementAlertStatus}    Wait For Element Visible    ${common.window.Enhancements}    5s
+    Comment    MYS-3191 : Update to click on confirm button of enhancements dialog until the action succeds if the dialog present after loading disappears.
+    Comment    Run Keyword If    "${enhancementAlertStatus}"!="False"    Wait Until Keyword Succeeds    1m    3s    Click On Element
+    ...    ${button.Alert.OK}
+    Return From Keyword If    ${alertStatus}==True    False
+    Comment    MYS-3394:Updated with wait for elementvisiblekeyword.
+    ${bStatus}    Wait For Element Visible    ${label.Home.HeaderlabelUser}    ${preloaderTimeOut}
+    [Return]    ${bStatus}
+
+Run all activities for student
+    [Arguments]    ${studentKey}    ${studentPwd}=${EMPTY}
+    [Documentation]    Keyword is Used to Login into the Application.
+    ${studentKey}    Convert To Number    ${studentKey}
+    ${studentDetails}    Get From Dictionary    ${StudentsDictionary}    ${studentKey}
+    @{studentDetails}    Set Variable    ${studentDetails}
+    ${userId}    Set Variable    @{studentDetails}[0]
+    ${password}    Run Keyword If    "${studentPwd}"=="${EMPTY}"    Set Variable    @{studentDetails}[1]
+    ...    ELSE    Set Variable    ${studentPwd}
+    ${performance}    Run Keyword If    "${studentPwd}"=="${EMPTY}"    Set Variable    @{studentDetails}[2]
+    ...    ELSE    Set Variable    @{studentDetails}[1]
+    Comment    Login into Wizard App with Student Role.
+    ${loginStatus}=    LoginToWizardApp    ${userId}    ${password}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    Comment    Sleep    10s
+    : FOR    ${assignment}    IN RANGE    1    1000
+    \    ${bStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@class='dgrid-content ui-widget-content']//div[@role='row']/table[@class='dgrid-row-table']/tr/td/div    ${TimeOut}
+    \    Run Keyword If    '${bStatus}'!='True'    Set Test Message    Asignments are completed for the User '${userId}'
+    \    ${assignmentComplStatus}    Run Keyword If    ${bStatus}    Run Keyword And Return Status    Algorithm Write Assignment1    ${performance}
+    \    ...    ELSE    Exit For Loop
+    \    Run Keyword Unless    ${assignmentComplStatus}    LoginToWizardApp    ${userId}    ${password}
+
+Write Assignment
+    [Arguments]    ${performance}
+    [Documentation]    Keyword is used to do algorithm Assignment.
+    Click On Element    //div[@class='dgrid-content ui-widget-content']//div[@role='row']/table[@class='dgrid-row-table']/tr/td/div
+    Sleep    5s
+    ${qtnCount}    Get Matching Xpath Count    ${table.studentAssignments.questionCount}
+    ${answeredQuestions}    Get Matching Xpath Count    //table[@class='dgrid-row-table']/tr/td[3]/div
+    ${notAnsweredQuestions}    Evaluate    ${qtnCount}-${answeredQuestions}
+    ${no}    Evaluate    ${notAnsweredQuestions}-1
+    : FOR    ${iCounter}    IN RANGE    1    ${notAnsweredQuestions}+1
+    \    comment    replacing following row
+    \    ${passageOptionsStatus}    PassageTabControl
+    \    Run Keyword And Continue On Failure    Wait Until Element Is Visible    ${image.studentAssignments.scratchPad}    5s    The scratch pad is not Available.
+    \    Run Keyword And Continue On Failure    Wait Until Element Is Visible    ${image.studentAssignments.ruler}    5s    The Ruler is not Available.
+    \    Run Keyword And Continue On Failure    Wait Until Element Is Visible    ${image.studentAssignments.highLighter}    5s    The highlighter is not Available.
+    \    ${crGroupBtn}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='crGroup1_cr001']//span
+    \    Run Keyword If    ${crGroupBtn}    Click On Element    //div[@id='crGroup1_cr001']//span
+    \    ${submitBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.submit}    5s
+    \    ${multipleChoiceStatus}    Run Keyword If    ${submitBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='mcChoice0']/div
+    \    ...    5s
+    \    ${bubbleSelectionStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='grGridHTML']//div[2]//button[contains(@id,'Submit') and contains(text(),'Submit')]    5s
+    \    Run Keyword If    ${multipleChoiceStatus}    sleep    3s
+    \    ${pngImage}    Run Keyword If    ${multipleChoiceStatus}    GetPngImage    //div[@id='mcChoice0']/div
+    \    ${multileOptionsStatus}    Run Keyword If    ${multipleChoiceStatus}    Select Multiple Choice Answer    ${pngImage}    ${performance}
+    \    Run Keyword If    '${multileOptionsStatus}'!='True' and '${bubbleSelectionStatus}'!='True' and '${crGroupBtn}'!='True'    Click On Element    ${button.studentAssignments.submit}
+    \    Run Keyword If    '${multileOptionsStatus}'!='True' and '${bubbleSelectionStatus}'=='True' and '${crGroupBtn}'!='True'    Click On Element    //div[@id='grGridHTML']//div[2]//button[contains(@id,'Submit') and contains(text(),'Submit')]
+    \    Run Keyword If    '${multileOptionsStatus}'!='True' and '${bubbleSelectionStatus}'=='True' and '${crGroupBtn}'!='True'    Sleep    3s
+    \    ${alertStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='alertOkBtn']/button[contains(text(),'Ok')]    5s
+    \    ${alertMsg}    Run Keyword If    '${multileOptionsStatus}'!='True' and '${bubbleSelectionStatus}'=='True' and '${crGroupBtn}'!='True' and '${alertStatus}'=='True'    Click On Element    //div[@id='alertOkBtn']/button[contains(text(),'Ok')]
+    \    Run Keyword If    ${iCounter}==${notAnsweredQuestions}    Exit For Loop
+    \    Sleep    3s
+    \    ${nextBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='navContainer']//div[contains(@id,'dojox_mobile_Heading')]//ul[@id='navToolbar']//li[@id='navBtnNext']    10s    'Next' Button is not visible in Assigments.
+    \    Comment    Run Keyword If    ${nextBtnStatus}    Mouse Over    //div[@id='navContainer']//div[contains(@id,'dojox_mobile_Heading')]//ul[@id='navToolbar']//li[@id='navBtnNext']
+    \    Comment    Run Keyword If    ${nextBtnStatus}    Simulate    //li[@id='navBtnNext']/div/div/div/img    click
+    \    Comment    Sleep    5s
+    \    Comment    Run Keyword If    ${nextBtnStatus}    Mouse Over    //li[@id='navBtnNext']/div/div/div/img
+    \    Comment    Run Keyword If    ${nextBtnStatus}    AutoItLibrary.Mouse Down    //li[@id='navBtnNext']/div/div/div/img
+    \    Comment    Comment    Sleep    5s
+    \    Run Keyword If    ${nextBtnStatus}    Click On Element    //div[@id='navContainer']//div[contains(@id,'dojox_mobile_Heading')]//ul[@id='navToolbar']//li[@id='navBtnNext']
+    \    Comment    Run Keyword If    ${nextBtnStatus}    Execute Javascript    document.getElementById('navBtnNext').click
+    \    ${qNumber}    Evaluate    ${iCounter}+1
+    \    Wait Until Element Is Visible    //div[@class='dgrid-content ui-widget-content']/div[@id='assmtGrid-row-${qNumber}' and contains(@class,selected)]    5s
+    ${moreBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.more}    10s
+    Run Keyword If    ${moreBtnStatus}    Click On Element    ${button.studentAssignments.more}
+    ${nextBtnStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.next}
+    Comment    Run Keyword Unless    ${moreBtnStatus}    ${nextBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='navContainer']//div[contains(@id,'dojox_mobile_Heading')]//span[contains(@id,'dojox_mobile_ToolBarButton')]//td[contains(text(),'Next')]
+    Run Keyword Unless    ${moreBtnStatus}    Run Keyword If    ${nextBtnStatus}    Click On Element    ${button.studentAssignments.next}
+    Comment    Sleep    4s
+    Run Keyword And Ignore Error    Click On Element    ${button.studentAssignments.turnIn}
+    Sleep    5s
+    ${confirmTurnInPromptDlg}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.confirmTurnInPromptBttn}    5s
+    Run Keyword If    ${confirmTurnInPromptDlg}    Wait Until Keyword Succeeds    10s    5s    Click On Element    ${button.studentAssignments.confirmTurnInPromptBttn}
+    Sleep    5s
+    ${morStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='sessionReportDlg']//a[text()='More Details']
+    Run Keyword If    ${morStatus}    Click On Element    //div[@id='sessionReportDlg']//a[text()='More Details']
+    ${reportDlg}    Run Keyword And Return Status    Wait Until Element Is Visible    ${header.studentAssignments.assignmentReportDlg}    5s
+    Run Keyword If    ${reportDlg}    Click On Element    ${header.studentAssignments.assignmentReportDlgClose}
+    ${nextAssmtDlg}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.nextAssmtDlgNo}    5s
+    Run Keyword If    ${nextAssmtDlg}    Click On Element    ${button.studentAssignments.nextAssmtDlgNo}
+    Wait for page load
+    ${assignmentPage}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.studentAssignments.assignments}    ${Delay}
+    Run Keyword If    ${assignmentPage}    Set Test Message    Student Assignment Page is displayed.
+    ...    ELSE    Set Test Message    Student Assignment Page is not displayed.
+    [Return]    ${assignmentPage}
+
+Algorithm Write Assignment
+    [Arguments]    ${performance}
+    [Documentation]    Keyword is used to do algorithm Assignment.
+    Click On Element    //div[@class='dgrid-content ui-widget-content']//div[@role='row']/table[@class='dgrid-row-table']/tr/td/div
+    Sleep    2s
+    Run Keyword And Ignore Error    Wait Until Element Is Visible    ${image.studentAssignments.scratchPad}    ${TimeOut}    The scratch pad is not Available.
+    Sleep    5s
+    : FOR    ${val}    IN RANGE    1    6
+    \    ${qtnCount}    Get Matching Xpath Count    ${table.studentAssignments.questionCount}
+    \    Run Keyword If    "${qtnCount}"!="0"    Exit For Loop
+    \    ...    ELSE    Sleep    5s
+    ${answeredQuestions}    Get Matching Xpath Count    //table[@class='dgrid-row-table']/tr/td[3]/img
+    ${notAnsweredQuestions}    Evaluate    ${qtnCount}-${answeredQuestions}
+    ${no}    Evaluate    ${notAnsweredQuestions}-1
+    : FOR    ${iCounter}    IN RANGE    1    ${notAnsweredQuestions}+1
+    \    comment    replacing following row
+    \    ${passageOptionsStatus}    PassageTabControl
+    \    Run Keyword If    ${passageOptionsStatus}==True    Exit For Loop
+    \    ${multipleChoiceStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='mcChoice0']/div    5s
+    \    Comment    Run Keyword If    '${multipleChoiceStatus}'=='False'    Exit For Loop
+    \    ${pngImage}    Run Keyword If    ${multipleChoiceStatus}    GetPngImage    //div[@id='mcChoice0']/div
+    \    Comment    ${multileOptionsStatus}    Run Keyword If    ${multipleChoiceStatus}    CheckMultipleOptionControl
+    \    ${multileOptionsStatus}    Run Keyword If    ${multipleChoiceStatus}    Select Multiple Choice Answer    ${pngImage}    ${performance}
+    \    Sleep    5s
+    \    ${saveAnswerVisibility}    Run Keyword If    '${multileOptionsStatus}'!='True'    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.submit}
+    \    ...    5s
+    \    Run Keyword If    ${saveAnswerVisibility}    Click On Element    ${button.studentAssignments.submit}
+    \    Run Keyword If    ${iCounter}==${notAnsweredQuestions}    Exit For Loop
+    \    ${nextBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='navContainer']//div[contains(@id,'dojox_mobile_Heading')]//ul[@id='navToolbar']//li[@id='navBtnNext']    5s    'Next' Button is not visible in Assigments.
+    \    Run Keyword If    ${nextBtnStatus}    Click On Element    //div[@id='navContainer']//div[contains(@id,'dojox_mobile_Heading')]//ul[@id='navToolbar']//li[@id='navBtnNext']
+    \    ${qNumber}    Evaluate    ${iCounter}+1
+    \    Wait Until Element Is Visible    //div[@class='dgrid-content ui-widget-content']/div[@id='assmtGrid-row-${qNumber}' and contains(@class,selected)]    30s
+    Sleep    5s
+    ${nextBtnStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.next}
+    Run Keyword If    ${nextBtnStatus}    Click On Element    ${button.studentAssignments.next}
+    Run Keyword And Ignore Error    Click On Element    ${button.studentAssignments.turnIn}
+    Sleep    5s
+    ${confirmTurnInPromptDlg}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.confirmTurnInPromptBttn}
+    Run Keyword If    ${confirmTurnInPromptDlg}    Click On Element    ${button.studentAssignments.confirmTurnInPromptBttn}
+    ...    ELSE    Set Test Message    Confirm Pop window is not Visible for th current assignment.
+    Sleep    5s
+    ${morStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='sessionReportDlg']//a[text()='More Details']    10s
+    Run Keyword If    ${morStatus}    Click On Element    //div[@id='sessionReportDlg']//a[text()='More Details']
+    ...    ELSE    Set Test Message    More Details window is not Visible for th current assignment.
+    ${reportDlg}    Run Keyword And Return Status    Wait Until Element Is Visible    ${header.studentAssignments.assignmentReportDlg}    10s
+    Run Keyword If    ${reportDlg}    Click On Element    ${header.studentAssignments.assignmentReportDlgClose}
+    ...    ELSE    Set Test Message    Report Dialog window is not Visible for th current assignment.
+    Sleep    5s
+    ${nextAssmtDlg}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.nextAssmtDlgNo}
+    Run Keyword If    ${nextAssmtDlg}    Click On Element    ${button.studentAssignments.nextAssmtDlgNo}
+    ...    ELSE    Set Test Message    Next Assignment \ Dialog window is not Visible for th current assignment.
+    Sleep    5s
+    ${assignmentPage}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.studentAssignments.assignments}
+    Run Keyword If    ${assignmentPage}    Set Test Message    Student Assignment Page is displayed.
+    ...    ELSE    Set Test Message    Student Assignment Page is not displayed.
+    [Return]    ${assignmentPage}
+
+Wait For Web App Loading Progress
+    [Arguments]    ${locator}    ${TimeOut}=5s
+    [Documentation]    Keyword is used to wait for a loadingProgressMoniotor with tiny green progress bar.
+    ${kwStatus}    Set Variable    False
+    : FOR    ${iCounter}    IN RANGE    1    6
+    \    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${locator}    ${TimeOut}
+    \    ${kwStatus}    Set Variable    ${bStatus}
+    \    Run Keyword If    ${bStatus}==True    Exit For Loop
+    \    Reload Page
+    \    Sleep    10s
+    : FOR    ${iCounter}    IN RANGE    1    500
+    \    ${percentage}    Get Text    ${locator}
+    \    Log    ${percentage}
+    \    ${Status}    String Should Contain    ${percentage}    %
+    \    Run Keyword Unless    ${Status}    Exit For Loop
+    \    ${tempList}    Split String    ${percentage}    %
+    \    ${percentage}    Set Variable    @{tempList}[0]
+    \    ${bStatus}    Evaluate    ${percentage}>0.9
+    \    Exit For Loop If    ${bStatus}
+    \    Sleep    2s
+    [Return]    ${kwStatus}
+
+Signout And Relogin
+    [Arguments]    ${UserID}    ${Password}    ${URL}=${WizardURL}
+    [Documentation]    Keyword is used to SignOut from applciation and relogin with given details.
+    Comment    Click on Signout button.
+    ${kwStatus}    SignOut
+    Run Keyword If    ${kwStatus}==False    Set Test Message    The SignOut is not completed.
+    Run Keyword If    ${kwStatus}==False    Stop Application
+    Run Keyword If    ${kwStatus}==False    Open Browser    ${URL}    ${BROWSER}
+    Maximize Browser Window
+    Wait And Click Element    ${text.wizard.userID}    ${preloaderTimeOut}
+    Comment    Enters the login details & click on 'SignIn' button.
+    ${bStatus}    Enter Login Details    ${UserID}    ${Password}
+    Run Keyword If    '${bStatus}'=='False'    Set Test Message    The user is not able to login with these ctredentials-'${UserID}' and '${Password}'
+    [Return]    ${bStatus}
+
+Algorithm Write Assignment1
+    [Arguments]    ${performance}
+    [Documentation]    Keyword is used to do algorithm Assignment.
+    Wait Until Keyword Succeeds    30s    5s    Click On Element    //div[@class='dgrid-content ui-widget-content']//div[@role='row']/table[@class='dgrid-row-table']/tr/td/div
+    Comment    Sleep    10s
+    Run Keyword And Ignore Error    Wait Until Element Is Visible    ${image.studentAssignments.scratchPad}    ${TimeOut}    The scratch pad is not Available.
+    Sleep    5s
+    : FOR    ${val}    IN RANGE    1    5
+    \    ${qtnCount}    Get Matching Xpath Count    ${table.studentAssignments.questionCount}
+    \    Run Keyword If    "${qtnCount}"!="0"    Exit For Loop
+    \    ...    ELSE    Sleep    5s
+    ${answeredQuestions}    Get Matching Xpath Count    //table[@class='dgrid-row-table']/tr/td[3]/img
+    ${notAnsweredQuestions}    Evaluate    ${qtnCount}-${answeredQuestions}
+    ${no}    Evaluate    ${notAnsweredQuestions}-1
+    : FOR    ${iCounter}    IN RANGE    0    ${notAnsweredQuestions}
+    \    Set Global Variable    ${submitStatus}    False
+    \    ${passageOptionsStatus}    PassageTabControl
+    \    Comment    Run Keyword If    ${passageOptionsStatus}==True    Exit For Loop
+    \    ${qNumber}    Evaluate    ${iCounter}+1
+    \    ${imageVisibility}    Verify Element Visible    //div[contains(@id,'assmtGrid-row') and contains(@class,'dgrid-selected ui-state-active')]/table//td[contains(@class,'column-a field-a')]/img
+    \    ${answerSubmission}    Verify Element Visible    //div[contains(@id,'assmtGrid-row') and contains(@class,'dgrid-selected ui-state-active')]/table//td[contains(@class,'column-a field-a')]/div
+    \    Run Keyword If    '${imageVisibility}'=='True' or '${answerSubmission}'=='True'    ClickNextUntilNextQuestionLoaded    ${qNumber}
+    \    ${multipleChoiceStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='mcChoice0']/div    5s
+    \    ${pngImage}    Run Keyword If    ${multipleChoiceStatus}    GetPngImage    //div[@id='mcChoice0']/div
+    \    ${multileOptionsStatus}    Run Keyword If    ${multipleChoiceStatus}    Select Multiple Choice Answer    ${pngImage}    ${performance}
+    \    Comment    Sleep    5s
+    \    ${saveAnswerVisibility}    Run Keyword If    '${multileOptionsStatus}'!='True'    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.submit}
+    \    ...    ${TimeOut}
+    \    Run Keyword If    ${saveAnswerVisibility}    Click On Element    ${button.studentAssignments.submit}
+    \    Run Keyword If    ${iCounter}==${notAnsweredQuestions}    Exit For Loop
+    \    Comment    ${nextBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='navContainer']//div[contains(@id,'dojox_mobile_Heading')]//ul[@id='navToolbar']/li[@id='navBtnNext' and contains(@class,'bgOrange')]    5s
+    \    ...    'Next' Button is not visible in Assigments.
+    \    Comment    Run Keyword If    ${nextBtnStatus}    Click On Element    //div[@id='navContainer']//div[contains(@id,'dojox_mobile_Heading')]//ul[@id='navToolbar']/li[@id='navBtnNext' and contains(@class,'bgOrange')]
+    \    ${qNumber}    Evaluate    ${iCounter}+1
+    \    Wait Until Element Is Visible    //div[@class='dgrid-content ui-widget-content']/div[@id='assmtGrid-row-${qNumber}' and contains(@class,selected)]    ${TimeOut}
+    Comment    Sleep    5s
+    ${nextBtnStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.next}    5s
+    Run Keyword If    ${nextBtnStatus}    Click On Element    ${button.studentAssignments.next}
+    Run Keyword And Ignore Error    Click On Element    ${button.studentAssignments.turnIn}
+    Comment    Sleep    5s
+    ${confirmTurnInPromptDlg}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.confirmTurnInPromptBttn}    5s
+    Run Keyword If    ${confirmTurnInPromptDlg}    Click On Element    ${button.studentAssignments.confirmTurnInPromptBttn}
+    ...    ELSE    Set Test Message    Confirm Pop window is not Visible for th current assignment.
+    Comment    Sleep    5s
+    ${morStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='sessionReportDlg']//a[text()='More Details']    10s
+    Run Keyword If    ${morStatus}    Click On Element    //div[@id='sessionReportDlg']//a[text()='More Details']
+    ...    ELSE    Set Test Message    More Details window is not Visible for th current assignment.
+    ${reportDlg}    Run Keyword And Return Status    Wait Until Element Is Visible    ${header.studentAssignments.assignmentReportDlg}    10s
+    Run Keyword If    ${reportDlg}    Click On Element    ${header.studentAssignments.assignmentReportDlgClose}
+    ...    ELSE    Set Test Message    Report Dialog window is not Visible for th current assignment.
+    Comment    Sleep    5s
+    ${nextAssmtDlg}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.nextAssmtDlgNo}    5s
+    Run Keyword If    ${nextAssmtDlg}    Click On Element    ${button.studentAssignments.nextAssmtDlgNo}
+    ...    ELSE    Set Test Message    Next Assignment Dialog window is not Visible for th current assignment.
+    Comment    Sleep    5s
+    ${assignmentPage}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.studentAssignments.assignments}    5s
+    Run Keyword If    ${assignmentPage}    Set Test Message    Student Assignment Page is displayed.
+    ...    ELSE    Set Test Message    Student Assignment Page is not displayed.
+    [Return]    ${assignmentPage}
+
+Get Instructions From URL
+    Open Browser    ${instructionsurl}    ${BROWSER}
+    Sleep    10s
+    ${instructions}    Get Text    ${stringinurl}
+    log    ${instructions}
+    Close Browser
+    [Return]    ${instructions}

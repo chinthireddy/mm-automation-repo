@@ -1,0 +1,47 @@
+*** Variables ***
+${demoQPreDistrictName}    Elgin Isd
+${demoQPreSchoolName}    Elgin Middle School
+${RegCodesFilePath}    ${EXECDIR}\\Automation_Testsuites\\TestData\\TECodes.xls
+${preSchoolName}    Vandagriff Elementary
+${preDistrictName}    Aledo Indep School District
+${UploadStudentsFile}    ${EXECDIR}\\Automation_Testsuites\\TestData\\Test_Prerequisites_Students.csv
+${PrerequisitesFilePath}    ${EXECDIR}\\Automation_Testsuites\\TestData\\Test_Prerequisites.xls
+${preTeacherID}    ${EMPTY}
+${preTeacherPassword}    ${EMPTY}
+${preSignUpTitleMenu}    ${EMPTY}
+${preSchoolAdminLName}    ${EMPTY}
+${preSchoolAdminFName}    ${EMPTY}
+${preClassesAndClassCodes}    ${EMPTY}
+${preSchoolAdminID}    ${EMPTY}
+${preSchoolAdminPassword}    ${EMPTY}
+${preTeacherDetails}    ${EMPTY}
+${preSchoolAdminDetails}    ${EMPTY}
+${preStudentDetails}    ${EMPTY}
+${preSignUpTitleMenus}    ${EMPTY}
+${preActivitySelectMenu}    ${EMPTY}
+${preReportType1}    Standards Mastery Report
+${preClassesList}    ${EMPTY}
+${preReportType2}    Item Analysis Report
+${preStudentIds}    ${EMPTY}
+${preScriptStatus}    False
+${preDistrictAdminDetails}    ${EMPTY}
+${preDistrictAdminStatus}    False
+${preActivityNames}    ${EMPTY}
+${preImportUsersStatus}    False
+${preTeacherFirstName}    ${EMPTY}
+${preTeacherLastName}    ${EMPTY}
+${secondTeacherCreationStatus}    False
+${preGroupList}    ${EMPTY}
+${preGroupsScriptStatus}    False
+${preTeacherFullName}    ${EMPTY}
+${preGroupSignUpTitleMenus}    ${EMPTY}
+${preGroupActivityNames}    ${EMPTY}
+${preGroupactivitySelectMenu}    ${EMPTY}
+${preTeacherDetails02}    ${EMPTY}
+${preDistrictAdminDetails2}    ${EMPTY}
+${preSchoolAdminDetails2}    ${EMPTY}
+${assignmentCompletionStatus}    False
+${groupAssignmentCompletionStatus}    False
+${preDistrictAdmin2Status}    False
+${groupAssignmentDetails}    ${EMPTY}
+${testDataFilePath}    ${EXECDIR}\\Automation_Testsuites\\TestData\\SalesTestData.xls

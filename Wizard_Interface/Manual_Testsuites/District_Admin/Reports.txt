@@ -1,0 +1,635 @@
+*** Test Cases ***
+MTC107-Validate Standards Mastery Report functionality for selected class and subject
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Select Class from 'Classes' drop down    \    Selected Class should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the selected Group and subject should be displayed
+
+MTC115-Validate Item Analysis Report functionality for Selected Class & Subject
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis Report from 'Report Type' drop down    \    Item Analysis Report should be selected
+    Select School from 'School' drop down    \    Selected School should be displayed
+    Select Class from 'Classes' drop down    \    Selected Class should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the selected Group and subject should be displayed
+
+MTC117-Validate whether Standards Mastery Report is displayed based on the selected school,class and subject in 10 seconds
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Select Class from 'Classes' drop down    \    Selected Class should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard MasteryReport" for the selected Class and subject should be displayed in 10 seconds
+
+MTC119-Validate whether Item Analysis Report is displayed based on the selected school and class and subject in 10 seconds.
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis Report from 'Report Type' drop down    \    Item Analysis Report should be selected
+    Select School from 'School' drop down    \    Selected School should be displayed
+    Select Class from 'Classes' drop down    \    Selected Class should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the selected Group and subject should be displayed in 10 seconds
+
+MTC142-Validate Standards Mastery Report functionality for selected Group and subject
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select Group from 'Groups' drop down    \    Selected Group should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the selected Group and subject should be displayed
+
+MTC143- Verify standard mastery report of student who is in group.
+    Open the browser and enter the URL    Test data: Url- b33test1.mentoringmindsonline.com    Expected result: Login page should be displayed
+    Enter valid User Id and valid password and click on Sign In Button    Test data: District Admin : rhwpte+dadmin2505@gmail.com \ password : test1234    Expected result: Home page should be displayed
+    Click on Reports Button    \    Expected result: Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select Group from 'Groups' drop down    \    Selected Group should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the selected Group and subject should be displayed
+
+MTC144-Validate Item Analysis Report functionality for Selected Group & Subject
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis Report from 'Report Type' drop down    \    Item Analysis Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select Group from 'Groups' drop down    \    Selected Group should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' from drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the selected Group and subject should be displayed
+
+Validate Standards Mastery Report functionality for single School, All classes and subject
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \ \
+    Select All Classes from 'Classes' drop down    \    All Classes should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the All Classes and subject should be displayed
+
+Validate Item Analysis Report functionality for single School, All classes and subject
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis report from 'Report Type' drop down    \    Item Analysis Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Select All Class from 'Classes' drop down    \    All Classes should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the All Classes and subject should be displayed
+
+Validate Standards Mastery Report functionality for single School, All Groups and subject
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select All Groups from 'Groups' drop down    \    All Groups should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the All Groups and subject should be displayed
+
+Validate Item Analysis Report functionality for single School, All Groups and subject
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis report from 'Report Type' drop down    \    Item Analysis Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select All Groups from 'Groups' drop down    \    All Groups should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the All Groups and subject should be displayed
+
+Validate Standards Mastery Report functionality for All Schools and subject
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled \
+    Select All Schools from 'School' drop down    \    All Schools should be displayed and Subject/Level drop down should be displayed
+    Select a Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select valid date from 'Date Range' drop down    \    Selected Date range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the All Schools and subject should be displayed
+
+Validate Item Analysis Report functionality for All Schools and subject
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis report from 'Report Type' drop down    \    Item Analysis Report should be selected and School drop down should be enabled \
+    Select All Schools from 'School' drop down    \    All Schools should be displayed and Subject/Level drop down should be displayed
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the All Schools and subject should be displayed
+
+Validate Edit,Print,Export & Sort by functionalities in Reports page for Standard Mastery Report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Select All Classes from 'Classes' drop down    \    All Classes should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the All Classes and subject should be displayed
+    Click on 'Edit' Button in Legend grid in reports page    \    "Report Settings" pop-up should be displayed
+    Click on 'Print' Button in reports page    \    Printed Standard Mastery Report should be displayed in another window
+    Click on 'Export' Button in reports page    \    ".csv" file should be downloaded for the Standard Mastery Report
+    Click on 'Sort by' Button in reports page    \    Students should be sorted with respect to percentage for the Standard Mastery Report
+
+Validate Edit,Print,Export by functionalities in Reports page for Item Analysis Report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis report from 'Report Type' drop down    \    Item Analysis Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Select All Class from 'Classes' drop down    \    All Classes should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the All Classes and subject should be displayed
+    Click on 'Print' Button in reports page    \    Printed Item Analysis Report should be displayed in another window
+    Click on 'Export' Button in reports page    \    ".csv" file should be downloaded for the Item Analysis Report
+
+MTC145-Verify Item analysis report of student who is in group.
+    Open the browser and enter the URL    Test data: Url- b33test1.mentoringmindsonline.com    Expected result: Login page should be displayed
+    Enter valid User Id and valid password and click on Sign In Button    Test data: District Admin : rhwpte+dadmin2505@gmail.com \ password : test1234    Expected result: Home page should be displayed
+    Click on Reports Button    \    Expected result: Reports filter page should be displayed
+    Select Item Analysis Report from 'Report Type' drop down    \    Item Analysis Report should be selected and School drop down should be enabled
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select All Groups from 'Groups' drop down    \    All Groups should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Mastery Report" for the All Groups and subject should be displayed
+
+Verify Copyright bar is added at the bottom of the All Schools standard mastery reports for 'CCS' titles
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled
+    Select All Schools from 'School' drop down    \    All Schools should be displayed and Subject/Level drop down should be displayed
+    Select a Subject from 'Subject/Level' drop down    CCS Math level    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select valid date from 'Date Range' drop down    \    Selected Date range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the All Schools and subject should be displayed
+    Verify bottom of the report    \    'Common core standards @2015 NGA centre CCSSO.Click here for complete list of standards and definations' copy right bar should be displayed
+
+Verify Copyright bar is added at the bottom of theAll Schools item analysis reports for 'CCS' titles
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis report from 'Report Type' drop down    \    Item Analysis Report should be selected and School drop down should be enabled
+    Select All Schools from 'School' drop down    \    All Schools should be displayed and Subject/Level drop down should be displayed
+    Select Subject from 'Subject/Level' drop down    CCS Math level    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the All Schools and subject should be displayed
+    Verify bottom of the report    \    'Common core standards @2015 NGA centre CCSSO.Click here for complete list of standards and definations' copy right bar should be displayed
+
+Verify Can see hover message on each cell for Class item analysis report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis Report from 'Report Type' drop down    \    Item Analysis Report should be selected
+    Select School from 'School' drop down    \    Selected School should be displayed
+    Select Class from 'Classes' drop down    \    Selected Class should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the selected Group and subject should be displayed
+    Mouse hover on each cell    \    Tool tip message should be displayed while mouse hover on each cell
+
+Verify Can see hover message on each cell for Class Standard Mastery Report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Select Class from 'Classes' drop down    \    Selected Class should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the selected Group and subject should be displayed
+    Mouse hover on each cell    \    Tool tip message should be displayed while mouse hover on each cell
+
+Verify Can see hover message on each cell for Group item analysis report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis Report from 'Report Type' drop down    \    Item Analysis Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select Group from 'Groups' drop down    \    Selected Group should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' from drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the selected Group and subject should be displayed
+    Mouse hover on each cell    \    Tool tip message should be displayed while mouse hover on each cell
+
+Verify Can see hover message on each cell for Group Standard Mastery Report
+    Open the browser and enter the URL    Test data: Url- b33test1.mentoringmindsonline.com    Expected result: Login page should be displayed
+    Enter valid User Id and valid password and click on Sign In Button    Test data: District Admin : rhwpte+dadmin2505@gmail.com \ password : test1234    Expected result: Home page should be displayed
+    Click on Reports Button    \    Expected result: Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select Group from 'Groups' drop down    \    Selected Group should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the selected Group and subject should be displayed
+    Mouse hover on each cell    \    Tool tip message should be displayed while mouse hover on each cell
+
+Verify Copyright bar is added at the bottom of the All Classes standard mastery reports for 'CCS' titles
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \ \
+    Select All Classes from 'Classes' drop down    \    All Classes should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the All Classes and subject should be displayed
+    Verify bottom of the report    \    'Common core standards @2015 NGA centre CCSSO.Click here for complete list of standards and definations' copy right bar should be displayed
+
+Verify Copyright bar is added at the bottom of the All Groups item analysis reports for 'CCS' titles
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis report from 'Report Type' drop down    \    Item Analysis Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select All Groups from 'Groups' drop down    \    All Groups should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the All Groups and subject should be displayed
+    Verify bottom of the report    \    'Common core standards @2015 NGA centre CCSSO.Click here for complete list of standards and definations' copy right bar should be displayed
+
+Verify Copyright bar is added at the bottom of the single Class standard mastery reports for 'CCS' titles
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Select Class from 'Classes' drop down    \    Selected Class should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the selected Group and subject should be displayed
+    Verify bottom of the report    \    'Common core standards @2015 NGA centre CCSSO.Click here for complete list of standards and definations' copy right bar should be displayed
+
+Verify Copyright bar is added at the bottom of the single Group item analysis reports for 'CCS' titles
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis Report from 'Report Type' drop down    \    Item Analysis Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select Group from 'Groups' drop down    \    Selected Group should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' from drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the selected Group and subject should be displayed
+    Verify bottom of the report    \    'Common core standards @2015 NGA centre CCSSO.Click here for complete list of standards and definations' copy right bar should be displayed
+
+Verify Copyright bar is added at the bottom of the single Group standard mastery reports for 'CCS' titles
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select Group from 'Groups' drop down    \    Selected Group should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the selected Group and subject should be displayed
+    Verify bottom of the report    \    'Common core standards @2015 NGA centre CCSSO.Click here for complete list of standards and definations' copy right bar should be displayed
+
+Verify Copyright bar is added at the bottom of the single Class item analysis reports for 'CCS' titles
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis Report from 'Report Type' drop down    \    Item Analysis Report should be selected
+    Select School from 'School' drop down    \    Selected School should be displayed
+    Select Class from 'Classes' drop down    \    Selected Class should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the selected Group and subject should be displayed
+    Verify bottom of the report    \    'Common core standards @2015 NGA centre CCSSO.Click here for complete list of standards and definations' copy right bar should be displayed
+
+Verify Copyright bar is added at the bottom of the All Groups standard mastery reports for 'CCS' titles
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select All Groups from 'Groups' drop down    \    All Groups should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the All Groups and subject should be displayed
+    Verify bottom of the report    \    'Common core standards @2015 NGA centre CCSSO.Click here for complete list of standards and definations' copy right bar should be displayed
+
+Verify Copyright bar is added at the bottom of theAll Classes item analysis reports for 'CCS' titles
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis report from 'Report Type' drop down    \    Item Analysis Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Select All Class from 'Classes' drop down    \    All Classes should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the All Classes and subject should be displayed
+    Verify bottom of the report    \    'Common core standards @2015 NGA centre CCSSO.Click here for complete list of standards and definations' copy right bar should be displayed
+
+Verify Can see hover message on each cell for All Classes item analysis report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis report from 'Report Type' drop down    \    Item Analysis Report should be selected and School drop down should be enabled \
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled \
+    Select All Class from 'Classes' drop down    \    All Classes should be displayed and Subject/Level drop down should be enabled \
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled \
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the All Classes and subject should be displayed
+    Mouse hover on each cell    \    Tool tip message should be displayed while mouse hover on each cell
+
+Verify Can see hover message on each cell for All Classes Standard Mastery Report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled.
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled.
+    Select All Classes from 'Classes' drop down    \    All Classes should be displayed and Subject/Level drop down should be enabled.
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled.
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the All Classes and subject should be displayed
+    Mouse hover on each cell    \    Tool tip message should be displayed while mouse hover on each cell
+
+Verify Can see hover message on each cell for All Groups item analysis report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis report from 'Report Type' drop down    \    Item Analysis Report should be selected and School drop down should be enabled.
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled.
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select All Groups from 'Groups' drop down    \    All Groups should be displayed and Subject/Level drop down should be enabled.
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled.
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the All Groups and subject should be displayed
+    Verify bottom of the report    \    'Common core standards @2015 NGA centre CCSSO.Click here for complete list of standards and definations' should be displayed
+    Mouse hover on each cell    \    Tool tip message should be displayed while mouse hover on each cell
+
+Verify Can see hover message on each cell for All Grousp Standard Mastery Report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled.
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled.
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select All Groups from 'Groups' drop down    \    All Groups should be displayed and Subject/Level drop down should be enabled.
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled.
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the All Groups and subject should be displayed
+    Verify bottom of the report    \    'Common core standards @2015 NGA centre CCSSO.Click here for complete list of standards and definations' should be displayed
+    Mouse hover on each cell    \    Tool tip message should be displayed while mouse hover on each cell
+
+Verify Can see hover message on each cell for All Schools item analysis report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis report from 'Report Type' drop down    \    Item Analysis Report should be selected and School drop down should be enabled.
+    Select All Schools from 'School' drop down    \    All Schools should be displayed and Subject/Level drop down should be displayed
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled.
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the All Schools and subject should be displayed
+    Mouse hover on each cell    \    Tool tip message should be displayed while mouse hover on each cell
+
+Verify Can see hover message on each cell forAll Schools Standard Mastery Report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled
+    Select All Schools from 'School' drop down    \    All Schools should be displayed and Subject/Level drop down should be displayed
+    Select a Subject from 'Subject/Level' drop down    CCS Math level    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select valid date from 'Date Range' drop down    \    Selected Date range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the All Schools and subject should be displayed
+    Mouse hover on each cell    \    Tool tip message should be displayed while mouse hover on each cell
+
+Validate Edit,Print,Export & Sort by functionalities in Reports page for All Schools Standard Mastery Report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled
+    Select All Schools from 'School' drop down    \    All Schools should be displayed and Subject/Level drop down should be displayed
+    Select a Subject from 'Subject/Level' drop down    CCS Math level    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select valid date from 'Date Range' drop down    \    Selected Date range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the All Schools and subject should be displayed
+    Click on 'Edit' Button in Legend grid in reports page    \    "Report Settings" pop-up should be displayed
+    Click on 'Print' Button in reports page    \    Printed Standard Mastery Report should be displayed in another window
+    Click on 'Export' Button in reports page    \    ".csv" file should be downloaded for the Standard Mastery Report
+    Click on 'Sort by' Button in reports page    \    Students should be sorted with respect to percentage for the Standard Mastery Report
+
+Validate Edit,Print,Export by functionalities in Reports page for All Schools Item Analysis Report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis report from 'Report Type' drop down    \    Item Analysis Report should be selected and School drop down should be enabled \
+    Select All Schools from 'School' drop down    \    All Schools should be displayed and Subject/Level drop down should be displayed
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled.
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the All Schools and subject should be displayed
+    Click on 'Edit' Button in Legend grid in reports page    \    "Report Settings" pop-up should be displayed
+    Click on 'Print' Button in reports page    \    Printed Standard Mastery Report should be displayed in another window
+    Click on 'Export' Button in reports page    \    ".csv" file should be downloaded for the Standard Mastery Report
+    Click on 'Sort by' Button in reports page    \    Students should be sorted with respect to percentage for the Standard Mastery Report
+
+Validate Edit,Print,Export by functionalities in Reports page for single class Item Analysis Report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis Report from 'Report Type' drop down    \    Item Analysis Report should be selected
+    Select School from 'School' drop down    \    Selected School should be displayed
+    Select Class from 'Classes' drop down    \    Selected Class should be displayed and Subject/Level drop down should be enabled.
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled.
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the selected Group and subject should be displayed
+    Click on 'Edit' Button in Legend grid in reports page    \    "Report Settings" pop-up should be displayed
+    Click on 'Print' Button in reports page    \    Printed Standard Mastery Report should be displayed in another window
+    Click on 'Export' Button in reports page    \    ".csv" file should be downloaded for the Standard Mastery Report
+    Click on 'Sort by' Button in reports page    \    Students should be sorted with respect to percentage for the Standard Mastery Report
+
+Validate Edit,Print,Export by functionalities in Reports page for single group Item Analysis Report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis report from 'Report Type' drop down    \    Item Analysis Report should be selected and School drop down should be enabled.
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled.
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select All Groups from 'Groups' drop down    \    All Groups should be displayed and Subject/Level drop down should be enabled.
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled.
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the All Groups and subject should be displayed
+    Click on 'Edit' Button in Legend grid in reports page    \    "Report Settings" pop-up should be displayed
+    Click on 'Print' Button in reports page    \    Printed Standard Mastery Report should be displayed in another window
+    Click on 'Export' Button in reports page    \    ".csv" file should be downloaded for the Standard Mastery Report
+    Click on 'Sort by' Button in reports page    \    Students should be sorted with respect to percentage for the Standard Mastery Report
+
+Validate Edit,Print,Export & Sort by functionalities in Reports page for single class Standard Mastery Report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled.
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled.
+    Select Class from 'Classes' drop down    \    Selected Class should be displayed and Subject/Level drop down should be enabled.
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled.
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the selected Group and subject should be displayed
+    Click on 'Edit' Button in Legend grid in reports page    \    "Report Settings" pop-up should be displayed
+    Click on 'Print' Button in reports page    \    Printed Standard Mastery Report should be displayed in another window
+    Click on 'Export' Button in reports page    \    ".csv" file should be downloaded for the Standard Mastery Report
+    Click on 'Sort by' Button in reports page    \    Students should be sorted with respect to percentage for the Standard Mastery Report
+
+Validate Edit,Print,Export & Sort by functionalities in Reports page for single group Standard Mastery Report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select Group from 'Groups' drop down    \    Selected Group should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the selected Group and subject should be displayed
+    Click on 'Edit' Button in Legend grid in reports page    \    "Report Settings" pop-up should be displayed
+    Click on 'Print' Button in reports page    \    Printed Standard Mastery Report should be displayed in another window
+    Click on 'Export' Button in reports page    \    ".csv" file should be downloaded for the Standard Mastery Report
+    Click on 'Sort by' Button in reports page    \    Students should be sorted with respect to percentage for the Standard Mastery Report
+
+Generating a standard masteryReport which doesn't have any records
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled.
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled.
+    Select Class from 'Classes' drop down    \    Selected Class should be displayed and Subject/Level drop down should be enabled.
+    Select title from 'Subject/Level' drop down list in which title assignments are not done by students    \    Title should be selected and Date Range should be displayed
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    Message should be displayed as "There is no information to display for the current selection."
+
+Generating an Item analysis report which doesnt have any records
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis Report from 'Report Type' drop down    \    Item Analysis Report should be selected
+    Select School from 'School' drop down    \    Selected School should be displayed
+    Select Class from 'Classes' drop down    \    Selected Class should be displayed and Subject/Level drop down should be enabled.
+    Select title from 'Subject/Level' drop down list in which title assignments are not done by students    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled.
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    Message should be displayed as "There is no information to display for the current selection."
+
+Validating Expanding(+) and collapse(-) buttons in class standard mastery report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled.
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled.
+    Select Class from 'Classes' drop down    \    Selected Class should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the selected Group and subject should be displayed
+    Click on (+) icon    \    Student assignment information should be displayed
+    Clcik on (-) icon    \    Student assignment information should be collapsed
+
+Validating Expanding(+) and collapse(-) buttons in Group standard mastery report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and School drop down should be enabled
+    Select School from 'School' drop down    \    Selected School should be displayed and Classes drop down should be enabled
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select Group from 'Groups' drop down    \    Selected Group should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the selected Group and subject should be displayed
+    Click on (+) icon    \    Student assignment information should be displayed
+    Clcik on (-) icon    \    Student assignment information should be collapsed

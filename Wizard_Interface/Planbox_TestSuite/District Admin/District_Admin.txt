@@ -1,0 +1,165 @@
+*** Test Cases ***
+8489759-Grade Level is changed or not when adding multiple users.
+    [Documentation]    Steps to reproduce:
+    ...    1.Enter URL b11test1.mentoringmindsonline.com
+    ...    2.Login with DA Credentials
+    ...    3.Click on Management
+    ...    4.Click on Add button to add Students.
+    ...    5.Give the details(Ex:Grade:1) and click on Save.
+    ...    6.Again add a Student and observe the Grade.(Grade:1 is displaying)
+    Steps    Test Data    Expected result
+    Enter URL ,Enter Valid District Admin User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+da1711@gmail.com \ Password: test1234    Home page should be displayed
+    Click on Management.
+    Click on 'Add' button to add newusers.    \    Newuser window should be displayed.
+    Enter details and click on save button.    Test Data : Grade : 1    Student should be added.
+    Again add a student and observe Grade    \    System should refresh the Grade level.
+
+8489852-School Name is diplayed in schools drop down even though the district admin logged in to the same school.
+    [Documentation]    Steps To Reproduce :
+    ...
+    ...    1.Login to b11test1.mentoringmindsonline.com with District Admin credentials(test data: rhwpte+da11@gmail.com/rhwpte+ da11)
+    ...    2.Click on the “Schools” drop down select the school(Testdata: Aledo Ninth Grade Campus)
+    ...    3.Click on "Schools" drop down.
+    Steps    Test Data    Expected result
+    Enter URL ,Enter Valid District Admin User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+da1711@gmail.com \ Password: test1234    Home page should be displayed
+    Click on 'School dropdown' and select any one school.    Aledo Ninth Grade Campus School
+    Click on Schools Dropdown and observe.    \    "Aledo Ninth Grade Campus" school name should not be displayed in drop down list.
+
+8489870-Verify Grade level is going back to its default value after selecting the role
+    [Documentation]    Steps to reproduce:
+    ...    1.Enter URL b11test1.mentoringmindsonline.com
+    ...    2.Login as District Admin using credentials
+    ...    3.Click on Management>'Add' User button.
+    ...    4.Enter First name(Test Data:std123 ), Last Name (Test Data:std123 ),Grade Level (Test Data: 3 ),User ID(Test Data:johnmikel89 ), Password(Test Data: johnmikel890 ),
+    ...    5.Select Role(Test Data: Student)
+    ...    6.Observed that grade level is going back to its default value .
+    Steps    Test Data    Expected result
+    Enter URL ,Enter Valid District Admin User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+da1711@gmail.com \ Password: test1234    Home page should be displayed
+    Click on 'Management.
+    Click on 'Add' \ button to add users.    \    "NewUser' window should be displayed.
+    Enter the data in all fields.    Test Data:Enter First name(Test Data:std123 ), Last Name (Test Data:std123 ),Grade Level (Test Data: 3 ),User ID(Test Data:johnmikel89 ), Password(Test Data: johnmikel890 )
+    Select Role and observe the Grade.    Role : Student.    Grade level should display the selected value.
+
+8325488-Verify Student is created by default \ With out selecting any role in the roles list
+    [Documentation]    Steps to reproduce:
+    ...    1.Login to b11test1.mentoringmindsonline.com with District admin credentials
+    ...    2.Click on Management – click on add user.
+    ...    3.Enter valid data in all the fields.
+    ...    4.Do not check any roles.
+    Steps    Test Data    Expected result
+    Enter URL ,Enter Valid District Admin User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+da1711@gmail.com \ Password: test1234    Home page should be displayed
+    Click on Management
+    Click on 'Add' button to add users    \    New User window should be display
+    Enter Valid data in all fields and dont check any role and click on Save button.    \    Alert message should be display.
+
+8191655-Verify newly created District admin is visible in All schools.
+    [Documentation]    Steps to reproduce:
+    ...    1.Enter URL b11test1.mentoringmindsonline.com
+    ...    2.Create new district admin \ from sign up process .
+    ...    3. Login with created district admin Credentials (testdata: rhwpte+da76008@gmail.com/ rhwpte+da76008)
+    ...    4.Click on Management and verify the created user.
+    Steps    Test Data    Expected result
+    Enter URL    Url=http://b11test1.mentoringmindsonline.com    Home page should be displayed
+    Click on NewUser>Distict Admin and createnew District Admin.    Enter all the fields and creste DA role.    Distirct admin should be created.
+    Login with Newly created District admin role.    rhwpte+da1711@gmail.com    DA Home page shoul be displayed.
+    Click on Management and verify the Created User    rhwpte+da1711@gmail.com    As “district admin” user zip code is common for all schools,so the created user should be displayed in “All Users” list of each school.
+
+8054444-Verify Correct Report is generating when enter Invalid Date range.
+    [Documentation]    Steps to reproduce:
+    ...
+    ...    1.Enter URL b11est1.mentoringmindsonline.com
+    ...
+    ...    2.Login as District Admin(rhwpte+da1211@gmail.com/test1234).
+    ...
+    ...    3.Click on Reports.
+    ...
+    ...    4.Select Report Type (Test Data: Standards Mastery Report)>Classes (Test Data: classa)> Subject/Level(Test Data: CCS Motivation Math Level 3)>Date Range(Test Data: 9/25/2014 to 9/23/2014).
+    ...
+    ...    5.Click on Generate Report button.
+    ...
+    ...    5.Observed that Report is generating for incorrect date ranges.
+    Steps    Test Data    Expected result
+    Enter URL ,Enter Valid District Admin User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Home page should be displayed
+    Click on 'Reports'
+    Enter Valid data and enter invalid date range and click on 'Generate Report'    (Test Data: Standards Mastery Report)>Classes (Test Data: classa)> Subject/Level(Test Data: CCS Motivation Math Level 3)>Date Range(Test Data: 9/25/2014 to 9/23/2014).    Expected result: Error message should be displayed for the incorrect date range.
+
+8192171-Verify the Radio buttons when Change the Satus Of the Role to 'InActive' in IE
+    [Documentation]    Steps to reproduce:
+    ...    1.Open Url b11test4.mentoringmindsonline.com
+    ...    2.Login as District Admin(rhwpte+da1211@gmaill.com/test1234)
+    ...    3.Click on Management
+    ...    4.Select any student and edit the status to inactive.
+    ...    5.Click on “Save” Button.
+    ...    6.Verify the “Active” and “Inactive” status.
+    Steps    Test Data    Expected result
+    Enter URL ,Enter Valid District Admin User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Home page should be displayed
+    Click on 'Management'
+    Select any Student and Edit the Status to 'Inactive' and Click on 'Save' button.    \    Expected Result : Radio button should be visible for 'inactive' status.
+
+8192258-Verify group lable is changed when click on 'Show Groups' while Generating Report.
+    [Documentation]    Steps to reproduce:
+    ...    1.Open Url b11test1.mentoringmindsonline.com
+    ...    2.Login as District Admin( rhwpte+daqwe@gmail.com/ abcd1234).
+    ...    3.Click on Reports.
+    ...    4.Select the data( Report :Standard master report/ Item Analysis report ;School: Any school)
+    ...    5.Click on 'Show Classes/Show Groups' button and observe.
+    Steps    Test Data    Expected result
+    Enter URL ,Enter Valid District Admin User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Home page should be displayed
+    Click On 'Reports'    \    Expected Result : Reports page should be display.
+    Enter Valid data    Test Data : Standard Mastery Report
+    Click on 'Show Groups'    \    Expected Result : \ 'Groups' label should be displayed when click on 'Show Groups' button.
+
+6382611-Verify 'Show all' and 'Show only Students' buttons while adding Students to the Class.
+    [Documentation]    Steps To Reproduce:
+    ...    1. Login as admin
+    ...    2. Goto Class >> new
+    ...    3. Click on "New" button
+    ...    4. Enter classname and click "Edit" button on "Students" grid
+    ...    5. List of students name will be displayed on "Available Students" grid
+    ...    6. Click on "Show All" button.
+    ...    7. All the instructor and student names will be displayed.
+    ...    8. Click on "Show only students" button, only heading get changed as "Available students, but the grid shows with students and also instructors
+    Steps    Test Data    Expected result
+    Enter URL ,Enter Valid District Admin User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Home page should be displayed
+    Click On 'management'
+    Click on 'Add' button to Add new Class    \    Expected Result:New Class page should be display
+    Click on 'Edit' button on Student Grid    \    Expected Result: List Of users should be display
+    Click on 'Show All' and 'Show only students' buttons    \    Expected Result : lisi of Students onle shoul display when click on 'Show only students' and List of All users should be display when click on 'Show All' button
+
+8393797-Verify Spinnig Wheel icon is displayed or not when select different schools from School Dropdown.
+    [Documentation]    Steps to reproduce:
+    ...    1.Login to b11test1.mentoringmindsonline.com with district admin credentials.
+    ...    Test data: rhwpte+dadmin3344@gmail.com/password:a1a2a3a4
+    ...    2.Click on Schools and select any school.
+    Steps    Test Data    Expected result
+    Enter URL ,Enter Valid District Admin User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Home page should be displayed
+    Select different schools from School dropdown.    \    Expected Result : Slected school should be display.
+
+7456022-All the Users of the school are displayed or not \ when we select "Whole School" from the drop down.
+    [Documentation]    Steps to reproduce:
+    ...    1.Login to application as Districtadmin.
+    ...    2.Click on Management
+    ...    3.Click on the Print/Export button of the Users table.
+    ...    4.Print/Export window will appear.
+    ...    5.Select the "Whole School" from the drop down & Click on the Continue button.
+    Steps    Test Data    Expected result
+    Enter URL ,Enter Valid District Admin User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+da1711@gmail.com \ Password: test1234    Home page should be displayed
+    Click On 'management' and Click on 'Print/Export' button.
+    Select 'Whole School' from dropdown and click on 'Continue' button.    \    All the users belonging to that school should appear.
+
+7822800-Verify Teacher role is displayed in Roles or not.
+    [Documentation]    Steps to Reproduce:
+    ...    1.Open URL: b11test1.mentoringmindsonline.com
+    ...    2.Login with District admin(rhwpte+da1711@gmail.com/test1234).
+    ...    3.Select any teacher in management and click on Edit.
+    ...    4.Observe the Details of the teacher for roles list.
+    Steps    Test Data    Expected result
+    Enter URL ,Enter Valid District Admin User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+da1711@gmail.com \ Password: test1234    Home page should be displayed
+    Click On 'management'
+    Select any teacher and click on 'Edit' and observe the role list.    \    it should display the teacher details in Roles list.
+
+7953950-"Please use at least one non-alphabetic character in the User ID" is displayed or not while in the username
+    Steps    Test Data    Expected result
+    Enter URL ,Enter Valid District Admin User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+da1711@gmail.com \ Password: test1234    Home page should be displayed
+    Click on 'add' button to add users.    \    NewUSer page should be display.
+    Enter user id    rhwpte    Please use at least one non-alphabetic charectre in the user id \ shold be display.

@@ -1,0 +1,113 @@
+﻿*** Test Cases ***
+New User
+    [Documentation]    This Test Case describes whether a School Admin can be created using New User functionality in the LogIn Page or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login Page should displayed
+    Select New User>School Admin    \    Registration Pop up should be displayed as Enter your school's zip code.
+    Enter Valid Zip Code    76008    List of schools should be displyed which are comming under that Zip code
+    Select any one of the school in the list and click on "Next" button    \    Enter a valid (school) email address to use as your User ID Pop up should be displayed.
+    Enter a Valid Email Address and click on "Next" button    rhwpte+sch90@gmail.com    Create a password Pop up should be displayed.
+    Enter Valid Password and click on Next button    test1234    Confirm your password Pop up should be displayed.
+    Re-enter the same previously entered password and click on Next button    test1234    Enter Your Name Pop up should be displayed.
+    Enter Admin First Name and Last Name and click on Next button    First Name:school \ \ , Last Name:sch90    Select your job title \ Pop up should be displayed.
+    Select any one of the title from the drop down and click on Next button    \    Enter the Administrator Registration Code below Pop up should be displayed.
+    Enter Administration Registration Code.click on next button and Click on Terms and Condtions button    SADMIN-999999    Terms and Conditions Pop up should be displayed.
+    Click on I Agree button    \    Pop up should be displayed with Check box
+    Check the checkbox    \    Information regarding Mentoring Minds’ products and services and other updates will send to the given mail id
+    Click on 'Create Account' button    \    Confirmation message ie 'Congratulations!' popup should be displayed
+    Click on Sign In button    \    School Admin Home page should be displayed
+
+Log in valid User Id
+    [Documentation]    This Test Case describes whether a School Admin can LogIn with Valid Credentials or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sadmin2505@gmail.com, Password: test1234
+    Click on Sign In button    \    School Admin Home page should be displayed
+
+MTC90-Verify Sign out for School Admin
+    [Documentation]    This Test Case describes whether a School Admin can Sign out or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sadmin2505@gmail.com, Password: test1234
+    Click on Sign In button    \    School Admin Home page should be displayed
+    Click on Sign out button    \    User should get logged off.
+
+MTC124-Verify School Admin can be created with reusable Reg Code
+    [Documentation]    This Test Case describes whether a School Admin can be created using reusable Registration code or not?
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login Page should displayed
+    Select New User>School Admin    \    Registration Pop up should be displayed as Enter your school's zip code.
+    Enter Valid Zip Code    76008    List of schools should be displyed which are comming under that Zip code
+    Select any one of the school in the list and click on "Next" button    \    Enter a valid (school) email address to use as your User ID Pop up should be displayed.
+    Enter a Valid Email Address and click on "Next" button    rhwpte+sch90@gmail.com    Create a password Pop up should be displayed.
+    Enter Valid Password and click on Next button    test1234    Confirm your password Pop up should be displayed.
+    Re-enter the same previously entered password and click on Next button    test1234    Enter Your Name Pop up should be displayed.
+    Enter Admin First Name and Last Name and click on Next button    First Name:school, Last Name:sch90    Select your job title Pop up should be displayed.
+    Select any one of the title from the drop down and click on Next button    \    Enter the Administrator Registration Code below Pop up should be displayed.
+    Enter Administration Registration Code(Reusable).click on next button and Click on Terms and Condtions button    SADMIN-999999    Terms and Conditions Pop up should be displayed.
+    Click on I Agree button    \    Pop up should be displayed with Check box
+    Check the checkbox    \    Information regarding Mentoring Minds’ products and services and other updates will send to the given mail id
+    Click on Create Account button    \    Confirmation message ie Congratulations! popup should be displayed
+    Click on Sign In button    \    Home page should be displayed
+
+MTC123-Verify School Admin is not created with Invalid Reg Code
+    [Documentation]    This Test Case describes whether a School Admin can be created with Invalide Registration code or not?
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login Page should displayed
+    Select New User>School Admin    \    Registration Pop up should be displayed as Enter your school's zip code.
+    Enter Valid Zip Code    76008    List of schools should be displyed which are comming under that Zip code
+    Select any one of the school in the list and click on "Next" button    \    Enter a valid (school) email address to use as your User ID Pop up should be displayed.
+    Enter a Valid Email Address and click on "Next" button    rhwpte+sch90@gmail.com    Create a password Pop up should be displayed.
+    Enter Valid Password and click on Next button    test1234    Confirm your password Pop up should be displayed.
+    Re-enter the same previously entered password and click on Next button    test1234    Enter Your Name Pop up should be displayed.
+    Enter Admin First Name and Last Name and click on Next button    First Name:school , Last Name:sch90    Select your job title Pop up should be displayed.
+    Select any one of the title from the drop down and click on Next button    \    Enter the Administrator Registration Code below Pop up should be displayed.
+    Enter Administration Registration Code which is already used    1964836-134246    Next button should be in disable mode and "Registration code already in use" information should be displayed.
+
+MTC71-Verify Forgot User ID or Password? For School Admin
+    [Documentation]    This Test Case validates Forgot User ID or Password functionality for School Admin
+    Open browser and Enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Click on Forget Password    \    Password Recovery Pop up should be displayed with an Email adress text box
+    Enter a valid User Id and click on Submit Button    Test Data: School Admin: rhwpte+sch90@gmail.com    "Please check your email for your password reset information"Alert message should be displayed
+
+Validate whether existing UserID is accepted while creating New UserID
+    [Documentation]    This Test Case describes whether an Existing School Admin User ID is accepted same as for New User ID in School Admin
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login Page should displayed
+    Select New User>School Admin    \    Registration Pop up should be displayed as Enter your school's zip code.
+    Enter Valid Zip Code    76008    List of schools should be displyed which are comming under that Zip code
+    Select any one of the school in the list and click on 'Next' button    \    Enter a valid (school) email address to use as your User ID Pop up should be displayed.
+    Enter Existing Email Address and click on 'Next' button    rhwpte+sch85@gmail.com    It should display alert message as "The email entered is already taken. Please choose a different email address."
+
+Validate whether the newly created User is accepted same userid & password
+    [Documentation]    This Test Case describes whether the School Admin User ID is accepted as same in the Password field
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login Page should displayed
+    Select New User>School Admin    \    Registration Pop up should be displayed as Enter your school's zip code.
+    Enter Valid Zip Code    76008    List of schools should be displyed which are comming under that Zip code
+    Select any one of the school in the list and click on 'Next' button    \    Enter a valid (school) email address to use as your User ID Pop up should be displayed.
+    Enter a Valid Email Address and click on "Next" button    rhwpte+sch90@gmail.com    Create a password Pop up should be displayed.
+    Enter Valid Password and click on Next button    rhwpte+sch90@gmail.com    Alert message should be displayed as "The Password must not be same as the UserID"
+
+Validate Password field by entering Invalid Characters
+    [Documentation]    This Test Case describes whether the Password field for New School admin user will Accept Invalid characters or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login Page should displayed
+    Select New User>School Admin    \    Registration Pop up should be displayed as Enter your school's zip code.
+    Enter Valid Zip Code    76008    List of schools should be displyed which are comming under that Zip code
+    Select any one of the school in the list and click on 'Next' button    \    Enter a valid (school) email address to use as your User ID Pop up should be displayed.
+    Enter a Valid Email Address and click on "Next" button    rhwpte+sch90@gmail.com    Create a password Pop up should be displayed.
+    Enter Invalid Password    Alphabets{A-Z,a-z}    Alert message should be displayed as "Please Enter a password including 1 non-alphanumeric character"
+    Enter Invalid Password    Numerics{0-9}    Alert message should be displayed as "Please Enter a password including 1 alphabetic character"
+    Enter Invalid Password    Special Characters    Alert message should be displayed as "Please Enter a password including 1 alphabetic character"
+
+Validate Reset Password functionality for School Admin
+    [Documentation]    This Test Case describes whether the School admin is able to reset his Password or not?
+    Open browser and Enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Click on Forget Password    \    Password Recovery Pop up should be displayed with an Email adress text box
+    Enter a valid User Id and click on Submit Button    Test Data: School Admin: rhwpte+sch90@gmail.com    "Please check your email for your password reset information"Alert message should be displayed
+    Enter the Valid Email address credentials to Reset the Password    \    Email should be open and it should display the link to reset the Password
+    Click on the Link    \    "Reset Password' Link page should be opened
+    Enter the Old Password, New Password & Confirm Password to Reset
+    Click on 'Reset' button    \    Alert message should be displayed as "Your Password was Reset"
+
+Log in with Invalid User Id
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login InValid Credentials    User Id: rhwpte+sadmin2505@gail.com, Password:
+    Click on Sign In button    \    Alert Message should get displayed that"The User ID or Password is incorrect. Please try again"
+
+Login with Empty Credentials.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Click on Sign In button    \    Alert Message should get displayed that"Please enter a User ID and Password."

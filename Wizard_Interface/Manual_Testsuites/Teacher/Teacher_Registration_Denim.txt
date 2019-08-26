@@ -1,0 +1,207 @@
+*** Test Cases ***
+Validate the Registration fuctionality for Teacher
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Click on "New User" Link in the Login Page    \    Different Roles (Student,Teacher,School Admin and District Admin) list shoul be displayed.
+    Select "Teacher" role from the list    \    Teacher Registration window should be displayed
+    Enter valid "Registration Code" and click on 'Next' button    WKH-MLG-CWT    'School's Zip code' window shoulbe displayed
+    Enter valid "Zip Code"    76008    List Of Schools:(Aledo High School, Aledo Learning Center, Aledo Middle School, Aledo Ninth Grade Campus, Coder Elementary School, Mcanally Intermediate, Stuard Elementary, Vandagriff Elementary) should be dispalyed.
+    Select the school and Click on "Next" button and "Terms and Conditions" button    Coder Elementary School    Pop up should be displayed for "Terms and conditions"
+    Click on "I Agree" button    \    Email me of selected school dialog screen should be displayed
+    Click on "Email me" Check box and click on "Next" button    \    "Teacher" sign up details window should be displayed
+    Enter "First Name" in the text box    TeacherFN    "First Name" text box should accept alphanumeric characters
+    Enter "Last Name" in the text box    Teacher Lastname    "Last Name" text box should accept alphanumeric characters
+    Enter unique "Email Address" in the text box    rhwpte+teacher2500@gmail.com    "Email Address" text box should accept all kind of characters
+    Enter valid Confirm "Email Address" in the text box    rhwpte+teacher2500@gmail.com    The "Next" button should be enable if the entered deatials are valid
+    Click on "Next" button    \    "Create Password" dailog screen should be displayed
+    Enter "Create a Password" in the text box    test1234    "Create a Password" text box should accept all kind of characters
+    Enter valid "Retype Password" in the text box and click on 'Next' button    test1234    Alert message "Would you like to setup classes Now or Later?" should be displayed
+    Click on "Now" button    \    Again Class setup window should be displayed and we are able to add some more classes.
+    Enter classname    classtest
+    Select a tille and click on 'next' button.    Motivation math level 03    selected title should be added
+    Click on 'No' for would you like to set up another class.
+    Click on 'Finished' button    \    Teacher home page should be displayed.
+
+Validate the Registraion functionaliy for Registration code
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Click on "New User" Link in the Login Page    \    Different Roles (Student,Teacher,School Admin and District Admin) list shoul be displayed.
+    Select "Teacher" from the list box    \    Teacher Registration window should be displayed
+    Enter the Invalid characters in the "Registration Code" text box    efehgdvijnsfow    Next button should be disabled.
+
+Validate the Registration functionality for ZipCode
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Click on "New User" Link in the Login Page    \    Different Roles (Student,Teacher,School Admin and District Admin) list shoul be displayed.
+    Select "Teacher" from the list box    \    Registration Code dialog screen should be displayed
+    Enter valid "Registration Code"    R4E-DDF-AUX    The "Next" button should be enable
+    Click on "Next" button    \    School Zip code dialog screen should be displayed
+    Enter the InValid characters in the "Zip Code" text box    {A-Z, a-z, 0-9, Special Characters}    "No Schools were found with that zip code" alert message should be displayed
+
+Validate the First and Last Name functionality
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Click on "New User" Link in the Login Page    \    Different Roles (Student,Teacher,School Admin and District Admin) list shoul be displayed.
+    Select "Teacher" role from the list    \    Teacher Registration window should be displayed
+    Enter valid "Registration Code" and click on 'Next' button    R4E-DDF-AUX    'School's Zip code' window shoulbe displayed
+    Enter valid "Zip Code"    76008    List Of Schools: (Aledo High School, Aledo Learning Center, Aledo Middle School, Aledo Ninth Grade Campus, Coder Elementary School, Mcanally Intermediate, Stuard Elementary, Vandagriff Elementary) \ should be dispalyed.
+    Select the school and Click on "Next" button    Coder Elementary School    Pop up should be displayed for "Terms and conditions"
+    click on "Terms and Conditions" button    \    Pop up should be displayed for "I agree"
+    Click on "I Agree" button    \    Email me of selected school dialog screen should be displayed
+    Click on "Email me" Check box and click on "Next" button    \    "Teacher" sign up details window should be displayed
+    Enter only non-alphabets in first name and last name fields    12teacher, 64646    "The name you entered contains invalid characters." alert message should be displayed and Next button should be disabled.
+
+Validate the confirm Email Address Field
+    Steps    Test Data    Expected Result    Actual Result
+    Enter the application url    b33test1.mentoringmindsonline.com    Login Page of Mentoringminds should be displayed
+    Click on "New User" Link in the Login Page    \    Different Roles (Student,Teacher,School Admin and District Admin) list shoul be displayed.
+    Select "Teacher" role from the list    \    Teacher Registration window should be displayed
+    Enter valid "Registration Code" and click on 'Next' button    R4E-DDF-AUX    'School's Zip code' window shoulbe displayed
+    Enter valid "Zip Code"    76008    List Of Schools: (Aledo High School, Aledo Learning Center, Aledo Middle School, Aledo Ninth Grade Campus, Coder Elementary School, Mcanally Intermediate, Stuard Elementary, Vandagriff Elementary) should be dispalyed.
+    Select the school and Click on "Next" button    Coder Elementary School    Pop up should be displayed for "Terms and conditions"
+    click on "Terms and Conditions" button
+    Click on "I Agree" button    \    Email me of selected school dialog screen should be displayed
+    Click on "Email me" Check box and click on "Next" button    \    "Teacher" sign up details window should be displayed
+    Enter valid "First Name" in the text box    teacherFN    "First Name" text box should accept alphanumeric characters
+    Enter valid "Last Name" in the text box    TeacherLN    "Last Name" text box should accept alphanumeric characters
+    Enter valid "Email Address" in the text box    rhwpte+teacher2500@gmail.com
+    Enter Confirm "Email Address" in the text box    rhwpte+teacher00@gmail.com    "Emails must match" alert message should be displayed and next button should be disabled.
+
+Validate the Email Address Field
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Click on "New User" Link in the Login Page    \    Different Roles (Student,Teacher,School Admin and District Admin) list shoul be displayed.
+    Select "Teacher" role from the list    \    Teacher Registration window should be displayed
+    Enter valid "Registration Code" and click on 'Next' button    R4E-DDF-AUX    'School's Zip code' window shoulbe displayed
+    Enter valid "Zip Code"    76008    List Of Schools: (Aledo High School, Aledo Learning Center, Aledo Middle School, Aledo Ninth Grade Campus, Coder Elementary School, Mcanally Intermediate, Stuard Elementary, Vandagriff Elementary) should be dispalyed.
+    Select the school and Click on "Next" button    Coder Elementary School    Pop up should be displayed for "Terms and conditions"
+    click on "Terms and Conditions" button
+    Select the school and Click on "Next" button and "Terms and Conditions" button    Coder Elementary School    Pop up should be displayed for "Terms and conditions"
+    Click on "I Agree" button    \    Email me of selected school dialog screen should be displayed
+    Click on "Email me" Check box and click on "Next" button    \    "Teacher" sign up details window should be displayed
+    Enter valid "First Name" in the text box    Should start with alphabets {A-Z, a-z, 0-9}    "First Name" text box should accept alphanumeric characters
+    Enter valid "Last Name" in the text box    Should start with alphabets {A-Z, a-z, 0-9}    "Last Name" text box should accept alphanumeric characters
+    Enter Invalid "Email Address" in the text box    46teacher    "Please enter a valid email address" alert message should be displayed.
+
+Validate the Create Password Field
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Click on "New User" Link in the Login Page    \    Different Roles (Student,Teacher,School Admin and District Admin) list shoul be displayed.
+    Select "Teacher" role from the list    \    Teacher Registration window should be displayed
+    Enter valid "Registration Code" and click on 'Next' button    R4E-DDF-AUX    'School's Zip code' window shoulbe displayed
+    Enter valid "Zip Code"    76008    List Of Schools:(Aledo High School, Aledo Learning Center, Aledo Middle School, Aledo Ninth Grade Campus, Coder Elementary School, Mcanally Intermediate, Stuard Elementary, Vandagriff Elementary) should be dispalyed.
+    Select the school and Click on "Next" button    Coder Elementary School    Pop up should be displayed for "Terms and conditions"
+    click on "Terms and Conditions" button
+    Click on "I Agree" button    \    Email me of selected school dialog screen should be displayed
+    Click on "Email me" Check box and click on "Next" button    \    "Teacher" sign up details window should be displayed
+    Enter valid "First Name" in the text box    Should start with alphabets {A-Z, a-z, 0-9}    "First Name" text box should accept alphanumeric characters
+    Enter valid "Last Name" in the text box    Should start with alphabets {A-Z, a-z, 0-9}    "Last Name" text box should accept alphanumeric characters
+    Enter valid "Email Address" in the text box    Should start with alphabets {A-Z, a-z, 0-9}    "Email Address" text box should accept all kind of characters
+    Enter valid Confirm "Email Address" in the text box    Should start with alphabets {A-Z, a-z, 0-9}    The "Next" button should be enable if the entered deatials are valid
+    Enter only alphabets in "Create password" field    testpasswd    "Please enter a password including one non-alphabetic character." alert message should be displayed and "Next" button should be disabled.
+    Enter only non-alphabets in "Create password" field    49564598678    "Please enter a password including one alphabetic character." alert message should be displayed and "Next" button should be disabled.
+
+Validate the Retype Password field
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Click on "New User" Link in the Login Page    \    Different Roles (Student,Teacher,School Admin and District Admin) list shoul be displayed.
+    Select "Teacher" role from the list    \    Teacher Registration window should be displayed
+    Enter valid "Registration Code" and click on 'Next' button    R4E-DDF-AUX    'School's Zip code' window shoulbe displayed
+    Enter valid "Zip Code"    76008    List Of Schools: \ (Aledo High School, Aledo Learning Center, Aledo Middle School, Aledo Ninth Grade Campus, Coder Elementary School, Mcanally Intermediate, Stuard Elementary, Vandagriff Elementary) should be dispalyed.
+    Select the school and Click on "Next" button    Coder Elementary School    Pop up should be displayed for "Terms and conditions"
+    click on "Terms and Conditions" button
+    Click on "I Agree" button    \    Email me of selected school dialog screen should be displayed
+    Click on "Email me" Check box and click on "Next" button    \    "Teacher" sign up details window should be displayed
+    Enter valid "First Name" in the text box    Should start with alphabets {A-Z, a-z, 0-9}    "First Name" text box should accept alphanumeric characters
+    Enter valid "Last Name" in the text box    Should start with alphabets {A-Z, a-z, 0-9}    "Last Name" text box should accept alphanumeric characters
+    Enter valid "Email Address" in the text box    Should start with alphabets{A-Z, a-z, 0-9} with Special Characters    "Email Address" text box should accept all kind of characters
+    Enter valid Confirm "Email Address" in the text box    Should start with alphabets{A-Z, a-z, 0-9} with Special Characters    The "Next" button should be enable if the entered deatials are valid
+    Enter valid "Create a password" in text box    test1234
+    Enter "Retype your password" in text box    test43    "Passwords must match" alert message should be displayed and next button should be disabled.
+
+Validate the Later button functionality for Class Setup window
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Click on "New User" Link in the Login Page    \    Different Roles (Student,Teacher,School Admin and District Admin) list shoul be displayed.
+    Select "Teacher" role from the list    \    Teacher Registration window should be displayed
+    Enter valid "Registration Code" and click on 'Next' button    R4E-DDF-AUX    'School's Zip code' window shoulbe displayed
+    Enter valid "Zip Code"    76008    List Of Schools: (Aledo High School, Aledo Learning Center, Aledo Middle School, Aledo Ninth Grade Campus, Coder Elementary School, Mcanally Intermediate, Stuard Elementary, Vandagriff Elementary) should be dispalyed.
+    Select the school and Click on "Next" button    Coder Elementary School    Pop up should be displayed for "Terms and conditions"
+    click on "Terms and Conditions" button
+    Click on "I Agree" button    \    Email me of selected school dialog screen should be displayed
+    Click on "Email me" Check box and click on "Next" button    \    "Teacher" sign up details window should be displayed
+    Enter valid "First Name" in the text box    Should start with alphabets {A-Z, a-z, 0-9}    "First Name" text box should accept alphanumeric characters
+    Enter valid "Last Name" in the text box    Should start with alphabets {A-Z, a-z, 0-9}    "Last Name" text box should accept alphanumeric characters
+    Enter valid "Email Address" in the text box    Should start with alphabets{A-Z, a-z, 0-9} with Special Characters    "Email Address" text box should accept all kind of characters
+    Enter valid Confirm "Email Address" in the text box    Should start with alphabets{A-Z, a-z, 0-9} with Special Characters    The "Next" button should be enable if the entered deatials are valid
+    Click on "Next" button    \    "Create Password" dailog screen should be displayed
+    Enter valid "Create a Password" in the text box    {A-Z, a-z, 0-9, Special Characters}    "Create a Password" text box should accept all kind of characters
+    Enter valid "Retype Password" in the text box    {A-Z, a-z, 0-9, Special Characters}    The "Next" button should be enable if the Password matches
+    Click on "Next" button    \    "Would you like to setup classes Now or Later?" Pop up should be displayed
+    Click on "Later" button    \    Teacher home page should be displayed
+
+Validate the Setup Classes functionality
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Click on "New User" Link in the Login Page    \    Different Roles (Student,Teacher,School Admin and District Admin) list shoul be displayed.
+    Select "Teacher" role from the list    \    Teacher Registration window should be displayed
+    Enter valid "Registration Code" and click on 'Next' button    R4E-DDF-AUX    'School's Zip code' window should be displayed
+    Enter valid "Zip Code"    76008    List Of Schools: (Aledo High School, Aledo Learning Center, Aledo Middle School, Aledo Ninth Grade Campus, Coder Elementary School, Mcanally Intermediate, Stuard Elementary, Vandagriff Elementary)should be dispalyed.
+    Select the school and Click on "Next" button    Coder Elementary School    Pop up should be displayed for "Terms and conditions"
+    click on "Terms and Conditions" button
+    Click on "I Agree" button    \    Email me of selected school dialog screen should be displayed
+    Click on "Email me" Check box and click on "Next" button    \    "Teacher" sign up details window should be displayed
+    Enter valid "First Name" in the text box    Should start with alphabets {A-Z, a-z, 0-9}    "First Name" text box should accept alphanumeric characters
+    Enter valid "Last Name" in the text box    Should start with alphabets {A-Z, a-z, 0-9}    "Last Name" text box should accept alphanumeric characters
+    Enter valid "Email Address" in the text box    Should start with alphabets{A-Z, a-z, 0-9} with Special Characters    "Email Address" text box should accept all kind of characters
+    Enter valid Confirm "Email Address" in the text box    Should start with alphabets{A-Z, a-z, 0-9} with Special Characters    The "Next" button should be enable if the entered deatials are valid
+    Click on "Next" button    \    "Create Password" dailog screen should be displayed
+    Enter valid "Create a Password" in the text box    {A-Z, a-z, 0-9, Special Characters}    "Create a Password" text box should accept all kind of characters
+    Enter valid "Retype Password" in the text box    {A-Z, a-z, 0-9, Special Characters}    The "Next" button should be enable if the Password matches
+    Click on "Next" button    \    Dailog screen with a message "Would you like to setup classes Now or Later?" should be displayed
+    Click on "Now" button    \    Class setup window should be displayed
+    Enter valid "Class Name" in the text box    {A-Z, a-z, 0-9, Special Characters}    "Class Name" text box should accept all kind of characters
+    Select "Titles" from the list box    \    The "Next" button should be enable
+    Click on "Next" button    \    "would you like to setup another class?" pop up should be displayed
+    Click on "Yes" button    \    "Class" setup window should be dispalyed
+    Enter valid "Class Name" in the text box    {A-Z, a-z, 0-9, Special Characters}    "Class Name" text box should accept all kind of characters
+    Select a tille and click on 'next' button.    Motivation math level 03    selected title should be added
+    Click on "Yes" button    \    "Class" setup window should be dispalyed
+    Enter valid "Class Name" in the text box    {A-Z, a-z, 0-9, Special Characters}    "Class Name" text box should accept all kind of characters
+    Select a tille and click on 'next' button.    Motivation math level 03    "Please Confirm" alert message should be displayed.
+    Click on "Proceed" button    \    Selected titles should be added to the class.
+    Click on 'No' button for would you like to set up another class.
+    Click on 'Finished' button    \    Teacher home page should be displayed.
+
+Validate print functionality in teacher registration after adding the classes
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Click on "New User" Link in the Login Page    \    Different Roles (Student,Teacher,School Admin and District Admin) list shoul be displayed.
+    Select "Teacher" role from the list    \    Teacher Registration window should be displayed
+    Enter valid "Registration Code" and click on 'Next' button    R4E-DDF-AUX    'School's Zip code' window should be displayed
+    Enter valid "Zip Code"    76008    List Of Schools: (Aledo High School, Aledo Learning Center, Aledo Middle School, Aledo Ninth Grade Campus, Coder Elementary School, Mcanally Intermediate, Stuard Elementary, Vandagriff Elementary)should be dispalyed.
+    Select the school and Click on "Next" button    Coder Elementary School    Pop up should be displayed for "Terms and conditions"
+    click on "Terms and Conditions" button
+    Click on "I Agree" button    \    Email me of selected school dialog screen should be displayed
+    Click on "Email me" Check box and click on "Next" button    \    "Teacher" sign up details window should be displayed
+    Enter valid "First Name" in the text box    Should start with alphabets {A-Z, a-z, 0-9}    "First Name" text box should accept alphanumeric characters
+    Enter valid "Last Name" in the text box    Should start with alphabets {A-Z, a-z, 0-9}    "Last Name" text box should accept alphanumeric characters
+    Enter valid "Email Address" in the text box    Should start with alphabets{A-Z, a-z, 0-9} with Special Characters    "Email Address" text box should accept all kind of characters
+    Enter valid Confirm "Email Address" in the text box    Should start with alphabets{A-Z, a-z, 0-9} with Special Characters    The "Next" button should be enable if the entered deatials are valid
+    Click on "Next" button    \    "Create Password" dailog screen should be displayed
+    Enter valid "Create a Password" in the text box    {A-Z, a-z, 0-9, Special Characters}    "Create a Password" text box should accept all kind of characters
+    Enter valid "Retype Password" in the text box    {A-Z, a-z, 0-9, Special Characters}    The "Next" button should be enable if the Password matches
+    Click on "Next" button    \    Dailog screen with a message "Would you like to setup classes Now or Later?" should be displayed
+    Click on "Now" button    \    Class setup window should be displayed
+    Enter valid "Class Name" in the text box    {A-Z, a-z, 0-9, Special Characters}    "Class Name" text box should accept all kind of characters
+    Select "Titles" from the list box    \    The "Next" button should be enable
+    Click on "Next" button    \    "would you like to setup another class?" pop up should be displayed
+    Click on "Yes" button    \    "Class" setup window should be dispalyed
+    Enter valid "Class Name" in the text box    {A-Z, a-z, 0-9, Special Characters}    "Class Name" text box should accept all kind of characters
+    Select a tille and click on 'next' button.    Motivation math level 03    selected title should be added
+    Click on "Yes" button    \    "Class" setup window should be dispalyed
+    Enter valid "Class Name" in the text box    {A-Z, a-z, 0-9, Special Characters}    "Class Name" text box should accept all kind of characters
+    Select a tille and click on 'next' button.    Motivation math level 03    "Please Confirm" alert message should be displayed.
+    Click on "Proceed" button    \    Selected titles should be added to the class.
+    Click on 'No' button for would you like to set up another class.    \    "Congratulations!" window should be displayed.
+    Click on "Print" button    \    Created classes and Class codes list should be displayed with teacher name in another window.

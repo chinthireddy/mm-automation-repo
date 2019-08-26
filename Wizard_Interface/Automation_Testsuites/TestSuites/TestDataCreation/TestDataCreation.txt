@@ -1,0 +1,87 @@
+*** Settings ***
+Documentation     This algorithm is used to write student assignment.
+Resource          ../../Keywords/super.txt
+
+*** Test Cases ***
+Add school details to teacher description
+    ${description}    Get School Instructions From Url
+    ${teacherId}    Set Variable    mentoringminds2015+AHSteacher1@gmail.com
+    ${teacherPwd}    Set Variable    AledoHighSchool1
+    ${teacherClass}    Set Variable    Anne Sullivan Class
+    ${loginStatus}    LoginToWizardApp    ${teacherId}    ${teacherPwd}    ${schoolSetupURL}
+    Run Keyword Unless    ${loginStatus}    Fail    The teacher is unable to login with valid credentails
+    Navigate To Management Page
+    Wait And Select Frame    iframeSchoolAdmin
+    Comment    Select the record with the given classname
+    ${rowNo}    Select The Record In Table    ${table.classesAndGroups}    Name    ${teacherClass}
+    Wait And Click Element    ${button.classDetail.edit}
+    Comment    ${description}    Get School Details From Url
+    Input Text    ${text.classDetails.description}    ${description}
+    Wait And Click Element    ${button.classDetails.save}
+    Comment    Wait Until Element Is Visible    ${button.classDetail.edit}    ${TimeOut}
+    Sleep    10s
+    [Teardown]    Stop Application
+
+TestDataSetupForSchools_Inprogress
+    ${teacherId}    Set Variable    mentoringminds2015+AHSteacher1@gmail.com
+    ${teacherPwd}    Set Variable    AledoHighSchool1
+    ${teacherClass}    Set Variable    Anne Sullivan Class
+    ${teacherClass2}    Set Variable    Anne Sullivan Class 2
+    ${schoolDetailsDictionary}    Create Dictionary
+    ${schoolDetailsDictionary}    Pick First School With Later Timestamp    ${teacherId}    ${teacherPwd}    ${teacherClass}    ${teacherClass2}
+    Set Global Variable    ${schoolDetailsDictionary}    ${schoolDetailsDictionary}
+    ${zipCode}    Get From Dictionary    ${schoolDetailsDictionary}    zip
+    ${schoolName}    Get From Dictionary    ${schoolDetailsDictionary}    schoolName
+    ${password}    Get From Dictionary    ${schoolDetailsDictionary}    password
+    ${password}=    Catenate    SEPARATOR=    ${password}    aaaa
+    ${password}    Set Variable    ${password.strip()}
+    ${taskId}    Get From Dictionary    ${schoolDetailsDictionary}    schoolSetupTaskId
+    ${bundle}    Get From Dictionary    ${schoolDetailsDictionary}    bundle
+    ${NoBundle}    Set Variable    No Bundle
+    ${CCS}    Set Variable    CCS
+    ${TXElementary}    Set Variable    TX Elementary
+    ${TXMiddleSchool}    Set Variable    TX Middle School
+    ${California}    Set Variable    California
+    ${tempfile}=    Set Variable If    "${bundle}"=="${NoBundle}"    ${salesTestDataFilePath}    ${salesTestDataFilePath}
+    ${tempfile}=    Set Variable If    "${bundle}"=="${CCS}"    ${salesTestDataFilePathCCS}    ${tempfile}
+    ${tempfile}=    Set Variable If    "${bundle}"=="${TXElementary}"    ${salesTestDataFilePathTXElementary}    ${tempfile}
+    ${tempfile}=    Set Variable If    "${bundle}"=="${TXMiddleSchool}"    ${salesTestDataFilePathTXMiddleSchool}    ${tempfile}
+    ${tempfile}=    Set Variable If    "${bundle}"=="${California}"    ${salesTestDataFilePathCalifornia}    ${tempfile}
+    ${salesTestDataFilePath}    Set Variable    ${tempfile}
+    ${testDataFilePath}    Set Variable    ${tempfile}
+    log    ${bundle}    info
+    log    ${salesTestDataFilePath}    info
+    Set Suite Variable    ${schoolPassword}    ${password}
+    ${list1}    Create List
+    ${list2}    Create List
+    : FOR    ${val}    IN RANGE    1    11
+    \    Append To List    ${list1}    ${schoolName}
+    \    Append To List    ${list2}    ${schoolPassword}
+    Comment    Open browser to the login page and create a school admin.
+    OpenBrowserToLoginPage    ${WizardURL}
+    ${schoolAdminDetails}    Get Ms Excel Row Values Into Dictionary Based On Key    ${salesTestDataFilePath}    TestSchoolAdmin1    SchoolAdmin
+    Set To Dictionary    ${schoolAdminDetails}    Password    ${schoolPassword}
+    ${schoolAdminCreation}    Run Keyword And Return Status    Create New School Admin For TestDataSetUp    ${schoolAdminDetails}    ${schoolName}    ${zipCode}
+    Run Keyword If    ${schoolAdminCreation} ==False    log    New schoolAdmin admin creation failed, so school was already set up. \ But continue the script in order to add items.    info
+    ${schoolAdminUid}    Get From Dictionary    ${schoolAdminDetails}    UserName
+    Close Browser
+    ${teacherNo}    Set Variable    1
+    : FOR    ${val}    IN RANGE    1    100
+    \    ${teacherTestDataSetup}    Run Keyword And Return Status    Set up teacher students courses assignments    ${teacherNo}
+    \    Run Keyword If    "${teacherTestDataSetup}"!="True"    DeleteTheTeacherDetailForSchool    ${schoolAdminDetails}    ${schoolPassword}    ${salesTestDataFilePath}
+    \    ...    ${teacherNo}
+    \    ${teacherNo}    Run Keyword If    "${teacherTestDataSetup}"!="True"    Set Variable    ${teacherNo}    ELSE
+    \    ...    Evaluate    ${teacherNo}+1
+    \    Log    ${teacherNo}
+    \    Exit For Loop If    "${teacherNo}"=="11" and "${teacherTestDataSetup}"=="True"
+    Comment    MYS-3039: Commented the lines of code for writting all the student assignments
+    Comment    Comment    Every student in the school completes all his assignments
+    Comment    ${StudentsDictionary}    Initialize Students Test Data    ${salesTestDataFilePath}    StudentLoginDetails
+    Comment    Set Suite Variable    ${StudentsDictionary}    ${StudentsDictionary}
+    Comment    ${CorrectAnswersDictionary}    AlgorithmLibrary.Initialize Correct Answers    ${CorrectAnswerTestDataFilePath}    MC_Dictionary
+    Comment    Set Suite Variable    ${CorrectAnswersDictionary}    ${CorrectAnswersDictionary}
+    Comment    ${rowsCount}    Get Ms Excel File Rows Count    ${salesTestDataFilePath}    StudentLoginDetails
+    Comment    : FOR    ${val}    IN RANGE    1    ${rowsCount}
+    Comment    \    Run Keyword And Continue On Failure    Run all activities for student    ${val}    ${schoolPassword}
+    Comment    \    Close Browser
+    [Teardown]    Stop Application

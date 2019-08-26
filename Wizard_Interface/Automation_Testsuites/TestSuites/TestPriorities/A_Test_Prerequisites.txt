@@ -1,0 +1,149 @@
+*** Settings ***
+Resource          ../../Keywords/super.txt
+
+*** Test Cases ***
+PreRequisite School Admin
+    [Tags]    PREREQUISITE_1    INDEPENDENT    REGISTRATION_OF_SCHOOL_ADMIN    IMPORT_USERS    CRITICAL
+    Comment    OpenBrowserToLoginPage
+    OpenBrowserToLoginPage
+    ${schoolAdminDetails}    Get Ms Excel Row Values Into Dictionary Based On Key    ${PrerequisitesFilePath}    SchoolAdminPrerequisites    SchoolAdmin
+    Set Global Variable    ${preSchoolAdminDetails}    ${schoolAdminDetails}
+    ${schoolName}    Set Variable If    ${isDemoQURL}==False    ${preSchoolName}    ${demoQPreSchoolName}
+    ${ZipCode}    Set Variable If    ${isDemoQURL}==False    ${schoolZipCode}    ${demoQSchoolZipCode}
+    ${kwStatus}    Run Keyword And Return Status    Create New School Admin    ${schoolAdminDetails}    ${schoolName}    \    ${ZipCode}
+    Run Keyword If    ${kwStatus}==False    Fail    New School Admin creation failed
+    ${schoolAdminID}    Get From Dictionary    ${schoolAdminDetails}    UserName
+    ${schoolAdminPwd}    Get From Dictionary    ${schoolAdminDetails}    Password
+    Set Global Variable    ${schoolName}    ${schoolName}
+    Set Global Variable    ${preSchoolAdminID}    ${schoolAdminID}
+    Set Global Variable    ${preSchoolAdminPassword}    ${schoolAdminPwd}
+    ${sheetName}    Set Variable If    ${isDemoQURL}    DemoQStudentDetails    StudentDetails
+    ${globalStudentDetails}    Create Csv File Using Ms Excel File    ${UploadStudentsFile}    ${PrerequisitesFilePath}    ${sheetName}
+    Set Global Variable    ${preStudentDetails}    ${globalStudentDetails}
+    Log    ${globalStudentDetails}
+    ${ipmportStatus}    Import Users    ${UploadStudentsFile}
+    Run Keyword If    ${ipmportStatus}==False    Fail    The students details uploading fail
+    Set Global Variable    ${preImportUsersStatus}    ${ipmportStatus}
+    [Teardown]    Stop Application
+
+PreRequisite District Admin
+    [Tags]    PREREQUISITE_2    DEPENDENT    REGISTRATION_OF_DISTRICT_ADMIN    IMPORT_USERS_IF_SCHOOL_ADMIN_IMPORT_FAILS    CRITICAL
+    Comment    Open application
+    OpenBrowserToLoginPage
+    ${DAdminDetails}    Get Ms Excel Row Values Into Dictionary Based On Key    ${PrerequisitesFilePath}    DistrictAdminPrerequisties    DistrictAdmin
+    Set Global Variable    ${preDistrictAdminDetails}    ${DAdminDetails}
+    ${districtName}    Set Variable If    ${isDemoQURL}    ${demoQPreDistrictName}    ${preDistrictName}
+    ${districtCode}    Set Variable If    ${isDemoQURL}    ${demoQSchoolZipCode}    ${schoolZipCode}
+    ${DAStatus}=    Run Keyword And Return Status    Create New District Admin    ${DAdminDetails}    DADMIN-999999    \    ${districtName}
+    Run Keyword If    ${DAStatus}!=True    Fail    Failed to Create the District Admin. Dependency scripts willn't be excuted
+    Set Global Variable    ${preDistrictAdminDetails}    ${DAdminDetails}
+    ${DistrictAdminUid}    Get From Dictionary    ${preDistrictAdminDetails}    UserName
+    ${DistrictAdminPwd}    Get From Dictionary    ${preDistrictAdminDetails}    Password
+    Run Keyword If    ${preImportUsersStatus}==True    Set Global Variable    ${preDistrictAdminStatus}    True
+    Run Keyword If    ${preImportUsersStatus}==True    Pass Execution    Imports users is not required for District Admin test cases.
+    ${sheetName}    Set Variable If    ${isDemoQURL}    DemoQStudentDetails    StudentDetails
+    ${globalStudentDetails}    Create Csv File Using Ms Excel File    ${UploadStudentsFile}    ${PrerequisitesFilePath}    ${sheetName}
+    Set Global Variable    ${preStudentDetails}    ${globalStudentDetails}
+    Log    ${globalStudentDetails}
+    ${ipmportStatus}    Import Users    ${UploadStudentsFile}
+    Run Keyword If    ${ipmportStatus}==False    Fail    The students details uploading fail
+    Set Global Variable    ${preDistrictAdminStatus}    True
+    [Teardown]    Stop Application
+
+Test Prerequisites
+    [Tags]    PREREQUISITE_3    DEPENDENT    CREATION_OF_TEACHERS_FOR_ALL_SCRIPTS    REGISTRATION_OF_TEACHER_WITH_CLASSES_AND_TITLES    CRITICAL
+    Comment    Create new teacher
+    ${sheetName}    Set Variable If    ${isDemoQURL}    DemoQTeacherDetails    TeacherDetails
+    ${teacherDetails}    Get Ms Excel Row Values Into Dictionary Based On Key    ${PrerequisitesFilePath}    TeacherPrerequisites    ${sheetName}
+    Set Global Variable    ${preTeacherDetails}    ${teacherDetails}
+    Log    ${teacherDetails}
+    ${classesList}    Get From Dictionary    ${teacherDetails}    ClassName
+    ${classesList}    Split String    ${classesList}    ,
+    Set Global Variable    ${preClassesList}    ${classesList}
+    ${SignUpTitleMenus}    Get From Dictionary    ${teacherDetails}    Title
+    ${SignUpTitleMenus}    Split String    ${SignUpTitleMenus}    ,
+    Set Global Variable    ${preSignUpTitleMenu}    @{SignUpTitleMenus}[0]
+    Set Global Variable    ${preSignUpTitleMenus}    ${SignUpTitleMenus}
+    ${preActivityNames}    Get From Dictionary    ${teacherDetails}    Activity
+    ${preActivityNames}    Split String    ${preActivityNames}    ,
+    ${activityName}    Create List    ${preActivityNames}
+    Comment    Open latest URL
+    OpenBrowserToLoginPage    ${WizardURL}
+    ${school}    Set Variable If    ${isDemoQURL}    ${demoQPreSchoolName}    ${preSchoolName}
+    ${zipCode}    Set Variable If    ${isDemoQURL}    ${demoQSchoolZipCode}    ${schoolZipCode}
+    Create New Teacher    ${teacherDetails}    \    ${school}    ${zipCode}
+    Comment    Log Dictionary    ${assignedClassesDictionary}
+    Wait Until Element Is Visible    ${button.home.management}
+    ${Guided tool tip}    Run Keyword And Return Status    Wait For Element Visible    //div[@class='guidedHelpTooltipFooter']/div[contains(text(),'Hide Guided Help')]    10s
+    Run Keyword If    ${Guided tool tip}    Wait And Click Element    //div[@class='guidedHelpTooltipFooter']/div[contains(text(),'Hide Guided Help')]
+    Wait And Click Element    ${button.home.management}
+    ${loaderVisibleStatus }    Run Keyword And Return Status    Wait Until Element Is Visible    ${common.homepage.Loading}    15s    Loader is not visible in the given time or the user not navigated to the Management page.
+    Run Keyword If    ${loaderVisibleStatus }    Run Keyword And Ignore Error    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Comment    ${classesList}    Get Dictionary Keys    ${assignedClassesDictionary}
+    Comment    Set Global Variable    ${preClassesAndClassCodes}    ${assignedClassesDictionary}
+    ${teacherUId}    Get From Dictionary    ${teacherDetails}    UserName
+    ${teacherPwd}    Get From Dictionary    ${teacherDetails}    Password
+    ${teacherFirstName}    Get From Dictionary    ${teacherDetails}    FirstName
+    ${teacherLastName}    Get From Dictionary    ${teacherDetails}    LastName
+    ${teacherFullName}    Set Variable    ${teacherLastName},${SPACE}${teacherFirstName}
+    Set Global Variable    ${preTeacherID}    ${teacherUId}
+    Set Global Variable    ${preTeacherPassword}    ${teacherPwd}
+    Set Global Variable    ${preTeacherFirstName}    ${teacherFirstName}
+    Set Global Variable    ${preTeacherLastName}    ${teacherLastName}
+    Set Global Variable    ${preTeacherFullName}    ${teacherFullName}
+    ${studentsIds}    Get Csv File Column Values Into List    ${UploadStudentsFile}    User ID
+    Remove From List    ${studentsIds}    0
+    Log List    ${studentsIds}
+    Set Global Variable    ${preStudentIds}    ${studentsIds}
+    ${assignedClassesDictionary}    Add Classes And Return Class Codes    Class    ${classesList}    ${SignUpTitleMenus}
+    ${classesList}    Get Dictionary Keys    ${assignedClassesDictionary}
+    Set Global Variable    ${preClassesAndClassCodes}    ${assignedClassesDictionary}
+    : FOR    ${classeName}    IN    @{classesList}
+    \    ${bStatus}    Add Students To A Class Or Group    ${classeName}    ${studentsIds}
+    \    Run Keyword And Continue On Failure    Run Keyword If    ${bStatus}==False    Fail    Add students to a class operation is not successfull.The importing students are not available in "Available Students" table.
+    Comment    Navigates to the Home Page From Management Page
+    Navigate BackTo Home Page    Management
+    Navigate To Assignment Page
+    Navigate To New Assignments Page
+    ${SignUpTitleMenu}    Set Variable    @{SignUpTitleMenus}[0]
+    ${classesCount}    Get Length Of List    ${classesList}
+    : FOR    ${index}    IN RANGE    0    ${classesCount}
+    \    ${className}    Set Variable    @{classesList}[${index}]
+    \    ${SignUpTitle}    Set Variable    @{SignUpTitleMenus}[${index}]
+    \    ${activityName}    Set Variable    @{preActivityNames}[${index}]
+    \    ${kwStatus}    Add Assignment To A Student    ${className}    ${SignUpTitle}    ${activitySelectMenu}    ${activityName}
+    \    Run Keyword And Continue On Failure    Run Keyword If    ${kwStatus}    Set Test Message    Assignment is Handed out.
+    \    ...    ELSE    Fail    Assignment is not Handed out.
+    \    UnSelect Assignment Class    ${className}
+    ${AdditionalassignmentTile}    Set Variable    @{preSignUpTitleMenus}[0]
+    ${activityName}    Set Variable If    ${isDemoQURL}    05 Matching    02-01 Form B: Part1
+    ${className}    Set Variable    @{preClassesList}[0]
+    ${kwStatus}    Add Assignment To A Student    ${className}    ${AdditionalassignmentTile}    ${activitySelectMenu}    ${activityName}
+    Run Keyword And Continue On Failure    Run Keyword If    ${kwStatus}    Set Test Message    Assignment is Handed out.
+    ...    ELSE    Fail    Assignment is not Handed out.
+    ${newActivityNames}    Create List
+    : FOR    ${activityName}    IN    @{preActivityNames}
+    \    ${tempList}    Split String    ${activityName}    (
+    \    ${activityName}    Set Variable    @{tempList}[0]
+    \    ${activityName}    Set Variable    ${activityName.strip()}
+    \    Append To List    ${newActivityNames}    ${activityName}
+    Set Global Variable    ${preActivityNames}    ${newActivityNames}
+    Set Global Variable    ${preScriptStatus}    True
+    [Teardown]    Stop Application
+
+Second Teacher Creation for depndent testscripts
+    [Documentation]    This prerequisites will dependent to these test scripts SCHOOL_ADMIN_13, SCHOOL_ADMIN_33, SCHOOL_ADMIN_34, SCHOOL_ADMIN_42, SCHOOL_ADMIN_60, SCHOOL_ADMIN_100,TEACHER_59, TEACHER_74, TEACHER_80, TEACHER_95.
+    [Tags]    PREREQUISITE_4    DEPENDENT    SECOND_TEACHER_CREATION    HIGH
+    ${sheetName}    Set Variable If    ${isDemoQURL}    DemoQTeacherDetails    TeacherDetails
+    ${teacher02Details}    Get Ms Excel Row Values Into Dictionary Based On Key    ${PrerequisitesFilePath}    TeacherPrerequisites    ${sheetName}
+    Set Global Variable    ${preTeacherDetails02}    ${teacher02Details}
+    OpenBrowserToLoginPage
+    ${school}    Set Variable If    ${isDemoQURL}    ${demoQPreSchoolName}    ${preSchoolName}
+    ${zipCode}    Set Variable If    ${isDemoQURL}    ${demoQSchoolZipCode}    ${schoolZipCode}
+    ${assignedClassesDictionary}    Create New Teacher    ${teacher02Details}    \    ${school}    ${zipCode}
+    ${tc02FName}    Get From Dictionary    ${preTeacherDetails02}    FirstName
+    ${tc02LName}    Get From Dictionary    ${preTeacherDetails02}    LastName
+    ${newTutor}    Set Variable    ${tc02FName} ${tc02LName}
+    Set Global Variable    ${secondTeacherCreationStatus}    True
+    [Teardown]    Stop Application

@@ -1,0 +1,31 @@
+*** Variables ***
+${header.support.howCanWeHelpYou}    //div//span[@class='ui-dialog-title' and contains(text(),'How can we help you?')]
+${header.home.help.quickTipsWindowClose}    //div[@id='helpDlg' and @aria-labelledby="helpDlg_title"]//span[contains(@class,'CloseIcon')]
+${header.home.help.quickTipsWindow}    //div[contains(@class,'ui-dialog ui-widget')]//span[contains(text(),'Quick Tips')]
+${header.support.howCanWeHelpYouClose}    //span[contains(text(),'How can we help you?')]/following-sibling::button[@title='Close']
+${header.home.help.browserTest}    //div[contains(@class,'ui-dialog ui-widget')]//span[contains(text(),'Touch Test')]
+${header.home.help.browserTestClickHereFirst}    //button[@id='touchTestInit']
+${header.home.help.browserTestClickHereSecond}    //button[@id='touchTestFinish']
+${header.signUp.studentSignUp}    //div[contains(@class,'dialogTitle') and contains(text(),'Student Sign Up')]
+${header.signUp.studentSignUpDlgBox}    //div[@class='dialogTitle' and contains(text(),'Mentoring Minds (Test)')]
+${header.signUp.studentSignUpCongratsWindow}    //div[@class='dialogMessage']
+${header.studentAssignments.assignmentReportDlg}    //div[@id='sessionReportDlg']
+${header.studentAssignments.assignmentReportDlgClose}    //div[@id='sessionReportDlg']/div[@class='mysCloseButton']
+${header.newClass.newClass}    //span[@class='dijitDialogTitle' and text()='New Class']
+${header.management.schoolAdminFrame}    iframeSchoolAdmin
+${header.teacherSignUp.alertMessage}    //div[@widgetid='globalAlertPopup']//button[@widgetid='mysAlertBtn']
+${header.login.loadingProgressMonitor}    //div[@id='web-app-loading-progress-monitor' and @class='tiny-green']/div
+${header.reports.reportsettingswindow}    //span[text()='Report Settings']
+${header.Help.contactUsWindowTitle}    //div[@class='contactUsDlgTitle']
+${header.help.CloseContactUsWindow}    //div[@id='contactUsDlg']//div[@class='mysCloseButton']
+${header.help.termsAndConditionDlg}    //div[@id='termsDlgHelp']//div[@class='dialogTitle']
+${header.help.CloseTermsAndConditionDlg}    //div[@id='termsDlgHelp']//div[@class='mysCloseButton']
+${header.assignments.assignmentManage}    //iframe[@id='iframeAssignmentsManage']
+${header.schoolAdmin.importUsersDailogBox}    //div[@id='importUsersDlg']
+${header.report.reportFrame}    iframeReport
+${header.group.student}    //span[@id='listEditorDlg_title' and text()='Edit Students in Class/Group - ']
+${header.Class.Student}    //span[@id='listEditorDlg_title' and text()='Edit Students in Class/Group - ']
+${header.availableClasses.name}    //div[@id="listEditor"]//th[text()="Name"]
+${header.writeAssignment.notePadFrame}    noteEditorDiv_iframe
+${header.classesAndGroups.editStdsClassAndGrps}    //div[@id="listEditorDlg"]//span[contains(text(),"Edit Student's Classes and Groups")]
+${header.management.classCodeInfo}    //div[@id="classCodeNotification"]//h1

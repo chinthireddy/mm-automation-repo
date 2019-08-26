@@ -1,0 +1,47 @@
+*** Settings ***
+
+*** Variables ***
+${CODES_URL}      https://mysatori.cloudant.com/codes_dev/_design/te_keys/_list/by-id/codes?startkey=[%22te_serial_num%22]&endkey=[%22te_serial_num%22,{}]&limit=300
+${isDemoQURL}     False
+${BROWSER}        gc
+${WizardURL}      http://manual2.mentoringmindsonline.com    # Check both the Wizard URL and the other URL (to get instructions) \ Use http://tomo.zone or (for example) http://b11test2.mentoringmindsonline.com
+${MACDEFAULTDOWNLOADPATH}    \    # Default Download path: Leave blank in svn for MAC users -- this file will be out of sync with the svn version. \ \ For XP use %{USERPROFILE}\\My Documents\\Downloads\\, for Win 7 and Server 2008 use %{USERPROFILE}\\Downloads\\. \ We cannot set the official svn version to one of these users, since they cause a failure on a Mac.
+${WINDOWSDEFAULTDOWNLOADPATH}    %{USERPROFILE}\\Downloads\\    # Default Download path: Leave blank in svn for MAC users -- this file will be out of sync with the svn version. \ \ For XP use %{USERPROFILE}\\My Documents\\Downloads\\, for Win 7 and Server 2008 use %{USERPROFILE}\\Downloads\\. \ We cannot set the official svn version to one of these users, since they cause a failure on a Mac.
+${studentUserID}    r.student4
+${studentPassword}    r.student44
+${instructorUserID}    nwteacher1
+${instructorPassword}    nwteacher1
+${adminUserID}    adminid
+${adminPassword}    adminpwd
+${Delay}          90s    # Moved delay from 60s to 90s on 2 Aug 2014
+${TeacherRegistrationTCStatus}    Fail
+${teacherEmailId}    ${EMPTY}
+${teacherPassword}    datateacher@1
+${mailBeginning}    qa4mme+
+${Max Delay}      3m
+${daRegistrationCodesFile}    ${EXECDIR}\\Automation_Testsuites\\TestData\\MySatori Test DBs.xlsx
+${RegCodeSheetName}    CCS
+${TimeOut}        30s
+${schoolName}     Vandagriff Elementary
+${preloaderTimeOut}    5m
+${InitializeStudentsTestDataFile}    ${EXECDIR}\\Automation_Testsuites\\TestData\\Data for 30 system load test\\system 1\\Initialize_Students.xls
+${CorrectAnswerTestDataFilePath}    ${EXECDIR}\\Automation_Testsuites\\TestData\\MC_Dictionary.xls    # ${EXECDIR} is project directory
+${schoolZipCode}    76008
+${Import Users Template}    ${EXECDIR}\\Automation_Testsuites\\TestData\\import_users_template.xls
+${Upload Users Teamplate}    ${EXECDIR}\\Automation_Testsuites\\TestData\\upload_users_template.csv
+${TECodesFilePath}    ${EXECDIR}\\Automation_Testsuites\\TestData\\TECodes.xls
+@{TeacherSignUpTiles}    CCS Math Assessments Level 2    CCS Math Assessments Level 4    CCS Math Assessments Level 5    CCS Motivation Math Level 02    CCS Motivation Math Level 03    CCS Motivation Math Level 04    CCS Motivation Math Level 05
+...               CCS Motivation Reading Level 02    CCS Motivation Reading Level 03    CCS Motivation Reading Level 04    CCS Motivation Reading Level 05    CCS Reading Assessments Level 2    CCS Reading Assessments Level 4    CCS Reading Assessments Level 5
+...               CCS Math Assessments Level 3    CCS Motivation Math Level 01    CCS Reading Assessments Level 3
+${isPupulatingSalesDBFirstTime}    False
+${salesTestDataFilePathCCS}    ${EXECDIR}\\Automation_Testsuites\\TestData\\SalesTestDataCCS.xls
+${salesTestDataFilePathTXElementary}    ${EXECDIR}\\Automation_Testsuites\\TestData\\SalesTestDataTXElementary.xls
+${salesTestDataFilePathTXMiddleSchool}    ${EXECDIR}\\Automation_Testsuites\\TestData\\SalesTestDataTXMiddleSchool.xls
+${salesTestDataFilePath}    ${EXECDIR}\\Automation_Testsuites\\TestData\\SalesTestData.xls
+${stringinurl}    //html/body/pre    # Give the id of the element which has the instructions as text. \ The url is {instructionsurl} defined on line above.
+${schoolSetupURL}    http://s2.mentoringmindsonline.com    # Set equal to the Wizard URL
+${demoQSchoolName}    Elgin Middle School
+${demoQSchoolZipCode}    78621
+${WaitUntilInvisibleLoopTime}    6s    # MYS-2346 The code waits 149 times this value for an element to disappear, such as when waiting for a report. \ Modify the scalar at run time to adjust time waited. \ Previous value was 6s.
+${DBPassword}     Ol1G5UaVS64wkIwmiD2vF5Kd
+${DBUserName}     waystytownewellstohnerea

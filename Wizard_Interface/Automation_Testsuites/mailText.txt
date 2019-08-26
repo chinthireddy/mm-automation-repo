@@ -1,0 +1,7 @@
+Kendrick Elementary setup completed at 18:05:45.003 on 20150525.
+
+It can now be accessed here:
+http://v4.tomo.zone/mysdb_m3_sales/_design/mys/mmloginw.html#customerid:153372
+
+Zip code:76711
+

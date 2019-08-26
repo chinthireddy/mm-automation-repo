@@ -1,0 +1,312 @@
+﻿*** Test Cases ***
+MTC92-Validate whether the Template is downloaded
+    [Documentation]    This Test Case describes to know whether the Import Users template is downloaded or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' Button    \    "Has your Import Template been prepared?" popup message should be displayed.
+    Click on 'No, I Want to download the template' button    \    Template should be downloaded to the local drive of the system.
+
+Validate functionality whether the users are imported in 10 seconds
+    [Documentation]    This Test Case describes to know whether the Users Template is Imported in 10 seconds or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' Button    \    "Has your Import Template been prepared?" popup message should be displayed.
+    Click on 'No, I Want to download the template ' button    \    Template should be downloaded to the local drive of the system.
+    Enter the user details in the template according to the columns mentioned and save the template.    User ID:student85,Password:test1234, \ First Name:student, Middle Name:std \ ,Last Name:std85, Grade Level:3, \ Role:Student, School: Vandagriff Elementary
+    Click on 'Yes, I am ready to Import ' button    \    "Open" pop-up window should be displayed
+    Select the User details template to Import in the "Open" pop-up from local drive of the system    \    Users should be imported in 10 seconds and Alert message should be displayed as"Congratulations! The users have been imported"
+
+Validate the alert message when we import invalid data
+    [Documentation]    This Test Case describes whether an alert message is displayed or not? when we import Invalid data.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sadmin2505@gmail.com, Password: test1234
+    Click on 'Sign In' button    \    School Admin Home page should be displayed
+    Click on 'Import Users' button    \    "Has your Import Template been prepared?" popup message should be displayed.
+    Click on 'No, I Want to download the template ' button    \    Template should be downloaded to the local drive of the system.
+    Enter the user details in the template according to the columns mentioned and save the template.    User ID:student31, \ Password:studentA31, \ First Name:studentFirst31, \ Middle Name:studentMiddle31 ,Last Name:studentLast31, Grade Level:5, Role:Teacher, School: Aledo Middle School    Details should be saved with invalid student details like Role, School name Grade, User id, password
+    Click on 'Yes, I am ready to Import ' button    \    "Open" pop-up window should be displayed
+    Choose the User template which is saved in the local drive    \    The template should be selected
+    Click on 'open' button in the pop-up window    \    Alert message should be displayed as "Your import was not successful" with respective details
+
+Validate the import functionality for invalid User details
+    [Documentation]    This Test Case describes whether the Invalid User details are Imported or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' Button    \    "Has your Import Template been prepared?" popup message should be displayed.
+    Click on 'No, I Want to download the template ' button    \    Template should be downloaded to the local drive of the system.
+    Enter the user details in already downloaded template according to the columns mentioned and save the template.    User ID:student85 Password:test1234 \ First Name:student, Middle Name:std \ ,Last Name:std85, Grade Level:3, \ Role:Teacher, School: Vandagriff Elementary    Details should be saved with invalid student details like Role, School name Grade, User id, password
+    Click on 'Yes, I am ready to Import ' button    \    "Open" pop-up window should be displayed
+    Choose the User template which is saved in the local drive    \    The template should be selected
+    Click on 'open' button in the pop-up window    \    "Your import was not successful " alert message should be displayed .
+
+Validate the import functionality for Valid user details using Try Again button
+    [Documentation]    This Test Case describes whether "Try Again" functionality Imports the User details or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sadmin2505@gmail.com, Password: test1234
+    Click on Sign In button    \    School Admin Home page should be displayed
+    Click on Import Users    \    Has your Import Template been prepared? popup message should be displayed.
+    Click on 'No, I Want to download the template ' button    \    Template should be downloaded to the local drive of the system.
+    Enter the user details in already downloaded template according to the columns mentioned and save the template.    User ID:studentNNPassword:test1234 \ First Name:student, Middle Name:std \ ,Last Name:std85, Grade Level:3, \ Role:Teacher, School: Vandagriff Elementary    Details should be saved with invalid student details like Role, School name Grade, User id, password
+    Click on 'Yes, I am ready to Import ' button    \    "Open" pop-up window should be displayed
+    Choose the User template which is saved in the local drive    \    The template should be selected
+    Click on 'open' button in the pop-up window    \    "Your import was not successful " alert message should be displayed .
+    Reopen the template and enter valid user details according to the columns mentioned and save the template.    User ID:student85,Password:test1234, \ First Name:student, Middle Name:std \ ,Last Name:std85, Grade Level:3, \ Role:Student, School: Vandagriff Elementary    User Valid Data should be saved
+    Click on 'Try Again' button in the alert mesage    \    "Open" pop-up window should be displayed
+    Choose the Valid User details template which is saved in the local drive    \    The template should be selected
+    Click on 'open' button in the pop-up window    \    Alert message should be displayed as "Your import was successful "
+
+Validate the users are imported using “Import Template”
+    [Documentation]    This Test Case describes the functionality of the "Import Template" for User Details
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' Button    \    "Has your Import Template been prepared?" popup message should be displayed.
+    Click on 'No, I Want to download the template ' button    \    Templated should be downloaded to the local system.
+    Enter the user details in the template according to the columns mentioned and save the template.    User ID:student85,Password:test1234, \ First Name:student, Middle Name:std \ ,Last Name:std85, Grade Level:3, \ Role:Student, School: Vandagriff Elementary
+    Click on 'Yes, I am ready to Import ' button and navigate to the .csv file location.    \    "Congratulations! The users have been imported" alert message should be displayed.
+    Click on Management> All Users
+    Sort the records through Created column    \    Imported record should be displayed.
+    Enter the user details in already downloaded template according to the columns mentioned and save the template.    User ID:rhwpte+ts87@gmail.com,Password:test1234, \ First Name:teacher, Middle Name:teach \ ,Last Name:ts87, Grade Level:1, \ Role:Student, School: Vandagriff Elementary    Details should be saved with invalid student details like Role, School name Grade, User id, password
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' button    \    "Has your Import Template been prepared?" popup message should be displayed.
+    Click on 'Yes, I am ready to Import ' button    \    Alert message should be displayed as "Your import was not successful" with respective details
+
+Validate whether Teacher details are imported in 10 seconds
+    [Documentation]    This Test Case describes to Validate whether the teacher details are Imported in 10 seconds or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' button    \    "Has your Import Template been prepared?" popup message should be displayed.
+    Click on 'No, I Want to download the template ' button    \    Templated should be downloaded to the local system.
+    Enter the user details in the template according to the columns mentioned and save the template.    User ID:rhwpte+ts87@gmail.com,Password:test1234, \ First Name:teacher, Middle Name:teach \ ,Last Name:ts87, Grade Level:1, \ Role:Teacher, School: Vandagriff Elementary
+    Click on 'Yes, I am ready to Import ' button and navigate to the .csv file location.    \    "Congratulations! The users have been imported" alert message should be displayed.
+
+Validate the alert message when Invalid Teacher details imported
+    [Documentation]    This Test Case describes whether an alert message is displayed or not? When we Import Invalid Teacher details
+    Enter the user details in already downloaded template according to the columns mentioned and save the template.    User ID:teachera31@gmail.com, \ Password:teacher, \ First Name:teacherFirst31, \ Middle Name:teachMiddle31 ,Last Name:tsLast31, Grade Level:5, Role:Student, School: Aledo Middle School    Details should be saved with invalid student details like Role, School name Grade, User id, password
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' button    \    "Has your Import Template been prepared?" popup message should be displayed.
+    Click on 'Yes, I am ready to Import ' button and navigate to the .csv file location.    \    "Your import was not successful " alert message should be displayed .
+
+Validate the import functionality for Valid Teacher details using Try Again button
+    [Documentation]    This Test Case describes to validate the "Try Again" functionality when the Teacher details are Imported again with Valid data
+    Enter the user details in already downloaded template according to the columns mentioned and save the template.    User ID:teachera31@gmail.com, \ Password:teacher, \ First Name:teacherFirst31, \ Middle Name:teachMiddle31 ,Last Name:tsLast31, Grade Level:5, Role:Student, School: Aledo Middle School    Details should be saved with invalid student details like Role, School name Grade, User id, password
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sadmin2505@gmail.com, Password: test1234
+    Click on Sign In button    \    School Admin Home page should be displayed
+    Click on Import Users    \    Has your Import Template been prepared? popup message should be displayed.
+    Click on 'Yes, I am ready to Import ' button    \    "Your import was not successful " alert message should be displayed .
+    Enter the user details in already downloaded template according to the columns mentioned and save the template.    User ID:rhwpte+ts87@gmail.com,Password:test1234, \ First Name:teacher, Middle Name:teach \ ,Last Name:ts87, Grade Level:1, \ Role:Teacher, School: Vandagriff Elementary    Enter valid Data
+    Click on Try Again button in the alert mesage    Import Valid template    Valid user Details should get imported.
+
+Validate whether the Teacher details are imported using “Import Template”
+    [Documentation]    This Test Case describes the functionality of the "Import Template" for Teacher Details
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' button    \    "Has your Import Template been prepared?" popup message should be displayed.
+    Click on 'No, I Want to download the template ' button    \    Templated should be downloaded to the local system.
+    Enter the user details in the template according to the columns mentioned and save the template.    User ID:rhwpte+ts87@gmail.com,Password:test1234, \ First Name:teacher, Middle Name:teach \ ,Last Name:ts87, Grade Level:1, \ Role:Teacher, School: Vandagriff Elementary
+    Click on 'Yes, I am ready to Import ' button and navigate to the .csv file location.    \    "Congratulations! The users have been imported" alert message should be displayed.
+    Click on Management> All Users
+    Sort the records through Created column    \    Imported record should be displayed.
+
+Validate Import functionality with out data in the import file
+    [Documentation]    This Test Case describes whether the User template is Imported or not? with an Empty data
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'No, I Want to download the template' button    \    Templated should be downloaded to the local system.
+    Click on 'Import Users' Button    \    "Has your Import Template been prepared?" popup message should be displayed.
+    Click on 'Yes, I am ready to Import ' button    \    "Open" pop-up window should be displayed
+    Choose the downloaded template to Import without entering the data    \    Alert message should be displayed as "Your import was not successful." "No user records were found in the import file."
+
+Validate the close (x) functionality in the import users window
+    [Documentation]    This Test Case validates the close(x) button functionality in the Import Users window
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'No, I Want to download the template' button    \    Templated should be downloaded to the local system.
+    Click on 'Import Users' Button    \    "Has your Import Template been prepared?" popup message should be displayed.
+    Click on 'x' Button    \    "Has your Import Template been prepared?" popup message should be closed and School Admin home page should be displayed
+
+Validate Import functionality with Importing same data multiple times
+    [Documentation]    This Test Case describes to know whether the same data is Imported or not? for Multiple times
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' button    \    Has your Import Template been prepared? popup message should be displayed.
+    Click on 'Yes, I am ready to Import ' button    \    "Open" pop-up window should be opened
+    Choose the template which already Imported data in the local drive    User ID:rhwpte+sch85@gmail.com,Password:test1234,First Name:school,Middle Name:admin,Last Name:sch85,Grade Level:2 Role:School Admin,School:Vandagriff Elementary,Tag:schts85    The selected template should be highlighted
+    Click on 'open' button in the pop-up window    \    Alert message should be displayed as "Your import was not successful" with respective details
+
+Validate whether School Admin is able to import District Admin with in the same school
+    [Documentation]    This Test Case describes whether School Admin is able to Import District admin details with in the same school
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' button    \    Has your Import Template been prepared? popup message should be displayed.
+    Click on 'No, I Want to download the template ' button    \    Templated should be downloaded to the local system.
+    Enter the District admin user details in the downloaded template according to the columns mentioned and save the template.    User ID:rhwpte+dist96@gmail.com,Password:test1234,First Name:district,Middle Name:admin,Last Name:dist96,Grade Level:Not Available, Role:District Admin,School:Vandagriff Elementary,Tag:distadm    Details should be saved with the Valid data
+    Click on 'Yes, I am ready to Import ' button    \    "Open" pop-up window should be displayed
+    Choose the District admin template which already saved in the local drive    \    The selected template should be highlighted
+    Click on 'open' button in the pop-up window    \    Alert message should be displayed as "Your import was not successful" with respective details
+
+Validate whether school admin is able to import school admin with in the same School
+    [Documentation]    This Test Case describes whether School admin is able to import a School admin with in the same school
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' button    \    Has your Import Template been prepared? popup message should be displayed.
+    Click on 'No, I Want to download the template ' button    \    Templated should be downloaded to the local system.
+    Enter the School admin user details in the downloaded template according to the columns mentioned and save the template.    User ID:rhwpte+sch96@gmail.com,Password:test1234,First Name:school,Middle Name:admin,Last Name:sch96,Grade Level:Not Available, Role:School Admin,School:Vandagriff Elementary,Tag:schts96    Details should be saved with the Valid data
+    Click on 'Yes, I am ready to Import ' button    \    "Open" pop-up window should be displayed
+    Choose the School admin template which already saved in the local drive    \    The selected template should be highlighted
+    Click on 'open' button in the pop-up window    \    Alert message should be displayed as "Congratulations! The users have been imported".
+
+Validate whether School Admin is able to Import other School admin with in the school
+    [Documentation]    This Test Case describes whether School admin is able to import a other School admin with in the same school
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' button    \    Has your Import Template been prepared? popup message should be displayed.
+    Click on 'No, I Want to download the template ' button    \    Templated should be downloaded to the local system.
+    Enter the School admin user details with other school details in the downloaded template according to the columns mentioned and save the template.    User ID:rhwpte+sch98@gmail.com,Password:test1234,First Name:school,Middle Name:admin,Last Name:sch98,Grade Level:Not Available, Role:School Admin,School:Mccall Elementary Elementary,Tag:schts96    Details should be saved with the Valid data
+    Click on 'Yes, I am ready to Import ' button    \    "Open" pop-up window should be displayed
+    Choose the School admin template which already saved in the local drive with other school details    \    The selected template should be highlighted
+    Click on 'open' button in the pop-up window    \    Alert message should be displayed as "Your import was not successful" with respective details
+
+Validate whether school admin is able to import Teacher with in the same School
+    [Documentation]    This Test Case describes whether School admin is able to import a teacher with in the same school
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' button    \    Has your Import Template been prepared? popup message should be displayed.
+    Click on 'No, I Want to download the template ' button    \    Templated should be downloaded to the local system.
+    Enter the Teacher user details in the downloaded template according to the columns mentioned and save the template.    User ID:rhwpte+ts96@gmail.com,Password:test1234,First Name:teacher,Middle Name:ts,Last Name:ts96,Grade Level:5 Role:School Admin,School:Vandagriff Elementary,Tag:ts96    Details should be saved with the Valid data
+    Click on 'Yes, I am ready to Import ' button    \    "Open" pop-up window should be displayed
+    Choose the Teacher template which already saved in the local drive    \    The selected template should be highlighted
+    Click on 'open' button in the pop-up window    \    Alert message should be displayed as "Congratulations! The users have been imported".
+
+Validate whether School Admin is able to Import other School Teacher with in the school
+    [Documentation]    This Test Case describes whether School admin is able to import other school teacher with in the same school
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' button    \    Has your Import Template been prepared? popup message should be displayed.
+    Click on 'No, I Want to download the template ' button    \    Templated should be downloaded to the local system.
+    Enter the Teacher user details with other school details in the downloaded template according to the columns mentioned and save the template.    User ID:rhwpte+ts98@gmail.com,Password:test1234,First Name:teacher,Middle Name:ts,Last Name:ts98,Grade Level:5 Role:School Admin,School:Mccall Elementary Elementary,Tag:ts96    Details should be saved with the Valid data
+    Click on 'Yes, I am ready to Import ' button    \    "Open" pop-up window should be displayed
+    Choose the Teacher template which already saved in the local drive with other school details    \    The selected template should be highlighted
+    Click on 'open' button in the pop-up window    \    Alert message should be displayed as "Your import was not successful" with respective details
+
+Validate whether school admin is able to import Student with in the same School
+    [Documentation]    This Test Case describes whether School admin is able to import a Student with in the same school
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' button    \    Has your Import Template been prepared? popup message should be displayed.
+    Click on 'No, I Want to download the template ' button    \    Templated should be downloaded to the local system.
+    Enter the Teacher user details in the downloaded template according to the columns mentioned and save the template.    User ID:student96Password:test1234,First Name:student,Middle Name:std,Last Name:std96,Grade Level:3 Role:Student,School:Vandagriff Elementary,Tag:std    Details should be saved with the Valid data
+    Click on 'Yes, I am ready to Import ' button    \    "Open" pop-up window should be displayed
+    Choose the Student template which already saved in the local drive    \    The selected template should be highlighted
+    Click on 'open' button in the pop-up window    \    Alert message should be displayed as "Congratulations! The users have been imported".
+
+Validate whether School Admin is able to Import other School Student with in the school
+    [Documentation]    This Test Case describes whether School admin is able to import other school Student with in the same school
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' button    \    Has your Import Template been prepared? popup message should be displayed.
+    Click on 'No, I Want to download the template ' button    \    Templated should be downloaded to the local system.
+    Enter the Student user details with other school details in the downloaded template according to the columns mentioned and save the template.    User ID:student96Password:test1234,First Name:student,Middle Name:std,Last Name:std96,Grade Level:3 Role:Student,School:MccallElementary,Tag:std    Details should be saved with the Valid data
+    Click on 'Yes, I am ready to Import ' button    \    "Open" pop-up window should be displayed
+    Choose the Student template which already saved in the local drive with other school details    \    The selected template should be highlighted
+    Click on 'open' button in the pop-up window    \    Alert message should be displayed as "Your import was not successful" with respective details
+
+Validate the imported users are displayed in Management
+    [Documentation]    This Test Case describes to Validate the Imported Users are displayed in management page or not.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' button    \    Has your Import Template been prepared? popup message should be displayed.
+    Click on 'No, I Want to download the template ' button    \    Templated should be downloaded to the local system.
+    Enter the Teacher user details in the downloaded template according to the columns mentioned and save the template.    User ID:student96Password:test1234,First Name:student,Middle Name:std,Last Name:std96,Grade Level:3 Role:Student,School:Vandagriff Elementary,Tag:std    Details should be saved with the Valid data
+    Click on 'Yes, I am ready to Import ' button    \    "Open" pop-up window should be displayed
+    Choose the Student template which already saved in the local drive    \    The selected template should be highlighted
+    Click on 'open' button in the pop-up window    \    Alert message should be displayed as "Congratulations! The users have been imported".
+    Click on 'x' button on the Alert message    \    School Admin home page should be displayed
+    Click on 'Management' button    \    "Management home page should be displayed
+    Enter user details(First Name/Last Name/Role) in the 'Search' field on the "All Users" grid    \    "All Users" grid should display the entered User details
+
+Validate whether School Admin is able to import Multiple Combination(Student,Teacher,School Admin) of roles
+    [Documentation]    This Test Case describes whether School admin is able to import a Multiple Combinations(Student,Teacher,School Admin) with in the same school
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' button    \    Has your Import Template been prepared? popup message should be displayed.
+    Click on 'No, I Want to download the template ' button    \    Templated should be downloaded to the local system.
+    Enter the Teacher user details in the downloaded template according to the columns mentioned and save the template.    User ID:rhwpte+sch99ts@gmail.com:test1234,First Name:school,Middle Name:std,Last Name:ts99,Grade Level:2 Role:Student,Teacher,School Admin,School:Vandagriff Elementary,Tag:schts    Details should be saved with the Valid data
+    Click on 'Yes, I am ready to Import ' button    \    "Open" pop-up window should be displayed
+    Choose the Student template which already saved in the local drive    \    The selected template should be highlighted
+    Click on 'open' button in the pop-up window    \    Alert message should be displayed as "Your import was not successful" with respective details
+
+Validate whether School Admin is able to Import other School District admin
+    [Documentation]    This Test Case describes whether School admin is able to import other School district admin with in the same school
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' button    \    Has your Import Template been prepared? popup message should be displayed.
+    Click on 'No, I Want to download the template ' button    \    Templated should be downloaded to the local system.
+    Enter the District admin user with other school details in the downloaded template according to the columns mentioned and save the template.    User ID:rhwpte+dist96@gmail.com,Password:test1234,First Name:district,Middle Name:admin,Last Name:dist96,Grade Level:Not Available, Role:District Admin,School:Mccall Elementary,Tag:distadm    Details should be saved with the Valid data
+    Click on 'Yes, I am ready to Import ' button    \    "Open" pop-up window should be displayed
+    Choose the District admin template with other school details \ which already saved in the local drive    \    The selected template should be highlighted
+    Click on 'open' button in the pop-up window    \    Alert message should be displayed as "Your import was not successful" with respective details
+
+Verify Import without valid template.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' button    \    Has your Import Template been prepared? popup message should be displayed.
+    Click on 'Yes,I am Already to Import ' button    \     Alert message should be displayed as "An unexpected error was encountered while performing the import. Please contact customer service for support. "
+
+Verify Grade Alert pop up Message
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' Button    \    "Has your Import Template been prepared?" popup message should be displayed.
+    Enter the user details in already downloaded template according to the columns mentioned and save the template.    User ID:student85 Password:test1234 \ First Name:student, Middle Name:std \ ,Last Name:std85, Grade Level:3, \ Role:Teacher, School: Vandagriff Elementary
+    Click on 'Yes, I am ready to Import ' button and negative to the file location.    \    Alert message should be displayed as "Your import was not successful. Your import document contains the errors listed below. Please correct the errors and try again.Row 2 Column Grade Level (15) is invalid: Contains invalid characters".
+
+Verify userID with 'INVALID' data.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' Button    \    "Has your Import Template been prepared?" popup message should be displayed.
+    Enter the user details in already downloaded template according to the columns mentioned and save the template.    User ID:student85 Password:test1234 \ First Name:student, Middle Name:std \ ,Last Name:std85, Grade Level:3, \ Role:Teacher, School: Vandagriff Elementary
+    Click on 'Yes, I am ready to Import ' button and negative to the file location.    \    Alert message should be displayed as "Your import was not successful. Your import document contains the errors listed below. Please correct the errors and try again.Row 2 Column User ID (rhwpte+ts8.....7) is invalid: Please enter a student username without spaces, periods, commas, less than or greater than characters."
+
+Validate imported User in Management page.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' button    \    Has your Import Template been prepared? popup message should be displayed.
+    Click on 'No, I Want to download the template ' button    \    Templated should be downloaded to the local system.
+    Enter the District admin user with other school details in the downloaded template according to the columns mentioned and save the template.    User ID:rhwpte+dist96@gmail.com,Password:test1234,First Name:district,Middle Name:admin,Last Name:dist96,Grade Level:Not Available, Role:District Admin,School:Mccall Elementary,Tag:distadm
+    Click on 'Yes, I am ready to Import ' button    \    Alert message should be displayed as "Congratulations! The users have been imported".
+    Click on 'Management' and search with imported user details.    \    User details should be displayed in management page.
+
+Validate Import template using Try Again button
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Import Users' button    \    Has your Import Template been prepared? popup message should be displayed.
+    Click on 'Yes,I am Already to Import ' button    Import invalid template.    Unknown Error"An unexpected error was encountered while performing the import. Please contact customer service for support. " alert message should be displayed .
+    Clickmon 'Try Again' button in the alert Message    Import invalid template.    Alert message should be displayed as "Congratulations! The users have been imported".

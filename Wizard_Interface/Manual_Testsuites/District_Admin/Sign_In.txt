@@ -1,0 +1,103 @@
+﻿*** Test Cases ***
+MTC100-Create District Admin from New User
+    Steps    Test Data    Expected result    Actual result
+    Open application and Enter URL    Url=http://b33test1.mentoringmindsonline.com/    Login Page should displayed
+    Select New User>District Admin    \    Registration Pop up should be displayed as Enter your district's zip code.
+    Enter Valid Zip Code    76008    District Name should be displayed with respective zip code
+    Select District Name and click on 'Next' button    \    Enter a valid (Districtl) email address to use as your User ID Pop up should be displayed.
+    Enter a Valid Email Address and click on 'Next' button    rhwpte+dist87@gmail.com    Create a password Pop up should be displayed.
+    Enter Valid Password and click on Next button    test1234    Confirm your password Pop up should be displayed.
+    Re-enter the same previously entered password and click on 'Next' button    test1234    Enter Your Name Pop up should be displayed.
+    Enter Admin 'First Name' and 'Last Name' and click on 'Next' button    First Name:district \ \ , Last Name:dist87    Select your job title \ Pop up should be displayed.
+    Select any one of the title from the drop down and click on 'Next' button    \    Enter the Administrator Registration Code below Pop up should be displayed.
+    Enter Administration Registration Code.click on 'Next' button and Click on 'Terms and Condtions' button    DADMIN-999999    Terms and Conditions Pop up should be displayed.
+    Click on 'I Agree' button    \    Pop up should be displayed with Check box
+    Select District Name and click on "Next" button    \    Enter a valid (Districtl) email address to use as your User ID Pop up should be displayed.
+    Enter a Valid Email Address and click on "Next" button    rhwpte+dadmin2505@gmail.com    Create a password Pop up should be displayed.
+    Enter Valid Password and click on Next button    test1234    Confirm your password Pop up should be displayed.
+    Re-enter the same previously entered password and click on Next button    test1234    Enter Your Name Pop up should be displayed.
+    Enter Admin First Name and Last Name and click on Next button    First Name:Admin29 , Last Name:District29    Select your job title \ Pop up should be displayed.
+    Select any one of the title from the drop down and click on Next button    \    Enter the Administrator Registration Code below Pop up should be displayed.
+    Enter Administration Registration Code.click on next button and Click on Terms and Condtions button    DADMIN-999999    Terms and Conditions Pop up should be displayed.
+    Click on I Agree button    \    Pop up should be displayed with Check box
+    Check the checkbox    \    Information regarding Mentoring Minds’ products and services and other updates will send to the given mail id
+    Click on 'Create Account' button    \    Confirmation message ie Congratulations! popup should be displayed
+    Click on 'Sign In' button    \    Home page should be displayed
+
+MTC101-Validate Login functionality with created District Admin
+    Open application    Url=http://b33test1.mentoringmindsonline.com/    Login Page should displayed
+    Enter New Created District Admin User Id & Password    User Id: rhwpte+dist87@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    Home page should be displayed
+
+MTC102-Login with created District Admin
+    Steps    Test Data    Expected result    Actual result
+    Open application    Url=http://b33test1.mentoringmindsonline.com/    Login Page should displayed
+    Enter New Created District Admin User Id & Password    User Id: rhwpte+dadmin2505@gmail.com \ Password: test1234
+    Click on Sign In button    \    District Admin Home page should be displayed
+
+MTC103-Validate Sign Out functionality for District Admin
+    Open application    Url=http://b33test1.mentoringmindsonline.com/    Login Page should displayed
+    Enter Log In Credentials    User Id: rhwpte+dist87@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    Home page should be displayed
+    Click on 'Sign out' button    \    User should get logged off.
+
+MTC116-Verify Sign Out for District Admin
+    Open application    Test Data: Url=http://b33test1.mentoringmindsonline.com/    Expected result: \ Login Page should displayed
+    Enter Valid User Id & Password    Test Data: User Id: rhwpte+dadmin2505@gmail.com \ Password: test1234
+    Click on Sign In    \    Expected result:Home page should be displayed
+    Click on Sign out    \    Expected result:User should get logged off.
+
+MTC125-Verify District Admin is not created with 0 times Reg Code
+    Steps    Test Data    Expected result
+    Open application    Url=http://b33test1.mentoringmindsonline.com/    Login Page should displayed
+    Select New User>District Admin    \    Registration Pop up should be displayed as Enter your district's zip code.
+    Enter Valid Zip Code    76008    District Name should be displayed with respective zip code
+    Select District Name and click on 'Next' button    \    Enter a valid (Districtl) email address to use as your User ID Pop up should be displayed.
+    Enter a Valid Email Address and click on 'Next' button    rhwpte+dist90@gmail.com    Create a password Pop up should be displayed.
+    Enter Valid Password and click on 'Next' button    test1234    Confirm your password Pop up should be displayed.
+    Re-enter the same previously entered password and click on 'Next' button    test1234    Enter Your Name Pop up should be displayed.
+    Enter Admin First Name and Last Name and click on 'Next' button    First Name:district \ \ , Last Name:dist90    Select your job title \ Pop up should be displayed.
+    Select any one of the title from the drop down and click on 'Next' button    \    Enter the Administrator Registration Code below Pop up should be displayed.
+    Enter Administration Registration Code.click on next button and Click on 'Terms and Condtions' button    8518827-113177    Next button should be in disable mode and "Registration code already in use" information should be displayed.
+    Select District Name and click on "Next" button    \    Enter a valid (Districtl) email address to use as your User ID Pop up should be displayed.
+    Enter a Valid Email Address and click on "Next" button    rhwpte+da2505@gmail.com    Create a password Pop up should be displayed.
+    Enter Valid Password and click on Next button    test1234    Confirm your password Pop up should be displayed.
+    Re-enter the same previously entered password and click on Next button    test1234    Enter Your Name Pop up should be displayed.
+    Enter Admin First Name and Last Name and click on Next button    First Name:Admin29 \ \ , Last Name:District29    Select your job title \ Pop up should be displayed.
+    Select any one of the title from the drop down and click on Next button    \    Enter the Administrator Registration Code below Pop up should be displayed.
+    Enter Administration Registration Code.click on next button and Click on Terms and Condtions button    8518827-113177    Next button should be in disable mode and "Registration code already in use" information should be displayed.
+
+MTC126Validate whether District Admin can be created with reusable Reg Code
+    Open application    Url=http://b33test1.mentoringmindsonline.com/    Login Page should displayed
+    Select New User>District Admin    \    Registration Pop up should be displayed as Enter your district's zip code.
+    Enter Valid Zip Code    76008    District Name should be displayed with respective zip code
+    Select District Name and click on 'Next' button    \    Enter a valid (Districtl) email address to use as your User ID Pop up should be displayed.
+    Enter a Valid Email Address and click on 'Next' button    rhwpte+dist90@gmail.com    Create a password Pop up should be displayed.
+    Enter Valid Password and click on 'Next' button    test1234    Confirm your password Pop up should be displayed.
+    Re-enter the same previously entered password and click on 'Next' button    test1234    Enter Your Name Pop up should be displayed.
+    Enter Admin First Name and Last Name and click on 'Next' button    First Name:district \ \ , Last Name:dist90    Select your job title \ Pop up should be displayed.
+    Select any one of the title from the drop down and click on 'Next' button    \    Enter the Administrator Registration Code below Pop up should be displayed.
+    Enter Administration Registration Code(Reusable).click on 'Next' button and Click on 'Terms and Condtions' button    DADMIN-999999    Terms and Conditions Pop up should be displayed.
+    Click on 'I Agree' button    \    Pop up should be displayed with Check box
+    Select District Name and click on "Next" button    \    Enter a valid (Districtl) email address to use as your User ID Pop up should be displayed.
+    Enter a Valid Email Address and click on "Next" button    rhwpte+dadmin2505@gmail.com    Create a password Pop up should be displayed.
+    Enter Valid Password and click on Next button    test1234    Confirm your password Pop up should be displayed.
+    Re-enter the same previously entered password and click on Next button    test1234    Enter Your Name Pop up should be displayed.
+    Enter Admin First Name and Last Name and click on Next button    First Name:Admin29 \ \ , Last Name:District29    Select your job title \ Pop up should be displayed.
+    Select any one of the title from the drop down and click on Next button    \    Enter the Administrator Registration Code below Pop up should be displayed.
+    Enter Administration Registration Code(Reusable).click on next button and Click on Terms and Condtions button    DADMIN-999999    Terms and Conditions Pop up should be displayed.
+    Click on I Agree button    \    Pop up should be displayed with Check box
+    Check the checkbox    \    Information regarding Mentoring Minds’ products and services and other updates will send to the given mail id
+    Click on 'Create Account' button    \    Confirmation message ie Congratulations! popup should be displayed
+    Click on 'Sign In' button    \    Home page should be displayed
+
+MTC103-Verify Forgot User ID or Password? For District Admin
+    Open the browser and enter the URL    Test Data: Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Click on Forget Password    \    Password Recovery Pop up should be displayed with an Email adress text box
+    Enter a valid User Id and click on Submit Button    User ID: rhwpte+dist87@gmail.com    "Please check your email for your password reset information"Alert message \ should be displayed
+
+Verify critical thinking for life page is displayed in new window when clik on it
+    Open application    Url-http://b33test1.mentoringmindsonline.com/    Login Page should displayed
+    Enter New Created District Admin User Id & Password    User Id: rhwpte+dist87@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    Home page should be displayed
+    Click on 'critical thinking for life ' link    \    'critical thinking for life' page should be displayed in new window

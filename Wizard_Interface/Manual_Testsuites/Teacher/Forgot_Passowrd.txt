@@ -1,0 +1,18 @@
+*** Test Cases ***
+Validate forgot Password for an Invalid email Id
+    Steps    Test Data    Expected result
+    Open the browser and enter the URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Click on Forgot Password    \    Pop up window should be displayed with an Email adress text box
+    Enter a In-valid User Id and click on Submit Button    teacher: rhwpte+po111@gmail.c    Alert pop up windowshould be displayed stating "Please enter a Valid Email"
+
+Validate forgot Password With blank Email address
+    Steps    Test Data    Expected result
+    Open the browser and enter the URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Click on Forgot Password    \    Pop up window should be displayed with an Email adress text box
+    Do not enter User Id and click on Submit Button    \    Alert pop up window should be displayed stating "Please enter a Valid Email"
+
+Validate forgot Password for an valid email Id
+    Steps    Test Data    Expected result
+    Open the browser and enter the URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Click on Forgot Password    \    Pop up window should be displayed with an Email adress text box
+    Enter valid User Id and click on Submit Button    teacher: rhwpte+po111@gmail.c    Alert message should be displayed as "Please check your email for your password reset information."

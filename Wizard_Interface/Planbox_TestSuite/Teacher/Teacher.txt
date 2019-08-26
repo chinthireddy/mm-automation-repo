@@ -1,0 +1,393 @@
+*** Test Cases ***
+8468196 - Verify whether group is enabled without add any titles to the group
+    Open application ,Enter Valid Teacher User Id & Password and Click on Sign In button    Test Data : Url=http://b11test1.mentoringmindsonline.com \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Expected result: \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Home page should be displayed
+    Click on Management > Show groups > Add    \    Expected result: \ \ New group pop up should be displayed .
+    Enter / Select Mandatory fields to create group    Test Data : Name: Group ABC \ , Teacher: John-TA TA
+    Click on Edit button in the student Tab to Add student    \    Expected result: 'Edit Students in the group' popup should be displayed.
+    Select the students in 'Avaliable students' grid    \    Expected result: Selected students should be displayed in 'New class members ' grid
+    Click on Save button    \    Expected result: Selected students should be displayed in 'Student' Tab.
+    Clcik on Save button without adding any titles.    \    Expected result: \ Group should be \ added to the selected teacher
+    Navigate to home page and click on Assignments >NewAssignments >Groups    \    Group should be in disabled mode
+
+8438243-Verify whether titles are added or removed for classes in management
+    [Documentation]    Steps to reproduce:
+    ...
+    ...    1.Enter URL b11test1.mentoringmindsonline.com
+    ...
+    ...    2.Login as \ Teacher(rhwpte+taa3110@gmail.com/test1234).
+    ...
+    ...    3.Click on Management.
+    ...
+    ...    4.Select Class (c123) and click on Edit button.
+    ...
+    ...    5.Click On Edit Title and Uncheck the Title name and click On 'Save button'.
+    Open application ,Enter Valid Teacher User Id & Password and Click on Sign In button    Test Data : Url=http://b11test1.mentoringmindsonline.com \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Expected result: \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Home page should be displayed
+    Click on Management and select any class then click on Edit button
+    Click on Edit button in the Title Tab    \    Edit Syllabus of the class popup should be displayed
+    uncheck the selected Titles in the Available Title grid and click on Save button    \    Unchecked titles should be removed from the list of titles frame
+
+8419427- Verify whether special characters are accepting while creating classes in teacher registration process
+    [Documentation]    Steps to reproduce:
+    ...
+    ...
+    ...    1.Enter URL: b11test1.mentoringmindsonline.com
+    ...    2.Click on New User and select Teacher.(rhwpte+ta0260@gmail.com/ rhwpte+ta0260)
+    ...    3.Complete the "New User" process till "class setup'' window
+    ...
+    ...    4.Enter class name with special charters and complete the sign up process.
+    Open browser and enter valid URL    b11test1.mentoringmindsonline.com    Login page should be opened
+    Click on New User and select Teacher    \    Teacher Registration window should be dispalyed
+    Created classses using special characters and Enter valid credentials till congratulations page is displayed    \    Special characters should be accepted in registraion process
+    Click on finished button >Management >Add    \    New class pop up should be displayed
+    Enter class name using special characters    \    Special characters should be accepted in Management window other wise Special characters should not be accepted in registration process also
+
+8418893-verify whether same details are displayed after refreshing the print page
+    [Documentation]    Steps to reproduce:
+    ...    1.Enter URL b11test2.mentoringmindsonline.com
+    ...
+    ...    2.Click on New user(Teacher).
+    ...
+    ...    3.Enter valid data and register as Teacher.
+    ...
+    ...    4.Click on "Print" button.
+    ...
+    ...    5."Refresh" the page and observe.
+    Open browser and enter valid URL    b11test1.mentoringmindsonline.com    Login page should be opened
+    Click on New User and select Teacher    \    Teacher Registration window should be dispalyed
+    Enter valid credentials till congratulations page is displayed
+    Click on print button    \    details should be displayed in print page
+    Refresh the print page    \    Same details should be dispalyed
+
+8419034 - Verify duplicate class names are created
+    [Documentation]    Steps to reproduce:
+    ...
+    ...    1.Enter URL b11test1.mentoringmindsonline.com
+    ...
+    ...    2.Login as Teacher using credentials (Test Data : rhwpte+tchr7@gmail.com/a1a2a3a4)
+    ...
+    ...    3.Click on Management.
+    ...
+    ...    4.Add class with new class name
+    ...
+    ...    5.Edit the newly added class name as existing class name and click on Save button (which is disabled)
+    ...
+    ...    6.Observed that the save button is working and class name is duplicate class names are created .
+    Open application ,Enter Valid Teacher User Id & Password and Click on Sign In button    Test Data : Url=http://b11test1.mentoringmindsonline.com \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Expected result: Home page should be displayed
+    Click on Management > 'Add' class button    \    New class pop up should be displayed.
+    Enter valid class name and edit class name with existing class name    \    Error message should be displayed"Class name already exists"
+
+8418889- Verify whether data is cleared after reopen the email support window
+    [Documentation]    Steps to reproduce:
+    ...
+    ...    1.Enter URL b11test1.mentoringmindsonline.com
+    ...
+    ...    2.Login as teacher(rhwpte+ta2710@gmail.com/test4321).
+    ...
+    ...    3.Click on Help>Email Support.
+    ...
+    ...    4.Enter the details in all field and attach a file.
+    ...
+    ...    5.Close the window and reopen "email support" window and observe.
+    Open application ,Enter Valid Teacher User Id & Password and Click on Sign In button    Test Data : Url=http://b11test1.mentoringmindsonline.com \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Expected result: \ Home page should be displayed
+    Click on Help button in Home Page    \    Expected Result: Drop should be displayed for Help
+    Clcik on Email Support    \    Expected Result : " How Can We Help You? " pop up should be displayed
+    Enter data and attach the files then close the widow    \    Email Support window should be closed
+    Reopen the email support window    \    Data should be cleared in when reopen the window
+
+8405376- Verify whether attached files are deleted in Email Support of Help menu.
+    Open application ,Enter Valid Teacher User Id & Password and Click on Sign In button    Test Data : Url=http://b11test1.mentoringmindsonline.com \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Expected result: \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Home page should be displayed
+    Click on Help button in Home Page    \    Expected Result: Drop should be displayed for Help
+    Clcik on Email Support    \    Expected Result : " How Can We Help You? " pop up should be displayed
+    Enter data and attach the files    \    Files should be attached
+    Try to delete attached files    \    Attached files should be deleted
+
+8405123- Verify whether class codes are displayed when adding more classes in print page
+    [Documentation]    Steps to reproduce:
+    ...
+    ...    1. Enter Url :b11test1.mentoringmindsonline.com .
+    ...
+    ...    2.Click on "New User" and select “Teacher”
+    ...    3.Complete the "New User" process till "class setup'' window
+    ...
+    ...    4.Click on “Print” button
+    ...    5.Verify the window after clicking on print window.
+    Open browser and enter valid URL    b11test1.mentoringmindsonline.com    Login page should be opened
+    Click on New User and select Teacher    \    Teacher Registration window should be dispalyed
+    Enter valid details till class setup page is displayed
+    Crete more than 30 classes and select titles then click on next button
+    Click on print button    \    Class codes should be displayed
+
+8357269- \ Verify whether email is sending from email support in grade page
+    [Documentation]    Steps to reproduce :
+    ...
+    ...    1. sign in as teacher
+    ...
+    ...    2. Click on grading icon
+    ...
+    ...    3. begin grading assignment
+    ...
+    ...    4. Click "help" and select email support.
+    ...
+    ...    5. fill out information and hit send.
+    Open application ,Enter Valid Teacher User Id & Password and Click on Sign In button    Test Data : Url=http://b11test1.mentoringmindsonline.com \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Expected result: Home page should be displayed
+    Click on Grade Assignments >Grade button    \    Grade page should be displayed
+    Click on Help> Email Support    \    How can we help you? window should be displayed
+    Enter Data and attch the files then click on send button    \    confirmation message is displayed without any error message ion cosole log
+
+8278916-Verify whether grade page is displayed when click on review button.
+    Open application ,Enter Valid Teacher User Id & Password and Click on Sign In button    Test Data : Url=http://b11test1.mentoringmindsonline.com \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Expected result: \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Home page should be displayed
+    Click on Grade Assignments >Review button    \    Grade page should be displayed
+
+8242638- Verify whether user id is displayed in print page
+    Open browser and enter valid URL    b11test1.mentoringmindsonline.com    Login page should be opened
+    Click on New User and select Teacher    \    Teacher Registration window should be dispalyed
+    Enter valid details till class setup page is displayed
+    Click on print button    \    User id with class codes should be displayed
+
+8234412-Error message is dispalyed when enter invalid grade
+    Open application ,Enter Valid Teacher User Id & Password and Click on Sign In button    Test Data : Url=http://b11test1.mentoringmindsonline.com \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Expected result: \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Home page should be displayed
+    Click on Grade Assignments >Grade button    \    Grade page should be displayed
+    Click on TG item    \    grade window should be displayed
+    Enter invalid grade    Test Data: 567    Error message should be displayed
+
+8191716- registration codes are updated in management page when adding te codes
+    Open browser and Enter URL    Test Data: b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Home should be displayed
+    Click on Management    \    Management page should be displayed
+    Select Teacher > click on Edit button> ADD registration codes
+    Enter TE code and select Titles    \    Registration codes should be updated
+
+8129146-Active and Inactive radio buttons are selected
+    Open browser and Enter URL    Test Data: b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Home should be displayed
+    Click on Management    \    Management page should be displayed
+    Select Teacher > click on Edit button
+    Select Active or Inactive button    \    Active or inactive button should be selected
+
+8129130- Grade level drop down is displayed while adding new user
+    Open browser and Enter URL    Test Data: b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Home should be displayed
+    Click on Management    \    Management page should be displayed
+    Click on 'Add' User button    \    New user window should be displayed
+    Click on grade level    \    Grade level drop down should be displayed
+
+8115376- Pencil icon is dispalyed for TG Assignments in Reports page
+    Open browser and Enter URL    Test Data: b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Home should be displayed
+    Click on Reports    \    Report filters page \ should be displayed
+    Select Report Type> Classes >Subject/Level /Activity
+    Click on Generate Report Button    \    Report Should be displayed for Completed assignments and Pencil Icon should be displayed for TG Assignments
+
+8074362-Valid alert message is displayed while cresting duplicate classes
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Click on Management>'Add' classes button    \    New class window should be displayed
+    Enter already created class name and click on save button    Test Data : Class1s31    'Class name is already used ' alert message should be displayed.
+
+8074357- Class names are displayed in management for tecaher details tab
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Click on Management    \    Management page should be displayed
+    Select Teacher in 'All users' frame    \    Created classes should be displayed in classes tab
+
+8074072- Student edition and Teacher Edition previews are displayed clearly
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Click on Assignments> New Assignments
+    Select class> Title>Subject>Assignment
+    Click on Preview button    \    Student Edition and Teacher Edition previews should be displayed clearly
+
+8054707-Tool Tips mesaage is displayed for last name
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Click on Management>'Add' User button    \    New user window should be displayed
+    Enter first name >User Id >Password    Test data: student1\ User ID : Student678\Password: test1234
+    Clcik on save button    \    Tool Tip message should be displayed for last name field.
+
+8046083- Valid message is displayed in Activity for classes (or) Groups
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Click on Reports    \    Reprts page should be displayed
+    Select Report Type >Classes or Groups > Subject/Level >Activity    Test Data: Item Analysis Report,Group 1s31,CCS Reading Assessment Level 3    ' No Activities were found for this group ' message should be displayed
+
+8053940-Verify whether grade box is closed when click on other side of the box
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Clcik on Grade Assignments >Grade
+    Select TG item    \    Grade box should be displayed
+    Click on other side of the box    \    Grade box should be closed
+
+8020754 - Legend is respond to move
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Click on Reports    \    Reprts page should be displayed
+    Select Report Type >Classes or Groups > Subject/Level >Activity    Test Data: Standards Mastery Report,Class1s31,CCS Reading Assessment Level 3    Report should be displayed
+    Click on Legend    \    Legent should respond to move
+
+8054842- Verify whether Grade and User ID colums aligned properly
+    [Documentation]    Steps to reproduce:
+    ...
+    ...    1.Enter URL b11est1.mentoringmindsonline.com
+    ...
+    ...    2.Login as Teacher(rhwpte+ta2209@gmail.com/test1234).
+    ...
+    ...    3.Click on Assignments > New Assignments.
+    ...
+    ...    4.Select a class and Select “Select Individuals” and observe.
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Click on Assignments>New Assignments    \    New Assignments page should be displayed
+    Select Class >Select Individuals    \    Grade and User ID clomns should be aligned properly
+
+8046072- Role column is displayed when click on Role Check box
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Click on Management >Print/Export    \    Print/Export students window should be displayed
+    Select class and click on continue button    \    Select students to be printed or Exported
+    Check on role column check box in Select Students window    \    Role column should be displayed
+
+7947676-Live chat window is dispalyed under Help Menu in Grade Asssignments
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Clcik on Grade Assignments    \    To Be Graded page should be displayed
+    Click on Help Menu >Live chat    \    Live chat window should be displayed
+
+7822462- verify whether Description field is having limited characters
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Click on Management >Class >Edit button    \    Class details should be editable
+    Enter Details in Description field    \    Description field should have limited characters
+
+7424568-Verify whether Classes and All users data is displayed in proper alignment
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Click on Management    \    Classes and All users data should be displayed in proper alignment
+
+6382393- Check whether the pop up window is displayed when assignments are collected
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Click on Assignments> Manage Assignments    \    Manage Assignments page should be displayed
+    Select the student in any class    class1s31    List of Assignments for selected student should be dispalyed in Assignments Window
+    Click on Collect button for selected Assignment    \    Pop up window should be displayed for collecting the assignments
+
+Alert message is displayed when clicked on Grade button
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Clcik on Grade Assignments >Gray color Grade button    \    "There is nothing ready to grade. The button will turn green when assignments have been submitted by students." Alert message should be displayed
+
+8490001- Group is in disabled mode without adding any titles
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Click on Management    \    Management page should be displayed \
+    Click on Show Groups >Add button    \    New Group window should be displayed
+    Enter group name and click on save button    \    Goup should be added
+    Navigate to home page and click on Assignments> New Assignments >show Groups    \    Groups should be is in disabled mode without adding any titles and students
+
+8489987- Special characters are not accepting while creating classes
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home page should be displayed
+    Click on Management >Add classes button    \    New classes window should be displayed
+    Enter special characters in class name field    \    Special characters should not be accepted
+
+8468118- Next button is in enabled mode while doing teacher registration process
+    Open browser and enter \ valid URL    b11test1.mentoringmindsonline.com    Login page should be opened
+    Click on New User and select Teacher    \    Teacher Registration window should be dispalyed
+    Enter valid Zip Code ,Select School name and click on Next button    76008    Pop up should be displayed for user ID
+    Enter unique user ID and click on Next button    rhwpte+ta1881@gmail.com    Pop up should be displayed for Create a password
+    Enter Create password and click on Next button    test1234    Pop up should be displayed for confirm your password
+    Enter Retype password and click on next button    test1234    Eneter your name pop up should be displyed
+    Enter first name and last name click on next button    ta,teacher
+    Enter valid Registration code and select titles from drop down    \    Next button should be in Enabled Mode
+
+Verify whether duplicate classes are created.
+    Open application ,Enter Valid Teacher User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Home page should be displayed
+    Click on Management > Classes > Add    \    New Classes pop up should be displayed .
+    Enter / Select Mandatory fields to create class    Name: Group ABC \ , Teacher: John-TA TA
+    Click on Save button    \    Class should be created.
+    Click on Management > Classes > Add    \    New Classes pop up should be displayed .
+    Enter / Select Mandatory fields to create class    Name: Group ABC \ , Teacher: John-TA TA    Alert should be displayed "Class \ name already Exists"
+
+Verify whether duplicate groups are created.
+    Open application ,Enter Valid Teacher User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Home page should be displayed
+    Click on Management > Groups > Add    \    New Groups pop up should be displayed .
+    Enter / Select Mandatory fields to create Groups    Name: Group ABC \ , Teacher: John-TA TA
+    Click on Save button    \    Group should be created.
+    Click on Management > Group > Add    \    New Group pop up should be displayed .
+    Enter / Select Mandatory fields to create Group    Name: Group ABC \ , Teacher: John-TA TA    Alert should be displayed "Group name already Exists"
+
+Verify wether duplicate Students are created.
+    Open application ,Enter Valid \ Teacher User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Home page should be displayed
+    Click on Management > All Users > Add    \    New User pop up should be displayed with its screen elements
+    Select Role as Student    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name and Select Grade from autocomplete    First Name: StudentFN , Middle Name: StudentMN , Last Name: StudentLN
+    Enter UserId and Password    User Id: Student21 , password:Student021
+    Click on Save button    \    Student should be added in the All users grid
+    Again click on Management > All Users > Add    \    New User pop up should be displayed with its screen elements
+    Select Role as Student    \    Fields should be changed according to the role selected
+    Enter the same First, Middle & Last Name and Select Grade from autocomplete    First Name: StudentFN , Middle Name: StudentMN , Last Name: StudentLN
+    Enter the same UserId and Password    User Id: Student21 , password:Student021    Message should be displayed"User ID already Exits"
+
+8489979-Verify whether the attached file is deleted from email support under help menu
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Clcik on Grade Assignments    \    To Be Graded page should be displayed
+    Click on Help Menu >Email support    \    How can i help u? window should be displayed.
+    Attach the files    \    files should be attached
+    Try to delete the attached files    \    Files should be deleted from the list
+
+8489907- Verify 'TG' is displayed at the left side of the score column
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Clcik on Grade Assignments >Grade button    \    grade page should be displayed
+    Verify the Teacher graded questions    \    TG should be displayed for teacher graded questions at the left side of the score column
+
+8489899-Check Alert message is displayed for invalid grade entry.
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Clcik on Grade Assignments >Grade button    \    grade page should be displayed
+    Click on Score button    Test Data: wer
+    Enter invalid score and click on done button    \    "Invalid Entry" alert message should be displayed.
+
+8489874 - whether Registration codes are \ updated when added titles
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Click on Management    \    Management page should be displayed
+    Select Teacher and then click on Edit > ADD button    \    "Motivation online" window should be displayed.
+    Enter Valid Registration code and select title from drop down    Test Data: A34-PKM-BE4/ Title: CCS Motivation Math Level 4
+    Clcik on next button>NO button    \    Registration codes \ should be updated
+
+8020754-Check whether the legend is respond
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected result: Login page should be displayed
+    Enter valid User Id and valid password and click on Sign In Button    Test data: teacher : rhwpte+qwerty@gmail.com \password : qwerty12    Expected result: Home page should be displayed
+    Click on Reports Button    \    Expected result: Reports filter page should be displayed
+    Select Standard mastery report > Class > Subject\Level > Date range and click on generate button    \    Expected result: Report should be displayed with valid information
+    Click on Edit Legend button \    \    Legend should be moved.
+
+8489869-Grade button is turned to green after submiting the student assignments.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected data: Login page should be displayed
+    Enter valid User Id and valid password and click on Sign In Button    Test data: user Id:Student012, \ password:Student120    Expected data: Home page should be displayed, along with the assignments which were assigned by the teacher
+    Click on Start button, answer the questions    \    Expected data: Questions should be displayed
+    Click on submit Button    \    Expected data: Confirmation Pop up should be displayed
+    Click On NO    \    Expected data: Questions should be displayed
+    Click on Yes > Cancel    \    Expected data: Assignment report pop up should be displayed
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected result: Login page should be displayed
+    Enter valid User Id and valid password and click on Sign In Button    Test data: teacher : rhwpte+qwerty@gmail.com \password : qwerty12    Expected result: Home page should be displayed
+    Click on Grade Assignments    \    grade button turned to green for submitted assignment
+
+8054712-Check whether New user window is closed when clicked on other part of the page.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected data: Login page should be displayed
+    Click on New User    \    New user window should be displayed
+    Click on other part of the application    \    New User window should be closed
+
+Check whether the same user ID and password is accepted
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected data: Login page should be displayed
+    Click on New User>Teacher
+    Enter Zip code and Selct school click on next button
+    Enetr User ID    Test Data: rhwpte+teacher 1167@gmail.com
+    Enter create password and retype password    Test Data: rhwpte+teacher 1167@gmail.com    "The password must not be same as User ID" pop up should be displayed.
+
+8489707- Check whether unlimited characters are accepted in student signup process
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected data: Login page should be displayed
+    Click on New User>Student
+    Enter Class code    Test Data: \ cc7
+    Enter first name >last name>User Id >Password    \    Characters should be limited to enter credentials

@@ -1,0 +1,1382 @@
+*** Settings ***
+Resource          ../../../Keywords/super.txt
+
+*** Test Cases ***
+ATC03 Join A Class from New User
+    [Documentation]    ATC03 : Join a Class from New User(Student)
+    ...
+    ...    Steps:
+    ...    1.Login with Teacher credentials.
+    ...    2.Navigate to Management page.
+    ...    3.Add a student.
+    ...    4.Signout and Relogin with created Student credentials.
+    ...    5.Click on "Join a class" arrow and enter the class code.
+    ...    6.Verify Classes list is containing entered class or not.
+    [Tags]    STUDENT_1    VERIFY_STUDENT_JOIN_A_CLASS    MEDIUM
+    Comment    Verifying teacher is created in \ Prerequisites
+    Run Keyword If    '${preTeacherID}'=='${EMPTY}'    Fail    No teacher data is avaialble.
+    ${teacherUId}    Set Variable    ${preTeacherID}
+    ${teacherPwd}    Set Variable    ${preTeacherPassword}
+    ${classesList}    Set Variable    ${preClassesList}
+    ${ClassCodes}    Get Dictionary Values    ${preClassesAndClassCodes}
+    ${val}    Get Unique Id
+    ${uniqueVal}    Set Variable    Student${val}
+    ${studentdetails}    Create Dictionary    User Name    ${uniqueVal}    Password    ${uniqueVal}pwd    First Name
+    ...    ${uniqueVal}Fn    Middle Name    ${uniqueVal}MN    Last Name    LN    Grade Level
+    ...    2
+    ${studentFN}    Get From Dictionary    ${studentdetails}    First Name
+    ${studentLName}    Get From Dictionary    ${studentdetails}    Last Name
+    ${StdUserID}    Get From Dictionary    ${studentdetails}    User Name
+    ${StdPassword}    Get From Dictionary    ${studentdetails}    Password
+    comment    Login with Teacher credentials
+    ${loginStatus}=    LoginToWizardApp    ${teacherUId}    ${teacherPwd}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with these ctredentials-'${globalTeacherUId},${globalTeacherPassword}'
+    Comment    Select management view from the home page to add a student
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    AddStudent    ${studentdetails}
+    Close Browser
+    comment    Signout and Relogin with created Student credentials
+    Comment    Run Keyword If    '${BROWSER}'=='ie'    Close Browser
+    Comment    Run Keyword If    '${BROWSER}'=='ie'    Open Browser    ${WizardURL}    ${BROWSER}
+    Comment    Sleep    10s
+    Comment    Run Keyword If    '${BROWSER}'=='ie'    Maximize Browser Window
+    Comment    ${loginStatus}    Run Keyword If    '${BROWSER}'=='ie'    Enter Login Details    ${StdUserID}    ${StdPassword}
+    Comment    Run Keyword If    '${loginStatus}'=='False' and '${BROWSER}'=='ie'    Fail    The user is not able to login with valid credentials.
+    Comment    ${loginStatus}    Run Keyword If    '${BROWSER}'!='ie'    Signout And Relogin    ${StdUserID}    ${StdPassword}
+    Comment    Run Keyword If    '${loginStatus}'=='False' and '${BROWSER}'!='ie'    Fail    The user is not able to login with valid credentials.
+    Comment    after login get the count of classes
+    ${loginStatus}    LoginToWizardApp    ${StdUserID}    ${StdPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with the given ctredentials.
+    ${count}    Get Length    ${classesList}
+    : FOR    ${index}    IN RANGE    0    ${count}
+    \    ${className}    Set Variable    @{classesList}[${index}]
+    \    ${classCode}    Set Variable    @{ClassCodes}[${index}]
+    \    ${joinClassStatus}    Add New Class Code    ${className}    ${classCode}
+    \    Run Keyword And Continue On Failure    Run Keyword Unless    ${joinClassStatus}    Fail    The new class code :${ClassCode} not added to the student.
+    [Teardown]    Stop Application
+
+ATC04 Verify Student FirstName and LastName When Created from Management View
+    [Documentation]    ATC04 : Verify Student FirstName and LastName when created from Management.
+    ...
+    ...    Steps:
+    ...    1.Login with Teacher credentials.
+    ...    2.Navigate to Management page.
+    ...    3.Add a student and check wheather created student is present in grid.
+    ...    4.Signout and Relogin with created Student credentials.
+    ...    5.Verify Student FirstName and LastName.
+    [Tags]    STUDENT_2    HIGH    VERIFY_STUDENT_HOME_FIRSTNAME_LASTNAME
+    Comment    PreRequisites to be done
+    Run Keyword If    '${preTeacherID}'=='${EMPTY}'    Fail    No teacher data is avaialble.
+    ${UserName}    Set Variable    ${preTeacherID}
+    ${Password}    Set Variable    ${preTeacherPassword}
+    comment    Login With Teacher Credentials
+    ${bStatus}=    LoginToWizardApp    ${UserName}    ${Password}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials.
+    Comment    Select management view from the home page to add a student
+    Navigate To Management Page
+    Comment    Wait And Click Element    ${button.home.management}
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Comment    PreRequisites is class name
+    ${val}    Get Unique Id
+    ${uniqueVal}    Set Variable    Student${val}
+    ${studentdetails}    Create Dictionary    User Name    ${uniqueVal}    Password    ${uniqueVal}pwd    First Name
+    ...    ${uniqueVal}Fn    Middle Name    ${uniqueVal}MN    Last Name    LN    Grade Level
+    ...    2
+    ${studentFN}    Get From Dictionary    ${studentdetails}    First Name
+    ${studentLName}    Get From Dictionary    ${studentdetails}    Last Name
+    ${StdUserID}    Get From Dictionary    ${studentdetails}    User Name
+    ${StdPassword}    Get From Dictionary    ${studentdetails}    Password
+    AddStudent    ${studentdetails}
+    Comment    Check whether the student exists in Table after adding
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='toggleShowUsersBtn' and text()='Show All Users']    ${TimeOut}
+    Run Keyword If    ${bStatus}    Wait And Click Element    //div[@id='toggleShowUsersBtn' and text()='Show All Users']
+    Table Column Sorting    ${table.users}    Created
+    ${studentLNameStatus}    Verify Values In Table    ${table.users}    Last Name    ${studentLName}
+    Capture Page Screenshot And Log    ${OUTPUTDIR}    ${StdUserID}_01.png
+    Run Keyword Unless    ${studentLNameStatus}    Fail    The user is not available in the users table.
+    ${firstNameStatus}    Verify Values In Table    ${table.users}    First Name    ${studentFN}
+    Run Keyword Unless    ${firstNameStatus}    Fail    The user is not available in the users table.
+    Close Browser
+    Comment    Login into Wizard App with Student Role.
+    ${loginStatus}=    LoginToWizardApp    ${StdUserID}    ${StdPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with the given ctredentials.
+    comment    After login get last name and first name
+    ${NameOfStudent}=    Get Text    ${label.Home.HeaderlabelUser}
+    comment    Check for first name existence in home page
+    ${FirstNameStatus}=    String Should Contain    ${NameOfStudent}    ${studentFN}
+    Run Keyword And Continue On Failure    Run Keyword If    ${FirstNameStatus}!=True    Fail    The First Name:${studentFN} is not as expected after login as Student
+    Run Keyword If    ${FirstNameStatus}!=True    Capture Page Screenshot And Log    ${OUTPUTDIR}    FirstNameError.png
+    comment    Check for last name existence in home page
+    ${LastNameStatus}=    String Should Contain    ${NameOfStudent}    ${studentLName}
+    Run Keyword And Continue On Failure    Run Keyword If    ${LastNameStatus}!=True    Fail    The Last Name:${studentLN} is not as expected after login as Student
+    Run Keyword If    ${LastNameStatus}!=True    Capture Page Screenshot And Log    ${OUTPUTDIR}    LastNameError.png
+    [Teardown]    Stop Application
+
+ATC05 Verify student Interface tools(Note editor,scratch pad and scale)
+    [Documentation]    ATC05 : Verify student Interface tools(Note Editor,Scratch Pad and Scale)
+    ...
+    ...    Steps:
+    ...    1.Login with Student credentials(Pre student details).
+    ...    2.Verify Assignment List.
+    ...    3.Start the assignment.
+    ...    4.Verify \ Interface tools( Note Editor,Scratch Pad and Scale) by selecting and closing individually.
+    [Tags]    STUDENT_3    VERIFY_STUDENT_START_ASSIGNMENT_INTERFACE_TOOLS    MEDIUM
+    comment    Verifying pre student details
+    Run Keyword If    ${preScriptStatus}==False    Fail    No student data is avaialble.
+    ${stdDetails}    Get Student Details    ${preStudentDetails}    ATC05
+    ${StdUserID}    Get From Dictionary    ${stdDetails}    User ID
+    ${StdPassword}    Get From Dictionary    ${stdDetails}    Password
+    ${AssignmentNameTitle}    Set Variable    @{preSignUpTitleMenus}[0]
+    ${AssignmentActivityName}    Set Variable    @{preActivityNames}[0]
+    Comment    Login into Wizard App with Student Role.
+    ${loginStatus}=    LoginToWizardApp    ${StdUserID}    ${StdPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    ${alertText}
+    comment    after login check whether assignments are available
+    ${AssignmentsStatus}    Verify The Assignments List
+    Run Keyword If    ${AssignmentsStatus}==False    Fail    For the above logged in Student User no assignments are available to verify the operations.
+    Comment    student start the assignment
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    ${assignmentRowIndex}    Student Do The Assignment    ${AssignmentNameTitle}    ${AssignmentActivityName}
+    Run Keyword If    ${assignmentRowIndex}==0    Fail    The specifed assigment was not found in the assignemnts list.
+    Comment    Verify "Note Editor" selection
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    ${optionStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.OptionChoiseA}    5s
+    ${passageOptionsStatus}    Run Keyword Unless    ${optionStatus}    PassageTabControl
+    ${QUEStatus}=    Run Keyword And Return Status    Select QuestionTool    queHL
+    Run Keyword If    ${QUEStatus}==True    Wait And Click Element    //div[@class='highlighterNode']/div[@class='highlighterCloseIcon']
+    Comment    Verify "Scratch Pad" selection
+    ${ScratchpadStatus}=    Run Keyword And Return Status    Select QuestionTool    scratchPad
+    Run Keyword If    ${ScratchpadStatus}==False    Fail    scratchPad is not displayed
+    Wait Until Element Is Visible    //span[text()='Scratch Pad']/following::span[@title='Cancel' and @role='button']
+    Run Keyword If    ${ScratchpadStatus}==True    Wait And Click Element    //span[text()='Scratch Pad']/following::span[@title='Cancel' and @role='button']
+    Comment    Verify "Scale" selection
+    ${Ruler}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[contains(@id,'rulerTool')]//span[@class='dijitReset dijitInline dijitIcon rulerIcon']
+    Run Keyword If    ${Ruler}==True    Wait And Click Element    //div[contains(@id,'rulerTool')]//span[@class='dijitReset dijitInline dijitIcon rulerIcon']
+    ${RulerStatus}    Wait Until Element Is Visible    //div[@id='rulerImg']/div[@id='cL']/a    ${TimeOut}
+    Run Keyword If    ${RulerStatus}==False    Fail    ruler is not displayed
+    Wait And Click Element    //div[@id='rulerImg']//div[@id='cL']
+    [Teardown]    Stop Application
+
+ATC08 Verify the Collapse and Expand functionality of Score Indicator in assignment report
+    [Documentation]    ATC08: Verify the Collapse and Expand functionality of Score Indicator in assignment report
+    ...
+    ...    Steps:
+    ...    1.Login with Student credentials(Pre student details).
+    ...    2.Verify Assignment List.
+    ...    3.Start the assignment.
+    ...    4.Do the assignment and click on Submit button.
+    ...    5.Verify the Report having Expand and Collapse functionality or not.
+    [Tags]    STUDENT_4    FUNCTION_DOES_NOT_EXIST    MEDIUM
+    Run Keyword If    ${preScriptStatus}==False    Fail    No student data is avaialble.
+    Pass Execution    functionality changed as Feedback form of assignment submission does not contains Collapse and expand functionality.
+    ${stdDetails}    Get Student Details    ${preStudentDetails}    ATC08
+    ${StdUserID}    Get From Dictionary    ${stdDetails}    User ID
+    ${StdPassword}    Get From Dictionary    ${stdDetails}    Password
+    ${AssignmentNameTitle}    Set Variable    @{preSignUpTitleMenus}[0]
+    ${AssignmentActivityName}    Set Variable    @{preActivityNames}[0]
+    ${AssignmentName}    Set Variable    ${AssignmentNameTitle} ${AssignmentActivityName}
+    Comment    Login into Wizard App with Student Role.
+    ${loginStatus}=    LoginToWizardApp    ${StdUserID}    ${StdPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    ${alertText}
+    comment    after login check whether assignments are available
+    ${AssignmentsStatus}    Verify The Assignments List
+    Run Keyword If    ${AssignmentsStatus}==False    Fail    No assignments for this user.
+    ${assignmentRowIndex}    Student Do The Assignment    ${AssignmentNameTitle}    ${AssignmentActivityName}
+    Run Keyword If    ${assignmentRowIndex}==0    Fail    The specifed assigment was not found in the assignemnts list.
+    ${NavSubmitBtnStatus}    Run Keyword And Return Status    Click Nav. Controller Buttons    TurnIn
+    : FOR    ${iCounter}    IN RANGE    0    10
+    \    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@class='mblSimpleDialogContainer']/p[text()='You have not finished this assignment. If you turn it in now, then all unanswered questions will be counted wrong. Are you sure you want to turn it in?']    5s
+    \    Exit For Loop If    ${bStatus}
+    \    Run Keyword Unless    ${bStatus}    Click Nav. Controller Buttons    TurnIn
+    Run Keyword If    ${NavSubmitBtnStatus}!=True    Fail    No Submit button is available in assignment after clicking on Continue.
+    Run Keyword If    ${bStatus}    Click Element    //div[@class='mblSimpleDialogContainer']/button[text()='Yes']
+    Comment    wait for the report to generate after clicking on submit button
+    Run Keyword If    '${BROWSER}'=='ie'    Wait Until Element Is Visible    //div[@id='sessionReportDlg']/div[@id='srAllSessionsResults']    2m
+    ${DialogStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='sessionReportDlg']/div[@id='srAllSessionsResults']    2m
+    Run Keyword If    ${DialogStatus}!=True    Fail    Assignment report is not available for the submitted assignment : ${AssignmentName}
+    Comment    expand the more details link in the assignment report
+    Comment    Wait Until Keyword Succeeds    2m    2s    Click Element    //div[@id='sessionReportDlg']/a[@class='sessionReportShowCurrentSessionResults']
+    ${ExpandResultsStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='sessionReportDlg']/div[@id='srCurrentSessionResults']    2m
+    ${operationStatus}=    Get Element Attribute    //div[@id='sessionReportDlg']/a[@class='sessionReportShowCurrentSessionResults']@data-state
+    Run Keyword If    ${ExpandResultsStatus}!=True or '${operationStatus}'!='expanded'    Fail    Expand functionality is not working as expected for the student Assignment report
+    Comment    Collapse the more details link in the assignment report
+    Click Element    //div[@id='sessionReportDlg']/a[@class='sessionReportShowCurrentSessionResults']
+    ${CollapseResultsStatus}=    Run Keyword And Return Status    Wait Until Element is Invisible    //div[@id='srCurrentSessionResults']    2m
+    ${operationStatus}=    Get Element Attribute    //div[@id='sessionReportDlg']/a[@class='sessionReportShowCurrentSessionResults']@data-state
+    Run Keyword If    ${ExpandResultsStatus}!=True or '${operationStatus}'!='collapsed'    Fail    Collapse functionality is not working as expected for the student Assignment report
+    [Teardown]    Stop Application
+
+ATC09 MYS-993 MYS-212 (features) - Verify assignment controllers,mojohelpdesk shows as mysatori and Copyright to be moved to 2016
+    [Documentation]    ATC-09: Verify Assignment material controllers(Pause,Continue and Submit),MYS - 212 mojohelpdesk shows as mysatori,
+    ...    MYS - 993 (features) Copyright to be moved to 2015 or not.
+    ...
+    ...    Steps:
+    ...    1.Login with Student credentials(Pre student details).
+    ...    2.Verify Assignment List.
+    ...    3.Start the assignment.
+    ...    4.Verify CopyRights and MySatori footer in Assignment Page.
+    ...    5.Verify and click on Pause button.
+    ...    6.Verify and click on Continue button.
+    ...    7.Verify and click on Submit button.
+    [Tags]    STUDENT_5    VERIFY_ASSIGNMENT_CONTROLLERS_COPYRIGHT    MEDIUM
+    Run Keyword If    ${preScriptStatus}==False    Fail    No student data is avaialble.
+    ${AssignmentNameTitle}    Set Variable    @{preSignUpTitleMenus}[0]
+    ${AssignmentActivityName}    Set Variable    @{preActivityNames}[0]
+    ${className}    Set Variable    @{preClassesList}[0]
+    ${stdDetails}    Get Student Details    ${preStudentDetails}    ATC09
+    ${StdUserID}    Get From Dictionary    ${stdDetails}    User ID
+    ${StdPassword}    Get From Dictionary    ${stdDetails}    Password
+    Comment    Login with student credentials
+    ${loginStatus}=    LoginToWizardApp    ${StdUserID}    ${StdPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    ${alertText}
+    comment    after login check whether assignments are available
+    ${AssignmentsStatus}    Verify The Assignments List
+    Run Keyword If    ${AssignmentsStatus}==False    Fail    No assignments for this user.
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    ${assignmentRowIndex}    Student Do The Assignment    ${AssignmentNameTitle}    ${AssignmentActivityName}
+    Run Keyword If    ${assignmentRowIndex}==0    Fail    The specifed assigment was not found in the assignemnts list.
+    Comment    MYS-5581:Powered by MySatori™ is removed from the application
+    Comment    verify whether the copyright to be moved to 2015
+    Comment    ${copyRightStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${common.studentassignment.footerCopyright}    ${TimeOut}    Copyright is not visible.
+    Comment    ${copyRighttext}    Run Keyword If    "${copyRightStatus}"!="False"    Get Text    ${common.studentassignment.footerCopyright}
+    Comment    Run Keyword And Continue On Failure    Should Be Equal    ${copyRighttext}    Copyright © 2016 , All Rights Reserved
+    Comment    Verify Mojo HelpDesk shows as MySatori
+    Comment    ${pwrdbystatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${common.studentassignment.footerMysatori}    ${TimeOut}    Powered by MySatori™ is not visible.
+    Comment    ${pwrdtext}    Run Keyword If    "${pwrdbystatus}"!="False"    Get Text    ${common.studentassignment.footerMysatori}
+    Comment    Run Keyword And Continue On Failure    Should Be Equal    ${pwrdtext}    Powered by MySatori™
+    Comment    verify for the pause button in navigation tool bar
+    ${NavPauseBtnStatus}=    Click Nav. Controller Buttons    Pause
+    Run Keyword And Continue On Failure    Run Keyword If    ${NavPauseBtnStatus}!=True    Fail    No "Pause" button is available in assignment
+    : FOR    ${iCounter}    IN RANGE    0    10
+    \    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.StudentHome.AssignmentsRow}[${assignmentRowIndex}]${button.Assignment.Start or Continue Button}    5s
+    \    Exit For Loop If    ${bStatus}
+    \    Run Keyword Unless    ${bStatus}    Run Keyword And Return Status    Click Element    //li[@id='navBtnPause']/div[@class='mblTabBarButtonIconArea']/parent::li
+    Run Keyword If    ${NavPauseBtnStatus}!=True    Capture Page Screenshot And Log    ${OUTPUTDIR}    ErrorPauseBtn.png
+    Comment    Run Keyword If    ${NavPauseBtnStatus}==True    Close Assigment Report
+    Comment    Verify for the continue button in assignment page after clicking on pasue button
+    Comment    Run Keyword If    ${NavPauseBtnStatus}!=True    Go Back
+    Run Keyword And Continue On Failure    Wait Until Element Is Visible    ${table.StudentHome.AssignmentsRow}[${assignmentRowIndex}]${button.Assignment.Start or Continue Button}    ${TimeOut}
+    ${ContinueBtnStatus}=    Get Text    ${table.StudentHome.AssignmentsRow}[${assignmentRowIndex}]${button.Assignment.Start or Continue Button}
+    Run Keyword And Continue On Failure    Run Keyword If    '${ContinueBtnStatus}'!='Continue'    Fail    Continue button is not visible after clicking on pause in Assignment Page
+    Run Keyword If    '${ContinueBtnStatus}'!='Continue'    Capture Page Screenshot And Log    ${OUTPUTDIR}    ErrorContinuebtn.png
+    ${assignmentRowIndex}    Student Do The Assignment    ${AssignmentNameTitle}    ${AssignmentActivityName}
+    Run Keyword If    ${assignmentRowIndex}==0    Fail    The specifed assigment was not found in the assignemnts list.
+    ${NavPauseBtnStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    //li[@id='navBtnPause']/div[@class='mblTabBarButtonIconArea']    15s
+    Run Keyword And Continue On Failure    Run Keyword If    ${NavPauseBtnStatus}!=True    Fail    No "Pause" button is available in assignment after clicking on Continue.
+    Comment    verify for the Submit button operation in Navigation tool bar by writing an assignment
+    Comment    MYS-4828:Updated test script as per changes in the flag operation
+    ${NavSubmitBtnStatus}=    Click turnin Controller Button    TurnIn
+    Comment    : FOR    ${iCounter}    IN RANGE    0    10
+    Comment    \    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@class='mblSimpleDialogContainer']/p[text()='You have not finished this assignment. If you turn it in now, then all unanswered questions will be counted wrong. Are you sure you want to turn it in?']    5s
+    Comment    \    Exit For Loop If    ${bStatus}
+    Comment    \    Run Keyword Unless    ${bStatus}    Run Keyword And Return Status    Click Element    //li[@id='navBtnTurnIn']/div[@class='mblTabBarButtonIconArea']/parent::li
+    Comment    Run Keyword If    ${NavSubmitBtnStatus}!=True    Fail    No Submit button is available in assignment after clicking on Continue.
+    Comment    Run Keyword If    ${bStatus}    Wait And Click Element    //div[@class='mblSimpleDialogContainer']/button[text()='Yes']
+    Wait For Element Visible    ${button.studentAssignments.trunin.submit}    ${Delay}
+    Wait And Click Element    ${button.studentAssignments.trunin.submit}
+    Wait Until Element Is Visible    //div[@id='sessionReportDlg']/div[@id='srAllSessionsResults']    2m
+    Close Assigment Report
+    Comment    Wait for page load
+    ${NextAssignStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    //div[text()='Your next assignment is:']    ${TimeOut}
+    Run Keyword If    ${NextAssignStatus}!=True    Set Test Message    Submit operation is successfull.Pop up "Your next assignment " is not available.
+    [Teardown]    Stop Application
+
+ATC11 Verify assignment questions navigation controllers
+    [Documentation]    ATC-11: Verify Assignment question navigation controllers(Flag,Next and Previous)
+    ...
+    ...    Steps:
+    ...    1.Login with Student credentials(Pre student details).
+    ...    2.Verify Assignment List.
+    ...    3.Start the assignment.
+    ...    4.Verify and click on Flag button.
+    ...    5.Verify and click on Next \ button.
+    ...    6.Verify and click on Previous button.
+    [Tags]    STUDENT_6    VERIFY_ASSIGNMENT_NAVIGATION_CONTRILLERS    HIGH
+    Run Keyword If    ${preScriptStatus}==False    Fail    No student data is avaialble.
+    ${stdDetails}    Get Student Details    ${preStudentDetails}    ATC11
+    ${StdUserID}    Get From Dictionary    ${stdDetails}    User ID
+    ${StdPassword}    Get From Dictionary    ${stdDetails}    Password
+    ${AssignmentNameTitle}    Set Variable    @{preSignUpTitleMenus}[0]
+    ${AssignmentNameSubTitle}    Set Variable    @{preActivityNames}[0]
+    Comment    Login into Wizard App with Student Role.
+    ${loginStatus}    LoginToWizardApp    ${StdUserID}    ${StdPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    ${alertText}
+    ${AssignmentName}    Set Variable    ${AssignmentNameTitle} ${AssignmentNameSubTitle}
+    comment    after login check whether assignments are available
+    ${AssignmentsStatus}    Verify The Assignments List
+    Run Keyword If    ${AssignmentsStatus}==False    Fail    No Assignments available for this user.
+    ${assignmentRowIndex}    Student Do The Assignment    ${AssignmentNameTitle}    ${AssignmentNameSubTitle}
+    Run Keyword If    ${assignmentRowIndex}==0    Fail    The specifed assigment was not found in the assignemnts list.
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    comment    get number of question in started assignment.
+    ${UnAnsweredQuestions}=    Get Number of Unanswered Questions
+    Run Keyword If    '${UnAnsweredQuestions}'=='1'    Fail    The Assignment doesnt have more than 1 question hence no Navigation Operations cannot be performed
+    ${nextButtonStatus}    Run Keyword And Return Status    Wait For Element Visible    //button[(@class='mobileButtonGreen unselectable') and text()='Next Page']    30s
+    Run Keyword If    ${nextButtonStatus}    Wait And Click Element    //button[(@class='mobileButtonGreen unselectable') and text()='Next Page']
+    ${GoToQuestionButtonStatus}    Run Keyword And Return Status    Wait For Element Visible    //button[(@class='mobileButtonGreen unselectable') and text()='Go To Question']
+    Run Keyword If    ${GoToQuestionButtonStatus}    Wait And Click Element    //button[(@class='mobileButtonGreen unselectable') and text()='Go To Question']
+    Comment    Verify Flag operation
+    Comment    MYS-4828:Updated test script as per changes in the flag operation
+    Comment    ${passageOptionsStatus}    Run Keyword Unless    ${optionStatus}    PassageTabControl
+    ${FlagStatus}=    Run Keyword And Return Status    Wait For Element Visible    //div[@id='navBtnFlag']    30s
+    Run Keyword And Continue On Failure    Run Keyword If    ${FlagStatus}!=True    Fail    "Flag" is not visible.
+    Wait And Click Element    //div[@id='navBtnFlag']
+    ${flagNavStatus}    Run Keyword And Return Status    Wait For Element Visible    //div[@class='activeFlag']    2m
+    Comment    ${FlagStatus}=    Verify Flag operation for a Question
+    Run Keyword And Continue On Failure    Run Keyword If    ${flagNavStatus}!=True    Fail    "Flag" Operation is not working properly.
+    Comment    Verify Next operation
+    ${NextOperationStatus}=    Verify Next operation for a Question
+    Run Keyword And Continue On Failure    Run Keyword If    ${NextOperationStatus}!=True    Fail    "Next" Button Operation is not working properly.
+    Comment    Verify Previous operation
+    ${PreviousOperationStatus}=    Verify Previous Operation for a Question
+    Run Keyword And Continue On Failure    Run Keyword If    ${PreviousOperationStatus}!=True    Fail    "Previous" Button Operation is not working properly.
+    [Teardown]    Stop Application
+
+ATC12 Verify whether Resources are displayed when clicked on "Resources" button while writing the exam
+    [Documentation]    ATC12: Verify whether Resources are displayed when clicked on "Resources" button while writing the exam
+    ...
+    ...    Steps:
+    ...    1.Login with Teacher credentials.
+    ...    2.Navigate to Assignments page.
+    ...    3.Navigate to New Assignments page.
+    ...    4.Assign Assignment (Which having "Resources" button) to a student.
+    ...    5.Signout and Relogin with student details.
+    ...    6.Verify assignment list and start the assignment.
+    ...    7.Verify and Click on "Resources" button.
+    ...    8.Verify Resources page is dispalyed or not.
+    [Tags]    STUDENT_7    VERIFY_ASSIGNMENT_WRITING_RESOURCES    MEDIUM
+    Run Keyword If    ${preScriptStatus}==False    Fail    No Student data is avaialble.
+    ${stdDetails}    Get Student Details    ${preStudentDetails}    ATC12
+    ${StdUserID}    Get From Dictionary    ${stdDetails}    User ID
+    ${StdPassword}    Get From Dictionary    ${stdDetails}    Password
+    ${className}=    Set Variable    @{preClassesList}[1]
+    ${AssignmentNameTitle}    Set Variable    CCS Math Assessments Level 3
+    ${AssignmentActivityName}    Set Variable    05 Performance Assessment B
+    ${AssignmentName}    Set Variable    ${AssignmentNameTitle} ${AssignmentActivityName}
+    ${preTeacherID}    Get From Dictionary    ${preTeacherDetails}    UserName
+    ${preTeacherPassword}    Get From Dictionary    ${preTeacherDetails}    Password
+    Comment    Login with Teacher Credentials
+    ${loginStatus}=    LoginToWizardApp    ${preTeacherID}    ${preTeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with these ctredentials-'${globalTeacherUId},${globalTeacherPassword}'
+    Comment    Navigate to Assignments page to assign the assignment a student
+    Navigate To Assignment Page
+    Navigate To New Assignments Page
+    ${kwStatus}    Add Assignment To A Student    ${className}    ${AssignmentNameTitle}    ${activitySelectMenu}    ${AssignmentActivityName}
+    Close Browser
+    Comment    Login into Wizard App with Student Role.
+    ${loginStatus}=    LoginToWizardApp    ${StdUserID}    ${StdPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with the given ctredentials.
+    Comment    Run Keyword If    '${BROWSER}'=='ie'    Close Browser
+    Comment    Run Keyword If    '${BROWSER}'=='ie'    Open Browser    ${WizardURL}    ${BROWSER}
+    Comment    Sleep    10s
+    Comment    Run Keyword If    '${BROWSER}'=='ie'    Maximize Browser Window
+    Comment    ${loginStatus}    Run Keyword If    '${BROWSER}'=='ie'    Enter Login Details    ${StdUserID}    ${StdPassword}
+    Comment    Run Keyword If    '${loginStatus}'=='False' and '${BROWSER}'=='ie'    Fail    The user is not able to login with valid credentials.
+    Comment    ${loginStatus}    Run Keyword If    '${BROWSER}'!='ie'    Signout And Relogin    ${StdUserID}    ${StdPassword}
+    Comment    Run Keyword If    '${loginStatus}'=='False' and '${BROWSER}'!='ie'    Fail    The user is not able to login with valid credentials.
+    comment    after login check whether assignments are available
+    ${AssignmentsStatus}    Verify The Assignments List
+    Run Keyword If    ${AssignmentsStatus}==False    Fail    No Assignements are available for this user.
+    ${assignmentRowIndex}    Student Do The Assignment    ${AssignmentNameTitle}    ${AssignmentActivityName}
+    Run Keyword If    ${assignmentRowIndex}==0    Fail    The specifed assigment was not found in the assignemnts list.
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.AssignmentsPage.Question}    ${TimeOut}
+    Run Keyword If    ${bStatus}    Wait And Click Element    ${button.AssignmentsPage.Question}
+    Comment    Verifying and clicking on Resources button to view Resources List available
+    ${ResourceBtnStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='resTabBtn']/span[contains(text(),'Resources')]    ${TimeOut}
+    Run Keyword If    ${ResourceBtnStatus}!=True    Fail    "Resources" button is not available for the assigment : ${AssignmentName} .
+    Wait And Click Element    //div[@id='resTabBtn']/span[contains(text(),'Resources')]
+    Comment    Verifying Resources page after clicking Resources button.
+    Validate Resource Page in Assignment
+    [Teardown]    Stop Application
+
+ATC13 Verify the F, Q, S,Sk,A,I,T labels while writing the exam
+    [Documentation]    ATC13: Verify the F, Q, S,Sk,A,I,T labels while writing the exam
+    ...
+    ...    Steps:
+    ...    1.Login with Student credentials(Pre student details).
+    ...    2.Verify Assignment List.
+    ...    3.Start the assignment.
+    ...    4.Verify \ F, Q, S,Sk,A,I,T labels present in Assignment page or not.
+    [Tags]    STUDENT_8    VERIFY_LABELS_WRITING_EXAM    MEDIUM
+    Run Keyword If    '${preTeacherID}'=='${EMPTY}'    Fail    No teacher data is avaialble.
+    ${stdDetails}    Get Student Details    ${preStudentDetails}    ATC13
+    ${StdUserID}    Get From Dictionary    ${stdDetails}    User ID
+    ${StdPassword}    Get From Dictionary    ${stdDetails}    Password
+    Comment    Login with student credentials
+    ${loginStatus}=    LoginToWizardApp    ${StdUserID}    ${StdPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    ${AssignmentNameTitle}    Set Variable    @{preSignUpTitleMenus}[0]
+    ${AssignmentActivityName}    Set Variable    @{preActivityNames}[0]
+    ${AssignmentName}    Set Variable    ${AssignmentNameTitle} ${AssignmentActivityName}
+    comment    after login check whether assignments are available
+    ${AssignmentsStatus}    Verify The Assignments List
+    Run Keyword If    ${AssignmentsStatus}==False    Fail    No Assignements available for this user.
+    Comment    Start the Assignment
+    ${assignmentRowIndex}    Student Do The Assignment    ${AssignmentNameTitle}    ${AssignmentActivityName}
+    Run Keyword If    ${assignmentRowIndex}==0    Fail    The specifed assigment was not found in the assignemnts list.
+    Comment    Creating list with labels
+    ${PresentationList}=    Create List    F    Q    S    Sk    A
+    ...    I    T    W
+    ${presentationTable}=    Wait For Element Visible    //table[@role='presentation']    ${Delay}
+    Run Keyword If    ${presentationTable}!=True    Fail    Presentation table is not visible
+    Wait And Click Element    //table[@role='presentation']/tr[1]/th
+    ${labelCount}=    Get Matching Xpath Count    //table[@role='presentation']/tr[1]/th
+    Wait Until Keyword Succeeds    2m    3s    Drag And Drop By Offset    //div[@class='dijitSplitter dijitSplitterV dijitAlignLeft']    335    245
+    Comment    MYS-3329:Updated the verifiation of presentation items in the following loop.
+    ${itemCount}    Set Variable    0
+    : FOR    ${presentation_Item}    IN    @{PresentationList}
+    \    Comment    ${Labelw}=    Get Text    //table[@role='presentation']/tr[1]/th[${iCounter}]
+    \    ${bStatus}    Wait For Element Visible    //div[@class='dgrid-content ui-widget-content']    ${TimeOut}
+    \    ${presentation_Item_status}    Run Keyword And Return Status    Wait Until Page Contains Element    //th[@role='columnheader' and text()='${presentation_Item}']    ${TimeOut}    One of the presentation item is not present.i.e. '//th[@role='columnheader' and text()='${presentation_Item}']'
+    \    ${itemCount}    Run Keyword If    ${presentation_Item_status}    Evaluate    ${itemCount}+1
+    \    ...    ELSE    Set Variable    ${itemCount}
+    ${no_Of_Items}    Get Length    ${PresentationList}
+    Should Be Equal As Integers    ${no_Of_Items}    ${itemCount}    One of the presentation item is not present.
+    [Teardown]    Stop Application
+
+ATC-212 validate create password and re-enter password is accepting diff values are not
+    [Documentation]    ATC-212: Verify whether the password and confirm password text fields are accepting different individual data in the student registration process or not.
+    ...
+    ...    Steps:
+    ...    1.Open browser and enter URL .
+    ...    2.Click on New User button and select Student.
+    ...    3.Enter Class Code and Click on Next button.
+    ...    4.Enter FirstName,LastName,User ID,Password and ReType Password.Select Grade level.
+    ...    5.Click on BackSpace key in Password field(Deleting last character).
+    ...    6.Click on Next Button.
+    ...    7.Alert should display as password and confirm password are different.
+    [Tags]    STUDENT_9    VALIDATE_CONFIRM_PASSWORD_ACCEPTING_DIFFERENT_VALUES    HIGH
+    ${className}    Set Variable    @{preClassesList}[1]
+    ${classCode}    Get From Dictionary    ${preClassesAndClassCodes}    ${className}
+    ${val}    Get Unique Id
+    ${uniqueVal}    Set Variable    Student${val}
+    OpenBrowserToLoginPage
+    Wait And Click Element    ${button.login.newUser}
+    Select Role in Create Account    ${studentRole}
+    Validate The Step Precondition    ${label.StudentSignup.DialogMessage}    Enter the Class Code    The "Enter the Class Code from your teacher." screen was not displayed in student signup process.
+    Enter Class Code    ${classCode}
+    Wait And Click Element    ${button.signUp.next}
+    Wait Until Keyword Succeeds    1m    10s    Click Element    ${text.studentSignUp.firstName}
+    Comment    Entering \ FirstName,LastName,User ID,Password and ReType Password.Select Grade level.
+    Enter Text In Text Field    ${text.studentSignUp.firstName}    ${uniqueVal}
+    Enter Text In Text Field    ${text.studentSignUp.lastName}    ${uniqueVal}
+    Enter Text In Text Field    ${text.studentSignUp.UserId}    ${uniqueVal}
+    Select DropDown Values    ${image.studentSignUp.gradeArrow}    ${dropdown.studentSignUp.GradeLevel}    2
+    Enter Text In Text Field    ${text.studentSignUp.Password}    ${studentPassword}
+    Enter Text In Text Field    ${text.studentSignUp.confirmPassword}    ${studentPassword}
+    Comment    Click on BackSpace key in Password field
+    Press Back Space Key    ${text.studentSignUp.Password}
+    Wait Until Element Is Visible    ${button.signUp.next}    ${TimeOut}    Password and Confirm Password are different so 'Next' button is disabled.
+    Wait And Click Element    ${button.signUp.next}
+    Comment    Verify whether the password and confirm password are accepting different individual data or not.
+    Wait Until Element Is Visible    ${label.StudentSignup.DialogMessage}    ${TimeOut}
+    ${actText}    Get Text    ${label.StudentSignup.DialogMessage}
+    ${stdDtlValidationStatus}    String Should Contain    ${actText}    Congratulations!
+    Comment    Fails if password and ReType password accepting different values.
+    Run Keyword If    ${stdDtlValidationStatus}    Fail    The student registration process is suceeds even if the test data in the password and confirm password fields are different.
+    [Teardown]    Stop Application
+
+ATC-208 Verify whether Page is split when clicked on “solnLayoutBtn ” button
+    [Documentation]    ATC-208: Verify whether the screen has been displayed accordingly when we click on the screen layouts while writing the assignment.
+    ...
+    ...
+    ...    Steps:
+    ...    1.Login with Teacher credentials.
+    ...    2.Navigate to Assignments page.
+    ...    3.Navigate to New Assignments page.
+    ...    4.Assign Assignment to a student.
+    ...    5.Signout and Relogin with student details.
+    ...    6.Verify assignment list and start the assignment.
+    ...    7.Verify and Click on Screen Layout buttons individually.
+    ...    8.Verify the functionality of \ Screen Layout buttons.
+    [Tags]    STUDENT_10    VERIFY_ASSIGNMENT_PAGE_SPLIT_SOLNLAYOUT_BUTTON    MEDIUM
+    ${stdDetails}    Get Student Details    ${preStudentDetails}    ATC12
+    ${StdUserID}    Get From Dictionary    ${stdDetails}    User ID
+    ${StdPassword}    Get From Dictionary    ${stdDetails}    Password
+    ${className}=    Set Variable    @{preClassesList}[1]
+    ${AssignmentNameTitle}    Set Variable    CCS Math Assessments Level 3
+    ${AssignmentActivityName}    Set Variable    02 Form B
+    ${AssignmentName}    Set Variable    ${AssignmentNameTitle} ${AssignmentActivityName}
+    ${preTeacherID}    Get From Dictionary    ${preTeacherDetails}    UserName
+    ${preTeacherPassword}    Get From Dictionary    ${preTeacherDetails}    Password
+    Comment    Login with Teacher credentials
+    ${loginStatus}=    LoginToWizardApp    ${preTeacherID}    ${preTeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with these ctredentials-'${globalTeacherUId},${globalTeacherPassword}'
+    Comment    Navigate to Assignments page to assign the assignment a student
+    Navigate To Assignment Page
+    Navigate To New Assignments Page
+    ${kwStatus}    Add Assignment To A Student    ${className}    ${AssignmentNameTitle}    ${activitySelectMenu}    ${AssignmentActivityName}
+    Close Browser
+    Comment    Login into Wizard App with Student Role.
+    ${loginStatus}=    LoginToWizardApp    ${StdUserID}    ${StdPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with the given ctredentials.
+    Comment    Run Keyword If    '${BROWSER}'=='ie'    Close Browser
+    Comment    Run Keyword If    '${BROWSER}'=='ie'    Open Browser    ${WizardURL}    ${BROWSER}
+    Comment    Sleep    10s
+    Comment    Run Keyword If    '${BROWSER}'=='ie'    Maximize Browser Window
+    Comment    ${loginStatus}    Run Keyword If    '${BROWSER}'=='ie'    Enter Login Details    ${StdUserID}    ${StdPassword}
+    Comment    Run Keyword If    '${loginStatus}'=='False' and '${BROWSER}'=='ie'    Fail    The user is not able to login with valid credentials.
+    Comment    ${loginStatus}    Run Keyword If    '${BROWSER}'!='ie'    Signout And Relogin    ${StdUserID}    ${StdPassword}
+    Comment    Run Keyword If    '${loginStatus}'=='False' and '${BROWSER}'!='ie'    Fail    The user is not able to login with valid credentials.
+    ${AssignmentsStatus}    Verify The Assignments List
+    Run Keyword If    ${AssignmentsStatus}==False    Fail    For the above logged in Student User no assignments are available to verify the operations.
+    ${bstatus}    Run Keyword And Return Status    DoAssignment    ${AssignmentNameTitle}    ${AssignmentActivityName}
+    Comment    MYS-3211 : Updated script failure message with script level data.
+    Run Keyword If    ${bstatus}!=True    Fail and Capture Screenshot    ${AssignmentNameTitle}, ${AssignmentActivityName} is not avaibablefor the selected student.
+    Comment    Click on the vertical layout and verify whether right layout pane has appeared or not.
+    Wait And Click Element    ${button.assignmentLayouts.vertical}
+    : FOR    ${val}    IN RANGE    1    6
+    \    ${classAttr}    Get Element Attribute    ${button.assignmentLayouts.vertical}@class
+    \    ${bStatus}    Run Keyword And Return Status    Should Contain    ${classAttr}    mblTabBarButtonSelected
+    \    Exit For Loop If    ${bStatus}
+    \    Run Keyword Unless    ${bStatus}    Click Element    ${button.assignmentLayouts.vertical}
+    \    Sleep    3s
+    ${rightPaneSplitterStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    rightPane_splitter    ${TimeOut}
+    ${rightPaneStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    rightPane    ${TimeOut}
+    ${splittingStatus}    Evaluate    "${rightPaneSplitterStatus}"=="True" and "${rightPaneStatus}"=="True"
+    Run Keyword And Continue On Failure    Run Keyword Unless    ${splittingStatus}    Fail    The window is not splitted down when we click on the "right splitter"
+    Comment    Click on the horizontal layout and verify whether bottom layout pane has appeared or not.
+    Wait And Click Element    ${button.assignmentLayouts.horizontal}
+    ${bottomPaneSplitterStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    bottomPane_splitter    ${TimeOut}
+    ${bottomPaneStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    bottomPane    ${TimeOut}
+    ${splittingStatus}    Evaluate    "${bottomPaneSplitterStatus}"=="True" and "${bottomPaneStatus}"=="True"
+    Run Keyword Unless    ${splittingStatus}    Fail    The window is not splitted down when we click on the "bottom splitter"
+    [Teardown]    Stop Application
+
+ATC-259 260 261-Student- NewUser login Validations
+    [Documentation]    ATC-259 Verify whether user is able to login without entering any data.
+    ...    ATC-260 Verify whether user is able to login with userid and without password.
+    ...    ATC-261 Verify whether user is able to login with password and without userid.
+    [Tags]    STUDENT_11    VALIDATION_NEW_USER_LOGIN    HIGH
+    ${val}    Get Unique Id
+    ${studentUserID}    Set Variable    student006${val}
+    ${studentPassword}    Set Variable    studentpwd006${val}
+    OpenBrowserToLoginPage
+    Comment    Verify whether user is able to login without entering any data.
+    ${loginStatus}    Enter Login Details    ${EMPTY}    ${EMPTY}
+    ${alertStatus}    Run Keyword If    ${loginStatus}==False    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.login.Alert}    10s
+    ...    ELSE    Run Keyword And Continue On Failure    Fail    The user is able to signout entering userid and password.
+    ${alertText}    Run Keyword If    ${alertStatus}    Get Text    ${label.login.AlertMsg}
+    Run Keyword If    ${alertStatus}    Click Element    ${button.login.AlertMsg.Ok}
+    Run Keyword And Continue On Failure    Should Contain    ${alertText}    Please enter a User ID and Password.    The alert msg-"${alertText}" is displayed instead of "Please enter a User ID and Password." when user tries to login without entering any data.
+    Comment    Verify whether user is able to login without userid
+    ${loginStatus}    Enter Login Details    ${EMPTY}    ${studentPassword}
+    ${alertStatus}    Run Keyword If    ${loginStatus}==False    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.login.Alert}    10s
+    ...    ELSE    Run Keyword And Continue On Failure    Fail    The user is able to signout entering userid and password.
+    ${alertText}    Run Keyword If    ${alertStatus}    Get Text    ${label.login.AlertMsg}
+    Run Keyword If    ${alertStatus}    Click Element    ${button.login.AlertMsg.Ok}
+    Run Keyword And Continue On Failure    Should Contain    ${alertText}    The User ID or Password is incorrect. Please try again.    The alert msg-"${alertText}" is displayed instead of "Please enter a User ID and Password." when user tries to login without entering userid.
+    Comment    Verify whether user is able to login without password
+    ${loginStatus}=    Enter Login Details    ${studentUserID}    ${EMPTY}
+    ${alertStatus}    Run Keyword If    ${loginStatus}==False    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.login.Alert}    10s
+    ...    ELSE    Run Keyword And Continue On Failure    Fail    The user is able to signout entering userid and password.
+    ${alertText}    Run Keyword If    ${alertStatus}    Get Text    ${label.login.AlertMsg}
+    Run Keyword If    ${alertStatus}    Click Element    ${button.login.AlertMsg.Ok}
+    Should Contain    ${alertText}    The User ID or Password is incorrect. Please try again.    The alert msg-"${alertText}" is displayed instead of "The User ID or Password is incorrect. Please try again." when user tries to login without entering user password.
+    [Teardown]    Stop Application
+
+ATC 312 - Check whether New user window is closed when clicked on other part of the page
+    [Documentation]    ATC-312: Validating new user window is closed when clicked on other part of the page
+    ...
+    ...    Steps:
+    ...    1.Open browser and enter URL .
+    ...    2.Click on New User button.
+    ...    3.Click on other part of the page.
+    ...    4.verify New User window is closing or not.
+    [Tags]    STUDENT_12    VERIFY_NEW_USER_CLOSE_WINDOW    MEDIUM
+    [Setup]
+    Comment    opening browser and entering URL
+    Open Browser    ${WizardURL}    ${BROWSER}
+    Maximize Browser Window
+    Wait Until Keyword Succeeds    1m    5s    Click Element    //span[@id="new-user-btn_label"]
+    ${bStatus}    Verify Element Present    //table[contains(@class,'MenuActive') and contains(@aria-labelledby,"new-user-btn")]
+    Comment    Clicking New User button
+    Run Keyword If    ${bStatus}!=True    Wait And Click Element    //span[@id="new-user-btn_label"]
+    Wait Until Element Is Visible    //table[contains(@class,'MenuActive') and contains(@aria-labelledby,"new-user-btn")]    ${TimeOut}
+    Comment    Clicking ouside of new user window
+    Wait And Click Element    ${text.wizard.userID}
+    ${status}    Run Keyword And Return Status    Wait Until Element Is Visible    //table[contains(@class,'MenuActive') and contains(@aria-labelledby,"new-user-btn")]    ${TimeOut}
+    Run Keyword If    ${status}    Fail    The new user window is not closed when click on other part of the page
+    [Teardown]    Stop Application
+
+ATC 275 Student-Verify whether Gray color is displayed or not when select more than one choice at a time.
+    [Documentation]    ATC 275- Student-Verify whether Gray color is displayed or not when select \ more than one choice at a time.
+    ...
+    ...
+    ...
+    ...    Steps:
+    ...    1.Login with Teacher credentials.
+    ...    2.Navigate to Management.
+    ...    3.Edit Students and Titles to the Class.
+    ...    4.Navigate to New Assignments page and assign the assignment to a student.
+    ...    5.Signout and Relogin with Student credentials.
+    ...    6.Verify Assignment list and start the assignment.
+    ...    7.Select one option and click on Save button then select another option.
+    ...    8. Verify whether Gray color is displayed or not when select 2nd option.
+    [Tags]    STUDENT_13    VERIFY_GRAY_COLOR_SELECT_MORE_THAN_ONE_CHOICE_AT_A_TIME    HIGH
+    Run Keyword If    '${preTeacherID}'=='${EMPTY}' or "${preScriptStatus}"=="False"    Fail    PreRequisite teacher is not created
+    Run Keyword If    ${preScriptStatus}==False    Fail    No student data is avaialble.
+    ${TeacherUserName}    Set Variable    ${preTeacherID}
+    ${TeacherPassword}    Set Variable    ${preTeacherPassword}
+    ${stdDetails}    Get Student Details    ${preStudentDetails}    ATC35
+    ${StdUserID}    Get From Dictionary    ${stdDetails}    User ID
+    ${StdPassword}    Get From Dictionary    ${stdDetails}    Password
+    ${uniqueValue}    GetUniqueValue    QA
+    ${className}    Set Variable    ${uniqueValue}Class
+    ${activitySelectMenu}    Set Variable    Unit 1 - Solve Word Problems: Addition and Subtraction
+    ${activityName}    Set Variable    Page 10 - Assessment (1.OA.A.1)
+    ${activityNme}    Create List    ${activityName}
+    ${assignmentName}    Set Variable    CCS Motivation Math Level 01
+    ${subTitle}    Set Variable    (1.OA.A.1)
+    ${textMessage}    Set Variable    QA
+    ${titleList}    Create List    ${assignmentName}
+    ${userStatusList}    Create List    true
+    ${userIdList}    Create List    ${StdUserID}
+    Comment    Login with Teacher Credentials
+    ${loginStatus}    LoginToWizardApp    ${TeacherUserName}    ${TeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    Comment    Navigate to Management page and Selecting the frame School Admin.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Add A Class Or Group    ${className}
+    ${bStatus}=    Verify Values In Table    ${table.classesAndGroups}    Name    ${className}
+    Run Keyword Unless    ${bStatus}    Fail    The newly added class is not shown in the 'classes' table.
+    Comment    Click on Edit button
+    Wait And Click Element    ${button.classDetail.edit}
+    Comment    Edit students to the class.
+    Edit Students Or Titles    ${userIdList}    ${userStatusList}    User Id
+    Wait Until Element is Invisible    ${button.editStudentOrEditClass.save}    15
+    Comment    Add Students To A Class Or Group    ${className}
+    Wait And Click Element    ${button.classDetails.save}
+    Comment    Click on Edit button
+    Wait And Click Element    ${button.classDetail.edit}
+    Comment    Edit Titles to the class.
+    Edit Students Or Titles    ${titleList}    ${userStatusList}    Title Name
+    Wait Until Element is Invisible    ${button.editStudentOrEditClass.save}    15s
+    Comment    Clicking on the button 'save'.
+    Wait And Click Element    ${button.classDetails.save}
+    Comment    Navigating to Management page
+    Navigate BackTo Home Page    Management
+    Comment    Navigating to Assignments page
+    Navigate To Assignment Page
+    Comment    Navigating to New Assignments page
+    Navigate To New Assignments Page
+    Comment    Add assignment to a student
+    Add Assignment To A Student    ${className}    ${assignmentName}    ${activitySelectMenu}    ${activityName}
+    Close Browser
+    Comment    Signout from the Teacher and relogin to Student
+    ${loginStatus}=    LoginToWizardApp    ${StdUserID}    ${StdPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with the given ctredentials.
+    Comment    after login check whether assignments are available
+    ${AssignmentsStatus}    Verify The Assignments List
+    Run Keyword If    ${AssignmentsStatus}==False    Fail    For the above logged in Student User no assignments are available to verify the operations.
+    Comment    Student doassignment
+    ${bstatus}    Run Keyword And Return Status    DoAssignment    ${assignmentName}    ${subTitle}
+    Run Keyword If    ${bstatus}!=True    Fail and Capture Screenshot    ${assignmentName} ${subTitle} \ is not avaibablefor the selected student.
+    Wait Until Element Is Visible    //div[@class='dijitBorderContainerNoGutter dijitContainer dijitBorderContainerNoGutter-child dijitBorderContainerNoGutter-dijitBorderContainerNoGutter dijitBorderContainerNoGutterPane dijitAlignCenter dijitLayoutContainer']    ${TimeOut}
+    Comment    wait and click on question number 3
+    Wait And Click Element    //div[contains(@id,'assmtGrid-row-3') and contains(@class,'ui-state')]/table//td[contains(@class,'dgrid-cell dgrid-cell-padding dgrid-column-a field-a')]
+    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='answerChoice0']    ${TimeOut}
+    Wait And Click Element    //div[@id='answerChoice0']
+    Comment    Clicking on save button and selecting another choice.
+    Wait And Click Element    ${button.studentAssignments.submit}
+    Sleep    10s
+    Wait And Click Element    //div[contains(@id,'assmtGrid-row-3') and contains(@class,'ui-state')]/table//td[contains(@class,'dgrid-cell dgrid-cell-padding dgrid-column-a field-a')]
+    Sleep    10s
+    ${ansBselctStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='answerChoice1' and (contains(@onclick,'mcChoiceSelected(1)'))]
+    ${ansCselctStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='answerChoice2' and (contains(@onclick,'mcChoiceSelected(2)'))]
+    ${twoAnsSelectionStatus}    Evaluate    "${ansBselctStatus}"!="False" and "${ansCselctStatus}"!="False"
+    Run Keyword If    "${twoAnsSelectionStatus}"!="True"    Fail and Capture Screenshot    The respective B & C mc choice selection is not visible for verification.
+    Wait And Click Element    //div[@id='answerChoice1']
+    Wait And Click Element    ${button.studentAssignments.submit}
+    Wait And Click Element    //div[contains(@id,'assmtGrid-row-3') and contains(@class,'ui-state')]/table//td[contains(@class,'dgrid-cell dgrid-cell-padding dgrid-column-a field-a')]
+    Sleep    10s
+    Wait Until Element Is Visible    //div[@id='answerChoice0' and (contains(@onclick,'mcChoiceSelected(0)'))]
+    ${ansAselctStatus}    Get Element Attribute    //div[@id='answerChoice0']@onclick
+    ${ansBselctStatus}    Get Element Attribute    //div[@id='answerChoice1']@onclick
+    Run Keyword If    "${ansAselctStatus}"!="mcChoiceSelected(0)" and "${ansBselctStatus}"=="mcChoiceSelected(1)"    Fail and Capture Screenshot    Two Options are in selected state on saving by choosing another choice.
+    Comment    Comment    wait and click on choice1
+    Comment    Wait And Click Element    //div[@id='answerChoice1']
+    Comment    Wait Until Element Is Visible    //div[@id='answerChoice1']
+    Comment    Sleep    5s
+    Comment    ${choice1Status}    Verify Element Present    //div[@id='answerChoice0' and @class='mcButton mcChoiceSelected']
+    Comment    Sleep    5s
+    Comment    ${choice2Status}    Verify Element Present    //div[@id='answerChoice1' and @class='mcButton mcChoiceSelected']
+    Comment    Run Keyword If    "${choice1Status}"!="False" and "${choice2Status}"!="False"    Fail    Able to select more than one option
+    [Teardown]    Stop Application
+
+ATC 273 Student-Verify Student is able to write answer in the Textarea or not.
+    [Documentation]    ATC 273: Student-Verify Student is able to write answer in the Textarea or not.
+    ...
+    ...
+    ...    Steps:
+    ...    1.Login with Teacher credentials.
+    ...    2.Navigate to Management.
+    ...    3.Edit Students and Titles to the Class.
+    ...    4.Navigate to New Assignments page and assign the assignment(Which having Text area questions) to a student.
+    ...    5.Signout and Relogin with Student credentials.
+    ...    6.Verify Assignment list and start the assignment.
+    ...    7.Enter values into text field.
+    ...    8.Verify verify Student is able to write answer in the Textarea or not
+    [Tags]    STUDENT_14    VERIFY_CAN_WRITE_ANSWER_IN_THE_TEXTAREA    HIGH
+    Run Keyword If    '${preTeacherID}'=='${EMPTY}' or "${preScriptStatus}"=="False"    Fail    PreRequisite teacher is not created
+    ${TeacherUserName}    Set Variable    ${preTeacherID}
+    ${TeacherPassword}    Set Variable    ${preTeacherPassword}
+    ${stdDetails}    Get Student Details    ${preStudentDetails}    ATC35
+    ${StdUserID}    Get From Dictionary    ${stdDetails}    User ID
+    ${StdPassword}    Get From Dictionary    ${stdDetails}    Password
+    ${uniqueValue}    GetUniqueValue    QA
+    ${className}    Set Variable    ${uniqueValue}Class
+    ${activitySelectMenu}    Set Variable    Unit 2 - Use Mental Strategies to Add and Subtract Within 20
+    ${activityName}    Set Variable    Page 13 - Introduction (2.OA.B.2)
+    ${activityNme}    Create List    ${activityName}
+    ${assignmentName}    Set Variable    CCS Motivation Math Level 02
+    ${subTitle}    Set Variable    (2.OA.B.2)
+    ${textMessage}    Set Variable    QA
+    ${titleList}    Create List    ${assignmentName}
+    ${userStatusList}    Create List    true
+    ${userIdList}    Create List    ${StdUserID}
+    Comment    Login to Wizard application with Teacher credentials
+    ${loginStatus}    LoginToWizardApp    ${TeacherUserName}    ${TeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    Comment    Navigate to Management page and Selecting the frame School Admin.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Add A Class Or Group    ${className}
+    ${bStatus}=    Verify Values In Table    ${table.classesAndGroups}    Name    ${className}
+    Run Keyword Unless    ${bStatus}    Fail    The newly added class is not shown in the 'classes' table.
+    Comment    Click on Edit button
+    Wait And Click Element    ${button.classDetail.edit}
+    Comment    Edit students to the class.
+    Edit Students Or Titles    ${userIdList}    ${userStatusList}    User Id
+    Wait Until Element is Invisible    ${button.editStudentOrEditClass.save}    15
+    Comment    Add Students To A Class Or Group    ${className}
+    Wait And Click Element    ${button.classDetails.save}
+    Comment    Click on Edit button
+    Wait And Click Element    ${button.classDetail.edit}
+    Comment    Edit Titles to the class.
+    Edit Students Or Titles    ${titleList}    ${userStatusList}    Title Name
+    Wait Until Element is Invisible    ${button.editStudentOrEditClass.save}    15s
+    Comment    Clicking on the button 'save'.
+    Wait And Click Element    ${button.classDetails.save}
+    Comment    Navigating to Management page
+    Navigate BackTo Home Page    Management
+    Comment    Navigating to Assignments page
+    Navigate To Assignment Page
+    Comment    Navigating to New Assignments page
+    Navigate To New Assignments Page
+    Comment    Add assignment to a student
+    Add Assignment To A Student    ${className}    ${assignmentName}    ${activitySelectMenu}    ${activityName}
+    Close Browser
+    Comment    Signout from the Teacher and relogin to Student
+    ${loginStatus}=    LoginToWizardApp    ${StdUserID}    ${StdPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with the given ctredentials.
+    Comment    after login check whether assignments are available
+    ${AssignmentsStatus}    Verify The Assignments List
+    Run Keyword If    ${AssignmentsStatus}==False    Fail    For the above logged in Student User no assignments are available to verify the operations.
+    Comment    Student doassignment
+    ${bstatus}    Run Keyword And Return Status    DoAssignment    ${assignmentName}    ${subTitle}
+    Run Keyword If    ${bstatus}!=True    Fail and Capture Screenshot    ${assignmentName} ${subTitle} \ is not avaibablefor the selected student.
+    Comment    MYS-3211 : Updated with wait for element visible.
+    Wait For Element Visible    mixedStemHTML    5s    'InputTextControls' are not visible at Assignments page.
+    Comment    Wait and click on text area box
+    Wait And Click Element    ${textbox.studentAssignment.TexAreabox}
+    Comment    To enter text in text field
+    : FOR    ${icounter}    IN RANGE    0    10
+    \    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='blank001EditorDiv' and contains(@style,'visibility: visible;')]//input    10s
+    \    Exit For Loop If    ${bStatus}
+    \    Run Keyword Unless    ${bStatus}    Wait And Click Element    ${textbox.studentAssignment.TexAreabox}
+    Comment    To enter text in text field
+    Enter Text In Text Field    //div[@id='blank001EditorDiv' and contains(@style,'visibility: visible;')]//input    ${textMessage}
+    ${inputTextStatus}    Get Text    ${textbox.studentAssignment.TexAreabox}
+    String Should Contain    ${inputTextStatus}    QA
+    [Teardown]    Stop Application
+
+ATC 274 Student-Verify Assignment report for Computer Graded items.
+    [Documentation]    ATC 274 : Student-Verify Assignment report for Computer Graded items.
+    ...
+    ...    Steps:
+    ...    1.Login with Teacher credentials.
+    ...    2.Navigate to Management.
+    ...    3.Edit Students and Titles to the Class.
+    ...    4.Navigate to New Assignments page and assign the assignment(Which having Computer graded questions) to a student.
+    ...    5.Signout and Relogin with Student credentials.
+    ...    6.Verify Assignment list and start the assignment.
+    ...    7.Enter values into text field.
+    ...    8.Click on "Submit" button.
+    ...    9.Verify Assignment report for Computer Graded items.
+    [Tags]    STUDENT_15    FUNCTION_DOES_NOT_EXIST    MEDIUM
+    Run Keyword If    '${preTeacherID}'=='${EMPTY}'    Fail    PreRequisite teacher is not created
+    Run Keyword If    ${preScriptStatus}==False    Fail    No student data is avaialble.
+    Pass Execution    functionality changed as Feedback form of assignment submission does not contains TG/CG items info.
+    ${TeacherUserName}    Set Variable    ${preTeacherID}
+    ${TeacherPassword}    Set Variable    ${preTeacherPassword}
+    ${stdDetails}    Get Student Details    ${preStudentDetails}    ATC35
+    ${studentUId}    Get From Dictionary    ${stdDetails}    User ID
+    ${StdPassword}    Get From Dictionary    ${stdDetails}    Password
+    ${uniqueValue}    GetUniqueValue    QA
+    ${className}    Set Variable    ${uniqueValue}Class
+    ${activitySelectMenu}    Set Variable    Unit 3 - Understanding Odd and Even Numbers to 20
+    ${activityName}    Set Variable    Page 23 - \ Critical Thinking: Analysis \ (2.OA.C.3)
+    ${activityNme}    Create List    ${activityName}
+    ${assignmentName}    Set Variable    CCS Motivation Math Level 02
+    ${subTitle}    Set Variable    (2.OA.C.3)
+    ${textMessage}    Set Variable    QA
+    ${titleList}    Create List    ${assignmentName}
+    ${userStatusList}    Create List    true
+    ${userIdList}    Create List    ${studentUId}
+    Comment    Login to Wizard application with Teacher credentials
+    ${loginStatus}    LoginToWizardApp    ${TeacherUserName}    ${TeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    Comment    Navigate to Management page and Selecting the frame School Admin.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Add A Class Or Group    ${className}
+    ${bStatus}=    Verify Values In Table    ${table.classesAndGroups}    Name    ${className}
+    Run Keyword Unless    ${bStatus}    Fail    The newly added class is not shown in the 'classes' table.
+    Comment    Click on Edit button
+    Wait And Click Element    ${button.classDetail.edit}
+    Comment    Edit students to the class.
+    Edit Students Or Titles    ${userIdList}    ${userStatusList}    User Id
+    Wait Until Element is Invisible    ${button.editStudentOrEditClass.save}    15
+    Comment    Add Students To A Class Or Group    ${className}
+    Wait And Click Element    ${button.classDetails.save}
+    Comment    Click on Edit button
+    Wait And Click Element    ${button.classDetail.edit}
+    Comment    Edit Titles to the class.
+    Edit Students Or Titles    ${titleList}    ${userStatusList}    Name
+    Wait Until Element is Invisible    ${button.editStudentOrEditClass.save}    15s
+    Comment    Clicking on the button 'save'.
+    Wait And Click Element    ${button.classDetails.save}
+    Comment    Navigating to Management page
+    Navigate BackTo Home Page    Management
+    Comment    Navigating to NewAssignments page
+    Navigate To Assignment Page
+    Navigate To New Assignments Page
+    Comment    Add assignment to a student
+    Add Assignment To A Student    ${className}    ${assignmentName}    ${activitySelectMenu}    ${activityName}
+    Close Browser
+    ${loginStatus}=    LoginToWizardApp    ${studentUId}    ${StdPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with the given ctredentials.
+    Comment    Signout from the Teacher and relogin to Student
+    Comment    Run Keyword If    '${BROWSER}'=='ie'    Close Browser
+    Comment    Run Keyword If    '${BROWSER}'=='ie'    Open Browser    ${WizardURL}    ${BROWSER}
+    Comment    Sleep    10s
+    Comment    Run Keyword If    '${BROWSER}'=='ie'    Maximize Browser Window
+    Comment    ${loginStatus}    Run Keyword If    '${BROWSER}'=='ie'    Enter Login Details    ${studentUId}    ${StdPassword}
+    Comment    Run Keyword If    '${loginStatus}'=='False' and '${BROWSER}'=='ie'    Fail    The user is not able to login with valid credentials.
+    Comment    ${loginStatus}    Run Keyword If    '${BROWSER}'!='ie'    Signout And Relogin    ${studentUId}    ${StdPassword}
+    Comment    Run Keyword If    '${loginStatus}'=='False' and '${BROWSER}'!='ie'    Fail    The user is not able to login with valid credentials.
+    ${AssignmentsStatus}    Verify The Assignments List
+    Run Keyword If    ${AssignmentsStatus}==False    Fail    For the above logged in Student User no assignments are available to verify the operations.
+    Comment    Student doassignment
+    ${bstatus}    Run Keyword And Return Status    DoAssignment    ${assignmentName}    ${subTitle}
+    Run Keyword If    ${bstatus}!=True    Fail and Capture Screenshot    ${assignmentName} ${subTitle} \ is not avaibablefor the selected student.
+    Sleep    2s
+    Run Keyword And Return Status    Wait Until Element Is Visible    mixedStemHTML    5s    'InputTextControls' are not visible at Assignments page.
+    Comment    Wait and click on text area box
+    Sleep    2s
+    Wait And Click Element    ${textbox.studentAssignment.TexAreabox}
+    Comment    To enter text in text field
+    Enter Text In Text Field    //div[@id='blank001EditorDiv' and contains(@style,'visibility: visible;')]//input    ${textMessage}
+    Comment    wait and click on next text field
+    Wait And Click Element    blank004DisplayDiv
+    Comment    Enter the text into next text field
+    Enter Text In Text Field    //div[@id='blank004EditorDiv' and contains(@style,"")]//input    ${textMessage}
+    Comment    wait and click on saveAnswer button
+    Wait And Click Element    ${button.studentAssignments.submit}
+    Comment    wait untill correct answer window
+    Wait Until Element Is Visible    solutionContentV    ${TimeOut}
+    Comment    wait and click on submit button
+    Wait And Click Element    ${button.studentAssignments.turnIn}
+    Comment    wait untill sessionReport window
+    Wait Until Element Is Visible    sessionReportDlg    ${TimeOut}
+    Comment    Run Keyword And Continue On Failure    Wait Until Element Is Visible    //div[@id='srOverallScoreQ' and text()='0 of 1 item correct']    ${TimeOut}
+    ${CompGradedStatus}    Verify Element Present    //div[@id='srOverallScoreQ' and text()='0 of 1 item correct']
+    Log    ${CompGradedStatus}
+    Capture Page Screenshot And Log    ${OUTPUTDIR}
+    Run Keyword If    "${CompGradedStatus}" != "True"    Fail    Improper Report message is displayed / Report not displayed.
+    [Teardown]    Stop Application
+
+ATC 276 - 8489861-Class Drop down is disappeared or not when clicked on any other parts of the screen.
+    [Documentation]    ATC 276 - 8489861-Class(Join A Class) Drop down is disappeared or not when clicked on other part of the Page.
+    ...
+    ...    Steps:
+    ...    1.Login with \ student credentials.
+    ...    2.Click on "Join a class" arrow.
+    ...    3.Click on Assignment list grid header.
+    ...    4.Verify Class Drop down window closed or not.
+    [Tags]    STUDENT_16    VERIFY_CLASS_DROPDOWN_CLICKED_ON_ANY_PARTS_OF_THE_SCREEN    MEDIUM
+    ${stdDetails}    Get Student Details    ${preStudentDetails}    ATC35
+    ${studentUid}    Get From Dictionary    ${stdDetails}    User ID
+    ${studentPwd}    Get From Dictionary    ${stdDetails}    Password
+    Comment    Login into Wizard App with Student Role.
+    ${loginStatus}    LoginToWizardApp    ${studentUid}    ${studentPwd}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    ${kwStatus}    Set Variable    False
+    Comment    Verifying Join A class drop down arrow visible or not
+    Wait Until Element Is Visible    ${image.studentHomePage.sittingDeskArrow}    ${Delay}
+    Comment    Clicking on arrow button
+    Selenium2Library.Mouse Down    ${image.studentHomePage.sittingDeskArrow}
+    Comment    Click On Assignment list grid header
+    Wait And Click Element    studentAssmtGrid-header
+    ${status}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@class='menuTriangle']/following-sibling::table[contains(@class,'MenuActive')]    ${TimeOut}
+    Run Keyword If    ${status}    Fail    Join a class option is not appeared when clicked on arrow button of 'Sitting Student image' in student home page.
+    [Teardown]    Stop Application
+
+ATC 399-Student join a class validation
+    [Documentation]    ATC 386-Student join a class validation (No close button at joined class window).
+    ...
+    ...    Step1 : Login as a student.
+    ...
+    ...    Step2 : Click on student sitting image (down arrow).
+    ...
+    ...    Step3 : Select join a class.
+    ...
+    ...    Step4 : verify whether the close button is visible or not in join a class window.
+    [Tags]    STUDENT_17    VALIDATE_STUDENT_JOIN_A_CLASS    HIGH
+    Run Keyword If    ${preScriptStatus}==False    Fail    No student data is avaialble.
+    ${stdDetails}    Get Student Details    ${preStudentDetails}    ATC35
+    ${StdUserID}    Get From Dictionary    ${stdDetails}    User ID
+    ${StdPassword}    Get From Dictionary    ${stdDetails}    Password
+    comment    Login to Wizard application with Student credentials.
+    ${loginStatus}    LoginToWizardApp    ${StdUserID}    ${StdPassword}
+    Run Keyword If    "${loginStatus}"=="False"    Fail    The user is not able to login with valid credentials.
+    Wait Until Element Is Visible    ${image.studentHomePage.sittingDeskArrow}    ${Delay}
+    : FOR    ${iCounter}    IN RANGE    0    10
+    \    Comment    Clicking on arrow button
+    \    Wait And Click Element    ${image.studentHomePage.sittingDeskArrow}
+    \    Comment    No close button at student join a class.
+    \    ${bstatus}    Run Keyword And Return Status    Wait And Click Element    ${label.studentHomePage.joinAClass}
+    \    Run Keyword If    ${bstatus}    Exit For Loop
+    Validate The Step Precondition    ${label.studentHomePage.joinClassDialogMessage}    Class code    Join a class "Class code" dialogue box is not visible.
+    Comment    Closing the Join A class window while entering class code
+    ${bStatus}    Run Keyword And Return Status    Wait And Click Element    ${button.stduentHomePage.joinClassDlgClose}    ${TimeOut}
+    Run Keyword If    "${bStatus}"!="True"    Fail    Close button is not visible when select the join a class.
+    [Teardown]    Stop Application
+
+ATC 205 Verify Whether Option name is displayed along with the answer under the Correct answer tab.
+    [Documentation]    ATC 205-Verify Whether Option name is displayed along with the answer under the Correct answer tab.
+    ...
+    ...
+    ...    Step1 : Login as a Teacher.
+    ...
+    ...    Step2 : Create a class add students and titles.
+    ...
+    ...    Step4 : Assign assignments to student.
+    ...
+    ...    Step5 : Login as a student
+    ...
+    ...    Step6 : Write the assignments “Unit 3 - Understanding Odd and Even Numbers to 20, Page 20 - \ Partner Practice (2.OA.C.3)
+    ...
+    ...    Step7 : Click on save answers button.
+    ...
+    ...    Step8 : Verify Whether Option name is displayed along with the answer under the Correct answer tab.
+    [Tags]    STUDENT_18    VERIFY_OPTION_NAME_UNDER_THE_CORRECT_ANSWER_TAB    MEDIUM
+    Run Keyword If    '${preTeacherID}'=='${EMPTY}'    Fail    PreRequisite teacher is not created
+    Run Keyword If    ${preScriptStatus}==False    Fail    No student data is avaialble.
+    ${TeacherUserName}    Set Variable    ${preTeacherID}
+    ${TeacherPassword}    Set Variable    ${preTeacherPassword}
+    ${stdDetails}    Get Student Details    ${preStudentDetails}    ATC35
+    ${StdUserID}    Get From Dictionary    ${stdDetails}    User ID
+    ${StdPassword}    Get From Dictionary    ${stdDetails}    Password
+    ${uniqueValue}    GetUniqueValue    QA
+    ${className}    Set Variable    ${uniqueValue}Class
+    Comment    ${assignmentName}    Set Variable    @{preSignUpTitleMenus}[3]
+    ${activitySelectMenu}    Set Variable    Unit 3 - Understanding Odd and Even Numbers to 20
+    ${activityName}    Set Variable    Page 20 - \ Partner Practice \ (2.OA.C.3)
+    ${activityNme}    Create List    ${activityName}
+    ${assignmentName}    Set Variable    CCS Motivation Math Level 02
+    ${subTitle}    Set Variable    (2.OA.C.3)
+    ${textMessage}    Set Variable    QA
+    ${titleList}    Create List    ${assignmentName}
+    ${userStatusList}    Create List    true
+    ${userIdList}    Create List    ${StdUserID}
+    Comment    Login to Wizard application with Teacher credentials
+    ${loginStatus}    LoginToWizardApp    ${TeacherUserName}    ${TeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    Comment    Navigate to Management page and Selecting the frame School Admin.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Add A Class Or Group    ${className}
+    ${bStatus}=    Verify Values In Table    ${table.classesAndGroups}    Name    ${className}
+    Run Keyword Unless    ${bStatus}    Fail    The newly added class is not shown in the 'classes' table.
+    Comment    Click on Edit button
+    Wait And Click Element    ${button.classDetail.edit}
+    Comment    Edit students to the class.
+    Edit Students Or Titles    ${userIdList}    ${userStatusList}    User Id
+    Wait Until Element is Invisible    ${button.editStudentOrEditClass.save}    15
+    Comment    Add Students To A Class Or Group    ${className}
+    Wait And Click Element    ${button.classDetails.save}
+    Comment    Click on Edit button
+    Wait And Click Element    ${button.classDetail.edit}
+    Comment    Edit Titles to the class.
+    Edit Students Or Titles    ${titleList}    ${userStatusList}    Title Name
+    Wait Until Element is Invisible    ${button.editStudentOrEditClass.save}    15s
+    Comment    Clicking on the button 'save'.
+    Wait And Click Element    ${button.classDetails.save}
+    Comment    Navigating to Management page
+    Navigate BackTo Home Page    Management
+    Comment    Navigating to NewAssignments page
+    Navigate To Assignment Page
+    Navigate To New Assignments Page
+    Comment    Add assignment to a student
+    Add Assignment To A Student    ${className}    ${assignmentName}    ${activitySelectMenu}    ${activityName}    ${EMPTY}    1
+    Comment    Signout from the Teacher and relogin to Student
+    Stop Application
+    ${loginStatus}    LoginToWizardApp    ${StdUserID}    ${StdPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    ${AssignmentsStatus}    Verify The Assignments List
+    Run Keyword If    ${AssignmentsStatus}==False    Fail    For the above logged in Student User no assignments are available to verify the operations.
+    Comment    Student do assignment
+    ${bstatus}    Run Keyword And Return Status    DoAssignment    ${assignmentName}    ${subTitle}
+    Run Keyword If    ${bstatus}!=True    Fail and Capture Screenshot    ${assignmentName} ${subTitle} \ is not avaibablefor the selected student.
+    Sleep    2s
+    Run Keyword And Return Status    Wait Until Element Is Visible    questionContent    ${TimeOut}    'InputTextControls' are not visible at Assignments page.
+    Comment    Wait and click on particular option
+    Wait And Click Element    ${button.studentAssignments.OptionChoiseA}
+    : FOR    ${iCount}    IN RANGE    0    10
+    \    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id="answerChoice0" and @class="mcButton mcChoiceSelected"]    10s
+    \    Exit For Loop If    ${bStatus}
+    \    Run Keyword Unless    ${bStatus}    Click Element    //div[@id="answerChoice0" and @class="mcButton"]
+    Wait Until Element Is Visible    ${button.studentAssignments.submit}    ${TimeOut}
+    Comment    Wait and click on save answers button
+    Wait And Click Element    ${button.studentAssignments.submit}
+    : FOR    ${iCount}    IN RANGE    0    10
+    \    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    solutionContentV    10s
+    \    Exit For Loop If    ${bStatus}
+    \    Run Keyword Unless    ${bStatus}    Click Element    ${button.studentAssignments.submit}
+    ${bstatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='mcSolutionHTML']//table/tbody/tr/td[1]    ${TimeOut}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The correct choice button is not displayed.
+    [Teardown]    Stop Application
+
+ATC 272 - Student - Verify 'E' or 'O' displayed in Textbox while writting Assignment
+    [Documentation]    ATC 272 - Student - Verify 'E' or 'O' displayed in Textbox while writting Assignment.
+    ...
+    ...    Steps:
+    ...
+    ...    1.Login with Teacher credentialas.
+    ...    2.Navigate to Management page and and add titles to the teacher.
+    ...    3.Edit Class details and add students and Titles.
+    ...    4.Navigate to Home page and Assignement page to New Assignment page.
+    ...    5.Add assignment to a student.
+    ...    6.Signout and Relogin with student credentials.
+    ...    7. Start the assignment(CCS Motivation Math Level 03: Page 12 - Motivation Station: Interpret Products of Whole Numbers (3.OA.A.1))
+    ...    8. Verify 'E' or 'O' displayed in Textbox while writting Assignment.
+    [Tags]    STUDENT_19    VERIFY_E_OR_O_IN_TEXTBOX_ASSIGNMENT    MEDIUM
+    Run Keyword If    '${preTeacherID}'=='${EMPTY}'    Fail
+    ${UserName}    Get From Dictionary    ${preTeacherDetails}    UserName
+    ${Password}    Get From Dictionary    ${preTeacherDetails}    Password
+    ${firstName}    Set Variable    ${preTeacherFirstName}
+    ${lastName}    Set Variable    ${preTeacherLastName}
+    ${Old_Teacher}    Set Variable    ${preTeacherLastName},${SPACE}${preTeacherFirstName}
+    ${uniqueVal}    GetUniqueValue
+    ${StdUserID}    Create List    @{preStudentIds}[0]
+    ${className}    Set Variable    @{preClassesList}[0]
+    ${titleList}    Create List    CCS Motivation Math Level 03
+    ${activitySelectMenu}    Set Variable    Unit 1 - Interpret Products of Whole Numbers
+    ${activityName}    Set Variable    Page 12 - Motivation Station
+    ${activities}    Split String    ${activityName}    -
+    ${studentsPasswords}    Get Csv File Column Values Into List    ${UploadStudentsFile}    Password
+    ${statusList}    Create List    true    false
+    ${studentsIds}    Get Csv File Column Values Into List    ${UploadStudentsFile}    User ID
+    Comment    Login with valid Teacher credentials.
+    ${bStatus}=    LoginToWizardApp    ${UserName}    ${Password}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials.
+    Comment    Navigate to Management page and and add titles to the teacher.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Comment    ${rowNo}=    Select The Record In Table    ${table.users}    First Name    ${firstName}
+    Comment    Run Keyword If    ${rowNo}==0    Table Column Values Sorting    ${table.users}    Created
+    Comment    Select The Record In Table    ${table.users}    First Name    ${firstName}
+    Comment    ${RegcodeswithTitles}    Get Matching Xpath Count    ${label.management.teacherRegCodesLength}
+    Comment    ${RegcodeswithTitles}    Evaluate    ${RegcodeswithTitles}+1
+    Comment    Comment    Adding Assignment Title if not added to the teacher.
+    Comment    :FOR    ${iCount}    IN RANGE    1    ${RegcodeswithTitles}
+    Comment    \    ${RegandTitle}=    Get Text    ${label.management.teacherRegCodesLength}[${iCount}]
+    Comment    \    ${bStatus}=    String Should Contain    ${RegandTitle}    ${titleList[0]}
+    Comment    \    Run Keyword If    ${bStatus}    Exit For Loop
+    ...    ELSE    Continue For Loop
+    Comment    \    Run Keyword Unless    ${bStatus}    Add Titles to the Teacher from Management    ${titleList[0]}
+    Comment    Wait Until Keyword Succeeds    1m    3s    Click Element    ${button.management.addTitles.No}
+    Comment    ${rowNumber}    Select The Record In Table    ${table.classesAndGroups}    Name    ${className}
+    Comment    Run Keyword If    ${rowNumber}==0    Fail    Class '${className}' is not displayed in Class Table
+    Comment    Edit Class details and add students and Titles.
+    Wait Until Element Is Visible    ${table.classesAndGroups}    30s    The wait until the classes table is displayed
+    ${className}=    GetUniqueValue    SDTdata_QAClass
+    ${bStatus}=    Verify Element Visible    ${label.management.showClasses}
+    Run Keyword If    '${bStatus}'=='True'    Click Element    ${label.management.showClasses}
+    Comment    Add a class to the classes table & verify whether it is displayed in the table or not.
+    ${classStatus}    Add A Class Or Group    ${className}    \    Created by QA off shore
+    Run Keyword Unless    ${classStatus}    Fail    Newly created Class was not displayed in Classes Table in the management page.
+    Edit The Class Or Group Details
+    Edit Students Or Titles    ${StdUserID}    ${statusList}    User Id
+    Wait Until Element Is Visible    ${table.common.'groupUsersList}    ${TimeOut}
+    Edit Students Or Titles    ${titleList}    ${statusList}    Title Name
+    Wait And Click Element    ${button.classDetails.save}
+    Comment    Navigate to Home page and Assignement page to New Assignment page.
+    Navigate BackTo Home Page    Management
+    Navigate To Assignment Page
+    Navigate To New Assignments Page
+    Comment    Add assignment to a student.
+    Add Assignment To A Student    ${className}    ${titleList[0]}    ${activitySelectMenu}    ${activityName}    @{StdUserID}[0]
+    Stop Application
+    Comment    Signout and Relogin with Student credentials.
+    ${bStatus}    LoginToWizardApp    @{StdUserID}[0]    @{studentsPasswords}[1]
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials.
+    Comment    start the assignment
+    ${AssignmentsStatus}    Verify The Assignments List
+    Run Keyword If    ${AssignmentsStatus}==False    Fail    For the above logged in Student User no assignments are available to verify the operations.
+    ${assignmentRowIndex}    Student Do The Assignment    @{titleList}[0]    ${activityName}
+    Run Keyword If    ${assignmentRowIndex}==0    Fail    The specifed assigment was not found in the assignemnts list.
+    Wait Until Keyword Succeeds    2m    2s    Wait Until Element Is Visible    //div[@id='mixedStemHTML']    5s
+    ${inputTextctrls}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='mixedStemHTML']    5s    'InputTextControls' are not visible at Assignments page.
+    ${xpathCount}    Run Keyword If    ${inputTextctrls}    Get Matching Xpath Count    //div[contains(@id,'DisplayDiv') and @class='frBlank']
+    ${i}    Set Variable    1
+    Comment    Verify 'E' or 'O' is displayed in textbox or not.
+    : FOR    ${iCounter}    IN RANGE    1    3
+    \    ${j}    Evaluate    ${iCounter}-${i}
+    \    Run Keyword And Ignore Error    Run Keyword If    '${inputTextctrls}'=='True'    Click Element    //div[contains(@id,'${iCounter}Display') and @onclick='beginInlineEditFRBlank(${j})']
+    \    ${inputArea}    Verify Element Visible    //div[contains(@id,'${iCounter}Display') and @onclick='beginInlineEditFRBlank(${j})']/preceding-sibling::div[contains(@id,'${iCounter}EditorDiv') and contains(@style,'visibility: visible;')]//input
+    \    ${status}    Run Keyword And Return Status    Run Keyword If    ${inputTextctrls}==True and ${inputArea}==True    Input Text    //div[contains(@id,'${iCounter}Display') and @onclick='beginInlineEditFRBlank(${j})']/preceding-sibling::div[contains(@id,'${iCounter}EditorDiv') and contains(@style,'visibility: visible;')]//input
+    \    ...    E
+    \    Run Keyword If    ${status}    Verify Element Visible    //div[contains(@id,'EditorDiv') and contains(@style,'position')][${iCounter}]/following-sibling::div[contains(@id,'DisplayDiv') and @class='frBlankAnswered']
+    : FOR    ${iCounter}    IN RANGE    4    ${xpathCount}+1
+    \    ${j}    Evaluate    ${iCounter}-2
+    \    Run Keyword And Ignore Error    Run Keyword If    '${inputTextctrls}'=='True'    Click Element    //div[contains(@id,'${iCounter}Display') and @onclick='beginInlineEditFRBlank(${j})']
+    \    ${inputArea}    Verify Element Visible    //div[contains(@id,'${iCounter}Display') and @onclick='beginInlineEditFRBlank(${j})']/preceding-sibling::div[contains(@id,'${iCounter}EditorDiv') and contains(@style,'visibility: visible;')]//input
+    \    ${status}    Run Keyword And Return Status    Run Keyword If    ${inputTextctrls}==True and ${inputArea}==True    Input Text    //div[contains(@id,'${iCounter}Display') and @onclick='beginInlineEditFRBlank(${j})']/preceding-sibling::div[contains(@id,'${iCounter}EditorDiv') and contains(@style,'visibility: visible;')]//input
+    \    ...    O
+    \    Run Keyword If    ${status}    Verify Element Visible    //div[contains(@id,'EditorDiv') and contains(@style,'position')][${iCounter}]/following-sibling::div[contains(@id,'DisplayDiv') and @class='frBlankAnswered']
+    [Teardown]    Stop Application
+
+ATC 285 - 8115358-Verify 'text field' is cleared or not when clicked on 'Reset' button.
+    [Documentation]    ATC 285 - 8115358-Verify 'text field' is cleared or not when clicked on 'Reset' button.
+    ...
+    ...    Steps:
+    ...    1.Login with Teacher credentials.
+    ...    2.Navigate to Management.
+    ...    3.Add Students and Titles to the Class.
+    ...    4.Navigate to New Assignments page and assign the assignment(Which having "Reset" button) to a student.
+    ...    5.Signout and Relogin with Student credentials.
+    ...    6.Verify Assignment list and start the assignment.
+    ...    7.Enter values into text field.
+    ...    8.Click on "Reset" button.
+    ...    9.Verify text field is cleared or not.
+    [Tags]    STUDENT_20    VERIFY_RESET_BUTTON    NA
+    Pass Execution    The reset button is only for the matching part. It does not clear the blanks.
+    ${uniqueVal}    GetUniqueValue    Class
+    ${className}    Set Variable    ${uniqueVal}
+    ${signUpTitleMenu}    Set Variable    CCS Motivation Math Level 01
+    ${assignmentsTileName}    Create List    ${signUpTitleMenu}
+    ${activitySelectMenu}    Set Variable    Unit 18 - Represent and Interpret Data
+    ${activityName}    Set Variable    Page 111 - Independent Practice
+    ${stdDetails}    Get Student Details    ${preStudentDetails}    ATC35
+    ${StdUserID}    Get From Dictionary    ${stdDetails}    User ID
+    ${StdPassword}    Get From Dictionary    ${stdDetails}    Password
+    ${TeacherUserName}    Set Variable    ${preTeacherID}
+    ${TeacherPassword}    Set Variable    ${preTeacherPassword}
+    ${userId}    Create List    ${StdUserID}
+    ${titleList}    Create List    ${signUpTitleMenu}
+    ${userStatusList}    Create List    True
+    Comment    Login with valid Teacher credentials.
+    ${loginStatus}    LoginToWizardApp    ${TeacherUserName}    ${TeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    Comment    Navigate to Management Page
+    Navigate To Management Page
+    Comment    selecting the frame
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Comment    Adding new class.
+    ${addClassStatus}    Add A Class Or Group    ${className}
+    Edit The Class Or Group Details
+    Comment    Add Students and Titles to the Class.
+    Edit Students Or Titles    ${userId}    ${userStatusList}    User Id
+    Edit Students Or Titles    ${titleList}    ${userStatusList}    Name
+    Navigate BackTo Home Page    Management
+    Navigate To Assignment Page
+    Navigate To New Assignments Page
+    Comment    Add Teacher Graded Assignments to the Student.
+    Add Assignment To A Student    ${className}    ${signUpTitleMenu}    ${activitySelectMenu}    ${activityName}
+    Close Browser
+    ${bStatus}    LoginToWizardApp    ${StdUserID}    ${StdPassword}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials.
+    Comment    Signout as Teacher and ReLogin with Student credentials
+    Comment    Run Keyword If    '${BROWSER}'=='ie'    Close Browser
+    Comment    Run Keyword If    '${BROWSER}'=='ie'    Open Browser    ${WizardURL}    ${BROWSER}
+    Comment    Sleep    10s
+    Comment    Run Keyword If    '${BROWSER}'=='ie'    Maximize Browser Window
+    Comment    ${loginStatus}    Run Keyword If    '${BROWSER}'=='ie'    Enter Login Details    ${StdUserID}    ${StdPassword}
+    Comment    Run Keyword If    '${loginStatus}'=='False' and '${BROWSER}'=='ie'    Fail    The user is not able to login with valid credentials.
+    Comment    ${loginStatus}    Run Keyword If    '${BROWSER}'!='ie'    Signout And Relogin    ${StdUserID}    ${StdPassword}
+    Comment    Run Keyword If    '${loginStatus}'=='False' and '${BROWSER}'!='ie'    Fail    The user is not able to login with valid credentials.
+    ${AssignmentsListStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.StudentHome.AssignmentsRow}    ${Delay}
+    ${NoAssignStatus}    Verify Element Visible    ${label.StudentHome.No Assignments}
+    ${AssignStatus}    Evaluate    ${AssignmentsListStatus}==True and ${NoAssignStatus}==False
+    Run Keyword If    ${AssignStatus}==True    Fail    For the above logged in Student User no assignments are available to verify the operations.
+    ${bStatus}=    String Should Contain    ${activityName}    -
+    ${activityNme}    Run Keyword If    ${bStatus}    Split String    ${activityName}
+    ${activityName}    Run Keyword If    ${bStatus}    Set Variable    ${activityNme[1]}
+    ${activityName}    Set Variable    ${activityName.strip()}
+    ${bstatus}    Run Keyword And Return Status    DoAssignment    ${signUpTitleMenu}    ${activityName}
+    Run Keyword If    ${bstatus}!=True    Fail and Capture Screenshot    ${signUpTitleMenu} ${activityName} is not avaibablefor the selected student.
+    Comment    Verify whether the assignment has "Submit" or "Save Answer" button
+    Wait And Click Element    //div[@id='assmtGrid']//div[contains(@id,'assmtGrid-row-2')]    2m
+    Wait Until Element Is Visible    //div[contains(text(),'Reset')]    ${TimeOut}
+    : FOR    ${iCount}    IN RANGE    0    10
+    \    Focus    //div[contains(@id,'blank001Display')]
+    \    Run Keyword And Continue On Failure    Wait And Click Element    //div[contains(@id,'blank001Display')]
+    \    ${bStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    //div[contains(@id,'blank001Editor')]//input    ${TimeOut}
+    \    Run Keyword If    '${bStatus}'!='True'    Continue For Loop
+    \    Run Keyword If    ${bStatus}    Exit For Loop
+    Input Text    //div[contains(@id,'blank001Editor')]//input    qa
+    Wait And Click Element    //div[@id='mx1_002']/div[1]
+    Wait And Click Element    //div[@id='mx1_003']/div[1]
+    Comment    Click on "Reset" button
+    Wait And Click Element    //div[contains(text(),'Reset')]
+    ${value}=    Get Value    //div[@id='blank001EditorDiv']//input
+    Run Keyword If    '${value}'=='qa'    Fail    Textfield is not cleared when click on 'Reset' button.
+    [Teardown]    Stop Application
+
+ATC 321 7659391-Verify whether Invalid alert message is displayed when "enter" button is pressed in keyboard
+    [Documentation]    ATC 321 7659391-Verify whether Invalid alert message is displayed when "enter" button is pressed in keyboard
+    ...    Steps:
+    ...    1)Open browser to login page
+    ...    2)Select teacher role from the "new user" role dropdown
+    ...    3)Enter the school-zipcode and press enter in the keyboard.
+    ...    4)Then an alert should not be displayed .
+    ...    5)Close the pop-up window and again select the "district admin" from the "new user" dropdown
+    ...    6)Enter the zip-code and again press enter from the keyboard.
+    ...    7)Again alert should not be displayed.
+    [Tags]    STUDENT_21    VERIFY_INVALID_ALERT_WHEN_PRESS_ON_ENTER_BUTTON_IN_KEYBOARD    MEDIUM
+    Comment    Open latest URL
+    OpenBrowserToLoginPage
+    Comment    Click on 'NewUser' button.
+    Wait And Click Element    ${button.login.newUser}
+    Sleep    2s
+    Comment    Creating a 'Teacher'.
+    ${kwStatus}    Select Role in Create Account    ${teacherRole}
+    Return From Keyword If    ${kwStatus}==False    Set Test Message    Teacher role is not selected from New User.
+    ${teacherRegCode}    Get Teacher Registration Code    ${CODES_URL}
+    Enter Text In Text Field    //input[@id='teacherSignUpDlg-registrationCode']    ${teacherRegCode}
+    Wait Until Element Is Visible    ${button.signUp.next}    ${Delay}
+    Click On Element    ${button.signUp.next}
+    Wait Until Element Is Visible    teacherSignUpDlg-zip    ${TimeOut}
+    Comment    Entering School's Zip Code
+    Input Text    teacherSignUpDlg-zip    ${schoolZipCode}
+    Press Key    teacherSignUpDlg-zip    \13
+    ${status}    Run Keyword And Return Status    Wait Until Element Is Visible    alertMessage    ${TimeOut}    ALert message is not displayed
+    Run Keyword And Continue On Failure    Run Keyword If    ${status}==False    Set Test Message    ALert message is not displayed
+    ...    ELSE    Fail    ALert message is displayed
+    Comment    Close Teacher creation (Zip code) window
+    Wait And Click Element    ${button.teacherSignUp.close}
+    Wait And Click Element    ${button.login.newUser}
+    Sleep    2s
+    Comment    Creating a 'District Admin'.
+    ${kwStatus}    Select Role in Create Account    ${districtAdmin}
+    Return From Keyword If    ${kwStatus}==False    ${kwStatus}
+    Comment    Entering School's Zip Code
+    Input Text    adminSignUpDlg-zip    ${schoolZipCode}
+    Press Key    adminSignUpDlg-zip    \13
+    ${status}    Run Keyword And Return Status    Wait Until Element Is Visible    alertMessage    ${TimeOut}    ALert message is not displayed
+    Run Keyword If    ${status}==False    Set Test Message    ALert message is not displayed
+    ...    ELSE    Fail    ALert message is displayed
+    [Teardown]    Stop Application
+
+ATC-479-MYS-1304-Verify whether the "Dijit PaletteTable' functioning is working or not in student assignments page.
+    [Documentation]    MYS-1304-Verify whether the "Dijit PaletteTable' \ functioning is working or not in student assignments page.
+    ...
+    ...    Step1 : Login as a Teacher.
+    ...
+    ...    Step2 : Add title(CCS Motivation Math Level 05) from management page.
+    ...
+    ...    Step3 : Add class ,students and titles from management page.
+    ...
+    ...    Step4 : Assign new assignment to the class.
+    ...
+    ...    Step5 : Signout and relogin as a student.
+    ...
+    ...    Step6 : Student do assignment \ and verify 'Dijit PaletteTable' \ functioning is working.
+    ...
+    ...    Step7 : Click on 'Dijit Palette cells' should be displayed in text box.
+    [Tags]    STUDENT_22    VERIFY_DIJIT_PALETTE_TABEL_FUNCTIONALITY    MEDIUM
+    ${titleList}    Create List    CCS Motivation Math Level 05
+    ${userStatusList}    Create List    true
+    ${AssignmentNameTitle}=    Set Variable    CCS Motivation Math Level 05
+    ${AssignmentNameSubTitle}=    Set Variable    Unit 17 - Divide Fractions and Whole Numbers
+    ${activityName}    Set Variable    Page 107 - Critical Thinking - Synthesis 1
+    ${uniqueVal}    GetUniqueValue
+    ${studentdetails}    Create Dictionary    User Name    ${uniqueVal}    Password    ${uniqueVal}pwd    First Name
+    ...    ${uniqueVal}_Fn    Middle Name    ${uniqueVal}_MN    Last Name    ChangeThis_Ln    Grade Level
+    ...    2
+    ${studentFN}    Get From Dictionary    ${studentdetails}    First Name
+    ${studentLName}    Get From Dictionary    ${studentdetails}    Last Name
+    ${StdUserID}    Get From Dictionary    ${studentdetails}    User Name
+    ${StdPassword}    Get From Dictionary    ${studentdetails}    Password
+    ${Studentname}=    Set Variable    ${studentFN}${SPACE}${studentLName}
+    ${ClassList}    Create List    SDT_Class${uniqueVal}_DijitPalette
+    ${className}    Set Variable    SDT_Class${uniqueVal}_DijitPalette
+    Comment    Login to wizard app with valid teacher credentials.
+    ${loginStatus}    LoginToWizardApp    ${preTeacherID}    ${preTeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    ...    ELSE    Set Test Message    The user is able to login successfully.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Comment    Search The Records    ${table.users}    ${text.management.search}    ${preTeacherID}
+    Comment    Common.Select The Row    ${table.users}    1
+    Comment    Add Titles to the Teacher from Management    ${AssignmentNameTitle}
+    Comment    Wait And Click Element    ${button.TEmanagement.addtitles.No}
+    Comment    Wait Until Element Is Visible    ${button.userDetails.edit}    2s
+    Add A Class Or Group    ${className}    \    SDT_test_DijitPalettetextinput button.
+    Comment    Select the Created Class name record.
+    ${rowNumber}    Select The Record In Table    ${table.classesAndGroups}    Name    ${className}    False
+    Run Keyword If    ${rowNumber}!=0    Wait Until Element Is Visible    ${button.classDetail.edit}    ${Delay}
+    ...    ELSE    Set Test Message    Logged in user does not have any class
+    Comment    Click on Edit button
+    Wait And Click Element    ${button.classDetail.edit}
+    Comment    Edit Titles to the class.
+    Edit Students Or Titles    ${titleList}    ${userStatusList}    Title Name
+    Wait Until Element is Invisible    ${button.editStudentOrEditClass.save}
+    Comment    Clicking on the button 'save'.
+    Wait And Click Element    ${button.classDetails.save}
+    AddClassToStudent    ${studentdetails}    ${ClassList}
+    Navigate BackTo Home Page    Management
+    Navigate To Assignment Page
+    Navigate To New Assignments Page
+    Comment    Add assignment to the student from new assignments page.
+    ${kwStatus}    Add Assignment To A Student    ${className}    ${AssignmentNameTitle}    ${AssignmentNameSubTitle}    ${activityName}
+    Run Keyword And Continue On Failure    Run Keyword If    ${kwStatus}    Set Test Message    Assignment is Handed out.
+    ...    ELSE    Fail    Assignment is not Handed out.
+    Close Browser
+    ${bStatus}    LoginToWizardApp    ${StdUserID}    ${StdPassword}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials.
+    Comment    Run Keyword If    '${BROWSER}'=='ie'    Close Browser
+    Comment    Run Keyword If    '${BROWSER}'=='ie'    Open Browser    ${WizardURL}    ${BROWSER}
+    Comment    Sleep    10s
+    Comment    Run Keyword If    '${BROWSER}'=='ie'    Maximize Browser Window
+    Comment    ${loginStatus}    Run Keyword If    '${BROWSER}'=='ie'    Enter Login Details    ${StdUserID}    ${StdPassword}
+    Comment    Run Keyword If    '${loginStatus}'=='False' and '${BROWSER}'=='ie'    Fail    The user is not able to login with valid credentials.
+    Comment    ${loginStatus}    Run Keyword If    '${BROWSER}'!='ie'    Signout And Relogin    ${StdUserID}    ${StdPassword}
+    Comment    Run Keyword If    '${loginStatus}'=='False' and '${BROWSER}'!='ie'    Fail    The user is not able to login with valid credentials.
+    Comment    after login check whether assignments are available
+    ${AssignmentsListStatus}    Verify The Assignments List
+    Run Keyword If    ${AssignmentsListStatus}==False    Fail    For the above logged in Student User no assignments are available to verify the operations.
+    Comment    select the assignment which is teacher graded
+    ${assignmentRowIndex}    Student Do The Assignment    ${AssignmentNameTitle}    ${activityName}
+    Run Keyword If    ${assignmentRowIndex}==0    Fail    The specifed assigment was not found in the assignemnts list.
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait And Click Element    ${textbox.studentAssignment.TexAreabox}
+    Wait Until Element Is Visible    ${table.studentAssignment.dijitPaletteTable}    ${TimeOut}    "dijitPaletteTable" table is not displayed
+    Comment    Verifying the "dijitPalette" functioning ,When click on 'dijit Palette cells' should be displayed \ in text box.
+    ${dijitPaletteTable cells}    Create List    ¢    ÷    ≥    ≤    ≅
+    ...    ≠    ±    •    ×    ⋅    √
+    ...    ∠    π
+    : FOR    ${eachElement}    IN    @{dijitPaletteTable cells}
+    \    Wait And Click Element    //td[(@class='dojoxEntityPaletteCell') and (text()='${eachElement}')]
+    Wait And Click Element    ${button.studentAssignments.openended.submit}
+    Comment    Wait And Click Element    ${button.studentAssignments.submit}
+    Wait Until Element Is Visible    ${label.studentAssignment.correctAnswer}    ${TimeOut}    Answer is not saved properly.
+    ${textAreaMsgStatus}    Get Text    ${text.studentAssignment.textDisplay}
+    String Should Contain    ${textAreaMsgStatus}    ¢÷≥≤≅≠±•×⋅√∠π
+    [Teardown]    Stop Application

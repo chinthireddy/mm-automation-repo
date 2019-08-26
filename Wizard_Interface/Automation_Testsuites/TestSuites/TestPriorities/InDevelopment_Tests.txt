@@ -1,0 +1,1405 @@
+*** Settings ***
+Resource          ../../Keywords/super.txt
+
+*** Test Cases ***
+ATC 218 225 - verify whether same details are displayed after refreshing the print page
+    [Documentation]    Verifies whether the details of the "classes","classcodes","tecodes" are displayed in print page of teacher regostration proces even after rfreshing the page.
+    ...
+    ...    1.Open URL to Login page.
+    ...
+    ...    2.Do registration for new Teacher.
+    ...
+    ...    3.Click on "Print" after at the end of registration process.
+    ...
+    ...    4.Switch to Print window and verify the details of registration process by refreshing the print page.
+    ...
+    ...    5.Pass on matching details else fail the scenario.
+    Comment    Creating new Teacher
+    ${teacher03Details}    Get Ms Excel Row Values Into Dictionary Based On Key    ${PrerequisitesFilePath}    TeacherPrerequisites    TeacherDetails
+    OpenBrowserToLoginPage
+    ${assignedClassesDictionary}    Create New Teacher    ${teacher03Details}    Print
+    ${tc03UserId}    Get From Dictionary    ${teacher03Details}    UserName
+    ${tc03FName}    Get From Dictionary    ${teacher03Details}    FirstName
+    ${tc03LName}    Get From Dictionary    ${teacher03Details}    LastName
+    ${keys}    Get Dictionary Keys    ${assignedClassesDictionary}
+    ${keysLength}    Get Length Of List    ${keys}
+    ${values}    Create List
+    : FOR    ${key}    IN RANGE    0    ${keysLength}-2
+    \    ${value}    Get From Dictionary    ${assignedClassesDictionary}    @{keys}[${key}]
+    \    Append To List    ${values}    ${value}
+    ${dictTECodes}    Set Variable    ${preReqTECodes}
+    Log    ${dictTECodes}
+    Log    ${keys}
+    Log    ${values}
+    @{windowIdentifiers}    Get Window Identifiers
+    Log    @{windowIdentifiers}
+    ${titlesCount}    Get Length Of List    @{windowIdentifiers}
+    Select Window    @{windowIdentifiers}[1]
+    Sleep    3s
+    ${teacherUIDStatus}    Run Keyword And Return Status    Verify Element Present    //h2[contains(text(),'${tc03UserId}')]
+    Run Keyword If    ${teacherUIDStatus} != True    Fail    Teacher UID Details not present
+    Comment    Dont delete below commented code if the window names or identifiers are added to the scenario this code should be enabled.
+    Comment    Run Keyword If    ${titlesCount} >= 2    Run Keyword And Ignore Error    Select Window By Title    ${windowIdentifiers}[1]
+    Comment    Reload Page
+    Comment    Sleep    2s
+    Comment    ${classes}    Get Matching Xpath Values    //table//tbody//tr    //td[1]/text()
+    Comment    ${classCodes}    Get Matching Xpath Values    //table//tbody//tr    //td[2]//text()
+    Comment    ${teCodes}    Get Text    //p/text()
+    Comment    @{teCodeValues}    Split String    ${teCodes}    ,
+    Comment    List Should Contain Sub List    ${keys}    ${classes}    The registered classes,classcodes and TECodes are not appearing in the print window.
+    Comment    List Should Contain Sub List    ${values}    ${classCodes}    The registered classes,classcodes and TECodes are not appearing in the print window.
+    Comment    List Should Contain Sub List    ${dictTECodes}    @{teCodeValues}    The registered classes,classcodes and TECodes are not appearing in the print window.
+    [Teardown]    Stop Application
+
+ATC 415 - Student - User is unable to write the assignment
+    [Documentation]    Verifying whether the user is able to write the assignment and \ verifying the passage writing accepting input or not.
+    ...
+    ...    1.Login as teacher.
+    ...
+    ...    2.Assign "CCS Reading Assessments Level 2" assignment with sub title "01-02 Form A: Part 2 - Performance Tasks 1 and 2" to a student.
+    ...
+    ...    3.Login as student and start assignment goto 4th question of assignment.
+    ...
+    ...    4.Go down to the passage writing in the same question and input any text in the text area.
+    ...
+    ...    5.Fail if the text area is not accepting input and remaining as image.
+    ${preTeacherDetails02}    Create Dictionary    UserName    rhwpte+ta121314@gmail.com    Password    rhwpte+ta121314
+    ${secondTeacherCreationStatus}    Set Variable    True
+    Comment    Assign "01-02 Form A: Part 2 - Performance Tasks 1 and 2" assignment to a student
+    Run Keyword If    "${secondTeacherCreationStatus}"!="True"    Fail    Second Teacher Prerequisite has not been executed.
+    ${teacherUId}    Get From Dictionary    ${preTeacherDetails02}    UserName
+    ${teacherPassword}    Get From Dictionary    ${preTeacherDetails02}    Password
+    ${statusList}    Create List    true
+    ${activityName}    Create List    01-02 Form A: Part 2
+    ${subTitle}    Set Variable    01-02 Form A: Part 2 - Performance Tasks 1 and 2
+    ${signUpTitleMenu}    Create List    CCS Reading Assessments Level 2
+    ${uniqueVal}    Get Unique Id
+    ${className}    Set Variable    TestAsgnmnt_${uniqueVal}
+    ${studentDetails}    Create Dictionary    User Name    AAAStd${uniqueVal}    Password    ${uniqueVal}pwd    First Name
+    ...    Std_${uniqueVal}_FN    Last Name    Std_${uniqueVal}_LN    Middle Name    MN    Grade Level
+    ...    2
+    ${studentUN}    Get From Dictionary    ${studentDetails}    User Name
+    ${studentPWD}    Get From Dictionary    ${studentDetails}    Password
+    ${classesList}    Create List    ${className}
+    ${bStatus}=    LoginToWizardApp    ${teacherUId}    ${teacherPassword}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Add A Class Or Group    ${className}
+    ${rowNo}    Select The Record In Table    ${table.classesAndGroups}    Name    ${className}
+    Run Keyword If    "${rowNo}"=="0"    Fail    No record found with the given class details.
+    Wait And Click Element    ${button.classDetail.edit}
+    Edit Students Or Titles    ${signUpTitleMenu}    ${statusList}    Name
+    Wait And Click Element    ${button.classDetails.save}
+    AddClassToStudent    ${studentDetails}    ${classesList}
+    Navigate BackTo Home Page    Management
+    Navigate To Assignment Page
+    Navigate To New Assignments Page
+    Add Assignment To A Student    ${className}    @{signUpTitleMenu}[0]    ${activitySelectMenu}    ${activityName}
+    Comment    Signout as a teacher and login as the student
+    Signout And Relogin    ${studentUN}    ${studentPWD}
+    ${AssignmentsStatus}    Verify The Assignments List
+    Run Keyword If    ${AssignmentsStatus}==False    Fail    For the above logged in Student User no assignments are available to verify the operations.
+    Comment    Wait and click on start button
+    ${bstatus}    Run Keyword And Return Status    DoAssignment    @{signUpTitleMenu}[0]    ${subTitle}
+    Run Keyword If    ${bstatus}== False    Fail and Capture Screenshot    ${signUpTitleMenu} ${subTitle} is not avaibablefor the selected student.
+    Run Keyword And Ignore Error    Wait Until Element Is Visible    mixedStemHTML    30s    'InputTextControls' are not visible at Assignments page.
+    Wait Until Keyword Succeeds    2m    2s    Click Element    ${button.writeAssignment.QuestionsButton}
+    Comment    Select the 4th question.
+    Wait Until Keyword Succeeds    2m    2s    Click Element    //tr//td[contains(text(),'4')]
+    Wait Until Keyword Succeeds    2m    2s    Click Element    ${button.writeAssignment.QuestionsButton}
+    : FOR    ${loop}    IN RANGE    0    3
+    \    Send    {PGDN}
+    Comment    Try to answer the performence task2: writing
+    ${inputTextStatus}    Run Keyword And Return Status    Input Text    //div[@id='frhgStemHTML']//div[@id='blank002EditorDiv' and contains(@style,'visibility: visible;')]//div[@id='blank002Editor']    SDT TEST
+    Run Keyword If    ${inputTextStatus}!=True    Fail    Unable to answer the "performance task2: writing" question.
+    [Teardown]    Stop Application
+
+ATC-542-MYS-981-Search mechanism, for all long User lists, for filtering
+    [Documentation]    MYS-981-Teacher-Verify weather Search mechanism, for all long User lists, for filtering is workig or not.
+    ...
+    ...
+    ...    Step 1 : Login as Teacher.
+    ...
+    ...    Step 2 : Add a atudent from management page.
+    ...
+    ...    Step 3 : verifying the search field in management page.
+    ...
+    ...    Step 4 : Search the record based on the last name.
+    ...
+    ...    Step 5 : verify weather the unique record is displayed in users table or not.
+    ${preTeacherID}    Set Variable    rhwpte+ta24041@gmail.com
+    ${preTeacherPassword}    Set Variable    test1234
+    Comment    Run Keyword If    '${preTeacherID}'=='${EMPTY}'    Fail    PreRequisite teacher is not created
+    ${uniqueVal}    GetUniqueValue
+    ${className}    GetUniqueValue    QAClass
+    ${studentDetails}    Create Dictionary    First Name    FN${uniqueVal}    Last Name    LN${uniqueVal}    User Name
+    ...    ${uniqueVal}    Password    Password${uniqueVal}    Role    \    Middle Name
+    ...    ${EMPTY}    Grade Level    5
+    ${studentLN}    Get From Dictionary    ${studentDetails}    Last Name
+    Comment    Login to wizard application with Teacher credentials.
+    ${expectedList}    Create List    LN${uniqueVal}
+    ${loginStatus}=    LoginToWizardApp    ${preTeacherID}    ${preTeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.    ELSE    Set Test Message    The user is able to login successfully.
+    Comment    Navigate to Management page and Selecting the frame School Admin.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Add A Class Or Group    ${className}
+    ${selectRecordStatus}    Select The Record In Table    ${table.classesAndGroups}    Name    ${className}
+    Run Keyword Unless    ${selectRecordStatus}    Fail    The record is not selected in class details table.
+    Wait And Click Element    ${button.classDetail.edit}
+    Wait And Click Element    ${button.students.edit}
+    Run Keyword And Return Status    Wait Until Element Is Visible    ${check.editStudentsorTitles.selectAllCheckbox}    ${Delay}    List editor page is not opened when click on \ class details edit button.
+    ${searchRecordStatus}    Search The Records    ${table.fromTable}    ${Text.search.studentOrTitles}    ${studentLN}
+    Run Keyword If    "${searchRecordStatus}"=="False"    Fail    Record is not found by using search filter
+    ${studentStatus}    Verify Values In Table    ${table.fromTable}    Last Name    ${studentLN}
+    Run Keyword If    "${studentStatus}"=="False"    Fail    Student record is not found using search filter
+    Wait And Click Element    ${button.editStudentOrEditTitle.cancel}
+    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.classesAndGroups}    ${TimeOut}    Management page is not visble when cancel button clicked in listeditor page.
+    Wait And Click Element    ${button.classDetails.editTitles}
+    Run Keyword And Return Status    Wait Until Element Is Visible    ${check.editStudentsorTitles.selectAllCheckbox}    ${Delay}    List editor page is not opened when click on \ class details edit button.
+    ${searchRecordStatus}    Search The Records    ${table.fromTable}    ${Text.search.studentOrTitles}    CCS Math Assessments Level 3
+    Run Keyword If    "${searchRecordStatus}"=="False"    Fail    Record is not found by using search filter
+    ${titleStatus}    Verify Values In Table    ${table.fromTable}    Name    CCS Math Assessments Level 3
+    Run Keyword If    "${titleStatus}"=="False"    Fail    Titles are not found using search filter
+    Comment    Add a student from the management page.
+    AddStudent    ${studentDetails}
+    Wait Until Element is Invisible    ${button.newUser.oK}
+    ${searchRecordStatus}    Search The Records    ${table.users}    ${text.management.search}    ${studentLN}
+    Run Keyword If    "${searchRecordStatus}"=="False"    Fail    Record is not found by using search filter
+    ${recordSelectionStatus}    CommonLibrary.Select The Row    ${table.users}    1
+    Wait And Click Element    ${button.userDetails.edit}
+    Wait And Click Element    ${button.classesAndGroups.edit}
+    Run Keyword And Return Status    Wait Until Element Is Visible    ${check.editStudentsorTitles.selectAllCheckbox}    ${Delay}    List editor page is not opened when click on \ class details edit button.
+    ${searchRecordStatus}    Search The Records    ${table.fromTable}    ${Text.search.studentOrTitles}    ${className}
+    Run Keyword If    "${searchRecordStatus}"=="False"    Fail    Record is not found by using search filter
+    Wait And Click Element    ${button.editStudentOrEditTitle.cancel}
+    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.classesAndGroups}    ${TimeOut}    Management page is not visble when cancel button clicked in listeditor page.
+    [Teardown]    Stop Application
+
+ATC-543-MYS-766-Teacher-Make the green and gray Grade buttons the same size as the Review button
+    [Documentation]    MYS-766-Teacher-Make the green and gray Grade buttons the same size as the Review button.
+    ...
+    ...    Step 1 : Login as Teacher.
+    ...
+    ...    Step 2 : Add a class from management and add student ,Titles.
+    ...
+    ...    Step 3 : Navigate back to the home page assign new hand book assignment to the class.
+    ...
+    ...    Step 4 : Again back to the home page and select the gade assignments click on show grade assignments.
+    ...
+    ...    Setp5 : verify weather the green Grade button the same size as the Review button.
+    Run Keyword If    '${preTeacherID}'=='${EMPTY}'    Fail    PreRequisite teacher is not created
+    ${AssignmentNameTitle}=    Set Variable    @{preSignUpTitleMenus}[1]
+    ${AssignmentNameSubTitle}=    Set Variable    @{preActivityNames}[1]
+    ${activityName}=    Create List    ${AssignmentNameSubTitle}
+    ${titleList}    Create List    @{preSignUpTitleMenus}[1]
+    ${statusList}    Create List    True
+    ${uniqueVal}    GetUniqueValue
+    ${classList}    Create List    Class${uniqueVal}
+    ${studentDetails}    Create Dictionary    First Name    FN${uniqueVal}    Last Name    LN${uniqueVal}    User Name
+    ...    ${uniqueVal}    Password    Password${uniqueVal}    Role    \    Middle Name
+    ...    ${EMPTY}    Grade Level    5
+    Comment    Login to wizard application with Teacher credentials.
+    ${loginStatus}=    LoginToWizardApp    ${preTeacherID}    ${preTeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.    ELSE    Set Test Message    The user is able to login successfully.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Comment    Add class from management page.
+    ${classStatus}    Add A Class Or Group    Class${uniqueVal}
+    Run Keyword Unless    ${classStatus}    Fail    Class name was not found in class details window.
+    Wait And Click Element    ${button.classDetail.edit}
+    Edit Students Or Titles    ${titleList}    ${statusList}    Name
+    Wait And Click Element    ${button.classDetails.save}
+    Comment    Add class to student
+    ${studentStatus}    AddClassToStudent    ${studentDetails}    ${classList}
+    Run Keyword Unless    ${studentStatus}    Fail    The student record was not found in user details table.
+    Navigate BackTo Home Page    Management
+    Navigate To Assignment Page
+    Navigate To New Assignments Page
+    Comment    Add assignment to a student from new assignments page.
+    Add Assignment To A Student    Class${uniqueVal}    ${AssignmentNameTitle}    ${AssignmentNameSubTitle}    ${activityName}    ${EMPTY}    1
+    ...    \    True
+    Navigate BackTo Home Page    New Assignments
+    Reload Page
+    Select Graded Assignments
+    Navigate To Show Graded Assignments
+    Comment    Verifying the grade and review buttons sizes same or not.
+    ${gradeStatus}    Get Element Attribute    ${button.gradeAssignments.gradeButton}@style
+    ${reviewStatus}    Get Element Attribute    ${button.reviewAssignment.Review}@style
+    ${sizesOfGradeAndReviewButtons}    Should Be Equal    ${gradeStatus}    ${reviewStatus}
+    Run Keyword Unless    ${sizesOfGradeAndReviewButtons}    Fail    The Grade and Review buttons sizes are different.
+    [Teardown]    Stop Application
+
+Delete the classes groups and Users of schools
+    Run Keyword If    '${preDistrictAdminStatus}'=='False'    Fail    PreRequisite District Admin is not created
+    ${DistrictAdminUid}    Get From Dictionary    ${preDistrictAdminDetails}    UserName
+    ${DistrictAdminPwd}    Get From Dictionary    ${preDistrictAdminDetails}    Password
+    Comment    Login to wizard application with District admin credentials.
+    ${loginStatus}    LoginToWizardApp    ${DistrictAdminUid}    ${DistrictAdminPwd}
+    Run Keyword If    ${loginStatus}    Set Test Message    District Admin-${DistrictAdminUid} logged in.    ELSE    Fail    Login failed with District Admin-${DistrictAdminUid}
+    ${schoolNames}    Create List    Aledo High School    Coder Elementary School    Vandagriff Elementary    Mcanally Intermediate    Aledo Ninth Grade Campus
+    ...    Mccall Elementary    Aledo Learning Center    Stuard Elementary    Aledo Middle School
+    : FOR    ${sName}    IN    @{schoolNames}
+    \    Select The School Name    ${sName}
+    \    Delete users and Classes of School
+
+Delete Users By Student Role
+    Run Keyword If    '${preDistrictAdminStatus}'=='False'    Fail    PreRequisite District Admin is not created
+    ${DistrictAdminUid}    Get From Dictionary    ${preDistrictAdminDetails}    UserName
+    ${DistrictAdminPwd}    Get From Dictionary    ${preDistrictAdminDetails}    Password
+    Comment    Login to wizard application with District admin credentials.
+    ${loginStatus}    LoginToWizardApp    ${DistrictAdminUid}    ${DistrictAdminPwd}
+    Run Keyword If    ${loginStatus}    Set Test Message    District Admin-${DistrictAdminUid} logged in.    ELSE    Fail    Login failed with District Admin-${DistrictAdminUid}
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Table Column Values Sorting    ${table.users}    Role
+    Sleep    10s
+    ${studentsCount}    Get Matching Xpath Count    //div[@id='userGrid']/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]//div[contains(@id,'Grid-row-')]/table/tr/td[@class='dgrid-cell dgrid-cell-padding dgrid-column-roles field-roles' and contains(text(),'Student')]
+    : FOR    ${iCount}    IN RANGE    0    2000
+    \    ${userRecordVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='userGrid']/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]//div[contains(@id,'Grid-row-')]/table/tr/td[@class='dgrid-cell dgrid-cell-padding dgrid-column-roles field-roles' and contains(text(),'Student')]    10s
+    \    Run Keyword If    "${userRecordVisibleStatus}"=="False"    Table Column Values Sorting    ${table.users}    Role
+    \    ${userRecordVisibleStatus}    Run Keyword If    "${userRecordVisibleStatus}"=="False"    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='userGrid']/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]//div[contains(@id,'Grid-row-')]/table/tr/td[@class='dgrid-cell dgrid-cell-padding dgrid-column-roles field-roles' and contains(text(),'Student')]
+    \    Run Keyword If    "${userRecordVisibleStatus}"=="False"    Exit For Loop
+    \    Wait And Click Element    //div[@id='userGrid']/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]//div[contains(@id,'Grid-row-')]/table/tr/td[@class='dgrid-cell dgrid-cell-padding dgrid-column-roles field-roles' and contains(text(),'Student')]
+    \    Wait And Click Element    //div[@class='adminButtonGreen2d' and contains(@id,'deleteUserBtn')]
+    \    Wait Until Element Is Visible    //div[@id='promptMessage']    ${TimeOut}
+    \    Wait And Click Element    //div[@id="promptYesBtn"]/button
+    \    Wait Until Element is Invisible    //img[contains(@src,'loading.gif') and contains(@style,'display: block;')]
+    \    Comment    Run Keyword If    ${iCount}==${studentsCount}-1    Table Column Values Sorting    ${table.users}    Role
+    \    Comment    Run Keyword If    ${iCount}==${studentsCount}-1    Sleep    10s
+    \    Comment    ${additionalCount}    Run Keyword If    ${iCount}==${studentsCount}-1    Get Matching Xpath Count    //div[@id='userGrid']/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]//div[contains(@id,'Grid-row-')]/table/tr/td[@class='dgrid-cell dgrid-cell-padding dgrid-column-roles field-roles' and contains(text(),'Student')]
+    \    ...    ELSE    Set Variable    0
+    \    Comment    ${studentsCount}    Run Keyword If    ${iCount}==${studentsCount}-1    Evaluate    ${studentsCount}+${additionalCount}
+    \    ...    ELSE    Set Variable    ${studentsCount}
+    [Teardown]    Stop Application
+
+ATC-544-MYS-289-Nice dialog is needed when deleting a Class or a Group
+    [Documentation]    MYS-289-Nice dialog is needed when deleting a Class or a Group
+    ...
+    ...    Step1 : Login as a teacher.
+    ...
+    ...    Step 2 : Add a class,student,titles from management page.
+    ...
+    ...    Step 3 : Assign new assignment to the class.
+    ...
+    ...    Step 4 : Try to delete a class from management.
+    ...
+    ...    Step 5 : Verify whether confirm window is displayed or not.
+    Run Keyword If    '${preTeacherID}'=='${EMPTY}'    Fail    PreRequisite teacher is not created
+    ${className}    GetUniqueValue    QAClass
+    Comment    Login to wizard application with teacher credentials
+    ${loginStatus}=    LoginToWizardApp    ${preTeacherID}    ${preTeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.    ELSE    Set Test Message    The user is able to login successfully.
+    Comment    Navigate to Management page.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Comment    Add a class from management page.
+    Add A Class Or Group    ${className}
+    ${classStatus}    Select The Record In Table    ${table.classesAndGroups}    Name    ${className}
+    Run Keyword Unless    ${classStatus}    Fail    ${className} was not selected in class details table.
+    Wait And Click Element    ${button.classes.delete}
+    Comment    verify whether the java alert window is present or not
+    ${javaAertStatus}    Run Keyword And Return Status    Alert Should Be Present    Are you sure you want to delete the class "${className}"?
+    ${confirmAlertStatus}    Run Keyword And Return Status    Verify Element visible    ${label.deleteClassOrGroup.promptMsg}
+    Run Keyword If    "${javaAertStatus}"=="True" and \ "${confirmAlertStatus}"=="False"    Fail    Proper alert is not displayed when deleting the class.
+    [Teardown]    Stop Application
+
+ATC-545-MYS-993-student-Assignment material: Copyright to be moved to 2015
+    [Documentation]    MYS-993-student-Assignment material: Copyright to be moved to 2015
+    ...
+    ...
+    ...    Step 1 : Login as a teacher
+    ...
+    ...    Step 2 : Add a group ,student,titles from management page.
+    ...
+    ...    Step 3: Assign new assignment to the student to a student.
+    ...
+    ...    Step 4 : Sign out and relogin as a student.
+    ...
+    ...    Step 5 : Statrt assignment and verify Assignment material: Copyright to be moved to 2015 or not.
+    Run Keyword If    '${preTeacherID}'=='${EMPTY}'    Fail    PreRequisite teacher is not created
+    ${uniqueVal}    GetUniqueValue
+    ${studentUID}    Set Variable    ${uniqueVal}
+    ${studentPWD}    Set Variable    Password${uniqueVal}
+    ${AssignmentNameTitle}    Set Variable    @{preSignUpTitleMenus}[1]
+    ${activitySelectMenu}    Set Variable    @{preActivityNames}[0]
+    ${activityName}    Set Variable    @{preActivityNames}[0]
+    ${titleList}    Create List    @{preSignUpTitleMenus}[1]
+    ${statusList}    Create List    True
+    ${studentDetails}    Create Dictionary    First Name    FN${uniqueVal}    Last Name    LN${uniqueVal}    User Name
+    ...    ${uniqueVal}    Password    Password${uniqueVal}    Role    \    Middle Name
+    ...    ${EMPTY}    Grade Level    5
+    ${groupList}    Create List    Group${uniqueVal}
+    Comment    Login to wizard application with Teacher credentials
+    ${loginStatus}=    LoginToWizardApp    ${preTeacherID}    ${preTeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.    ELSE    Set Test Message    The user is able to login successfully.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Comment    Add a group from management page
+    Add A Class Or Group    Group${uniqueVal}    \    Created by QA    Group
+    Wait And Click Element    ${button.classDetail.edit}
+    Edit Students Or Titles    ${titleList}    ${statusList}    Name
+    Wait And Click Element    ${button.classDetails.save}
+    AddClassToStudent    ${studentDetails}    ${groupList}
+    Navigate BackTo Home Page    Management
+    Navigate To Assignment Page
+    Navigate To New Assignments Page
+    Comment    Add assignment to a group
+    Add Assignment To A Student    Group${uniqueVal}    ${AssignmentNameTitle}    ${activitySelectMenu}    ${activityName}    ${studentUID}    1
+    ...    Group    False
+    Comment    Signout and relogin as a student
+    ${loginStatus}    Signout And Relogin    ${studentUID}    ${studentPWD}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    ${AssignmentsListStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.StudentHome.AssignmentsRow}    ${Delay}
+    ${NoAssignStatus}    Verify Element Visible    ${label.StudentHome.No Assignments}
+    ${AssignStatus}    Evaluate    ${AssignmentsListStatus}==True and ${NoAssignStatus}==False
+    Run Keyword If    ${AssignStatus}==True    Fail    For the above logged in Student User no assignments are available to verify the operations.
+    Wait And Click Element    //div[@class='adminButtonGreen']
+    Comment    verify whether the copyright to be moved to 2015
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    ${assignmentPageStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    mcStemHTML    ${TimeOut}
+    Run Keyword If    "${assignmentPageStatus}"=="False"    Fail    Writting assignment page is not open
+    Wait Until Element Is Visible    ${common.studentassignment.footerCopyright}
+    ${copyRightStatus}    Get Text    ${common.studentassignment.footerCopyright}
+    ${copyRightStatus}    String Should Contain    ${copyRightStatus}    Copyright © 2015
+    Run Keyword Unless    ${copyRightStatus}    Fail    ${copyRightStatus} is mismatch with actual and expected.
+    [Teardown]    Stop Application
+
+ATC-546-MYS-984 - Verify Resource Link added into Help Dropdown
+    [Documentation]    MYS-984-Resource Link added into Help Dropdown
+    ...
+    ...    Step 1 : Login as teacher.
+    ...
+    ...    Step 2 : click on help drop down and select resources link.
+    ...
+    ...    Step 3 : verify whether the resources link is properly working or not.
+    Run Keyword If    '${preTeacherID}'=='${EMPTY}'    Fail    PreRequisite teacher is not created
+    ${Login_Status}=    LoginToWizardApp    ${preTeacherID}    ${preTeacherPassword}
+    Run Keyword If    ${Login_Status}==False    Fail    The user is not able to login with valid credentials.
+    ${enhancementAlert}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${common.window.Enhancements}    ${TimeOut}
+    Run Keyword If    ${enhancementAlert}    Wait And Click Element    ${common.windowEnhancements.alertOkBtn}
+    Focus    ${button.home.help}
+    Wait And Click Element    ${button.home.help}
+    Comment    Verify the resources link in Help menu
+    Wait And Click Element    ${link.home.Resources}
+    @{windowNames}=    Get Window Titles
+    Select Window By Title    @{windowNames}[1]
+    ${windowNames}=    Set Variable    @{windowNames}
+    Comment    Select the resources window when select on resources.
+    ${bStatus}=    Select the desired window    ${windowNames}    Mentoring Minds
+    Run Keyword If    ${bStatus}==False    Fail    The Mentoring Minds Window is not able to open.
+    [Teardown]    Stop Application
+
+ATC-223-MYS-868-EmailSupportFromGradingPage
+    [Documentation]    868-Verifying Email Support from To Be Graded Page.
+    ...
+    ...    Steps:
+    ...    1.Login with valid Teacher credentials
+    ...    2.Navigate to "Grade Assignments" Page
+    ...    3.Clicking on "Grade" button.
+    ...    4.Clicking "Help" menu and Choose "Email Support"
+    ...    5.Entering data into all fields
+    ...    6.Clicking Send button and wait for success alert.
+    Comment    Login with Valid Teacher Credentials.
+    ${loginStatus}    LoginToWizardApp    ${preTeacherID}    ${preTeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    Select Graded Assignments
+    comment    clicking the "Grade" button
+    Wait And Click Element    ${button.gradeAssignments.gradeButton}
+    Comment    Validate the functionality of 'Email Support'.
+    Wait And Click Element    ${button.home.help}    ${TimeOut}    Help
+    Comment    Verify the Quick Tips in the help menu
+    ${bStatus}    Verify Element Visible    ${link.home.emailSupport}
+    Run Keyword Unless    ${bStatus}    Click Element    ${button.home.help}
+    Comment    selecting Email support from Help menu
+    ${subMenuSelectionStatus}    Run Keyword And Return Status    Wait And Click Element    ${link.home.emailSupport}
+    Run Keyword Unless    ${subMenuSelectionStatus}    Wait And Click Element    ${button.home.help}    ${TimeOut}    Help
+    Run Keyword Unless    ${subMenuSelectionStatus}    Wait And Click Element    ${link.home.emailSupport}
+    Comment    Entering input text into Email support fields
+    Input Text    ${text.support.itsAbout}    STD TEST
+    Input Text    ${text.support.description}    STD TEST
+    Input Text    ${text.support.emailId}    rhwpte+tchSTD TEST@gmail.com
+    Wait And Click Element    ${button.emailSupport.send}
+    Comment    Verifying to successfull alert message
+    ${SucuccessfullMsgStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.support.successMsg}    30s
+    Run Keyword Unless    ${SucuccessfullMsgStatus}    Fail    The message is not send sucessfully.
+    [Teardown]    Stop Application
+
+ATC-547-MYS-260-Nice dialog is needed when remove assignment from manageassignments page.
+    [Documentation]    MYS-260-Nice dialog is needed when remove assignment from manageassignments page.
+    ...
+    ...    Step 1 : Login as a Teacher.
+    ...
+    ...    Step 2 : Assign book assignment to the student from new assignment page.
+    ...
+    ...    Step 3 : Verifying the assignment is displayed and click on remove button in manage assignment page.
+    ...
+    ...    Step 4 : Verify wether nice dialog box is displayed or not when remove assignment from the manage assignment page. \
+    Run Keyword If    '${preTeacherID}'=='${EMPTY}'    Fail    PreRequisite teacher is not created
+    ${AssignmentNameTitle}=    Set Variable    @{preSignUpTitleMenus}[0]
+    ${AssignmentNameSubTitle}=    Set Variable    @{preActivityNames}[0]
+    ${activityName}=    Create List    ${AssignmentNameSubTitle}
+    ${titleList}    Create List    ${AssignmentNameTitle}
+    ${statusList}    Create List    True
+    ${uniqueVal}    GetUniqueValue
+    ${stdDetails}    Get Student Details    ${preStudentDetails}    ATC05
+    ${className}    Set Variable    @{preClassesList}[0]
+    ${studentFn}    Get From Dictionary    ${stdDetails}    First Name
+    ${studentLn}    Get From Dictionary    ${stdDetails}    Last Name
+    ${studentName}    Set Variable    ${studentFn} ${studentLn}
+    ${studentUserId}    Get From Dictionary    ${stdDetails}    User ID
+    Comment    Login to wizard application as a teacher
+    ${loginStatus}=    LoginToWizardApp    ${preTeacherID}    ${preTeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.    ELSE    Set Test Message    The user is able to login successfully.
+    Navigate To Assignment Page
+    Navigate To New Assignments Page
+    Comment    Add assignment to a student
+    ${kwStatus}    Teacher.Add Assignment To A Student    ${className}    ${AssignmentNameTitle}    ${EMPTY}    ${activityName}    ${studentUserId}
+    ...    1    class    True
+    Navigate BackTo Home Page    New Assignments
+    Reload Page
+    Navigate To Assignment Page
+    Navigate To Manage Assignments Page
+    Comment    select the Manage Assignments frame.
+    Wait And Select Frame    ${header.assignments.assignmentManage}
+    Comment    View the Assignments of the class and student
+    View Assignments For the selected student of a Class    ${className}    ${studentName}    ${AssignmentNameTitle}
+    ${bstatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.assignment.showCompletedAssignments}    10s
+    Run Keyword If    ${bstatus}!=True    Fail    Button 'Show Completed Assignments ' is not visible
+    Wait Until Element Is Visible    //span[contains(text(),'${AssignmentNameTitle}')]/parent::td[contains(text(),'${AssignmentNameSubTitle}')]/div[1]    10s    Student is not displayed when select the the class from manage assignment page.
+    Wait And Click Element    //span[contains(text(),'${AssignmentNameTitle}')]/parent::td[contains(text(),'${AssignmentNameSubTitle}')]/div[1]
+    Wait Until Element Is Visible    //td[text()='${studentName}']    10s    Assignment title is not displayed when select the the student from manage assignment page.
+    Wait And Click Element    //span[contains(text(),'${AssignmentNameTitle}')]/parent::td[contains(text(),'${AssignmentNameSubTitle}')]/following-sibling::td[5]/img
+    Comment    Verifying nice dialog is displayed or not when removing assignment from manageassignment.
+    ${javaAertStatus}    Run Keyword And Return Status    Alert Should Be Present    Are you sure you want to remove this assignment?
+    ${alertStatus}    Run Keyword And Return Status    Verify Element visible    ${label.login.AlertMsg}
+    Run Keyword If    "${javaAertStatus}"=="True" or \ "${alertStatus}"=="False"    Fail    Proper alert is not displayed when deleting the class.
+    Run Keyword If    ${alertStatus}    Click Element    ${button.Alert.OK}
+    [Teardown]    Stop Application
+
+ATC 473 District admin-Verify the search functionality in archive students table
+    [Documentation]    ATC 473 District admin-Verify the search functionality in archive students table
+    ...
+    ...    Step1 : Login to wizard application with district admin credentials.
+    ...
+    ...    Step2 : Add student role from management page.
+    ...
+    ...    Step3 : Click on Archive students button
+    ...
+    ...    Step4 : Verify the record using search functionality,unique record should be displayed.
+    Run Keyword If    '${preDistrictAdminStatus}'=='False'    Fail    PreRequisite District Admin is not created
+    ${districtAdminUserID}    Get From Dictionary    ${preDistrictAdminDetails}    UserName
+    ${districtAdminPWD}    Get From Dictionary    ${preDistrictAdminDetails}    Password
+    comment    Login to Wizard application with DistrictAdmin credentials.
+    ${loginStatus}    LoginToWizardApp    ${districtAdminUserID}    ${districtAdminPWD}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    Select The School Name    ${preSchoolName}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    ${uniqueVal}    GetUniqueValue    ArchiveTest
+    comment    To add student roles from management table.
+    ${adminUserID}    Add Role From Management    FN${uniqueVal}    LN${uniqueVal}    ${uniqueVal}    Password${uniqueVal}    Student
+    ...    \    5
+    Wait Until Element is Invisible    ${button.newUser.oK}
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.management.studentArchive}
+    Run Keyword If    ${bStatus}    Wait And Click Element    ${button.management.studentArchive}
+    ${listEditorTable}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.fromTable}    ${TimeOut}    students list editor table is not visble.
+    Comment    To search the record in archive students table.
+    Enter Text In Text Field    ${Text.search.studentOrTitles}    ${adminUserID}
+    ${recordCount}    Get Matching Xpath Count    ${table.fromTable}//div[@class='dgrid-content ui-widget-content']//div[@role='row']
+    ${recordsStatus}    String Should Contain    ${recordCount}    1
+    Run Keyword Unless    ${recordsStatus}    Fail    Students records count were mismatched using search functionality.
+    Comment    Verifying close button functionality in listeditor page
+    ${closeBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.listEditor.close}    ${TimeOut}    Close button is not visible in list editor page.
+    Wait And Click Element    ${button.listEditor.close}
+    Wait Until Element is Invisible    ${button.listEditor.close}
+    ${printOrExportwindowStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.printOrExport.PrintOrExport}    ${TimeOut}    Print/Export window is not visible when close the list editor table.
+    [Teardown]    Stop Application
+
+ATC 474 School admin-Verify the search functionality in archive students table
+    [Documentation]    ATC 474 \ School admin-Verify the search functionality in archive students table
+    ...
+    ...    Step1 : Login to wizard application with School admin credentials.
+    ...
+    ...    Step2 : Add student role from management page.
+    ...
+    ...    Step3 : Click on Archive students button
+    ...
+    ...    Step4 : Verify the record using search functionality,unique record should be displayed.
+    Run Keyword If    '${preScriptStatus}'=='False'    Fail    PreRequisite School Admin is not created
+    ${SchoolAdminUid}    Get From Dictionary    ${preSchoolAdminDetails}    UserName
+    ${SchoolAdminPwd}    Get From Dictionary    ${preSchoolAdminDetails}    Password
+    comment    Login to Wizard application with school Admin credentials.
+    ${loginStatus}    LoginToWizardApp    ${SchoolAdminUid}    ${SchoolAdminPwd}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    ${uniqueVal}    GetUniqueValue    ArchiveTest
+    comment    To add student roles from management table.
+    ${adminUserID}    Add Role From Management    FN${uniqueVal}    LN${uniqueVal}    ${uniqueVal}    Password${uniqueVal}    Student
+    ...    \    5
+    Wait Until Element is Invisible    ${button.newUser.oK}
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.management.studentArchive}
+    Run Keyword If    ${bStatus}    Wait And Click Element    ${button.management.studentArchive}
+    ${listEditorTable}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.fromTable}    ${TimeOut}    Students list editor table is not visble.
+    Comment    To search the record in archive students table.
+    Enter Text In Text Field    ${Text.search.studentOrTitles}    ${adminUserID}
+    ${recordCount}    Get Matching Xpath Count    ${table.fromTable}//div[@class='dgrid-content ui-widget-content']//div[@role='row']
+    ${recordsStatus}    String Should Contain    ${recordCount}    1
+    Run Keyword Unless    ${recordsStatus}    Fail    Students records count were mismatched using search functionality.
+    Comment    Verifying close button functionality in listeditor page
+    ${closeBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.listEditor.close}    ${TimeOut}    Close button is not visible in list editor page.
+    Wait And Click Element    ${button.listEditor.close}
+    Wait Until Element is Invisible    ${button.listEditor.close}
+    ${printOrExportwindowStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.printOrExport.PrintOrExport}    ${TimeOut}    Print/Export window is not visible when close the list editor table.
+    [Teardown]    Stop Application
+
+ATC 475 District admin-Verify the search functionality in promote students table
+    [Documentation]    ATC 475 District admin-Verify the search functionality in promote students table
+    ...
+    ...    Step1 : Login to wizard application with district admin credentials.
+    ...
+    ...    Step2 : Add student role from management page.
+    ...
+    ...    Step3 : Click on promote students button
+    ...
+    ...    Step4 : Verify the record using search functionality,unique record should be displayed.
+    Run Keyword If    '${preDistrictAdminStatus}'=='False'    Fail    PreRequisite District Admin is not created
+    ${districtAdminUserID}    Get From Dictionary    ${preDistrictAdminDetails}    UserName
+    ${districtAdminPWD}    Get From Dictionary    ${preDistrictAdminDetails}    Password
+    comment    Login to Wizard application with DistrictAdmin credentials.
+    ${loginStatus}    LoginToWizardApp    ${districtAdminUserID}    ${districtAdminPWD}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    Select The School Name    ${preSchoolName}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    ${uniqueVal}    GetUniqueValue    ArchiveTest
+    comment    To add student roles from management table.
+    ${adminUserID}    Add Role From Management    FN${uniqueVal}    LN${uniqueVal}    ${uniqueVal}    Password${uniqueVal}    Student
+    ...    \    5
+    Wait Until Element is Invisible    ${button.newUser.oK}
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.managment.promoteStudents}
+    Run Keyword If    ${bStatus}    Wait And Click Element    ${button.managment.promoteStudents}
+    ${listEditorTable}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.fromTable}    ${TimeOut}    student list editor table is not visble.
+    Comment    To search the record in archive students table.
+    Enter Text In Text Field    ${Text.search.studentOrTitles}    ${adminUserID}
+    ${recordCount}    Get Matching Xpath Count    ${table.fromTable}//div[@class='dgrid-content ui-widget-content']//div[@role='row']
+    ${recordsStatus}    String Should Contain    ${recordCount}    1
+    Run Keyword Unless    ${recordsStatus}    Fail    Students records count were mismatched using search functionality.
+    Comment    Verifying close button functionality in listeditor page
+    ${closeBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.listEditor.close}    ${TimeOut}    Close button is not visible in list editor page.
+    Wait And Click Element    ${button.listEditor.close}
+    Wait Until Element is Invisible    ${button.listEditor.close}
+    ${printOrExportwindowStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.printOrExport.PrintOrExport}    ${TimeOut}    Print/Export window is not visible when close the list editor table.
+    [Teardown]    Stop Application
+
+ATC 476 School admin-Verify the search functionality in promote students table
+    [Documentation]    ATC 476 School admin-Verify the search functionality in promote students table
+    ...
+    ...    Step1 : Login to wizard application with School admin credentials.
+    ...
+    ...    Step2 : Add student role from management page.
+    ...
+    ...    Step3 : Click on promote students button
+    ...
+    ...    Step4 : Verify the record using search functionality,unique record should be displayed.
+    Run Keyword If    '${preScriptStatus}'=='False'    Fail    PreRequisite School Admin is not created
+    ${SchoolAdminUid}    Get From Dictionary    ${preSchoolAdminDetails}    UserName
+    ${SchoolAdminPwd}    Get From Dictionary    ${preSchoolAdminDetails}    Password
+    comment    Login to Wizard application with school Admin credentials.
+    ${loginStatus}    LoginToWizardApp    ${SchoolAdminUid}    ${SchoolAdminPwd}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    ${uniqueVal}    GetUniqueValue    ArchiveTest
+    comment    To add student roles from management table.
+    ${adminUserID}    Add Role From Management    FN${uniqueVal}    LN${uniqueVal}    ${uniqueVal}    Password${uniqueVal}    Student
+    ...    \    5
+    Wait Until Element is Invisible    ${button.newUser.oK}
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.managment.promoteStudents}
+    Run Keyword If    ${bStatus}    Wait And Click Element    ${button.managment.promoteStudents}
+    ${listEditorTable}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.fromTable}    ${TimeOut}    Students list editor table is not visble.
+    Comment    To search the record in archive students table.
+    Enter Text In Text Field    ${Text.search.studentOrTitles}    ${adminUserID}
+    ${recordCount}    Get Matching Xpath Count    ${table.fromTable}//div[@class='dgrid-content ui-widget-content']//div[@role='row']
+    ${recordsStatus}    String Should Contain    ${recordCount}    1
+    Run Keyword Unless    ${recordsStatus}    Fail    Students records count were mismatched using search functionality.
+    Comment    Verifying close button functionality in listeditor page
+    ${closeBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.listEditor.close}    ${TimeOut}    Close button is not visible in list editor page.
+    Wait And Click Element    ${button.listEditor.close}
+    Wait Until Element is Invisible    ${button.listEditor.close}
+    ${printOrExportwindowStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.printOrExport.PrintOrExport}    ${TimeOut}    Print/Export window is not visible when close the list editor table.
+    [Teardown]    Stop Application
+
+ATC 477-Verify the foot panel in standard mastery reports
+    [Documentation]    ATC 477-Verify the foot panel in standard mastery reports
+    ...
+    ...    Step1 : Login to wizard app with teacher credentials.
+    ...
+    ...    Step2 : Navigate to reports page.
+    ...
+    ...    Step3 : Verify the standard mastery/ Item Analysis reports and verify the foot panel in standard mastery/ Item Analysis reports page "Common Core Standards © 2015 NGA Center & CCSSO. Click here for a complete list of standards and definitions. "should be displayed.
+    Run Keyword If    ${preScriptStatus}==False    Fail    No teacher data is avaialble.
+    ${className}    Get From Dictionary    ${AssignmentDetails}    Class Name
+    ${reportList}    Create List    ${preReportType1}    ${preReportType2}
+    ${SubjectName}    Get From Dictionary    ${AssignmentDetails}    Subject Name
+    ${AssignmentNameSubTitle}=    Get From Dictionary    ${AssignmentDetails}    Activity
+    Comment    Login with Teacher Credentials.
+    ${loginStatus}    LoginToWizardApp    ${preTeacherID}    ${preTeacherPassword}
+    Run Keyword If    '${loginStatus}'=='False'    Fail    The user is not able to login with valid credentials.
+    : FOR    ${itr}    IN    @{reportList}
+    \    Get Report for A Class or Group    ${itr}    Classes    ${className}    ${SubjectName}    ${EMPTY}
+    \    ...    ${AssignmentNameSubTitle}
+    \    Comment    Selecting the report frame.
+    \    Wait And Select Frame    ${header.report.reportFrame}
+    \    ${status}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.Subject}    ${TimeOut}
+    \    Run Keyword If    '${status}'!='True'    Fail    The Standard Mastery Report is not displayed
+    \    Comment    Verifing the foot panel in reports page.
+    \    ${footpanelStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.footPanel}    ${TimeOut}    Foot panel is not visible in standard reports page.
+    \    ${footpanelMsg}    Get Text    ${label.reports.footPanel}
+    \    ${footPanelMsgStatus}    String Should Contain    ${footpanelMsg}    Common Core Standards © 2015 NGA Center & CCSSO. Click here for a complete list of standards and definitions.
+    \    Run Keyword Unless    ${footPanelMsgStatus}    Fail    Foot panel message is mismatched.
+    \    Navigate BackTo Home Page    Reports
+    [Teardown]    Stop Application
+
+ATC 480 Teacher is unable to edit Admin roles
+    [Documentation]    ATC 480 Teacher is unable to edit Admin roles
+    ...
+    ...    Step1 : Login to wizard application with teacher credentials.
+    ...
+    ...    Step2 : Click on show all users in management page.
+    ...
+    ...    Step3 : Select the records distrct admin,school admin,teacher and Teacher,School admin.
+    ...
+    ...    Step5 : verify the edit button,Edit button should be in disabled mode.
+    Run Keyword If    ${preScriptStatus}==False    Fail    No student data is avaialble.
+    Comment    Login with Teacher Credentials.
+    ${loginStatus}    LoginToWizardApp    ${preTeacherID}    ${preTeacherPassword}
+    Run Keyword If    '${loginStatus}'=='False'    Fail    The user is not able to login with valid credentials.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    ${showAllUsersStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.management.showAllUsers}    ${TimeOut}    Show all users button is not visible in managment page.
+    Wait And Click Element    ${button.management.showAllUsers}
+    ${showMyStudentsStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.management.showMyStudents}    ${TimeOut}    Show my students \ button is not visible in managment page.
+    Comment    Verifing admins records are editable or not
+    ${nonEditableRolesList}    Create List    District Admin    Teacher,School Admin    School Admin
+    : FOR    ${itr}    IN    @{nonEditableRolesList}
+    \    Select The Record In Table    ${table.users}    Role    ${itr}
+    \    ${recordEditButtonStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.management.disabledEdit}    ${TimeOut}    Disabled edit button is not visible in user details window
+    \    Run Keyword Unless    ${recordEditButtonStatus}    Fail    The admin record is editable by teacher
+    [Teardown]    Stop Application
+
+ATC 481 Verify teacher can edit user id and password for student
+    [Documentation]    ATC 481 Verify teacher can edit user id and password for student
+    ...
+    ...    Step1 : Login to wizard application with teacher credentials
+    ...
+    ...    Step2 : Click on show all users button in management page.
+    ...
+    ...    Step3 : Add a student from management page.
+    ...
+    ...    Step4 : Select the record and click on edit button to modify the username and password,clcik on save button.
+    ...
+    ...    Step5 : verify the modified details,Login as a student wit modified details,the student should be login as modified credentials.
+    Run Keyword If    ${preScriptStatus}==False    Fail    No student data is avaialble.
+    ${uniqueVal}    GetUniqueValue    Student
+    ${studentdetails}    Create Dictionary    User Name    ${uniqueVal}Uid    Password    ${uniqueVal}pwd    First Name
+    ...    ${uniqueVal}_Fn    Middle Name    ${uniqueVal}_MN    Last Name    ChangeThis_Ln    Grade Level
+    ...    2
+    ${studentFN}    Get From Dictionary    ${studentdetails}    First Name
+    ${modStdUid}    Set Variable    modified${uniqueVal}Uid
+    ${modStdPwd}    Set Variable    modified${uniqueVal}pwd
+    Comment    Login with Valid teacher Credentials.
+    ${loginStatus}=    LoginToWizardApp    ${preTeacherID}    ${preTeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.    ELSE    Set Test Message    The user is able to login successfully.
+    Comment    Navigate to Management page and Selecting the frame School Admin.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    ${showAllUsersStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.management.showAllUsers}    ${TimeOut}    Show all users button is not visible in managment page.
+    Wait And Click Element    ${button.management.showAllUsers}
+    ${showMyStudentsStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.management.showMyStudents}    ${TimeOut}    Show my students \ button is not visible in managment page.
+    Comment    add the Student.
+    AddStudent    ${studentdetails}
+    Select The Record In Table    ${table.users}    First Name    ${studentFN}
+    Wait And Click Element    ${button.userDetails.edit}
+    Wait And Click Element    ${button.users.showPassword}
+    Clear Text    ${text.userDetails.userName}
+    Enter Text In Text Field    ${text.userDetails.userName}    ${modStdUid}
+    Clear Text    ${text.userDetails.userPassword}
+    Enter Text In Text Field    ${text.userDetails.userPassword}    ${modStdPwd}
+    Wait And Click Element    ${button.userDetails.save}
+    Wait Until Element is Invisible    ${button.userDetails.save}
+    Close Browser
+    Comment    Verifying login successful a student with modified credentials or not
+    ${loginStatus}    LoginToWizardApp    ${modStdUid}    ${modStdPwd}
+    Run Keyword If    ${loginStatus}==False    Fail    Student is not able to login with modified credentials.
+    [Teardown]    Stop Application
+
+ATC 483-District admin-Search and close functionality in print/Export
+    [Documentation]    ATC 483-District admin-Search and close functionality in print/Export table
+    ...
+    ...    Step1 : Login to wizard application with district admin credentials.
+    ...
+    ...    Step2 : Add student role from management page.
+    ...
+    ...    Step3 : Click on print/Export button and select entire school
+    ...
+    ...    Step4 : Verify the record using search functionality,unique record should be displayed.
+    ...
+    ...    Step5 : Verify the close button,close button should be displayed.
+    Run Keyword If    '${preDistrictAdminStatus}'=='False'    Fail    PreRequisite District Admin is not created
+    ${districtAdminUserID}    Get From Dictionary    ${preDistrictAdminDetails}    UserName
+    ${districtAdminPWD}    Get From Dictionary    ${preDistrictAdminDetails}    Password
+    comment    Login to Wizard application with DistrictAdmin credentials.
+    ${loginStatus}    LoginToWizardApp    ${districtAdminUserID}    ${districtAdminPWD}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    Select The School Name    ${preSchoolName}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    ${uniqueVal}    GetUniqueValue    ExportTest
+    comment    To add student roles from management table.
+    ${stdUserID}    Add Role From Management    FN${uniqueVal}    LN${uniqueVal}    ${uniqueVal}    Password${uniqueVal}    Student
+    ...    \    5
+    Wait Until Element is Invisible    ${button.newUser.oK}
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.management.PrintORExport}
+    Run Keyword If    ${bStatus}    Wait And Click Element    ${button.management.PrintORExport}
+    Select DropDown Values    ${dropdown.management.printOrExport}    ${dropdown.printOrExport.menu}    Entire School
+    Wait And Click Element    ${button.printOrExport.continue}
+    ${listEditorTable}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.fromTable}    ${TimeOut}    student list editor table is not visble.
+    Comment    To search the record in archive students table.
+    Search The Records    ${table.fromTable}    ${Text.search.studentOrTitles}    ${stdUserID}
+    ${recordCount}    Get Matching Xpath Count    ${table.fromTable}//div[@class='dgrid-content ui-widget-content']//div[@role='row']
+    ${recordsStatus}    String Should Contain    ${recordCount}    1
+    Run Keyword Unless    ${recordsStatus}    Fail    Students records count were mismatched using search functionality.
+    Comment    Verifying close button functionality in listeditor page
+    ${closeBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.listEditor.close}    ${TimeOut}    Close button is not visible in list editor page.
+    Wait And Click Element    ${button.listEditor.close}
+    Wait Until Element is Invisible    ${button.listEditor.close}
+    ${printOrExportwindowStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.printOrExport.PrintOrExport}    ${TimeOut}    Print/Export window is not visible when close the list editor table.
+    [Teardown]    Stop Application
+
+ATC 484-School admin-Search and close functionality in print/Export
+    [Documentation]    ATC 484-School admin-Search and close functionality in print/Export table
+    ...
+    ...    Step1 : Login to wizard application with school admin credentials.
+    ...
+    ...    Step2 : Add student role from management page.
+    ...
+    ...    Step3 : Click on print/Export button and select entire school
+    ...
+    ...    Step4 : Verify the record using search functionality,unique record should be displayed.
+    ...
+    ...    Step5 : Verify the close button,close button should be displayed.
+    Run Keyword If    '${preScriptStatus}'=='False'    Fail    PreRequisite School Admin is not created
+    ${SchoolAdminUid}    Get From Dictionary    ${preSchoolAdminDetails}    UserName
+    ${SchoolAdminPwd}    Get From Dictionary    ${preSchoolAdminDetails}    Password
+    comment    Login to Wizard application with school Admin credentials.
+    ${loginStatus}    LoginToWizardApp    ${SchoolAdminUid}    ${SchoolAdminPwd}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    ${uniqueVal}    GetUniqueValue    ExportTest
+    comment    To add student roles from management table.
+    ${stdUserID}    Add Role From Management    FN${uniqueVal}    LN${uniqueVal}    ${uniqueVal}    Password${uniqueVal}    Student
+    ...    \    5
+    Wait Until Element is Invisible    ${button.newUser.oK}
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.management.PrintORExport}
+    Run Keyword If    ${bStatus}    Wait And Click Element    ${button.management.PrintORExport}
+    Select DropDown Values    ${dropdown.management.printOrExport}    ${dropdown.printOrExport.menu}    Entire School
+    Wait And Click Element    ${button.printOrExport.continue}
+    ${listEditorTable}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.fromTable}    ${TimeOut}    student list editor table is not visble.
+    Comment    To search the record in archive students table.
+    Search The Records    ${table.fromTable}    ${Text.search.studentOrTitles}    ${stdUserID}
+    ${recordCount}    Get Matching Xpath Count    ${table.fromTable}//div[@class='dgrid-content ui-widget-content']//div[@role='row']
+    ${recordsStatus}    String Should Contain    ${recordCount}    1
+    Run Keyword Unless    ${recordsStatus}    Fail    Students records count were mismatched using search functionality.
+    Comment    Verifying close button functionality in listeditor page
+    ${closeBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.listEditor.close}    ${TimeOut}    Close button is not visible in list editor page.
+    Wait And Click Element    ${button.listEditor.close}
+    Wait Until Element is Invisible    ${button.listEditor.close}
+    ${printOrExportwindowStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.printOrExport.PrintOrExport}    ${TimeOut}    Print/Export window is not visible when close the list editor table.
+    [Teardown]    Stop Application
+
+ATC 485-Teacher-Search and close functionality in print/Export
+    [Documentation]    ATC 485-Teacher-Search and close functionality in print/Export table
+    ...
+    ...    Step1 : Login to wizard application with teacher credentials.
+    ...
+    ...    Step2 : Add student role from management page.
+    ...
+    ...    Step3 : Click on print/Export button and select entire school
+    ...
+    ...    Step4 : Verify the record using search functionality,unique record should be displayed.
+    ...
+    ...    Step5 : Verify the close button,close button should be displayed.
+    Run Keyword If    ${preScriptStatus}==False    Fail    No student data is avaialble.
+    ${ClassName}=    Set Variable    @{preClassesList}[0]
+    ${uniqueVal}    GetUniqueValue    ExportTest
+    ${studentDetails}    Create Dictionary    User Name    ${uniqueVal}    Password    Password${uniqueVal}    First Name
+    ...    ${uniqueVal}FN    Last Name    LN${uniqueVal}    Middle Name    MN    Grade Level
+    ...    K
+    ${studentId}    Get From Dictionary    ${studentDetails}    User Name
+    comment    Login to Wizard application with teacher credentials.
+    ${loginStatus}    LoginToWizardApp    ${preTeacherID}    ${preTeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    comment    To add student roles from management table.
+    AddStudent    ${studentDetails}
+    Add Students To A Class Or Group    ${ClassName}
+    Wait And Click Element    ${button.classDetails.save}
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.management.PrintORExport}    ${TimeOut}    print or export button is not visible
+    Run Keyword If    ${bStatus}    Wait And Click Element    ${button.management.PrintORExport}
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[text()='Print/Export Students']    ${TimeOut}    print or export window is not visible
+    Select DropDown Values    ${dropdown.management.printOrExport}    ${dropdown.printOrExport.menu}    All of My Students
+    Wait And Click Element    ${button.printOrExport.continue}
+    ${listEditorTable}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.fromTable}    ${TimeOut}    student list editor table is not visble.
+    Comment    To search the record in archive students table.
+    Search The Records    ${table.fromTable}    ${Text.search.studentOrTitles}    ${studentId}
+    ${recordCount}    Get Matching Xpath Count    ${table.fromTable}//div[@class='dgrid-content ui-widget-content']//div[@role='row']
+    ${recordsStatus}    String Should Contain    ${recordCount}    1
+    Run Keyword Unless    ${recordsStatus}    Fail    Students records count were mismatched using search functionality.
+    Comment    Verifying close button functionality in listeditor page
+    ${closeBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.listEditor.close}    ${TimeOut}    Close button is not visible in list editor page.
+    Wait And Click Element    ${button.listEditor.close}
+    Wait Until Element is Invisible    ${button.listEditor.close}
+    ${printOrExportwindowStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.printOrExport.PrintOrExport}    ${TimeOut}    Print/Export window is not visible when close the list editor table.
+    [Teardown]    Stop Application
+
+ATC 482 Verify teacher can edit user id and password for same teacher
+    [Documentation]    ATC 482 ATC 481 Verify teacher can edit user id and password for same teacher
+    ...
+    ...    Step1 : Login to wizard application with district admin credentials
+    ...
+    ...    Step2 : Add teacher role from management page
+    ...
+    ...    Step1 :Signout and relogin as teacher credentials
+    ...
+    ...    Step2 : Select the teacher record from management page
+    ...
+    ...    Step4 : Click on edit button to modify the username and password,clcik on save button.
+    ...
+    ...    Step5 : verify the modified details,Login as a teacher with modified details,the teacher should be loggedin as modified credentials.
+    Run Keyword If    '${preDistrictAdminStatus}'=='False'    Fail    PreRequisite District Admin is not created
+    ${districtAdminUserID}    Get From Dictionary    ${preDistrictAdminDetails}    UserName
+    ${districtAdminPWD}    Get From Dictionary    ${preDistrictAdminDetails}    Password
+    ${uniqueVal}    GetUniqueValue    teach
+    ${modifiedTechUid}    Set Variable    rhwpte+modified${uniqueVal}@gmail.com
+    ${modifiedTeachPwd}    Set Variable    modified${uniqueVal}pwd
+    comment    Login to Wizard application with DistrictAdmin credentials.
+    ${loginStatus}    LoginToWizardApp    ${districtAdminUserID}    ${districtAdminPWD}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    Select The School Name    ${preSchoolName}
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    comment    To add teacher role from management page.
+    ${preTeacherID}    Add Role From Management    FN${uniqueVal}    LN${uniqueVal}    ${uniqueVal}    ${teacherPassword}    Teacher
+    ...    \    5
+    Wait Until Element is Invisible    ${button.newUser.oK}
+    Close Browser
+    Comment    Login with Valid teacher Credentials.
+    ${loginStatus}=    LoginToWizardApp    ${preTeacherID}    ${teacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.    ELSE    Set Test Message    The user is able to login successfully.
+    Wait And Click Element    ${button.home.iAgree}
+    Comment    Navigate to Management page and Selecting the frame School Admin.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Select The Record In Table    ${table.users}    Role    Teacher
+    Wait And Click Element    ${button.userDetails.edit}
+    Wait And Click Element    ${button.users.showPassword}
+    Clear Text    ${text.userDetails.userName}
+    Enter Text In Text Field    ${text.userDetails.userName}    ${modifiedTechUid}
+    Clear Text    ${text.userDetails.userPassword}
+    Enter Text In Text Field    ${text.userDetails.userPassword}    ${modifiedTeachPwd}
+    Wait And Click Element    ${button.userDetails.save}
+    Wait Until Element is Invisible    ${button.userDetails.save}
+    Close Browser
+    Comment    Verifying login successfull a teacher with modified credentials or not
+    ${loginStatus}    LoginToWizardApp    ${modifiedTechUid}    ${modifiedTeachPwd}
+    Run Keyword If    ${loginStatus}==False    Fail    Teacher is not able to login with modified credentials.
+    [Teardown]    Stop Application
+
+ATC 486 verify the pencil icon functionality in reports filters page
+    [Documentation]    ATC 486 verify the pencil icon functionality in reports filters page
+    ...
+    ...    Step1 : Login to wizard app with teacher credentials
+    ...
+    ...    Step2 : Add a studnt to a class,titles from management page
+    ...
+    ...    Step3 : Navigate back to home page and navigate to new assignments page
+    ...
+    ...    Step4 : Add assignment to a class
+    ...
+    ...    Step5 : Navigate back to home page and navigate to reports filters page.
+    ...
+    ...    Step6 : verify the Item analysis report,report should be generated.
+    ...
+    ...    Step7 : verify the pencil icon,pencil icon should be visible.
+    ...
+    ...    Step8 : Click on pencil icon show grade page should be displayed
+    Run Keyword If    ${preScriptStatus}==False    Fail    No student data is avaialble.
+    ${ClassName}=    Set Variable    @{preClassesList}[0]
+    ${uniqueVal}    GetUniqueValue    SDTTest
+    ${studentDetails}    Create Dictionary    User Name    ${uniqueVal}    Password    Password${uniqueVal}    First Name
+    ...    ${uniqueVal}FN    Last Name    LN${uniqueVal}    Middle Name    MN    Grade Level
+    ...    K
+    ${studentFN}    Get From Dictionary    ${studentDetails}    First Name
+    ${studentLN}    Get From Dictionary    ${studentDetails}    Last Name
+    ${Studentname}    Set Variable    ${studentFN}${SPACE}${studentLN}
+    ${AssignmentNameTitle}    Set Variable    CCS Math Assessments Level 2
+    ${titleList}    Create List    ${AssignmentNameTitle}
+    ${AssignmentNameSubTitle}    Set Variable    01 Form A
+    ${statusList}    Create List    true
+    Comment    Login with Valid teacher Credentials.
+    ${loginStatus}=    LoginToWizardApp    ${preTeacherID}    ${preTeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.    ELSE    Set Test Message    The user is able to login successfully.
+    Comment    Navigate to Management page and Selecting the frame School Admin.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    ${classesList}    Create List    ${ClassName}
+    Comment    Add class to a student,titles from the management page
+    AddClassToStudent    ${studentDetails}    ${classesList}
+    Select The Record In Table    ${table.classesAndGroups}    Name    ${ClassName}
+    Edit The Class Or Group Details
+    Edit Students Or Titles    ${titleList}    ${statusList}    Name
+    Wait And Click Element    ${button.classDetails.save}
+    Navigate BackTo Home Page    Management
+    Comment    Add assignment to a class from new assignments page
+    Add Assignment To A Student    ckass    ${AssignmentNameTitle}    ${EMPTY}    ${AssignmentNameSubTitle}    \    1
+    ...    \    True
+    Navigate BackTo Home Page    New Assignments
+    Comment    Verify the report from report filters page
+    Get Report for A Class or Group    ${preReportType2}    Classes    ${ClassName}    CCS Math Assessments Level 2    \    ${AssignmentNameSubTitle}
+    ...    5/5/2015    6/6/2015
+    Wait And Select Frame    ${header.report.reportFrame}
+    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]
+    Wait Until Element is Invisible    //div[@id='pageOverlayBg']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]
+    Wait Until Element is Invisible    //div[@id='pageOverlayDiv']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]
+    Comment    To verify the pencil icon in item analysis report
+    ${status}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.Subject}    ${TimeOut}    The standard mastery report is not generated.
+    ${pencilIconStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${image.reports.pencilIcon}    ${TimeOut}    Pencil icon is not visible in reports page
+    Wait And Click Element    ${image.reports.pencilIcon}
+    Comment    show grade assignments page is displayed or not when click on pencil icon
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[contains(@id,'gradeAssmtsListGrid-row')]    ${TimeOut}    When click on pencil icon in reports page show grade assignments page is not displayed.
+    [Teardown]    Stop Application
+
+ATC 487 District Admin - unable to import empty file
+    [Documentation]    ATC 487 District Admin unable to import empty file
+    ...
+    ...    Step1 : Login to wizard application with district admin crdentials
+    ...
+    ...    Step2 : Select the school and create empty dictionary
+    ...
+    ...    Step3 : click on import and select "Yes,I am ready to import"
+    ...
+    ...    Step4 : Try to upload empty file,error message should be displayed "Your import was not successfull. No user records were found in the import file."
+    Run Keyword If    '${preDistrictAdminStatus}'=='False'    Fail    PreRequisite District Admin is not created
+    ${dAdmin_ID}    Get From Dictionary    ${preDistrictAdminDetails}    UserName
+    ${dAdmin_Password}    Get From Dictionary    ${preDistrictAdminDetails}    Password
+    comment    Login to wizard application with district admin credentials.
+    ${loginStatus}    LoginToWizardApp    ${dAdmin_ID}    ${dAdmin_Password}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    Select The School Name    ${preSchoolName}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    ${districtAdminDetails}    Create Dictionary
+    ${schoolDetails}    Create Dictionary    1    ${districtAdminDetails}
+    ${filePath}    Set Variable    ${EXECDIR}\\Automation_Testsuites\\TestData\\ATC487.csv
+    ${uploadedFileStatus}    Create Csv File Using Dictionary Values    ${filePath}    ${schoolDetails}
+    Comment    Verifying whether district admin is unable to import empty file or not.
+    ${uploadStatus}    Upload Students From CSV    ${filePath}
+    Remove File    ${EXECDIR}\\Automation_Testsuites\\TestData\\ATC487.csv
+    Comment    Verify whether the import displays an error or not
+    Log    ${impUsersMsg}
+    ${errorMsgStatus}    Run Keyword And Return Status    Should Be Equal As Strings    ${impUsersMsg}    ${None}
+    Run Keyword If    ${errorMsgStatus}    Fail    The import is accepting empty data.
+    Comment    Verify whether it displays expected error message or not.
+    ${errMsgStatus}    String Should Contain    ${impUsersMsg}    No user records were found in the import file.
+    Run Keyword Unless    ${errMsgStatus}    Fail    The displayed errormsg is not matching with the expected one.
+    [Teardown]    Stop Application
+
+ATC 488 Teacher - Verify the search functionality and close button in select individual
+    [Documentation]    ATC 488 Verify the search functionality and close button in select individual
+    ...
+    ...    Step1 : Login to wizard application with teacher details.
+    ...
+    ...    Step2 : Add class to a Student,titles from management page.
+    ...
+    ...    Step3 : Navigate back to home page and select assignments
+    ...
+    ...    Step4 : Navigate to new assignments page and select the class
+    ...
+    ...    Step5 : Click on select individual link student list editor should be displayed.
+    ...
+    ...    Step6 : To search the student record with student first name unique record should be displayed.
+    ...
+    ...    Step7 : Verify the close button in student list editor page,click on the close button class name should be visible in new assignments page.
+    Run Keyword If    ${preScriptStatus}==False    Fail    No student data is avaialble.
+    ${ClassName}=    Set Variable    @{preClassesList}[0]
+    ${uniqueVal}    GetUniqueValue    SDTTest
+    ${studentDetails}    Create Dictionary    User Name    ${uniqueVal}    Password    Password${uniqueVal}    First Name
+    ...    ${uniqueVal}FN    Last Name    LN${uniqueVal}    Middle Name    MN    Grade Level
+    ...    K
+    ${studentFN}    Get From Dictionary    ${studentDetails}    First Name
+    Comment    Login with Valid teacher Credentials.
+    ${loginStatus}=    LoginToWizardApp    ${preTeacherID}    ${preTeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.    ELSE    Set Test Message    The user is able to login successfully.
+    Comment    Navigate to Management page and Selecting the frame School Admin.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    ${classesList}    Create List    ${ClassName}
+    Comment    Add class to a student \ the management page
+    ${addstudentToAClassStatus}    AddClassToStudent    ${studentDetails}    ${classesList}
+    Run Keyword Unless    ${addstudentToAClassStatus}    Fail    Fail to add class to student.
+    Navigate BackTo Home Page    Management
+    Navigate To Assignment Page
+    Navigate To New Assignments Page
+    Comment    Select the assignment class from new assignments page
+    ${classStatus}=    Select Assignment Class    ${ClassName}
+    Run Keyword If    '${classStatus}'!='True'    Fail    Selectclass is fail
+    Wait And Click Element    ${label.newAssignments.SelectIndividual}
+    ${listEditorTableStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${check.editStudentsorTitles.selectAllCheckbox}    ${TimeOut}    Student list editor table is not visible.
+    Comment    To verify the search functionality in select individual list editor page
+    ${searchTextBoxStatus}    Verify Element Visible    ${Text.search.studentOrTitles}
+    Enter Text In Text Field    ${Text.search.studentOrTitles}    ${studentFN}
+    ${recordCount}    Get Matching Xpath Count    ${table.fromTable}//div[@class='dgrid-content ui-widget-content']//div[@role='row']
+    Should Be Equal As Integers    ${recordCount}    1    Students records count were mismatched using search functionality.
+    Comment    Verifying close button functionality in listeditor page
+    ${closeBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.listEditor.close}    ${TimeOut}    Close button is not visible in list editor page.
+    Wait And Click Element    ${button.listEditor.close}
+    Wait Until Element is Invisible    ${button.listEditor.close}
+    ${closeStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.newAssignments.classesList}//div[text()='${ClassName}']    ${TimeOut}    close button is not clicked in list editors table.
+    [Teardown]    Stop Application
+
+ATC 489 School - Admin unable to import empty file
+    [Documentation]    ATC 489 School Admin unable to import empty file
+    ...
+    ...    Step1 : Login to wizard application with school admin crdentials
+    ...
+    ...    Step2 : Select the school and create empty dictionary
+    ...
+    ...    Step3 : click on import and select "Yes,I am ready to import"
+    ...
+    ...    Step4 : Try to upload empty file,error message should be displayed "Your import was not successfull. No user records were found in the import file."
+    Run Keyword If    '${preScriptStatus}'=='False'    Fail    PreRequisite School Admin is not created
+    comment    Login to Wizard application with school Admin credentials.
+    ${loginStatus}    LoginToWizardApp    ${preSchoolAdminID}    ${preSchoolAdminPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    ${schoolAdminDetails}    Create Dictionary
+    ${schoolDetails}    Create Dictionary    1    ${schoolAdminDetails}
+    ${filePath}    Set Variable    ${EXECDIR}\\Automation_Testsuites\\TestData\\ATC487.csv
+    ${uploadedFileStatus}    Create Csv File Using Dictionary Values    ${filePath}    ${schoolDetails}
+    Comment    Verifying whether district admin is unable to import empty file or not.
+    ${uploadStatus}    Upload Students From CSV    ${filePath}
+    Remove File    ${EXECDIR}\\Automation_Testsuites\\TestData\\ATC487.csv
+    Comment    Verify whether the import displays an error or not
+    Log    ${impUsersMsg}
+    ${errorMsgStatus}    Run Keyword And Return Status    Should Be Equal As Strings    ${impUsersMsg}    ${None}
+    Run Keyword If    ${errorMsgStatus}    Fail    The import is accepting empty data.
+    Comment    Verify whether it displays expected error message or not.
+    ${expectedErrMsg}    Set Variable    No user records were found in the import file.
+    ${errMsgStatus}    String Should Contain    ${impUsersMsg}    ${expectedErrMsg}
+    Run Keyword Unless    ${errMsgStatus}    Fail    The displayed errormsg is not matching with the expected one.
+    [Teardown]    Stop Application
+
+ATC 490-School Admin - Verify close button and search functionality is working in 'Edit students in class' window.
+    [Documentation]    ATC 490-School Admin-Verify close button and search functionality is working in 'Edit students in class' window.
+    ...
+    ...    Step1 : Login to wizard app with school admin credentials
+    ...
+    ...    Step2 : Add class to a student from management page.
+    ...
+    ...    Step3 : Click on class details edit button and click on student edit button,Student list editor table should be displayed.
+    ...
+    ...    Step4 : Verify the record using search functionality,unique record should be displayed.
+    ...
+    ...    Step5 : Verify the close button,close button should be displayed.
+    Run Keyword If    '${preScriptStatus}'=='False'    Fail    PreRequisite School Admin is not created
+    ${ClassName}=    Set Variable    @{preClassesList}[0]
+    ${uniqueVal}    GetUniqueValue    SDTTest
+    ${studentDetails}    Create Dictionary    User Name    ${uniqueVal}    Password    Password${uniqueVal}    First Name
+    ...    ${uniqueVal}FN    Last Name    LN${uniqueVal}    Middle Name    MN    Grade Level
+    ...    K
+    ${studentUId}    Get From Dictionary    ${studentDetails}    User Name
+    comment    Login to Wizard application with school Admin credentials.
+    ${loginStatus}    LoginToWizardApp    ${preSchoolAdminID}    ${preSchoolAdminPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Comment    Navigate to Management page and Selecting the frame School Admin.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    ${classesList}    Create List    ${ClassName}
+    Comment    Add class to a student \ the management page
+    ${addstudentToAClassStatus}    AddClassToStudent    ${studentDetails}    ${classesList}
+    Run Keyword Unless    ${addstudentToAClassStatus}    Fail    Fail to add class to student.
+    ${rowNo}    Select The Record In Table    ${table.classesAndGroups}    Name    ${ClassName}
+    Run Keyword If    '${rowNo}'=='0'    Fail    Failed to select the created class.
+    Comment    Edit student in class details window
+    Edit The Class Or Group Details
+    ${studentEditBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.students.edit}    ${TimeOut}    Student edit button is not visible in calss details window.
+    Wait And Click Element    ${button.students.edit}
+    Comment    To search the student record in list editor table.
+    ${studentListEditorStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${check.editStudentsorTitles.selectAllCheckbox}    ${TimeOut}    Student list editor page is not visisble.
+    Enter Text In Text Field    ${Text.search.studentOrTitles}    ${studentUId}
+    ${recordCount}    Get Matching Xpath Count    ${table.fromTable}//div[@class='dgrid-content ui-widget-content']//div[@role='row']
+    Should Be Equal As Integers    ${recordCount}    1    Students records count were mismatched using search functionality with unique data.
+    Comment    Verifying close button functionality in listeditor page
+    ${closeBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.listEditor.close}    ${TimeOut}    Close button is not visible in list editor page.
+    Wait And Click Element    ${button.listEditor.close}
+    Wait Until Element is Invisible    ${button.listEditor.close}
+    ${closeStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.classDetails.save}    ${TimeOut}    close button is not clicked in list editors table.
+    [Teardown]    Stop Application
+
+ATC 507-SA-Validate selected school selection unchecked when navigate back to zipcode dailogue
+    [Documentation]    ATC 507-SA-Validate selected school selection unchecked when navigate back to zipcode dailogue
+    ...
+    ...    Step1 : Open browser to login page and click on new user link select school admin role.
+    ...
+    ...    Step2 : Zip code dailogue window should be displayed enter zip code and select the school name,click on next button
+    ...
+    ...    Step3 : School admin email dialogue window should be displayed click on back button
+    ...
+    ...    Step4 : \ Zip code dailogue window should be displayed
+    ...
+    ...    Step5 : verifyn all school are should be unselected \ mode and try to select another school,another school should be selected.
+    Comment    Open browser to login page with wizard url
+    OpenBrowserToLoginPage    ${WizardURL}
+    ${newUserLinkStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.login.newUser}    ${TimeOut}    New user link is not visible in login page.
+    Wait And Click Element    ${button.login.newUser}
+    Comment    Select the school admin role from the roles menu
+    ${roleStatus}    Select Role in Create Account    ${schoolAdmin}
+    Comment    Enter the zip code and select the school from the schools list
+    Enter Zip Code And Select School    ${schoolZipCode}    admin    ${preSchoolName}
+    ${spinnerStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${common.spinner.loadingIcon}
+    ${loadingIconInvisibleStatus}    Run Keyword If    ${spinnerStatus}    Run Keyword And Return Status    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Run Keyword If    ${loadingIconInvisibleStatus}!=False    Wait And Click Element    ${button.signUp.next}
+    Comment    To validate the school admin email Id dialogue window
+    Validate The Step Precondition    ${label.SchoolAdmin.DialogMessage}    Enter a valid (school) email address to use as your User ID    "Enter a valid (school) email address to use as your User ID" step was not displayed in School Admin Registration process.
+    Comment    Click on back button and validate the zip code dialogue window
+    Wait And Click Element    ${button.adminSignUp.Back}
+    Validate The Step Precondition    ${label.TeacherSignUp.dialogMessage}    zip code    "Enter your school’s zip code" step was not displayed in teacher Signup process.
+    Comment    verify the school selection status is unselected or not when navigate back to zip code dialogue window
+    ${SelectedSchoolCheckBoxStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //input[@class='mblRadioButton unselectable']/following::label[text()='${preSchoolName}']    ${TimeOut}    Navigate back to the zipcode window Still school name is selected mode
+    ${schoolNamesList}    Get Matching Xpath Values    ${label.adminSignUp.schools}//div    //label
+    Remove Values From List    ${schoolNamesList}    ${preSchoolName}
+    Log List    ${schoolNamesList}
+    ${val}    Get Element Attribute    //label[text()="@{schoolNamesList}[0]"]//preceding-sibling::input@value
+    Comment    Navigate back to zip code dialogue window and verify the school selection status is selected or not
+    Wait Until Keyword Succeeds    1m    3s    Select Radio Button    school    ${val}
+    ${selectAnotherSchoolStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.adminSignUp.schools}//input[@aria-checked='true']    ${TimeOut}    Navigate back to the zipcode window another school is not selected
+    Run Keyword If    '${selectAnotherSchoolStatus}'=='False'    Fail    Navigate back to the zipcode window another school is not selected
+    [Teardown]    Stop Application
+
+ATC 508-DA-Validate selected school selection unchecked when navigate back to zipcode dailogue
+    [Documentation]    ATC 508-DA-Validate selected school selection unchecked when navigate back to zipcode dailogue
+    ...
+    ...    Step1 : Open browser to login page and click on new user link select school admin role.
+    ...
+    ...    Step2 : Zip code dailogue window should be displayed enter zip code and select the school name,click on next button
+    ...
+    ...    Step3 : School admin email dialogue window should be displayed click on back button
+    ...
+    ...    Step4 : Zip code dailogue window should be displayed
+    ...
+    ...    Step5 : verifyn all school are should be unselected \ mode and try to select another school,another school should be selected.
+    Comment    Open browser to login page with wizard url
+    OpenBrowserToLoginPage    ${WizardURL}
+    ${newUserLinkStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.login.newUser}    ${TimeOut}    New user link is not visible in login page.
+    Wait And Click Element    ${button.login.newUser}
+    Comment    Select the district admin role from the roles menu
+    ${roleStatus}    Select Role in Create Account    ${districtAdmin}
+    Comment    Enter the zip code and select the school from the schools list
+    Enter Zip Code And Select School    ${schoolZipCode}    admin    ${preDistrictName}
+    ${spinnerStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${common.spinner.loadingIcon}
+    ${loadingIconInvisibleStatus}    Run Keyword If    ${spinnerStatus}    Run Keyword And Return Status    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Run Keyword If    ${loadingIconInvisibleStatus}!=False    Wait And Click Element    ${button.signUp.next}
+    Comment    To validate the school admin email Id dialogue window
+    Validate The Step Precondition    ${label.SchoolAdmin.DialogMessage}    Enter a valid (school) email address to use as your User ID    "Enter a valid (school) email address to use as your User ID" step was not displayed in School Admin Registration process.
+    Comment    Click on back button and validate the zip code dialogue window
+    Wait And Click Element    ${button.adminSignUp.Back}
+    Validate The Step Precondition    ${label.TeacherSignUp.dialogMessage}    zip code    "Enter your school’s zip code" step was not displayed in teacher Signup process.
+    Comment    verify the school selection status is unselected or not when navigate back to zip code dialogue window
+    ${SelectedSchoolCheckBoxStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //input[@class='mblRadioButton unselectable']/following::label[text()='${preDistrictName}']    ${TimeOut}    Navigate back to the zipcode window Still school name is selected mode
+    ${val}    Get Element Attribute    //label[text()="${preDistrictName}"]//preceding-sibling::input@value
+    Comment    Navigate back to zip code dialogue window and verify the school selection status is selected or not
+    Wait Until Keyword Succeeds    1m    3s    Select Radio Button    school    ${val}
+    ${selectAnotherSchoolStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.adminSignUp.schools}//input[@aria-checked='true']    ${TimeOut}    Navigate back to the zipcode window another school is not selected
+    Run Keyword If    '${selectAnotherSchoolStatus}'=='False'    Fail    Navigate back to the zipcode window another school is not selected
+    [Teardown]    Stop Application
+
+ATC 509TE- Verify assigned assignment went under review when title removed for class
+    [Documentation]    ATC 509TE- Verify assigned assignment went under review when title removed for class
+    ...
+    ...    Step1 : Login to wizard application with teacher credentials.
+    ...
+    ...    Step2 : Add class to a student,title from management page.
+    ...
+    ...    Step3 : Navigate back to home page,add assignment to class from new assignments page.
+    ...
+    ...    Step4 : Select grade assignments button,Show grade assignment should be displayed.
+    ...
+    ...    Step5 : Verify assigned assignment in to be graded page,Disabled grade assignment should be visible.
+    ...
+    ...    Step6 : Navigate back to home page,remove title to the class from management page.
+    ...
+    ...    Step7 : Navigate back to home page and click on grade assignmentsand verify the assignment
+    ...
+    ...    Step8 : Verify review assigned assignment should be displayed in to be graded page.
+    Run Keyword If    ${preScriptStatus}==False    Fail    No student data is avaialble.
+    ${ClassName}=    Set Variable    @{preClassesList}[0]
+    ${uniqueVal}    GetUniqueValue    SDTTest
+    ${studentDetails}    Create Dictionary    User Name    ${uniqueVal}    Password    Password${uniqueVal}    First Name
+    ...    ${uniqueVal}FN    Last Name    LN${uniqueVal}    Middle Name    MN    Grade Level
+    ...    K
+    ${studentFN}    Get From Dictionary    ${studentDetails}    First Name
+    ${activity}    Set Variable    01-01 Form A: Part 1
+    ${titlesList}    Create List    CCS Reading Assessments Level 4
+    ${statusList}    Create List    true
+    Comment    Login with Valid teacher Credentials.
+    ${loginStatus}=    LoginToWizardApp    ${preTeacherID}    ${preTeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.    ELSE    Set Test Message    The user is able to login successfully.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    ${classesList}    Create List    ${ClassName}
+    Comment    Add class to a student the management page
+    ${addstudentToAClassStatus}    AddClassToStudent    ${studentDetails}    ${classesList}
+    Run Keyword If    '${addstudentToAClassStatus}'=='False'    Fail    Fail to add class to student.
+    ${classNameStatus}    Select The Record In Table    ${table.classesAndGroups}    Name    ${ClassName}
+    Run Keyword If    '${classNameStatus}'=='False'    Fail    Class name is not visible in class details table
+    Edit The Class Or Group Details
+    Comment    Edit class and add title to the class
+    Edit Students Or Titles    ${titlesList}    ${statusList}    Name
+    Wait Until Element is Invisible    ${button.editStudentsAndTitles.save}
+    Wait And Click Element    ${button.classDetails.save}
+    Navigate BackTo Home Page    Management
+    Comment    Add assignments to a student
+    Add Assignment To A Student    ${ClassName}    @{titlesList}[0]    ${EMPTY}    01-01 Form A: Part 1    \    1
+    Reload Page
+    Comment    Select grade assignment
+    Select Graded Assignments
+    ${showGradeAssignmentsStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.Assignments.showGradeAssignement}    ${TimeOut}    show grade assignments button not visible.
+    Wait And Click Element    ${button.Assignments.showGradeAssignement}
+    ${hideGradeAssignmentsStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.assignements.hideGradedAssignments}    ${TimeOut}    show grade assignments button not visible.
+    Comment    Verify the Disabled grade assignment is visible in to be graded page or not.
+    ${gradeAssignmentsStatus}    Verify Element Visible    ${table.showgradedassignments.gradeAssmtsListGrid}//div[contains(@id,'gradeAssmtsListGrid-row') and @role='row']//table//tr//td//button[contains(@class,'mobileButtonDisabled unselectable') and text()='Grade']//parent::td//following-sibling::td[text()='${ClassName}']//following-sibling::td[text()='@{titlesList}[0]']//following-sibling::td[contains(text(),'${activity}')]
+    Run Keyword If    '${gradeAssignmentsStatus}'=='False'    Fail    Disabled grade assignment is not visible in show grade assignments page.
+    Reload Page
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Comment    Select the class from class details table.
+    ${classNameStatus}    Select The Record In Table    ${table.classesAndGroups}    Name    ${ClassName}
+    Run Keyword If    '${classNameStatus}'=='False'    Fail    Class name is not visible in class details table
+    Edit The Class Or Group Details
+    Wait And Click Element    ${button.classDetails.editTitles}
+    ${assignmentStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[contains(@class,'fromInlineDijit')]//div[@class='header']/following-sibling::div/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@id,'row')]//table/tr/td[text()='@{titlesList}[0]']/parent::tr/td/input    ${TimeOut}    Assignment title is not visible tin list editors page.
+    Comment    To un check the title from titles list editor and click on save button.
+    Wait And Click Element    //div[contains(@class,'fromInlineDijit')]//div[@class='header']/following-sibling::div/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@id,'row')]//table/tr/td[text()='@{titlesList}[0]']/parent::tr/td/input
+    Wait And Click Element    ${button.editStudentsAndTitles.save}
+    ${seatsAuthorizationAlert}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.management.Proceed}    10s    Specified element is not visible in given time.
+    Run Keyword If    ${seatsAuthorizationAlert}    Wait And Click Element    ${button.management.Proceed}
+    Wait Until Element is Invisible    ${button.editStudentsAndTitles.save}
+    Wait And Click Element    ${button.classDetails.save}
+    Navigate BackTo Home Page    Management
+    Reload Page
+    Select Graded Assignments
+    ${showGradeAssignmentsStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.Assignments.showGradeAssignement}    ${TimeOut}    show grade assignments button not visible.
+    Wait And Click Element    ${button.Assignments.showGradeAssignement}
+    ${hideGradeAssignmentsStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.assignements.hideGradedAssignments}    ${TimeOut}    show grade assignments button not visible.
+    Comment    Review Assignment is visble or not after unselect the title in titles list editor
+    ${reviewAssignmentsStatus}    Verify Element Visible    ${table.showgradedassignments.gradeAssmtsListGrid}//div[contains(@id,'gradeAssmtsListGrid-row') and @role='row']//table//tr//td//button[text()='Review']//parent::td//following-sibling::td[text()='${ClassName}']//following-sibling::td[text()='@{titlesList}[0]']//following-sibling::td[contains(text(),'${activity}')]
+    Run Keyword If    '${reviewAssignmentsStatus}'=='False'    Fail    Review Assignment is not visble after unselect the title in titles list editors table.
+    [Teardown]    Stop Application
+
+ATC 510TE- Verify assigned assignment went under review when title removed for group
+    [Documentation]    ATC 510 TE- Verify assigned assignment went under review when title removed for group
+    ...
+    ...    Step1 : Login to wizard application with teacher credentials.
+    ...
+    ...    Step2 : Add group to a student,title from management page.
+    ...
+    ...    Step3 : Navigate back to home page,add assignment to class from new assignments page.
+    ...
+    ...    Step4 : Select grade assignments button,Show grade assignment should be displayed.
+    ...
+    ...    Step5 : Verify assigned assignment in to be graded page,Disabled grade assignment should be visible.
+    ...
+    ...    Step6 : Navigate back to home page,remove title to the class from management page.
+    ...
+    ...    Step7 : Navigate back to home page and click on grade assignmentsand verify the assignment
+    ...
+    ...    Step8 : Verify review assigned assignment should be displayed in to be graded page.
+    Run Keyword If    '${preScriptStatus}'=='False' and "${preGroupsScriptStatus}" != "True"    Fail    No student data is avaialble/PreRequisite Groups is not created
+    ${groupName}    Set Variable    @{preGroupList}[0]
+    ${uniqueVal}    GetUniqueValue    SDTTest
+    ${studentDetails}    Create Dictionary    User Name    ${uniqueVal}    Password    Password${uniqueVal}    First Name
+    ...    ${uniqueVal}FN    Last Name    LN${uniqueVal}    Middle Name    MN    Grade Level
+    ...    K
+    ${studentFN}    Get From Dictionary    ${studentDetails}    First Name
+    ${activity}    Set Variable    01-01 Form A: Part 1
+    ${titlesList}    Create List    CCS Reading Assessments Level 4
+    ${statusList}    Create List    true
+    Comment    Login with Valid teacher Credentials.
+    ${loginStatus}=    LoginToWizardApp    ${preTeacherID}    ${preTeacherPassword}
+    Run Keyword If    ${loginStatus}==False    Fail    The user is not able to login with valid credentials.    ELSE    Set Test Message    The user is able to login successfully.
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    ${groupsList}    Create List    ${groupName}
+    Comment    Add group to a student the management page
+    ${addstudentToAGroupStatus}    AddClassToStudent    ${studentDetails}    ${groupsList}
+    Run Keyword If    '${addstudentToAGroupStatus}'=='False'    Fail    Fail to add group to student.
+    Wait And Click Element    ${button.management.showGroups}
+    Wait Until Element is Invisible    ${button.management.showGroups}
+    ${groupNameStatus}    Select The Record In Table    ${table.classesAndGroups}    Name    ${groupName}
+    Run Keyword If    '${groupNameStatus}'=='False'    Fail    Group name is not visible in group details table
+    Edit The Class Or Group Details
+    Comment    Edit group and add title to the group
+    Edit Students Or Titles    ${titlesList}    ${statusList}    Name
+    Wait Until Element is Invisible    ${button.editStudentsAndTitles.save}
+    Wait And Click Element    ${button.classDetails.save}
+    Navigate BackTo Home Page    Management
+    Comment    Add assignments to a student
+    Add Assignment To A Student    ${groupName}    @{titlesList}[0]    ${EMPTY}    ${activity}    \    1
+    ...    Group
+    Reload Page
+    Comment    Select grade assignment
+    Select Graded Assignments
+    ${showGradeAssignmentsStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.Assignments.showGradeAssignement}    ${TimeOut}    show grade assignments button not visible.
+    Wait And Click Element    ${button.Assignments.showGradeAssignement}
+    ${hideGradeAssignmentsStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.assignements.hideGradedAssignments}    ${TimeOut}    show grade assignments button not visible.
+    Comment    Verify the Disabled grade assignment is visible in to be graded page or not.
+    ${gradeAssignmentsStatus}    Verify Element Visible    ${table.showgradedassignments.gradeAssmtsListGrid}//div[contains(@id,'gradeAssmtsListGrid-row') and @role='row']//table//tr//td//button[contains(@class,'mobileButtonDisabled unselectable') and text()='Grade']//parent::td//following-sibling::td[text()='${groupName}']//following-sibling::td[text()='@{titlesList}[0]']//following-sibling::td[contains(text(),'${activity}')]
+    Run Keyword If    '${gradeAssignmentsStatus}'=='False'    Fail    Disabled grade assignment is not visible in show grade assignments page.
+    Reload Page
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Wait And Click Element    ${button.management.showGroups}
+    Wait Until Element is Invisible    ${button.management.showGroups}
+    Comment    Select the group from group details table.
+    ${groupNameStatus}    Select The Record In Table    ${table.classesAndGroups}    Name    ${groupName}
+    Run Keyword If    '${groupNameStatus}'=='False'    Fail    Group name is not visible in group details table
+    Edit The Class Or Group Details
+    Wait And Click Element    ${button.classDetails.editTitles}
+    ${assignmentStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[contains(@class,'fromInlineDijit')]//div[@class='header']/following-sibling::div/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@id,'row')]//table/tr/td[text()='@{titlesList}[0]']/parent::tr/td/input    ${TimeOut}    Assignment title is not visible tin list editors page.
+    Comment    To un check the title from titles list editor and click on save button.
+    Wait And Click Element    ${table.fromTable}/div[contains(@class,'dgrid-scroller')]/div[contains(@class,'dgrid-content')]/div[contains(@id,'row')]//table/tr/td[text()='@{titlesList}[0]']/parent::tr/td/input
+    Wait And Click Element    ${button.editStudentsAndTitles.save}
+    ${seatsAuthorizationAlert}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.management.Proceed}    10s    Specified element is not visible in given time.
+    Run Keyword If    ${seatsAuthorizationAlert}    Wait And Click Element    ${button.management.Proceed}
+    Wait Until Element is Invisible    ${button.editStudentsAndTitles.save}
+    Wait And Click Element    ${button.classDetails.save}
+    Navigate BackTo Home Page    Management
+    Reload Page
+    Select Graded Assignments
+    ${showGradeAssignmentsStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.Assignments.showGradeAssignement}    ${TimeOut}    show grade assignments button not visible.
+    Wait And Click Element    ${button.Assignments.showGradeAssignement}
+    ${hideGradeAssignmentsStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.assignements.hideGradedAssignments}    ${TimeOut}    show grade assignments button not visible.
+    Comment    Review Assignment is visble or not after unselect the title in titles list editor
+    ${reviewAssignmentsStatus}    Verify Element Visible    ${table.showgradedassignments.gradeAssmtsListGrid}//div[contains(@id,'gradeAssmtsListGrid-row') and @role='row']//table//tr//td//button[text()='Review']//parent::td//following-sibling::td[text()='${groupName}']//following-sibling::td[text()='@{titlesList}[0]']//following-sibling::td[contains(text(),'${activity}')]
+    Run Keyword If    '${reviewAssignmentsStatus}'=='False'    Fail    Review Assignment is not visble after unselect the title in titles list editors table.
+    [Teardown]    Stop Application

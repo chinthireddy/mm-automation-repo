@@ -1,0 +1,173 @@
+*** Settings ***
+Resource          super.txt
+
+*** Keywords ***
+Navigate To
+    [Arguments]    ${buttonName}    ${viewName}
+    [Documentation]    Keyword is used wait and clcik the corresponding element.
+    Wait And Click Element    //span[contains(text(),'${buttonName}')]/parent::button[contains(@class,'Btn')]
+    Comment    MYS-2969 : Updated the script wait for element visible instead of wait until element is visible keyword to handle DOM exceptions.
+    Comment    MYS-3165 : Removed the keyword "run keyword and returns status" to capture actual keyword returning value.
+    ${bStatus}    Wait For Element Visible    //div[@id='${viewName}']//span[@class='breadcrumbLast' and contains(text(),'${buttonName}')]    10s
+    Comment    MYS-3165 : updated the following statement to execute based on previous keyword returning value and ignore error if loading icon appears mean-while performing the action.
+    Run Keyword Unless    ${bStatus}    Run Keyword And Ignore Error    Wait And Click Element    //button[contains(@class,'Btn')]//parent::span[text()='${buttonName}')]
+
+Select Menu
+    [Arguments]    ${menuName}    ${viewName}
+    [Documentation]    This keyword is used to select the menus under "Help" drop-down
+    Wait And Click Element    //div[@id='${viewName}']//div[@class='breadcrumb']//td[contains(@class,'mblToolBarButton') and text()='${menuName}']
+
+Navigate To Management Page
+    [Documentation]    Keyword is used to Navigating to the Management Page.
+    Comment    validate guided help tool tip in home page
+    Navigate To    Management    schoolAdminView
+    ${mangWinVisb}    Wait For Element Visible    ${header.management.schoolAdminFrame}    15s    Not yet navigated to management page, unable to select the frame.
+    Comment    MYS-3329:Updated with a set of operations to \ perform in loop until \ the expecting element to \ disappear.
+    : FOR    ${itr}    IN RANGE    0    15
+    \    ${mangBtnVisb}    Wait For Element Visible    ${button.home.management}    5s
+    \    Exit For Loop If    "${mangBtnVisb}"!="True"
+    \    Run Keyword If    "${mangBtnVisb}"=="True"    Run Keyword And Ignore Error    Click Element    //button[contains(@class,'Btn')]//parent::span[text()='Management']
+    Run Keyword And Ignore Error    Wait Until Element is Invisible    ${common.homepage.Loading}
+
+Navigate To Assignment Page
+    [Documentation]    Keyword is used to Navigate to Assignment Page.
+    Comment    validate guided help tool tip in home page
+    Navigate To    Assignments    assignmentsOptionsView
+    Comment    MYS-3329:Updated with a set of operations to \ perform in loop until \ the expecting element to \ disappear.
+    : FOR    ${itr}    IN RANGE    0    15
+    \    ${btn_Status}    Wait For Element Visible    ${button.home.assignments}    5s
+    \    Exit For Loop If    "${btn_Status}"!="True"
+    \    Run Keyword If    "${btn_Status}"=="True"    Run Keyword And Ignore Error    Click Element    //button[contains(@class,'Btn')]//parent::span[text()='Assignments']
+    Wait Until Keyword Succeeds    4m    5s    Element Should Not Be Visible    ${common.homepage.Loading}
+
+Navigate To New Assignments Page
+    [Documentation]    Keyword is used to Naivgate to New Assignment Page.
+    Comment    validate guided help tool tip in home page
+    Navigate To    New Assignments    assignmentsView
+    Comment    MYS-2969 : Updated the script to navigate to the new assignments page when fails for the first time.
+    : FOR    ${iCounter}    IN RANGE    1    30
+    \    ${ElementStatus}    Verify Element Visible    //button[@id='newAssignmentsBtn']//span[text()='New Assignments']
+    \    Exit For Loop If    ${ElementStatus}!=True
+    \    Sleep    2s
+    Run Keyword If    ${ElementStatus}==True    Wait And Click Element    //button[@id='newAssignmentsBtn']//span[text()='New Assignments']
+    ${classLabelStatus}    Run Keyword And Return Status    Wait For Element Visible    ${label.newAssignments.classLabel}    ${TimeOut}    Fail to navigate to new assignments page.
+
+Navigate To Manage Assignments Page
+    [Documentation]    This keyword navigates the screen to the "manage assignments" page
+    Comment    validate guided help tool tip in home page
+    Navigate To    Manage Assignments    assignmentsManageView
+    Comment    MYS-3329:Updated with a set of operations to \ perform in loop until \ the expecting element to \ disappear.
+    : FOR    ${itr}    IN RANGE    0    15
+    \    ${btn_Status}    Wait For Element Visible    ${button.home.assignments.manageassignments}    5s
+    \    Exit For Loop If    "${btn_Status}"!="True"
+    \    Run Keyword If    "${btn_Status}"=="True"    Run Keyword And Ignore Error    Click Element    //button[contains(@class,'Btn')]//parent::span[text()='Manage Assignments']
+    Wait Until Keyword Succeeds    4m    5s    Element Should Not Be Visible    ${common.homepage.Loading}
+
+Navigate To Report Filters Page
+    [Documentation]    This keyword clicks on the "Reports" button and navigates the window to "Reports" page.
+    Comment    validate guided help tool tip in home page
+    Navigate To    Report    reportsSelectorView
+
+Navigate To Reports Page
+    [Documentation]    This keyword clicks on the "Generate Report" button and navigates to the "Reports" page
+    Wait And Click Element    //span[contains(text(),'Generate Report')]/parent::button[contains(@class,'Btn')]
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='reportsView']//div[@class='breadcrumb']//span[@class='breadcrumbLast' and contains(text(),'Reports')]    ${TimeOut}
+    Run Keyword Unless    ${bStatus}    Wait And Click Element    //span[contains(text(),'Generate Report')]/parent::button[contains(@class,'Btn')]
+
+Navigate BackTo Home Page
+    [Arguments]    ${breadCrumbLastMenu}
+    [Documentation]    This keyword navigates back to the "Home" page from the given page name
+    Run Keyword And Ignore Error    Unselect Frame
+    ${viewDetails}    Create Dictionary    Assignments    assignmentsOptionsView    New Assignments    assignmentsView    Manage Assignments
+    ...    assignmentsManageView    Report Filters    reportsSelectorView    Reports    reportsView    Management
+    ...    schoolAdminView
+    ${viewName}    Get From Dictionary    ${viewDetails}    ${breadCrumbLastMenu}
+    Sleep    10s
+    Wait And Click Element    //div[contains(@id,'${viewName}')]//div[@class='breadcrumb']//td[contains(@class,'mblToolBarButton') and text()='Home']
+    Comment    MYS-3329:Updated code to perform action on breadcrumb Home button till it get navigated to Home page.
+    Comment    MYS-3519 : Updated script to \ verify the navigation back to home page by interacting with the user profile name lable.
+    ${home_page_status}    Wait For Element Visible    //span[@id='welcomeName']    ${TimeOut}
+    : FOR    ${itr}    IN RANGE    0    15
+    \    Sleep    15s
+    \    ${home_page_status}    Wait For Element Visible    //span[@id='welcomeName']    10s
+    \    ${is_Homepage_interactable}    Run Keyword If    ${home_page_status}    Run Keyword And Return Status    Click On Element    //span[@id='welcomeName']
+    \    ...    ELSE    Set Variable    False
+    \    Exit For Loop If    '${is_Homepage_interactable}'=='True'
+    \    Run Keyword If    '${home_page_status}'=='False' or '${is_Homepage_interactable}'!='True'    Run Keyword And Ignore Error    Click Element    //div[contains(@id,'${viewName}')]//div[@class='breadcrumb']//td[contains(@class,'mblToolBarButton') and text()='Home']
+
+Navigate To Import Users Page
+    [Documentation]    This keyword clicks on the "Import Users" button.
+    Comment    validate guided help tool tip in home page
+    Wait And Click Element    ${button.home.ImportUsers}
+    Comment    Mys-3847:Updated test script as per the changes in the Import functionality(Dialog to Preview Students in the System before Importing) i.e Import functionality UI is chnaged and new buttons are \ added in the import dialog preview
+    ${importWindowStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.Importusers.Selectfiletobeimport}    ${TimeOut}
+    Run Keyword If    ${importWindowStatus}==True    Wait And Click Element    ${button.Importusers.Selectfiletobeimport}
+    Comment    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.importTemplate.IAmReadyToImport}    ${TimeOut}
+    Comment    Run Keyword If    ${bStatus}==False    Wait And Click Element    ${button.home.ImportUsers}
+
+Edit The Class Or Group Details
+    [Documentation]    This keyword clicks on the "Edit" button of the Class-Detail window in the management page
+    Wait And Click Element    ${button.classDetail.edit}
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='saveGroupBtn']    10s
+    Run Keyword If    ${bStatus}==False    Wait And Click Element    ${button.classDetail.edit}
+
+Navigate To Show Completed Assignment
+    [Documentation]    This keyword clicks the "Show Completed Assignments" buttons until "Hide Completed Assignments button is visible
+    : FOR    ${val}    IN RANGE    1    5
+    \    Comment    MYs--3211:Increased the keyword run timeout interval to 4m.
+    \    Wait And Click Element    ${button.assignment.showCompletedAssignments}    ${TimeOut}    \    4m
+    \    Comment    MYS-3371 : Reeplaced with wait for element visible keyword.
+    \    ${hideButtonVisibility}    Wait For Element Visible    ${button.manageAssignments.hideCompletedAssignments}    5s
+    \    Exit For Loop If    ${hideButtonVisibility}
+    Sleep    5s
+    Return From Keyword    ${hideButtonVisibility}
+
+Navigate To Hide Completed Assignments
+    [Documentation]    This keyword clicks on the "Hide Completed Assignments" button in the "Manage Assignments" page.
+    : FOR    ${val}    IN RANGE    1    5
+    \    Comment    MYs--3211:Increased the keyword run timeout interval to 4m.
+    \    Wait And Click Element    ${button.manageAssignments.hideCompletedAssignments}    ${TimeOut}    \    4m
+    \    ${completedButtonVisibility}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.assignment.showCompletedAssignments}    5s
+    \    Exit For Loop If    ${completedButtonVisibility}
+    Return From Keyword    ${completedButtonVisibility}
+
+Navigate To Show Graded Assignments
+    [Documentation]    This keyword clicks on the "Show Grade Assignments" in the "To be Graded " window
+    : FOR    ${val}    IN RANGE    1    5
+    \    Run Keyword If    "${val}"=="1"    Wait And Click Element    //div[@id='toggleGradedAssignmentsBtn' and contains(text(),'Show Graded Assignments')]    10s    show
+    \    ...    ELSE    Click Element    //div[@id='toggleGradedAssignmentsBtn' and contains(text(),'Show Graded Assignments')]
+    \    ${hideBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='toggleGradedAssignmentsBtn' and contains(text(),'Hide Graded Assignments')]    10s
+    \    Exit For Loop If    ${hideBtnStatus}
+    Return From Keyword    ${hideBtnStatus}
+
+Navigate To Hide Graded Assignments
+    [Documentation]    This keyword clicks on the "Hide Grade Assignments" in the "To be Graded " window
+    : FOR    ${val}    IN RANGE    1    5
+    \    Run Keyword If    "${val}"=="1"    Wait And Click Element    //div[@id='toggleClassesGroupsBtn' and contains(text(),'Hide Graded Assignments')]    10s    hide
+    \    ...    ELSE    Click Element    //div[@id='toggleClassesGroupsBtn' and contains(text(),'Hide Graded Assignments')]
+    \    ${shwGrdBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='toggleClassesGroupsBtn' and contains(text(),'Show Graded Assignments')]    10s
+    \    Exit For Loop If    ${shwGrdBtnStatus}
+    Return From Keyword    ${shwGrdBtnStatus}
+
+Click Done In Grade Assignments
+    [Documentation]    This keywords click the "Done" button after grading an assignment
+    ${bStatus}    Set Variable    False
+    : FOR    ${val}    IN RANGE    1    5
+    \    Run Keyword If    "${val}"=="1"    Wait And Click Element    ${button.Assignment.done}    10s    done
+    \    Run Keyword If    "${val}"!="1" and "${bStatus}"=="True"    Click On Element    ${button.Assignment.done}
+    \    ${shwGrdBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='toggleClassesGroupsBtn' and contains(text(),'Show Graded Assignments')]    30s
+    \    Exit For Loop If    ${shwGrdBtnStatus}
+    \    ${bStatus}    Verify Element Visible    ${button.Assignment.done}
+    Return From Keyword    ${shwGrdBtnStatus}
+
+Navigate From Import Users
+    Sleep    2s
+    Wait And Click Element    //div[contains(@id,'importUsers')]//div[@class='breadcrumb']//td[contains(@class,'mblToolBarButton') and text()='Home']
+    ${home_page_status}    Wait For Element Visible    //span[@id='welcomeName']    ${TimeOut}
+    :FOR    ${itr}    IN RANGE    0    15
+    \    Sleep    15s
+    \    ${home_page_status}    Wait For Element Visible    //span[@id='welcomeName']    10s
+    \    ${is_Homepage_interactable}    Run Keyword If    ${home_page_status}    Run Keyword And Return Status    Click On Element    //span[@id='welcomeName']
+    \    ...    ELSE    Set Variable    False
+    \    Exit For Loop If    '${is_Homepage_interactable}'=='True'
+    \    Run Keyword If    '${home_page_status}'=='False' or '${is_Homepage_interactable}'!='True'    Run Keyword And Ignore Error    Click Element    //div[contains(@id,'importUsers')]//div[@class='breadcrumb']//td[contains(@class,'mblToolBarButton') and text()='Home']

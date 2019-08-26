@@ -1,0 +1,117 @@
+*** Test Cases ***
+MTC14-Create Teacher from New User
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and enter \ valid URL    b11test1.mentoringmindsonline.com    Login page should be opened
+    Click on New User and select Teacher    \    Teacher Registration window should be dispalyed
+    Enter valid Zip Code ,Select School name and click on Next button    76008    Pop up should be displayed for user ID
+    Enter unique user ID and click on Next button    rhwpte+ta1881@gmail.com    Pop up should be displayed for Create a password
+    Enter Create password and click on Next button    test1234    Pop up should be displayed for confirm your password
+    Enter Retype password and click on next button    test1234    Eneter your name pop up should be displyed
+    Enter first name and last name click on next button    ta,teacher
+    Enter valid Registration code and select title from the drop down list and click on next button    3FH-MRR-CJX, CCS Motivation Math Level 05    "Do you have additional titles to register?" pop up should be displayed
+    Click on yes button and enter registration code,select title from the drop down list and click on next button    3GL-72M-MDZ, CCS Motivation Math Level 04    "Do you have additional titles to register?" \ pop up should be displayed
+    Click on No Button and Terms and Conditions button    \    Pop up should be displayed for Terms and Conditions.
+    Click on I agree button, Create account and Now button    \    Class Set Up pop up should be disaplyed
+    Enter Valid Class code and click on next button    ClassABC
+    Select title and click on next button    \    "Would you like to set up another class?" pop up should be displayed
+    Click on No button,finished button and Sign in button    \    Teacher home page should be displayed
+
+Vlidate Zip Code in Teacher Registration
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser
+    Enter valid URL    b11test1.mentoringmindsonline.com    Login page should be opened
+    Click on New User and select Teacher    \    Teacher Registration window should be dispalyed
+    Enter invalid zip code    76000    School details should not be displayed and "No schools were found with that zip code." Alert message should be dispalyed.
+
+Validate User ID in Teacher Registration
+    Steps    Test Data    Expected Result
+    Open browser and enter \ valid URL    b11test1.mentoringmindsonline.com    Login page should be opened
+    Click on New User and select Teacher    \    Teacher Registration window should be dispalyed
+    Enter valid Zip Code ,Select School name and click on Next button    76008    Pop up should be displayed for user ID
+    Enter invalid User ID    teacher123fd    Next button should be disabled and "Please enter a valid email address" alert message should be displayed.
+
+Validate create password field in Teacher Registration
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and enter \ valid URL    b11test1.mentoringmindsonline.com    Login page should be opened
+    Click on New User and select Teacher    \    Teacher Registration window should be dispalyed
+    Enter valid Zip Code ,Select School name and click on Next button    76008    Pop up should be displayed for user ID
+    Enter unique user ID and click on Next button    rhwpte+ta1888@gmail.com    Pop up should be displayed for Create a password
+    Enter only alphabets in Create password field    asdfgghjk    "Please enter a password including one non-alphabetic character." alert message should be displayed and Next button should be disabled.
+    Enter only non-alphabets in Create password field    486647874    "Please enter a password including one alphabetic character." alert message should be displayed and Next button should be disabled.
+
+Validate confirm your password field in Teacher Registration
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and enter \ valid URL    b11test1.mentoringmindsonline.com    Login page should be opened
+    Click on New User and select Teacher    \    Teacher Registration window should be dispalyed
+    Enter valid Zip Code ,Select School name and click on Next button    76008    Pop up should be displayed for user ID
+    Enter unique user ID and click on Next button    rhwpte+ta1881@gmail.com    Pop up should be displayed for Create a password
+    Enter Create password and click on Next button    test1234    Pop up should be displayed for confirm your password
+    Enter password in Re Enter password field    test5648    "Passwords must mMTCh" alert message should be displayed and next button should be disabled.
+
+Validate first and last name in Teacher Registration
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and enter \ valid URL    b11test1.mentoringmindsonline.com    Login page should be opened
+    Click on New User and select Teacher    \    Teacher Registration window should be dispalyed
+    Enter valid Zip Code ,Select School name and click on Next button    76008    Pop up should be displayed for user ID
+    Enter unique user ID and click on Next button    rhwpte+ta1881@gmail.com    Pop up should be displayed for Create a password
+    Enter Create password and click on Next button    test1234    Pop up should be displayed for confirm your password
+    Enter Retype password and click on next button    test1234    Eneter your name pop up should be displyed
+    Enter only non-alphabets in first name and last name fields    12,1445    "The name you entered contains invalid characters." alert message should be displayed and Next button should be disabled.
+
+Validate Registration code in Teacher Registration
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and enter \ valid URL    b11test1.mentoringmindsonline.com    Login page should be opened
+    Click on New User and select Teacher    \    Teacher Registration window should be dispalyed
+    Enter valid Zip Code ,Select School name and click on Next button    76008    Pop up should be displayed for user ID
+    Enter unique user ID and click on Next button    rhwpte+ta1881@gmail.com    Pop up should be displayed for Create a password
+    Enter Create password and click on Next button    test1234    Pop up should be displayed for confirm your password
+    Enter Retype password and click on next button    test1234    Eneter your name pop up should be displyed
+    Enter first name and last name click on next button    ta,teacher
+    Enter invalid Registration code    fdjafdhjv    "Registration code not recognized" Alert message should be disaplyed.
+
+Validate usable registration code in Teacher Registration
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and enter \ valid URL    b11test1.mentoringmindsonline.com    Login page should be opened
+    Click on New User and select Teacher    \    Teacher Registration window should be dispalyed
+    Enter valid Zip Code ,Select School name and click on Next button    76008    Pop up should be displayed for user ID
+    Enter unique user ID and click on Next button    rhwpte+ta1881@gmail.com    Pop up should be displayed for Create a password
+    Enter Create password and click on Next button    test1234    Pop up should be displayed for confirm your password
+    Enter Retype password and click on next button    test1234    Eneter your name pop up should be displyed
+    Enter first name and last name click on next button    ta,teacher
+    Enetr Already used \ Registration code    3FH-MRR-CJX    "Registration code not recognized" Alert message should be disaplyed.
+    Select Title from drop down    CCS Motivation Math Level 04    Next button should be enabled
+    Click on Next button    \    "This is not a valid Teacher Edition code" Alert message should be diplayed.
+
+Validate Class name in Teacher Registration
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and enter \ valid URL    b11test1.mentoringmindsonline.com    Login page should be opened
+    Click on New User and select Teacher    \    Teacher Registration window should be dispalyed
+    Enter valid Zip Code ,Select School name and click on Next button    76008    Pop up should be displayed for user ID
+    Enter unique user ID and click on Next button    rhwpte+ta1881@gmail.com    Pop up should be displayed for Create a password
+    Enter Create password and click on Next button    test1234    Pop up should be displayed for confirm your password
+    Enter Retype password and click on next button    test1234    Eneter your name pop up should be displyed
+    Enter first name and last name click on next button    ta,teacher
+    Enetr valid Registration code and select title from the drop down list and click on next button    3FH-MRR-CJX, CCS Motivation Math Level 05    "Do you have additional titles to register?" \ \ pop up should be displayed
+    Click on No Button and Terms and Conditions button    \    Pop up should be displayed for Terms and Conditions.
+    Clcik on I agree button, Create account and Now button    \    Class Set Up pop up should be disaplyed
+    Enter class name and click on Next button    class11    "Select the titles to use with this class." pop up should be disaplyed.
+    Select Title and click on Next button    CCS Motivation Math Level 05    "Would you like to set up another class?" pop up should be displayed
+    Click on yes button    \    Class Set Up pop up should be disaplyed
+    Enter already created class name in class field and click on Next button    class11    "This class name is already in use." Alert message should be displayed.
+
+MTC15-Create titles and add classes from "New User" link
+    Steps    Test Data    Expected Result
+    Open browser and enter valid URL    b11test1.mentoringmindsonline.com    Login page should be opened
+    Click on New User and select Teacher    \    Teacher Registration window should be dispalyed
+    Enter valid Zip Code ,Select School name and click on Next button    76008    Pop up should be displayed for user ID
+    Enter unique user ID and click on Next button    rhwpte+ta1881@gmail.com    Pop up should be displayed for Create a password
+    Enter Create password and click on Next button    test1234    Pop up should be displayed for confirm your password
+    Enter Retype password and click on next button    test1234    Eneter your name pop up should be displyed
+    Enter first name and last name click on next button    ta,teacher
+    Enetr valid Registration code and select title from the drop down list and click on next button    3FH-MRR-CJX, CCS Motivation Math Level 05    "Do you have additional titles to register?" pop up should be displayed
+    Click on yes button and enter registration code,select title from the drop down list and click on next button    3GL-72M-MDZ, CCS Motivation Math Level 04    "Do you have additional titles to register?" \ pop up should be displayed
+    Click on No Button and Terms and Conditions button    \    Pop up should be displayed for Terms and Conditions.
+    Click \ on I agree button, Create account and Now button    \    Class Set Up pop up should be disaplyed
+    Enter Valid Class code and click on next button    ClassABC
+    Select title and click on next button    \    "Would you like to set up another class?" pop up should be displayed
+    Click on No button,finished button and Sign in button    \    Title and classes should be created.

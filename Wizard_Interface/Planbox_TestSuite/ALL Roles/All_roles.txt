@@ -1,0 +1,508 @@
+*** Test Cases ***
+8054444- Verify error message is displayed while generating report when 'From' date is later than 'To' date
+    Open the browser and enter the URL    Test Data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Enter valid User Id and valid password and click on Sign In Button    Test Data: rhwpte+ta1234@gmail.com password:qwerty123    Expected Result: Home page should be displayed
+    Click on Reports Button    \    Expected Result: Reports filter page should be displayed
+    Select Standard mastery report > Class > Subject\Level    \    Expected Result: Standard Mastery report for the selected class and subject should be displayed
+    Enter Data range from date is later than to date.    Test Data: 26/11/2014 to 26/10/2014    "Invalid Date range" message should be displayed
+
+7985316-Same UserID and Password are accepted while creating users in management window
+    Open browser and Enter URL    Test Data : b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Enter valid User ID and Password    Test Data : rhwpte+ta7887@gmail.com/rhwpte+ta7887
+    Clcik on Sign in button    \    Expected Result: Teacher home page should be displyed
+    Click on Management    \    Expected Result: Management page should be displayed
+    Click on Add button    \    Expected Result: "New User" window should be displayed
+    Enter first name >last name >User ID    Test Data : st1,st1,student670
+    Enter password same as User ID    Test Data: student670    "The password must not be the same as user ID" alert message should be displayed
+
+7984484-Verify whether school names are displayed in alphabetical order when generating reports
+    Open the browser and enter the URL    Test Data : \ Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Enter valid User Id and valid password and click on Sign In Button    Test Data : \ District Admin: rhwpte+ta1234@gmail.com password:qwerty123    Expected Result: Home page should be displayed
+    Click on Reports Button    \    Expected Result: Reports filter page should be displayed
+    Select Standard mastery report > School    \    Expected Result: School names should be displayed in alphabetical order
+
+7885063-Grade level is changed to default state when creating multiple users
+    Open browser and Enter URL    Test Data : b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Enter valid User ID and Password    Test Data : rhwpte+ta7887@gmail.com/rhwpte+ta7887
+    Clcik on Sign in button    \    Expected Result: Teacher home page should be displyed
+    Click on Management    \    Expected Result: Management page should be displayed
+    Click on Add button    \    Expected Result: "New User" window should be displayed
+    Enter first name >last name >User ID>Password    Test Data : st1,st1,student670,student678
+    Select Grade level and click on save button    \    User should be added
+    Click on Add button    \    Expected Result: "New User" window should be displayed and Grade level is changed to its default state
+
+7417266-"Please enter Email address" is displayed when email Id is not entered.
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Click on Help Menu >Email support    \    How can i help u? window should be displayed.
+    Enter Its about> Your message fields    Test Data: test,test
+    Click on send button    \    "Please enter Email address" alert message should be displayed .
+
+"Your message" can't be empty" Alert message is dispalyed when sending an email
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Click on Help Menu >Email support    \    How can i help u? window should be displayed.
+    Enter It's about and Email ID fields    Test Data: test,test
+    Click on send button    \    "Your message can't be empty" alert message should be displayed .
+
+"It's about" can't be empty " alert message is dispalyed while sending an email
+    Open browser and Enter URL    Test Data: b11test2.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Login as teacher with valid credentials    Test Data: \ User Id: rhwpte+ta1s3@gmail.com \ Password: rhwpte+ta1s3    Home should be displayed
+    Click on Help Menu >Email support    \    How can i help u? window should be displayed.
+    Enter Your message and Email ID fields    Test Data: test,test
+    Click on send button    \    "It's about can't be empty" alert message should be displayed .
+
+7397151- Group is created with existing class name
+    Open browser and Enter URL    Test Data : b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Enter valid User ID and Password    Test Data : rhwpte+ta7887@gmail.com/rhwpte+ta7887
+    Clcik on Sign in button    \    Expected Result: Teacher home page should be displyed
+    Click on Management >Show groups >"Add" group button    \    Expected Result: "New Group window "should be displayed
+    Enter group name with existing class name    Test Data: class122    Group should be created
+
+Verify whether class is created with existing group name
+    Open browser and Enter URL    Test Data : b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Enter valid User ID and Password    Test Data : rhwpte+ta7887@gmail.com/rhwpte+ta7887
+    Clcik on Sign in button    \    Expected Result: Teacher home page should be displyed
+    Click on Management >"Add" class button    \    Expected Result: "New class" window should be displayed
+    Enter class name with existing group name    Test Data: group11    class should be created
+
+7259042- verify whether data is sorted when Clicking on column headers
+    Open browser and Enter URL    Test Data : b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Enter valid User ID and Password    Test Data : rhwpte+ta7887@gmail.com/rhwpte+ta7887
+    Clcik on Sign in button    \    Expected Result: Teacher home page should be displyed
+    Click on Management    \    Expected Result: Management page should be displayed
+    Click on any column header    Test Data:    Roles should be sorted
+
+7802032- Verify whetherAlignment is clear when groups are edited.
+    Open the browser and enter the URL    Url- b11test1.mentoringmindsonline.com    Login page should be displayed
+    Enter valid User Id and valid password and click on Sign In Button    District Admin: rhwpte+ta1234@gmail.com password:qwerty123    Home page should be displayed
+    Click on Management >Show groups> Edit Group Button    \    Details window should be displayed and the groups should be alligned
+
+7526340- Home>Management>Show Groups>Add- "Edit Student in Group" window is displayed in New Groups window
+    Open browser and Enter URL    Test Data : b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Enter valid User ID and Password    Test Data : rhwpte+ta7887@gmail.com/rhwpte+ta7887    Home page should be displayed
+    Clcik on Sign in button    \    Expected Result: Teacher home page should be displyed
+    Click on Management >Show groups>"Add" group button    \    Expected Result: "New group" window should be displayed
+    Click on Edit button>Edit students button    \    "Edit students in Group" window should be displayed
+
+7441424- Invalid email id is cleared when click on Ok button
+    Open the browser and enter the URL    Test Data: Url- b11test1.mentoringmindsonline.com    Expected Result :Login page should be displayed
+    Click on Forget Password    \    Expected Result : Pop up should be displayed with an Email adress text box
+    Enter a In-valid User Id and click on Submit Button    Test Data: \ teacher: rhwpte+po111@gmail.c    Expected Result : Alert pop up should be displayed as "Please enter a Valid Email"
+    Click on OK button    \    Expected Result : Existing mail Id should be cleared
+
+6382621-Application is returning to the login page when clicking the Back button in the browser
+    Open browser and Enter URL    Test Data : b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Enter valid User ID and Password    Test Data : rhwpte+ta7887@gmail.com/rhwpte+ta7887    Home page should be displayed
+    Click on Reports Button    \    Expected Result: Reports filter page should be displayed
+    Select Standard mastery report > Class > Subject\Level    \    Expected Result: Standard Mastery report for the selected class and subject should be displayed
+    Click on back button on the browser    \    Reports page should be displayed
+
+6382599- Alert message is displayed when select another user without saving the existing user
+    Open browser and Enter URL    Test Data : b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Enter valid User ID and Password    Test Data : rhwpte+ta7887@gmail.com/rhwpte+ta7887
+    Clcik on Sign in button    \    Expected Result: Teacher home page should be displyed
+    Click on Management    \    Expected Result: Management page should be displayed
+    Select user and click on Edit button    \    Details window should be displayed
+    Edit the details and select the another user    \    Clcik OK to save your changes alert message should be dsplayed
+
+Verify wether User is able to Log-in to the application without username and password.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected data: Login page should be displayed
+    Do not enter the user name and password    \    Expected data: Alert message should be displayed stating "Please enter a User ID and Password."
+
+Verify wether User is able to Log-in to the application without username
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected data: Login page should be displayed
+    Do not enter the user name and click on login    \    Expected data: Alert message should be displayed stating "The User ID or Password is incorrect. Please try again."
+
+Verify wether User is able to Log-in to the application without Password
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected data: Login page should be displayed
+    Do not enter the password and click on Login    \    Expected data: Alert message should be displayed stating "The User ID or Password is incorrect. Please try again."
+
+8065165-Verify whether Newuser Window is closed when clicked on other part of the screen.
+    Steps    Test Data    Expected result
+    Enter URL    Url=http://b11test1.mentoringmindsonline.com    Home page should be displayed
+    Click on 'New user' and click other part of the screen.    \    New User window should be closed when clicked on other part of the screen.
+
+7945306-Verify whether Scores,Classname ans School names are overlapped in Reports.
+    Steps    Test Data    Expected result
+    Enter URL and login as teacher/SA/DA    Url=http://b11test1.mentoringmindsonline.com    Home page should be displayed
+    Click on Reports Button    \    Expected result: Reports filter page should be displayed
+    Select Standard mastery report > Class > Subject\Level > Date range and click on generate button    Report type:Standard master report, Groups:Group01,Subject:Motivation math assesment level3 Spanish,Date:8/3/2014 to 9/2/2014    Expected result: Reports \ page \ should be \ displayed \ clearly in ipad2 \ and School names,Classnames and Scores should not be overlapped.
+
+7945301-Verify whether All the students are getting selected when clicked on down arrow
+    [Documentation]    Steps to reproduce:
+    ...    1.Enter URL b6test1.mentoringmindsonline.com .
+    ...    2.Click on Management(testdata:rhwpte+ta5454@gmail.com/rhwpte+ta5454).
+    ...    3.Click on the Add button of the classes table.
+    ...    4.Click on Edit button of the students frame
+    ...    5.Edit Students in Class window will appear
+    ...    6.Select any student in the student list
+    ...    7.Unselect the same student , this will focus to the particular student
+    ...    8.Multiple students get select when we continue to click on down arrow of keyboard
+    Steps    Test Data    Expected result
+    Enter URL and login as teacher/SA/DA    Url=http://b11test1.mentoringmindsonline.com    Home page should be displayed
+    Click on 'Add' button to add Class.    \    New Class window should be displayed.
+    Click on 'Edit' button of Student framework.
+    Select any one student and unselect the same student.
+    Click on Down arrow of keyboard    \    Expected Result : Students should not be select when click on 'down arrow' of keyboard.
+
+7821883-Verify the num of received mails when user submit mailID for ForgetUserID or Password.
+    [Documentation]    Steps to reproduce:
+    ...    1.Open URL b11test1.mentoringmindsonline.com
+    ...    2.Click on Forgot User ID or Password? link.
+    ...    3.Enter valid Email Address and click on submit button
+    ...    Test data : (tryemailpwd@gmail.com/tryemailpwd1!)
+    Steps    Test Data    Expected result
+    Enter URL    Url=http://b11test1.mentoringmindsonline.com    Home page should be displayed
+    Click on 'Forget UserID or Password' link
+    Enter Valid EmailId and Click on 'Submit' button.    TestData : rhwpte+ta1711@gmail.com
+    Login with email ID and and check the mail    \    Expected Result:Login information should be sent only once to the mail ID
+
+7432044-Verify whether Next button is enabled for Zip code field when school is not selected
+    [Documentation]    Steps to reproduce:
+    ...    1.Login to b11test1.mentoringmindsonline.com
+    ...    2.Click on New User and select any one of the user 'Teacher/School Admin/District Admin' (test data:School Admin)
+    ...    3.Enter a valid zip code (test data: 78703) which has a school in it (test data:Austin Independent School District )
+    ...    4. Click on Next button without selecting school
+    Steps    Test Data    Expected result
+    Enter URL    Url=http://b11test1.mentoringmindsonline.com    Home page should be displayed
+    Click on newUser and Select any user    Teacher/DA/SA
+    Enter Valid ZipCode and Click on Next Button without selecting School.    TestData : 76008    Expected Result: Next button should be disabled
+
+7740792-Verify whether Printed report is overlapped.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected result: Login page should be displayed
+    Enter valid User Id and valid password and click on Sign In Button    Test data: teacher : rhwpte+qwerty@gmail.com \ password : qwerty12    Expected result: Home page should be displayed
+    Click on Reports Button    \    Expected result: Reports filter page should be displayed
+    Select Standard mastery report > Class > Subject\Level > Date range and click on generate button    Report type:Standard master report, Groups:Group01,Subject:Motivation math assesment level3 Spanish,Date:8/3/2014 to 9/2/2014    Expected result: Complte name of the assignments should be displayed for selected report.
+    Click On 'Print'.    \    Printed report should not be overlapped.
+
+7659391-Verify whether Invalid alert message is not displayed when "enter" button is pressed in keyboard
+    [Documentation]    Steps to reproduce:
+    ...    1.Enter URL b11test1.mentoringmindsonline.com
+    ...    2.Click on New user>Teacher>Enter the valid or invalid zip code
+    ...    3.Click on Enter button in keyboard
+    Steps    Test Data    Expected result
+    Enter URL    Url=http://b11test1.mentoringmindsonline.com    Home page should be displayed
+    Click on 'NewUser' and Select any Role    Teacher/SA/DA
+    Enter Valid Or Invalid Zipcode and Click on enter button in Keyboard.    \    Expected result: It should not display an Alert message as "Please enter a User ID and Password"
+
+7463632-Verify whether application allow the user to switch for different roles for the first login.
+    Steps    Test Data    Expected result
+    Enter URL ,Enter Valid School Admin User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+sa1711@gmail.com \ Password: test1234    Home page should be displayed
+    Click on 'Management.
+    Click on 'Add' class
+    Click on 'Edit' students button    \    List of students should be displayed.
+    Click on 'Show All' button in Student Window.    \    List of all users should be displayed.
+    Select Teacher,School Admin roles and Click on 'Save' button.    \    Select users should be saved.
+    Open New Tab and and login with newly Teacher Credentials .    rhwpte+ta1911@gmail.com/test1234
+    Switch to the Other Role.    rhwpte+da1911@gmail.com    Expected Result : During the first login if you attempt to switch roles it will not redirect you to the login page. SA home page should be display.
+
+7485753- Verify whether all the School names are displayed when Valid Zipcode is entered
+    Steps    Test Data    Expected result
+    Enter URL    Url=http://b11test1.mentoringmindsonline.com    Home page should be displayed
+    Click on 'NewUser' and Select any Role    Teacher/SA/DA
+    Enter Valid Zipcode and observe the School Names.    \    Expected result:List of School names should be displayed when entered the valid Zipcode.
+
+8489983- Verify whether further action performed without closing the Alert message
+    Open the browser and enter the URL    Test Data: Url- b11test1.mentoringmindsonline.com    Expected Result :Login page should be displayed
+    Click on Forget Password    \    Expected Result : Pop up should be displayed with an Email adress text box
+    Enter a In-valid User Id and click on Submit Button    Test Data: \ teacher: rhwpte+po111@gmail.c    Expected Result : Alert pop up should be displayed as "Please enter a Valid Email"
+    Close the password recovery windoe and try to enter User ID in login page    \    Action should not be performed in login page without closting the alert message.
+
+8489950 - Verify the student user ID is accepting 6 characters.
+    Open browser and Enter URL    Test Data : b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Enter valid User ID and Password    Test Data : rhwpte+ta7887@gmail.com/rhwpte+ta7887    Home page should be displayed
+    Clcik on Sign in button    \    Expected Result: Teacher home page should be displyed
+    Click on Management >"Add" User \ button    \    Expected Result: "New user" window should be displayed
+    Enter student with minimum characters    Test Data: testst    Student user ID should be accepted
+
+Verify whether first name and last name fields are accepting numerics
+    Open browser and Enter URL    Test Data : b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Enter valid User ID and Password    Test Data : rhwpte+ta7887@gmail.com/rhwpte+ta7887    Home page should be displayed
+    Clcik on Sign in button    \    Expected Result: Teacher home page should be displyed
+    Click on Management >"Add" User \ button    \    Expected Result: "New user" window should be displayed
+    Enter first name and last name fields    Test Data: 1234    It shows an errorr and "The value entered is not valid" pop up should be displayed
+
+8489834 - Verify the school name, student names displayed while writing the exam
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Enter valid User Id and valid password and click on Sign In Button    Test data: user Id:Student012, \ password:Student120    Expected Result: Home page should be displayed, along with the assignments which were assigned by the teacher
+    Click on Start button    \    Expected Result: Assignment should be displayed and School anme .Student names should be displayed while writing the exam
+
+6382612 - Verify whether More space is shown as empty in "Help" menu, when enlarge the window.
+    Open the browser and enter the URL    Test data: Url- b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Enter valid User Id and valid password and click on Sign In Button    Test data: user Id:Student012, \ password:Student120    Expected Result: Home page should be displayed, along with the assignments which were assigned by the teacher
+    Click on help button and enlarge the window size    \    More space should not be empty
+
+8190715-Verify whether tool tip message is displayed for last name field
+    Open browser and Enter URL    Test Data : b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Enter valid User ID and Password    Test Data : rhwpte+ta7887@gmail.com/rhwpte+ta7887    Home page should be displayed
+    Clcik on Sign in button    \    Expected Result: Teacher home page should be displyed
+    Click on Management >"Add" User \ button    \    Expected Result: "New user" window should be displayed
+    Click on last name field    \    "This value is required" tool tip should be displayed
+
+8190539-Verify whether error message is displayed while deleting the class or group.
+    Open browser and Enter URL    Test Data : b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Enter valid User ID and Password    Test Data : rhwpte+ta7887@gmail.com/rhwpte+ta7887    Home page should be displayed
+    Clcik on Sign in button    \    Expected Result: Teacher home page should be displyed
+    Click on Management    \    Expected Result: Management window should be displayed
+    Select class or group
+    Click on delete button    \    "Are you sure you want to deletethis' class' or 'group '" error message should be displayed
+
+8190724- Verify the classes displayed for adding a student
+    Open browser and Enter URL    Test Data : b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Enter valid User ID and Password    Test Data : rhwpte+ta7887@gmail.com/rhwpte+ta7887    Home page should be displayed
+    Clcik on Sign in button    \    Expected Result: Teacher home page should be displyed
+    Click on Management >"Add" User \ button > Edit classes    \    Expected Result: Only classes should be displayed , groups should not be displayed
+
+7701988- Verify whether can filter reports based on Groups/Classes
+    Open the browser and enter the URL    Url- b11test1.mentoringmindsonline.com    Login page should be displayed
+    Enter valid User Id and valid password and click on Sign In Button    District Admin: rhwpte+ta1234@gmail.com password:qwerty123    Home page should be displayed
+    Click on Reports Button    \    Reports filter page should be displayed
+    Verify Classes/Groups are available    Test data : Classes/Groups    Expected Result : Classes and Groups butoons hshould be display for filtering the reports.
+
+7572763-Verify whether user can register with same email ID for for different schools
+    [Documentation]    1. click on New User
+    ...    2. choose District Admin
+    ...    3. choose a zip code from one District. \ Later can use the same zip code or could use a zip code for another district
+    ...    4. email I used was rpaschburg@sdtcorp.com
+    ...    5. pw I used was rpaschburg1 (lor rpaschburg11 in one case)
+    Steps    Test Data    Expected result
+    Open application    Test Data :Url=http://b11test1.mentoringmindsonline.com    Home page should be displayed
+    Click on 'NewUSer' Select any one user    Teacher/Da/SA
+    Enter Zipcode and proceed till the registration    76008/rhwpte+ta2411@gmail.com/test1234
+    Again register with new user with same details.    76008/rhwpte+ta2411@gmail.com/test1234    Expected Result : Alert message should be displayed.
+
+7573410-Verify whether correct data is displayed under Filters for Reports.
+    Open the browser and enter the URL    Url- b11test1.mentoringmindsonline.com    Login page should be displayed
+    Enter valid User Id and valid password and click on Sign In Button    School Admin: rhwpte+ta1234@gmail.com password:qwerty123    Home page should be displayed
+    Click on Reports Button    \    Reports filter page should be displayed
+    Select Standard mastery report > Class > Subject\Level > Date range and click on generate button    \    Standard Mastery report for the selected class and subject should be displayed
+    Verify the Report    Test Data : Filters    Expected Result : Subject and Date should be displayed under Filters in the reports.
+
+7624781-Verify whether 'Cancel' button is working for editing the user.
+    Steps    Test Data    Expected result
+    Open application ,Enter Valid User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Home page should be displayed
+    Click on Management > All Users    \    All User details should be displayed
+    Select any one of the user and Click On 'Edit'
+    Click on 'Cancel' button.    \    Expected Result : 'Cancel' button should be worked.
+
+7509167-Verify whether 'Teacher' is displayed instead of 'Instructor'
+    Steps    Test Data    Expected result
+    Open application ,Enter Valid User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Home page should be displayed
+    Click on Management > All Users    \    All User details should be displayed
+    Verify the role column.    \    Expected Result : 'Teacher' should be displayed instead of 'Instructor' in the Role column.
+
+8625407-Verify whether Window is displayed even after select the file in Email Support.
+    [Documentation]    Steps to reproduce:
+    ...    1.Login as Teacher(rhwpte+ta1911@gmail.com/testtesttesttesttesttesttesttest1) using b11test1.mentoringmindsonline.com
+    ...    2.Click on Help > 'Email Support'> Browse.
+    ...    3.Select File and Click on 'Open' on the window and observe(attach file and observe).
+    Steps    Test Data    Expected result
+    Open application ,Enter Valid User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Home page should be displayed
+    Click on 'help' button.
+    Click on 'Email Support'.
+    Select file and Click on 'open' on observe.    \    Expected result:Window should be close once select the file.
+
+8625208-Verify whether photo can attach from attachments for emailsupport(iPAD)
+    [Documentation]    Steps to reproduce:
+    ...    1.Login as Teacher b11test1.mentoringmindsonline.com with credentials (rhwpte+ta119@gmail.com/test1234)
+    ...    2.Click on Help>Email Support>Choose file
+    ...    3.Select take photo/video or photo library.
+    ...    4.Observed that the photos are not getting uploaded while selecting from library
+    Steps    Test Data    Expected Result
+    Open browser and enter \ valid URL with Valid UserID and Password.    b11test1.mentoringmindsonline.com/TestData: rhwpte+ta2411@gmail.com/test1234    Login page should be opened
+    Click on 'Help'
+    Click on 'EmailSupport'
+    Click on 'Choose file'    \    Expected Result : Selected file/photo should be uploaded.
+
+8613074-Verify whether 'NotAvailable' is present in 'Grade' while editing the User.
+    [Documentation]    Steps to reproduce:
+    ...    1.Login as Teacher (rhwpte+ta1711@gmail.com/test1234) using b11test1.mentoringmindsonline.com \ 2.Click on 'Management'.
+    ...    3.Click on 'Add' button to add users and observe the GradeLevel dropdown.
+    ...    4.Click on 'Cancel' button and Select any one of the role(Teacher).
+    ...    5.Click on 'edit' to edit Teacher details.
+    ...    6.Select the Grade level dropdown and observe that "Not Available" is not present in "GradeLevel" while editing the user.
+    Steps    Test Data    Expected Result
+    Open browser and enter \ valid URL with Valid UserID and Password.    b11test1.mentoringmindsonline.com/TestData: rhwpte+ta2411@gmail.com/test1234    Login page should be opened
+    Click on 'Management'
+    Select any one of the user and Click on 'Edit'    Test \ Data : Teacher/SA/DA
+    Select Grade level from dropdown and verify.    \    Expected result:'Not Available' feature should be available in Gradelevel while editing the user.
+
+8604460-Verify whether Checkbox is displayed while editing the tilte(Tab-Android)
+    [Documentation]    Steps to reproduce:
+    ...    1.Login to URL b11test1.mentoringmindsonline.com with School Admin credentials (rhwpte+sa1711@gmail.com / test1234).
+    ...    2.Click on 'Show Groups'.
+    ...    3.Select Group(testdata: gg) and Click on 'Edit'.
+    ...    4.Click on 'Edit' Title.
+    ...    5.Uncheck the 'Name' in 'Syllabus' window and observe.
+    Steps    Test Data    Expected Result
+    Open browser and enter \ valid URL with Valid UserID and Password.    b11test1.mentoringmindsonline.com/TestData: rhwpte+sa2411@gmail.com/test1234    Login page should be opened
+    Click on 'Management'
+    Click on 'Show Groups'
+    Select group and click on 'Edit'    TestData : gg
+    Click on 'Edit' title window.
+    Uncheck the 'Name' in Syllabus window.    \    Expected result:CheckBox should be displayed to select/deselect the Titles.
+
+8604455-Verify whether 'role' column is displayed in 'Available users' window(Tab-Android)
+    [Documentation]    Steps to reproduce:
+    ...    1.Login to URL b11test1.mentoringmindsonline.com with School Admin credentials (rhwpte+sa1711@gmail.com / test1234).
+    ...    2.Click on 'Show Groups'.
+    ...    3.Select Group(testdata: gg) and Click on 'Edit'.
+    ...    4.Click on 'Edit' student.
+    ...    5. Observe the 'Role' column in the 'Available Student' Window.
+    Steps    Test Data    Expected Result
+    Open browser and enter \ valid URL with Valid UserID and Password.    b11test1.mentoringmindsonline.com/TestData: rhwpte+sa2411@gmail.com/test1234    Login page should be opened
+    Click on 'Management'
+    Click on 'Show Groups'
+    Select Group and click on 'Edit'    Testdata :gg
+    Click on 'Edit' students and verify all columns.    \    Expected result:'Role' column should be displayed.
+
+8604452-Verify whether user can add all fields For group in Landscape mode.(Tab-Android)
+    [Documentation]    Steps to reproduce:
+    ...    1.Login to URL b11test1.mentoringmindsonline.com with SchoolAdmin credentials (rhwpte+sa1711@gmail.com / test1234).
+    ...    2. Click on Management.
+    ...    3. Click on Add button in Groups window.
+    ...    4. Observe that all the fields are not displayed except Name .
+    Steps    Test Data    Expected Result
+    Open browser and enter \ valid URL with Valid UserID and Password.    b11test1.mentoringmindsonline.com/TestData: rhwpte+sa2411@gmail.com/test1234    Login page should be opened
+    Click on 'Management'
+    Click on 'Add' button in Groups.    \    Expected result:All the fields should display and able to add for new Group .
+
+8604450-Verify whether Page is closed when clicked on 'Close' button in LiveChat(iPAD-Air)
+    [Documentation]    Steps to reproduce:
+    ...    1. Enter Url b11test1.mentoringmindsonline.com .
+    ...    2. Login as Teacher with valid credentials (Test Data :- rhwpte+teacher456@gmail.com /a1a2a3a4)
+    ...    3.Click on Help Menu
+    ...    4.Select Live Chat
+    ...    5.Click on Close
+    ...    6.Observed that Page is not getting closed when clicked on Close button.
+    Steps    Test Data    Expected Result
+    Open browser and enter \ valid URL with Valid UserID and Password.    b11test1.mentoringmindsonline.com/TestData: rhwpte+ta2411@gmail.com/test1234    Login page should be opened
+    Click on 'Help' menu
+    Click on 'Live Chat'
+    Click on 'Close'    \    Expected Result : Page should be closed when click on close button.
+
+8603998-Verify whether Grade value is displayed in 'grade level'
+    [Documentation]    1.Enter URL b11test4.mentoringmindsonline.com.
+    ...    2.Login with valid Teacher credentails(rhwpte+tc22130543500091@gmail.com/test012345 )
+    ...    3.Navigate to Management page.
+    ...    4.Select the Student record which has float Grading value in "My Students" table.
+    ...    5.Observe that the Grade value is displayed as "Grade Level " instead of selected value in Details table" for selected student records.
+    Steps    Test Data    Expected Result
+    Open browser and enter \ valid URL with Valid UserID and Password.    b11test1.mentoringmindsonline.com/TestData: rhwpte+ta2411@gmail.com/test1234    Login page should be opened
+    Click on 'managemnt'
+    select student and click on 'edit'
+    observe the grade value in grade level.    \    Expected result:Grade should display for the student records in Details table.
+
+8582420-Verify whether appropriate windows is displayed while editing the syllabus in a class.
+    [Documentation]    Steps to reproduce:
+    ...    1.Login to URL b11test1.mentoringmindsonline.com with School admin credentials (rhwpte+schoolpoq@gmail.com/qwepoi123).
+    ...    2.Click on Mangement and hit on Edit syllabus of Class window.
+    ...    3.Observed that the two tabs are getting displayed to the middle of the window intermittently, when the user drags to the the bottom of the window, the two tabs are getting dissapeared
+    Steps    Test Data    Expected Result
+    Open browser and enter \ valid URL with Valid UserID and Password.    b11test1.mentoringmindsonline.com/TestData: rhwpte+sa2411@gmail.com/test1234    Login page should be opened
+    Click on 'managemnt'
+    Select class and click on 'edit' syllabus.
+    observe the window which appears intermittenly.    \    Expected result: The two tabs of the Edit syllabus of Class window should be stable enough to the top of the window
+
+8582352-Verify whether allignment when expanding data in Management view (iPAD)
+    [Documentation]    Steps to reproduce:
+    ...    1.Login to URL b11test1.mentoringmindsonline.com with Teacher credentials (rhwpte+teachpoq@gmail.com/qwepoi123).
+    ...    2. \ Click on Mangement and hit on Edit student's Class window.
+    ...    3. \ Select the class or a user to edit and click on expand button of the window
+    Steps    Test Data    Expected Result
+    Open browser and enter \ valid URL with Valid UserID and Password.    b11test1.mentoringmindsonline.com/TestData: rhwpte+ta2411@gmail.com/test1234    Login page should be opened
+    Click on 'managemnt' and click on edit student window.
+    select class and click on 'edit' and expand the window.    \    Expected result: \ List of classes or list o users \ present in list should be properly alligned when user clicks on expand button
+
+8582351-Verify whether 'print/export' and 'add' buttons are displayed in management view.(iPAD)
+    [Documentation]    Steps to reproduce:
+    ...    1.Login to URL b11test1.mentoringmindsonline.com with Teacher credentials (rhwpte+teachpoq@gmail.com/qwepoi123).
+    ...    2.Click on Mangement and hit on Edit for a student or teacher
+    ...    3.Observe that "Print/Export" or "Add" button are not getting displayed.
+    Steps    Test Data    Expected Result
+    Open browser and enter \ valid URL with Valid UserID and Password.    b11test1.mentoringmindsonline.com/TestData: rhwpte+ta2411@gmail.com/test1234    Login page should be opened
+    Click on 'managemnt'
+    observe 'print/export' and 'add' buttons    \    Expected result: "Print/Export" or "Add" should be visible
+
+8582213-Verify whether correct browser name is displayed
+    [Documentation]    Steps to reproduce:
+    ...    1.Login to URL b11test1.mentoringmindsonline.com with Teacher credentials (rhwpte+thrn10@gmail.com / Mentor10).
+    ...    2.Click on Help .
+    ...    3.Select Browser Test.
+    ...    4.Observe that incorrect browser name is displayed
+    Steps    Test Data    Expected Result
+    Open browser and enter \ valid URL with Valid UserID and Password.    b11test1.mentoringmindsonline.com/TestData: rhwpte+ta2411@gmail.com/test1234    Login page should be opened
+    Click on 'help' menu
+    Select Browser test    \    Expected result: Chrome browser name should be displayed in "check.mentoringmindsonline.com" for Chrome
+
+8582196-Verify whether user can able to add newuser in landscape mode.(iPAD)
+    [Documentation]    Steps to reproduce:
+    ...    1. Login to URL b11test1.mentoringmindsonline.com with Teacher credentials (rhwpte+tchrandchr4@gmail.com / a1a2a3a4).
+    ...    2. \ Click on Management.
+    ...    3. \ Click on Add button in My Students window.
+    ...    4. \ Observe that \ all the \ fields are not displayed .
+    Steps    Test Data    Expected Result
+    Open browser and enter \ valid URL with Valid UserID and Password.    b11test1.mentoringmindsonline.com/TestData: rhwpte+ta2411@gmail.com/test1234    Login page should be opened
+    Click on 'management'.
+    Click on 'add' button to add student    \    Expected result: All the fields should be displayed and able to add new student .
+
+8582075-Verify whether report titles are overlapped in portraitmode.
+    [Documentation]    Steps to reproduce:
+    ...    1. Enter Url b11test1.mentoringmindsonline.com
+    ...    2. Login as Teacher/School Admin/District Admin with valid \ credentials
+    ...    (Test Data :- rhwpte+teacher6666@gmail.com /a1a2a3a4)
+    ...    3.Click on Reports
+    ...    4.Select Report Type,Classes,Subject/Level and Date Range
+    ...    5.Click on Generate button
+    ...    6.Observed that Report Title Overlaps in portrait Mode.
+    Steps    Test Data    Expected Result
+    Open browser and enter \ valid URL with Valid UserID and Password.    b11test1.mentoringmindsonline.com/TestData: rhwpte+ta2411@gmail.com/test1234    Login page should be opened
+    Click on 'Reports'.
+    Select details and click on generate button.    TestData : Select Report Type,Classes,Subject/Level and Date Range    Expected Result : report titles should not be overlapped.
+
+8576663-Verify whether Scroll bar is displayed while edit students in a class.
+    [Documentation]    Steps to reproduce:
+    ...    1.Enter URL b11test1.mentoringmindsonline.com and login as teacher (rhwpte+taa1411@gmail.com/test1234).
+    ...    2.Management>Edit Class.
+    ...    3.Click on 'edit' to edit students.
+    ...    4.Observe the list of students and Scroll bar.
+    Steps    Test Data    Expected Result
+    Open browser and enter \ valid URL with Valid UserID and Password.    b11test1.mentoringmindsonline.com/TestData: rhwpte+ta2411@gmail.com/test1234    Login page should be opened
+    Click on 'Management'.
+    Select a class and click on 'edit'
+    Edit student window and observe scrollbar.    \    Expected Result : Scroll bar should be displayed.
+
+8576613-Verify whether Select all Checkbox is displayed as selected when unselected one or more classes
+    [Documentation]    Steps to reproduce:
+    ...    1.Enter URL b11test1.mentoringmindsonline.com and login as teacher (rhwpte+taa1411@gmail.com/test1234).
+    ...    2.Click on management.
+    ...    3.Select student and edit the details.
+    ...    Click on 'Edit' to edit the classes.
+    ...    4.Check on 'Name' field to select all the Classes.
+    ...    5.Uncheck two or more classes and observe the 'name' (Showing as it is checked)
+    Steps    Test Data    Expected Result
+    Open browser and enter \ valid URL with Valid UserID and Password.    b11test1.mentoringmindsonline.com/TestData: rhwpte+ta2411@gmail.com/test1234    Login page should be opened
+    Click on 'Management'
+    Select student and click on edit to edit the class.
+    Check on 'name' field to select all classes.
+    Uncheck two or three classes and observe name field.    \    Expected result:It should not be displayed as 'Checked'.
+
+8489983- Verify Action is not performed without closing the Alert message
+    Open the browser and enter the URL    Test Data: Url- b11test1.mentoringmindsonline.com    Expected Result :Login page should be displayed
+    Click on Forget Password    \    Expected Result : Pop up should be displayed with an Email adress text box
+    Enter a In-valid User Id and click on Submit Button    Test Data: \ teacher: rhwpte+po111@gmail.c    Expected Result : Alert pop up should be displayed as "Please enter a Valid Email"
+    Close the password recovery windoe and try to enter User ID in login page    \    Action should not be performed in login page without closting the alert message.
+
+8190515- Verify whether red *'s displayed to indicate what field is required for adding a new user.
+    Open browser and Enter URL    Test Data : b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Enter valid User ID and Password    Test Data : rhwpte+ta7887@gmail.com/rhwpte+ta7887    Home page should be displayed
+    Clcik on Sign in button    \    Expected Result: Teacher home page should be displyed
+    Click on Management >"Add" User \ button    \    Expected Result: "New user" window should be displayed
+    Select required field to enter data    \    "red *'s" should be displayed for required fields
+
+8190724- Verify the Group details are displayed under classes
+    Open browser and Enter URL    Test Data : b11test1.mentoringmindsonline.com    Expected Result: Login page should be displayed
+    Enter valid User ID and Password    Test Data : rhwpte+ta7887@gmail.com/rhwpte+ta7887    Home page should be displayed
+    Clcik on Sign in button    \    Expected Result: Teacher home page should be displyed
+    Click on Management >"Add" User \ button > Edit classes    \    Expected Result: Only classes should be displayed , groups should not be displayed

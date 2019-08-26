@@ -1,0 +1,19 @@
+*** Settings ***
+Resource          super.txt
+
+*** Keywords ***
+Change the class Tutor Of a Class From School Admin
+    [Arguments]    ${Classname}    ${oldtutor}    ${newteacher}
+    [Documentation]    This keyword selects the class with given class name in the "classes" tables .
+    ...    Click on the "Edit" button of the "class-detail" window.
+    ...    Updates the allocated teacher to that class from old to new and saves the total "class details"....
+    ${Rowno}=    Select The Record In Table    ${table.classesAndGroups}    Name    ${Classname}
+    Run Keyword If    '${Rowno}'=='0'    Fail    No ${Classname} is available in classes
+    Edit The Class Or Group Details
+    @{newTeacherSplited}    Split String    ${newteacher}
+    ${Teachername}    Catenate    SEPARATOR=,${SPACE}    @{newTeacherSplited}[1]    @{newTeacherSplited}[0]
+    ${OldTeacher}    Get Text    id=groupLeader
+    Run Keyword If    '${OldTeacher}'=='${Teachername}'    Set Test Message    The new teacher is already selected for the class
+    Selenium2Library.Mouse Down    id=groupLeader
+    Wait And Click Element    //div[@id='groupLeader_dropdown']//tbody//td[text()='${Teachername}']
+    Wait And Click Element    id=saveGroupBtn

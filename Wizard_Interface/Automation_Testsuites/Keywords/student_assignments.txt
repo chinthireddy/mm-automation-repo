@@ -1,0 +1,575 @@
+*** Settings ***
+Resource          super.txt
+
+*** Keywords ***
+StartAssignment
+    [Arguments]    ${assignmentName}    ${subTitle}=''
+    [Documentation]    This keyword is used to start the given assignment.
+    Comment    ${assignmentStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //td[text()='${assignmentName}']//preceding-sibling::td    ${Delay}    The "${assignmentName}" is not available in the list.
+    Comment    Run Keyword And Continue On Failure    Run Keyword If    ${assignmentStatus}    Click Element    //td[text()='${assignmentName}']//preceding-sibling::td
+    ...    ELSE    Fail    The "${assignmentName}" is not selected.
+    Comment    ${assignmentStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //span[contains(text(),'${assignmentName}')]/following-sibling::span[contains(text(),'${subTitle}')]/parent::td/parent::tr/td[1]/div    ${Delay}    The "${assignmentName}${subTitle}" is not available in the list.
+    Comment    Run Keyword And Continue On Failure    Run Keyword If    ${assignmentStatus}    Click Element    //span[contains(text(),'${assignmentName}')]/following-sibling::span[contains(text(),'${subTitle}')]/parent::td/parent::tr/td[1]/div
+    ...    ELSE    Fail    The "${assignmentName}${subTitle}" is not selected.
+    ${StatusOfAssignments}=    Verify Element Present    //span[contains(text(),'${assignmentName}')]/following-sibling::span[contains(text(),'${subTitle}')]/parent::td/parent::tr/td[1]/div
+    Run Keyword If    ${StatusOfAssignments}    Wait Until Element Is Visible    //span[contains(text(),'${assignmentName}')]/following-sibling::span[contains(text(),'${subTitle}')]/parent::td/parent::tr/td[1]/div    ${Delay}
+    ...    ELSE    Wait Until Element Is Visible    //span[contains(text(),'${assignmentName}')]/parent::td[contains(text(),'${subTitle}')]/parent::tr/td[1]/div    ${Delay}
+    Run Keyword If    ${StatusOfAssignments}    Wait And Click Element    //span[contains(text(),'${assignmentName}')]/following-sibling::span[contains(text(),'${subTitle}')]/parent::td/parent::tr/td[1]/div
+    ...    ELSE    Wait And Click Element    //span[contains(text(),'${assignmentName}')]/parent::td[contains(text(),'${subTitle}')]/parent::tr/td[1]/div
+    Sleep    15s
+    Wait Until Element Is Visible    //div[@id='assmtGrid']    ${Delay}    The Assignments grid is not visible.
+    [Teardown]
+
+SelectOption
+    [Arguments]    ${value}
+    [Documentation]    Keyword is used to choose option for multiple option type questions.
+    Wait Until Element Is Visible    //div[contains(@id,'submit') and contains(text(),'Submit')]    ${Delay}    Submit button is not visible.
+    Sleep    20s
+    Run Keyword If    '${value}'=='A'    Click On Element    //div[@id='answerChoice0']
+    Run Keyword If    '${value}'=='B'    Click On Element    //div[@id='answerChoice1']
+    Run Keyword If    '${value}'=='C'    Click On Element    //div[@id='answerChoice2']
+    Run Keyword If    '${value}'=='D'    Click On Element    //div[@id='answerChoice3']
+    Comment    Sleep    10s
+    Wait Until Page Contains Element    //div[contains(@id,'submit') and contains(text(),'Submit') and contains(@aria-disabled,'false')]    10s
+    Click Element    //div[contains(@id,'submit') and contains(text(),'Submit')]
+    Comment    Sleep    10s
+    Wait Until Page Contains Element    //div[contains(@id,'submit') and contains(text(),'Submit') and contains(@aria-disabled,'true')]    10s
+
+PassageTabControl
+    [Documentation]    This keyword is used to find the NextPage button on the Asssignment Paragraph.
+    : FOR    ${icounter}    IN RANGE    0    100
+    \    ${nextPage}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.nextPage}    5s    'Next Page' Button is not visible at Assignments Paragraph page.
+    \    Run Keyword If    ${nextPage}    Wait And Click Element    ${button.studentAssignments.nextPage}
+    \    ...    ELSE    Exit For Loop
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.GoToQuestion}    5s    'Go To Question' Button is not visible at Assignments Paragraph page.
+    Run Keyword If    ${bStatus}    Wait And Click Element    ${button.studentAssignments.GoToQuestion}
+    Return From Keyword    ${bStatus}
+
+YesOrNoOptionControl
+    [Arguments]    ${jCounter}
+    [Documentation]    Keyword is used to Choose Yes or No options in question.
+    ${yesOrNoctrlStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='mixedStemHTML']/div[@id='mx1']    5s    'YesORNo' Button is not visible at Assignments Paragraph page.
+    Return From Keyword If    ${yesOrNoctrlStatus}==False    False
+    Comment    ${iCount}    Run Keyword If    ${yesOrNoctrlStatus}    Get Matching Xpath Count    //div[contains(@id,'mx')]/div[contains(@id,'mx') and @class='matchingNode matchingNodeSelectable']
+    ${iCount}    Run Keyword If    ${yesOrNoctrlStatus}    Get Matching Xpath Count    //div[@id='mixedStemHTML']/img/following-sibling::div[contains(@id,'mx')]/div[contains(@id,'mx') and @class='matchingNode matchingNodeSelectable']
+    : FOR    ${iCounter}    IN RANGE    2    ${iCount}    2
+    \    ${endrange}    Evaluate    ${iCounter}+1
+    \    ${randomNumber}    Get Random Number In Given Range    ${iCounter}    ${endrange}
+    \    Run Keyword And Continue On Failure    Run Keyword If    ${yesOrNoctrlStatus}    Click On Element    //div[contains(@id,'mx') and contains(@id,'_01${randomNumber}') and @class='matchingNode matchingNodeSelectable']//div[@class='dojoDndTarget dojoDndContainer']
+    \    Sleep    1s
+    \    ${submitStatus}    Run Keyword And Return Status    Click On Element    ${button.studentAssignments.submit}
+    \    comment    Mys-5011:Updated test script To get the status of the Question with the status it will navigate to next question
+    \    Wait Until Element is Invisible    ${common.Loading.PleaseWait...}
+    \    ${Counter}    Evaluate    ${jCounter}+1
+    \    ${saveAnswerStatus}    Verify Element Present    //div[@id='assmtGrid-row-${Counter}']/table//td[contains(@class,'column-a field-a')]/*
+    \    Run Keyword Unless    ${saveAnswerStatus}    YesOrNoOptionControl    ${jCounter}
+    \    Set Global Variable    ${submitStatus}    ${submitStatus}
+    \    Return From Keyword    ${saveAnswerStatus}
+
+CheckMultipleOptionControl
+    [Arguments]    ${jCounter}
+    ${multipleChoice}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='mcChoices']//div[contains(@id,'answerChoice0')]    5s
+    Run Keyword Unless    ${multipleChoice}    Return From Keyword    ${multipleChoice}
+    ${maxOptions}    Get Matching Xpath Count    //div[@id='mcChoices']//div[contains(@id,'answerChoice')]
+    ${options}    Evaluate    ${maxOptions}-1
+    ${randomNumber}=    Get Random Number In Given Range    0    ${options}
+    ${optionStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.OptionChoiseA}    ${TimeOut}
+    Return From Keyword If    ${optionStatus}==False    ${optionStatus}
+    Run Keyword If    ${optionStatus}    Wait And Click Element    //div[@id='mcChoices']//div[@id='answerChoice${randomNumber}']
+    ${submitStatus}    Run Keyword And Return Status    Wait And Click Element    ${button.studentAssignments.submit}
+    comment    Updated test script To get the status of the Question with the status it will navigate to next question
+    Wait Until Element is Invisible    ${common.Loading.PleaseWait...}
+    ${Counter}    Evaluate    ${jCounter}+1
+    ${saveAnswerStatus}    Verify Element Present    //div[@id='assmtGrid-row-${Counter}']/table//td[contains(@class,'column-a field-a')]/*
+    Run Keyword Unless    ${saveAnswerStatus}    CheckMultipleOptionControl    ${jCounter}
+    Set Global Variable    ${submitStatus}    ${submitStatus}
+    Return From Keyword    ${saveAnswerStatus}
+
+InputTextControl
+    [Arguments]    ${jCounter}
+    [Documentation]    Keyword is used to write text in text area type questions.
+    ${inputTextctrls}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='mixedStemHTML']    5s    'InputTextControls' are not visible at Assignments page.
+    ${xpathCount}    Run Keyword If    ${inputTextctrls}    Get Matching Xpath Count    //div[contains(@id,'DisplayDiv') and @class='frBlank']
+    ...    ELSE    Return From Keyword    ${inputTextctrls}
+    ${TextboxCount}    Set Variable If    ${xpathCount}<3    ${xpathCount}    2
+    ${textMessage}    Set Variable    SDT TEST
+    : FOR    ${iCounter}    IN RANGE    1    ${TextboxCount}+1
+    \    Run Keyword And Ignore Error    Run Keyword If    '${inputTextctrls}'=='True'    Wait And Click Element    //div[@id='blank00${iCounter}Display']
+    \    Comment    Run Keyword If    '${inputTextctrls}'=='True'    Click Element    //div[@id='blank00${iCounter}Display']
+    \    ${textArea}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='frhgStemHTML']//div[@id='blank00${iCounter}EditorDiv' and contains(@style,'visibility: visible;')]//textarea    ${TimeOut}
+    \    ${inputArea}    Verify Element Visible    //div[@id='blank00${iCounter}EditorDiv' and contains(@style,'visibility: visible;')]//input
+    \    Run Keyword If    ${inputTextctrls}==True and ${textArea}==True    Input Text    //div[@id='frhgStemHTML']//div[@id='blank00${iCounter}EditorDiv' and contains(@style,'visibility: visible;')]//textarea    ${textMessage}
+    \    Run Keyword If    ${inputTextctrls}==True and ${inputArea}==True    Input Text    //div[@id='blank00${iCounter}EditorDiv' and contains(@style,'visibility: visible;')]//input    ${textMessage}
+    \    ${submitStatus}    Run Keyword And Return Status    Wait And Click Element    ${button.studentAssignments.openended.submit}
+    \    comment    Mys-5011:Updated test script To get the status of the Question with the status it will navigate to next question
+    \    Wait Until Element is Invisible    ${common.Loading.PleaseWait...}
+    \    ${Counter}    Evaluate    ${jCounter}+1
+    \    ${saveAnswerStatus}    Verify Element Present    //div[@id='assmtGrid-row-${Counter}']/table//td[contains(@class,'column-a field-a')]/*
+    \    Run Keyword Unless    ${saveAnswerStatus}    InputTextControl    ${jCounter}
+    \    Set Global Variable    ${submitStatus}    ${submitStatus}
+    \    Run Keyword Unless    ${submitStatus}    Set Test Message    The question has been answered previosly.
+    \    Return From Keyword    ${saveAnswerStatus}
+
+Select Assignment Class
+    [Arguments]    ${className}
+    [Documentation]    Selects the given class in the class list.
+    ${classStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.newAssignments.classesList}//div[text()='${className}']    ${TimeOut}
+    Run Keyword If    ${classStatus}==True    Wait Until Element Is Visible    ${label.newAssignments.classesList}//div[text()='${className}']/following-sibling::input    ${TimeOut}
+    ${attValue}=    Run Keyword If    ${classStatus}==True    Get Element Attribute    ${label.newAssignments.classesList}//div[text()='${className}']/following-sibling::input@aria-checked
+    Run Keyword If    '${attValue}'!='true'    Sleep    3s
+    Run Keyword If    '${attValue}'!='true'    Select Checkbox    ${label.newAssignments.classesList}//div[text()='${className}']/following-sibling::input
+    ${checkBoxStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.newAssignments.classesList}//div[text()='${className}']/following-sibling::input[@aria-checked='true']    ${TimeOut}
+    Run Keyword Unless    ${checkBoxStatus}    Wait And Click Element    ${label.newAssignments.classesList}//div[text()='${className}']/following-sibling::input
+    [Return]    ${classStatus}
+
+Select Individuals
+    [Arguments]    ${studentUserIds}
+    [Documentation]    Select the individual student for a class
+    Wait And Click Element    ${label.newAssignments.SelectIndividual}
+    : FOR    ${icount}    IN RANGE    1      6
+    \    ${individual}    Wait For Element Visible    //div[@id='listEditorBC']    30s
+    \    Exit For Loop If    ${individual}
+    \    Wait And Click Element    ${label.newAssignments.SelectIndividual}
+    ${dataType}    Type Of Variable    ${studentUserIds}
+    ${listTypeStatus}    String Should Contain    ${dataType}    list
+    ${userslist}    Create List    ${studentUserIds}
+    ${studentUserIds}    Set Variable If    ${listTypeStatus}==True    ${studentUserIds}    ${userslist}
+    Select Checkbox    ${table.fromTable}//table[@class='dgrid-row-table']//th/input[@type='checkbox']
+    Unselect Checkbox    ${table.fromTable}//table[@class='dgrid-row-table']//th/input[@type='checkbox']
+    : FOR    ${studentUserId}    IN    @{studentUserIds}
+    \    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[contains(@class,'fromInlineDijit')]//div[@class='dgrid-scroller']/div/div/table[@class='dgrid-row-table']/tr/td[text()='${studentUserId}']/parent::tr/td[1]/input    ${TimeOut}
+    \    Run Keyword If    ${bStatus}    Run Keyword And Return Status    Select Checkbox    //div[contains(@class,'fromInlineDijit')]//div[@class='dgrid-scroller']/div/div/table[@class='dgrid-row-table']/tr/td[text()='${studentUserId}']/parent::tr/td[1]/input
+    \    ${chkbxSelectStatus}    Run Keyword And Return Status    Checkbox Should Be Selected    //div[contains(@class,'fromInlineDijit')]//div[@class='dgrid-scroller']/div/div/table[@class='dgrid-row-table']/tr/td[text()='${studentUserId}']/parent::tr/td[1]/input
+    \    Run Keyword If    "${chkbxSelectStatus}"!="True"    Click On Element    //div[contains(@class,'fromInlineDijit')]//div[@class='dgrid-scroller']/div/div/table[@class='dgrid-row-table']/tr/td[text()='${studentUserId}']/parent::tr/td[1]/input
+    Wait And Click Element    ${button.newAssignments.EditStudentSaveBttn}
+    [Return]    ${bStatus}
+
+Select Subject
+    [Arguments]    ${subject}    ${spanishStatus}=False
+    [Documentation]    Keyword is used to select the subject(argument) from list of subjects.
+    [Timeout]
+    Sleep    2s
+    ${subjectsCount}=    Wait Until Keyword Succeeds    1m    5s    Get Matching Xpath Count    ${label.newAssignment.subjectList}/li
+    Wait Until Element Is Visible    ${label.newAssignment.subjectList}/li[${subjectsCount}]    30s
+    : FOR    ${sub}    IN RANGE    ${subjectsCount}    0    -1
+    \    Click Element At Coordinates    ${label.newAssignment.subjectList}/li[${sub}]    3    5
+    \    ${elementVisiblity}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.newAssignment.subjectList}//li[contains(@class,'roundabout-in-focus')]    15s
+    \    Run Keyword If    ${elementVisiblity}!=True    Wait And Click Element    ${label.newAssignment.subjectList}/li[${sub}]
+    \    Run Keyword If    ${elementVisiblity}!=True    Wait Until Element Is Visible    ${label.newAssignment.subjectList}//li[contains(@class,'roundabout-in-focus')]    15s
+    \    ${atttrValue}=    Get Element Attribute    ${label.newAssignment.subjectList}//li[contains(@class,'roundabout-in-focus')]@style
+    \    Log    ${atttrValue}
+    \    ${subject}    Set Variable If    ${isDemoQURL}==True    ${subject.strip()}    ${subject}
+    \    ${bStatus}=    Run Keyword If    ${isDemoQURL}==True    String Should Contain    ${atttrValue}    ${subject}
+    \    ...    ELSE    String Should Contain    ${atttrValue}    ${subject}Level
+    \    ${spanishVerification}    String Should Contain    ${atttrValue}    Spanish
+    \    Exit For Loop If    ${bStatus}==True and ${spanishVerification}==${spanishStatus}
+    [Return]    ${bStatus}
+
+Select Level
+    [Arguments]    ${level}
+    [Documentation]    Thi skeyword is used to select the level based on given subject.
+    Sleep    2s
+    ${levelsCount}=    Wait Until Keyword Succeeds    1m    5s    Get Matching Xpath Count    ${label.newAssignment.titlesList}/li
+    ${level}    Remove Spaces in Names    ${level}
+    : FOR    ${lev}    IN RANGE    ${levelsCount}    0    -1
+    \    Focus    ${label.newAssignment.titlesList}/li[${lev}]
+    \    Wait And Click Element    ${label.newAssignment.titlesList}/li[${lev}]
+    \    ${levelFocusStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.newAssignment.titlesList}/li[contains(@class,'roundabout-in-focus')]    15s
+    \    Run Keyword If    ${levelFocusStatus}!=True    Wait And Click Element    ${label.newAssignment.titlesList}/li[${lev}]
+    \    Run Keyword If    ${levelFocusStatus}!=True    Wait Until Element Is Visible    ${label.newAssignment.titlesList}/li[contains(@class,'roundabout-in-focus')]    15s
+    \    ${atttrValue}=    Get Element Attribute    ${label.newAssignment.titlesList}/li[${lev}]@style
+    \    Log    ${atttrValue}
+    \    ${bStatus}=    String Should Contain    ${atttrValue}    ${level}
+    \    Exit For Loop If    ${bStatus}==True
+    [Return]    ${bStatus}
+
+Select Assignment
+    [Arguments]    ${assignmentName}    ${unit}=${EMPTY}
+    [Documentation]    Keyword is used to select the Assignment from Assignment list.
+    Run Keyword If    '${unit}'!='${EMPTY}'    Selenium2Library.Mouse Down    activitySetSelect
+    Run Keyword If    '${unit}'!='${EMPTY}'    Click On Element    //div[@id='activitySetSelect_dropdown']//td[text()='${unit}']
+    Run Keyword If    '${unit}'!='${EMPTY}'    Sleep    3s
+    ${count}=    Get Matching Xpath Count    //div[@id='newAssmtGrid']//div[contains(@id,'newAssmtGrid-row')]
+    : FOR    ${row}    IN RANGE    1    ${count}+1
+    \    ${text}=    Get Text    //div[@id='newAssmtGrid']//div[contains(@id,'newAssmtGrid-row')][${row}]//tr/td[2]
+    \    ${bStatus}=    String Should Contain    ${text}    ${assignmentName}
+    \    Run Keyword If    ${bStatus}==True    Wait And Click Element    //div[@id='newAssmtGrid']//div[contains(@id,'newAssmtGrid-row')][${row}]//tr/td[1]
+    \    Exit For Loop If    ${bStatus}==True
+    [Return]    ${bStatus}
+
+BuublesSelection
+    [Arguments]    ${iCounter}
+    [Documentation]    Keyword is used to select the bubble type answer in question.
+    ${optionStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='grGridHTML']/div
+    Comment    ${countOfBubbleColumns}    Get Matching Xpath Count    //div[@id='grGridHTML']/div
+    Comment    : FOR    ${iCounter}    IN RANGE    0    ${countOfBubbleColumns}
+    Comment    \    ${countOfBubbleValues}    Get Matching Xpath Count    //map[@id='colMap${iCounter}']/area
+    Comment    \    ${randomNumber}=    Get Random Number In Given Range    1    ${countOfBubbleValues}
+    Comment    \    Click Element    //map[@id='colMap${iCounter}']/area[${randomNumber}]
+    Comment    \    Sleep    2s
+    ${submitStatus}    Run Keyword And Return Status    Wait And Click Element    ${button.studentAssignments.submit}
+    comment    Mys-5011:Updated test script To get the status of the Question with the status it will navigate to next question
+    Wait Until Element is Invisible    ${common.Loading.PleaseWait...}
+    ${Counter}    Evaluate    ${iCounter}+1
+    ${saveAnswerStatus}    Verify Element Present    //div[@id='assmtGrid-row-${Counter}']/table//td[contains(@class,'column-a field-a')]/*
+    Run Keyword Unless    ${saveAnswerStatus}    BuublesSelection    ${iCounter}
+    Set Global Variable    ${submitStatus}    ${submitStatus}
+    Return From Keyword    ${saveAnswerStatus}
+
+DoAssignment
+    [Arguments]    ${assignmentName}    ${subTitle}=''
+    [Documentation]    Keywird is Used to Start or Continue the Assignment.
+    [Timeout]
+    Comment    MYS-3211 : with wait for element visible keyword to wait for an element to an accurate given time.
+    ${StatusOfAssignments}=    Wait For Element Visible    //span[contains(text(),'${assignmentName}')]/following-sibling::span[contains(text(),'${subTitle}')]/parent::td/parent::tr/td[1]/div    ${TimeOut}
+    Run Keyword If    ${StatusOfAssignments}    Wait Until Element Is Visible    //span[contains(text(),'${assignmentName}')]/following-sibling::span[contains(text(),'${subTitle}')]/parent::td/parent::tr/td[1]/div    2m
+    ...    ELSE    Wait Until Element Is Visible    //span[contains(text(),'${assignmentName}')]/parent::td[contains(text(),'${subTitle}')]/parent::tr/td[1]/div    2m
+    ${span3}=    Run Keyword If    ${StatusOfAssignments}    Get Text    //span[contains(text(),'${assignmentName}')]/following-sibling::span[contains(text(),'${subTitle}')]/parent::td/span[3]
+    ${span4}=    Run Keyword If    ${StatusOfAssignments}    Get Text    //span[contains(text(),'${assignmentName}')]/following-sibling::span[contains(text(),'${subTitle}')]/parent::td/span[4]
+    ${activity}=    Run Keyword If    ${StatusOfAssignments}    GetAssignmentName    ${span4}    ${span3}
+    ...    ELSE    setvariable    Page 111 -
+    Run Keyword If    ${StatusOfAssignments}    Wait And Click Element    //span[contains(text(),'${assignmentName}')]/following-sibling::span[contains(text(),'${subTitle}')]/parent::td/parent::tr/td[1]/div
+    ...    ELSE    Wait And Click Element    //span[contains(text(),'${assignmentName}')]/parent::td[contains(text(),'${subTitle}')]/parent::tr/td[1]/div
+    Comment    MYS-3211 : with wait for element visible keyword to wait for an element to an accurate given time.
+    Wait For Element Visible    //div[@id='assmtGrid']    ${Delay}    The Assignments grid is not visible.
+    [Return]    ${activity}
+
+Assignment Writting
+    [Arguments]    ${CompletionStatus}=True
+    [Documentation]    Keyword is used to write the assignment.
+    ${submitBtnStutus}    Run Keyword And Return Status    Wait Until Page Contains Element    ${button.studentAssignments.submit}    ${TimeOut}
+    ${qtnCount}    Get Matching Xpath Count    ${table.studentAssignments.questionCount}
+    ${answeredQuestions}    Get Matching Xpath Count    ${table.studentAssignments.answeredQuestionCount}
+    ${notAnsweredQuestions}    Evaluate    ${qtnCount}-${answeredQuestions}
+    ${notAnsweredQuestions}    Set Variable If    '${CompletionStatus}'!='True' and ${notAnsweredQuestions}>5    5    ${notAnsweredQuestions}
+    ${no}    Evaluate    ${notAnsweredQuestions}-1
+    ${optionStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.OptionChoiseA}    5s
+    : FOR    ${iCounter}    IN RANGE    0    ${qtnCount}
+    \    Set Global Variable    ${submitStatus}    False
+    \    ${passageOptionsStatus}    Run Keyword Unless    ${optionStatus}    PassageTabControl
+    \    ${multileOptionsStatus}    CheckMultipleOptionControl    ${iCounter}
+    \    ${TextControlblockStatus}    Run Keyword If    '${multileOptionsStatus}'!='True'    InputTextControl    ${iCounter}
+    \    ${YesOrNoOptionControlStatus}    Run Keyword If    '${multileOptionsStatus}'!='True' and '${TextControlblockStatus}'!='True'    YesOrNoOptionControl    ${iCounter}
+    \    ${bubbleOptionControlStatus}    Run Keyword If    '${multileOptionsStatus}'!='True' and '${TextControlblockStatus}'!='True' and '${YesOrNoOptionControlStatus}'!='True'    BuublesSelection    ${iCounter}
+    \    Run Keyword If    ${iCounter}==${no}    Exit For Loop
+    \    ${nextQuestion}    Evaluate    ${iCounter}+1
+    \    Wait For Element Visible    //div[contains(@id,'assmtGrid-row-${nextQuestion+1}') and contains(@class,'dgrid-selected ui-state-active')]/table//td[contains(@class,'column-a field-a')]    ${Delay}
+    \    ${imageVisibility}    Verify Element Present    //div[contains(@id,'assmtGrid-row-${nextQuestion+1}') and contains(@class,'dgrid-selected ui-state-active')]/table//td[contains(@class,'column-a field-a')]
+    \    Comment    Next question navigation status
+    \    ${activeState}    Run Keyword Unless    ${imageVisibility}    ClickNextUntilNextQuestionLoaded    ${nextQuestion}
+    \    Run Keyword If    "${imageVisibility}"=="False" and "${submitStatus}"=="False"    ClickNextUntilNextQuestionLoaded    ${nextQuestion}
+    \    Comment    Run Keyword If    ${activeState}    Set Test Message    Next button is clicked sucesfully
+    \    ...    ELSE    Fail and Capture Screenshot    The Next button is not clicked properly
+    \    Comment    ${nextBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='navContainer']//div[contains(@id,'dojox_mobile_Heading')]//ul[@id='navToolbar']//li[@id='navBtnNext']//div[contains(text(),'Next')]    ${Delay}
+    \    ...    'Next' Button is not visible in Assigments.
+    \    Comment    Run Keyword If    ${nextBtnStatus}    Click Element    //li[@id='navBtnNext']/div[@class='mblTabBarButtonIconArea']
+    \    Comment    Run Keyword If    ${nextBtnStatus}    Sleep    2s
+    \    Comment    Run Keyword If    ${nextBtnStatus}    Mouse Over    //div[@id='navContainer']//div[contains(@id,'dojox_mobile_Heading')]//ul[@id='navToolbar']//li[@id='navBtnNext']//div[contains(text(),'Next')]
+    \    Comment    Run Keyword If    ${nextBtnStatus}    Execute Javascript    document.getElementById('navBtnNext').click
+    \    ${qNumber}    Evaluate    ${iCounter}+1
+    \    Run Keyword And Ignore Error    Wait Until Element Is Visible    //div[@class='dgrid-content ui-widget-content']/div[@id='assmtGrid-row-${qNumber}' and contains(@class,selected)]    ${Delay}
+
+Select Multiple Choice Answer
+    [Arguments]    ${png}    ${performance}
+    [Documentation]    Keyword is used to select the option for multiple choice questions.
+    Comment    Clicks on the answer for a multiple choice question
+    ${optionStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.studentAssignments.OptionChoiseA}
+    Return From Keyword If    ${optionStatus}==False    ${optionStatus}
+    Comment    Call the Python routine to get the appropriate answer.
+    Convert To String    ${png}
+    log    ${png}    info
+    log    ${performance}    info
+    ${response}=    AlgorithmLibrary.answer_the_mc_question    ${png}    ${performance}
+    ${answer}=    Get From List    ${response}    0
+    ${invalidMCOption}    Run Keyword If    ${optionStatus}    Run Keyword And Return Status    Wait Until Keyword Succeeds    ${TimeOut}    3s
+    ...    Click Element    //div[@id='mcChoices']//div[@id='answerChoice${answer}']
+    Run Keyword Unless    ${invalidMCOption}    Click On Element    //div[@id='mcChoices']//div[@id='answerChoice0']
+    Sleep    2s
+    ${submitStatus}    Run Keyword And Return Status    Click On Element    ${button.studentAssignments.submit}
+    Set Global Variable    ${submitStatus}    ${submitStatus}
+    Return From Keyword    ${optionStatus}
+
+GetPngImage
+    [Arguments]    ${locator}
+    [Documentation]    Keyword is used to get the PngImage file
+    ${styleValue}    Get Element Attribute    ${locator}@style
+    log    ${styleValue}
+    ${tempList}    Split String    ${styleValue}    questions/
+    @{tempList}    Set Variable    ${tempList}
+    @{tempList}    Split String    @{tempList}[1]    )
+    Comment    ${n}    Get Length Of List    ${tempList}
+    Comment    ${n}    Evaluate    ${n}-1
+    Comment    ${pngFileName}    Set Variable    @{tempList}[${n}]
+    ${pngFileName}    Set Variable    @{tempList}[0]
+    [Return]    ${pngFileName}
+
+Close Assigment Report
+    [Documentation]    Keyword is used to close the Assignment feedback form.
+    ${DialogStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='sessionReportDlg']/div[@id='srAllSessionsResults']    ${TimeOut}
+    Run Keyword If    ${DialogStatus}==True    Wait Until Keyword Succeeds    2m    2s    Click On Element    //div[@id='sessionReportDlg']/div[@class='mysCloseButton']
+
+Get Number of Unanswered Questions
+    [Documentation]    Keyword is used to get number of Unanswered Questions(in Assignment)
+    ${submitBtnStutus}    Run Keyword And Return Status    Wait Until Page Contains Element    ${button.studentAssignments.submit}
+    ${qtnCount}    Get Matching Xpath Count    ${table.studentAssignments.questionCount}
+    ${answeredQuestions}    Get Matching Xpath Count    ${table.studentAssignments.answeredQuestionCount}
+    ${notAnsweredQuestions}    Evaluate    ${qtnCount}-${answeredQuestions}
+    [Return]    ${notAnsweredQuestions}
+
+Get a New Assignment Name
+    [Documentation]    Keyword is used to get new assignment name
+    ${AssigmentsCount}=    Get Matching Xpath Count    //div[@class='dgrid-content ui-widget-content']/div[@role='row']
+    : FOR    ${iCounter}    IN RANGE    1    ${AssigmentsCount}+1
+    \    Comment    verify for the Start button in Assignment page
+    \    ${AssignStatus}=    Get Text    //div[@class='dgrid-content ui-widget-content']/div[${iCounter}+1]//td[@class='dgrid-cell dgrid-cell-padding dgrid-column-action field-action']
+    \    Comment    click on Start button if available
+    \    ${AssignName}=    Run Keyword If    '${AssignStatus}'!='Continue'    Get Text    //div[@class='dgrid-content ui-widget-content']/div[${iCounter}+1]//td[@class='dgrid-cell dgrid-cell-padding dgrid-column-name field-name']
+    \    Run Keyword If    '${AssignStatus}'!='Continue'    Exit For Loop
+    ${AssignName}    Set Variable If    '${AssignStatus}'=='Continue'    NA    ${AssignName}
+    [Return]    ${AssignName}
+
+Click Nav. Controller Buttons
+    [Arguments]    ${OperationName}
+    [Documentation]    Keyword is used to Click the Navigation Controller button.
+    ${NavOperationBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //li[@id='navBtn${OperationName}']/div[@class='mblTabBarButtonIconArea']/parent::li    ${TimeOut}
+    ${isTurnInOperation}    Set Variable If    "${OperationName}"=="TurnIn"    True    False
+    ${bStatus}    Evaluate    "${NavOperationBtnStatus}"=="True" and "${isTurnInOperation}"=="True"
+    Focus    //li[@id='navBtn${OperationName}']/div[@class='mblTabBarButtonIconArea']/parent::li
+    Click Assignment Navigation Controller Buttons    ${OperationName}
+    Return From Keyword If    "${isTurnInOperation}"=="False"    ${NavOperationBtnStatus}
+    ${DialogStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.student.unanwserQuestionsCountAsWrong}    20s
+    ${reportStatus}    Run Keyword If    "${DialogStatus}"=="False"    Run Keyword And Return Status    Wait Until Element Is Visible    ${text.student.assignmentReport}    ${Delay}
+    ${homePageStatus}    Run Keyword If    "${DialogStatus}"=="False" and "${reportStatus)"!="True"    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.studentAssignments.assignments}    20s
+    ${noDiialogVisibleStatus}    Evaluate    "${DialogStatus}"=="False" and "${reportStatus}"=="False" and "${homePageStatus}"=="False"
+    ${NavOperationBtnStatus}    Set Variable If    "${noDiialogVisibleStatus}"!="True"    True    False
+    Return From Keyword If    "${noDiialogVisibleStatus}"!="True"    ${NavOperationBtnStatus}
+    Run Keyword If    "${noDiialogVisibleStatus}"=="True" and "${BROWSER}"=="ie"    Focus    //li[@id='navBtn${OperationName}']/div[@class='mblTabBarButtonIconArea']/parent::li
+    Run Keyword If    "${noDiialogVisibleStatus}"=="True"    Click Assignment Navigation Controller Buttons    ${OperationName}
+    ${DialogStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.student.unanwserQuestionsCountAsWrong}    20s
+    ${reportStatus}    Run Keyword If    "${DialogStatus}"=="False"    Run Keyword And Return Status    Wait Until Element Is Visible    ${text.student.assignmentReport}    1m
+    ${NavOperationBtnStatus}    Set Variable If    ${noDiialogVisibleStatus}    False    True
+    [Return]    ${NavOperationBtnStatus}
+
+Verify Flag operation for a Question
+    [Documentation]    Keyword is used to validate the Flag operation for Question.
+    ${NavBtnStatus}=    Click Nav. Controller Buttons    Flag
+    Run Keyword If    ${NavBtnStatus}!=True    Fail    No Flag button is available in assignment
+    : FOR    ${iCount}    IN RANGE    0    10
+    \    ${fStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //td[contains(@class,'isB field-isB')]/img[contains(@src,'flag')]    ${TimeOut}
+    \    Run Keyword If    ${fStatus}    Capture Page Screenshot And Log    ${OUTPUTDIR}
+    \    Exit For Loop If    ${fStatus}
+    \    Run Keyword Unless    ${fStatus}    Click Nav. Controller Buttons    Flag
+    \    Sleep    5s
+    ${AssigmentsCount}=    Get Matching Xpath Count    //div[@class='dgrid-content ui-widget-content']/div[@role='row']
+    : FOR    ${iCounter}    IN RANGE    1    ${AssigmentsCount}+1
+    \    ${QuestionStatus}=    Get Element Attribute    //div[@class='dgrid-content ui-widget-content']/div[${iCounter}+1]@class
+    \    ${IsSelected}=    String Should Contain    ${QuestionStatus}    dgrid-selected
+    \    Run Keyword If    ${IsSelected}    Exit For Loop
+    ${flagStatus}    Run Keyword If    '${BROWSER}'=='ie'    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@class='dgrid-content ui-widget-content']/div[${iCounter}+1]/table[@class='dgrid-row-table']//td[1]/img    1m
+    ${FlagStatus}=    Verify Element Visible    //div[@class='dgrid-content ui-widget-content']/div[${iCounter}+1]/table[@class='dgrid-row-table']//td[1]/img
+    Capture Page Screenshot And Log    ${OUTPUTDIR}    flag.png
+    Click Nav. Controller Buttons    Flag
+    [Return]    ${FlagStatus}
+
+Verify Next operation for a Question
+    [Documentation]    Keyword is used to validate the Next operation for Question.
+    ${AssigmentsCount}=    Get Matching Xpath Count    //div[@class='dgrid-content ui-widget-content']/div[@role='row']
+    : FOR    ${iCounter}    IN RANGE    1    ${AssigmentsCount}+1
+    \    ${QuestionStatus}=    Get Element Attribute    //div[@class='dgrid-content ui-widget-content']/div[${iCounter}+1]@class
+    \    ${IsSelected}=    String Should Contain    ${QuestionStatus}    dgrid-selected
+    \    Run Keyword If    ${IsSelected}    Exit For Loop
+    ${NavBtnStatus}=    Click Nav. Controller Buttons    Next
+    Run Keyword If    ${NavBtnStatus}!=True    Fail    Next button is not available in assignment
+    : FOR    ${iCnt}    IN RANGE    0    10
+    \    ${nStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[contains(@class,'selected') and contains(@id,'assmtGrid-row-2')]    10s
+    \    Run Keyword If    ${nStatus}    Capture Page Screenshot And Log    ${OUTPUTDIR}
+    \    Exit For Loop If    ${nStatus}
+    \    Run Keyword Unless    ${nStatus}    Click Nav. Controller Buttons    Next
+    ${QuestionStatus}=    Get Element Attribute    //div[@class='dgrid-content ui-widget-content']/div[${iCounter}+1+1]@class
+    ${IsSelected}=    String Should Contain    ${QuestionStatus}    dgrid-selected
+    [Return]    ${IsSelected}
+
+Verify Previous Operation for a Question
+    [Documentation]    Keyword is used to validate the Previous operation for Question.
+    ${AssigmentsCount}=    Get Matching Xpath Count    //div[@class='dgrid-content ui-widget-content']/div[@role='row']
+    : FOR    ${iCounter}    IN RANGE    1    ${AssigmentsCount}+1
+    \    ${QuestionStatus}=    Get Element Attribute    //div[@class='dgrid-content ui-widget-content']/div[${iCounter}+1]@class
+    \    ${IsSelected}=    String Should Contain    ${QuestionStatus}    dgrid-selected
+    \    Run Keyword If    ${IsSelected}    Exit For Loop
+    ${NavBtnStatus}=    Click Nav. Controller Buttons    Previous
+    Run Keyword If    ${NavBtnStatus}!=True    Fail    No Next button is available in assignment
+    : FOR    ${iCount}    IN RANGE    0    10
+    \    ${nStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[contains(@class,'selected') and contains(@id,'assmtGrid-row-1')]    10s
+    \    Run Keyword If    ${nStatus}    Capture Page Screenshot And Log    ${OUTPUTDIR}
+    \    Exit For Loop If    ${nStatus}
+    \    Run Keyword Unless    ${nStatus}    Click Nav. Controller Buttons    Previous
+    ${QuestionStatus}=    Get Element Attribute    //div[@class='dgrid-content ui-widget-content']/div[${iCounter}]@class
+    ${IsSelected}=    String Should Contain    ${QuestionStatus}    dgrid-selected
+    [Return]    ${IsSelected}
+
+Get Title And Subtitle
+    [Arguments]    ${AssignmentFullName}
+    [Documentation]    Keyword is used to get Titles and SubTitle.
+    @{Titles}=    Split String    ${AssignmentFullName}    :
+    @{Temp}=    Split String    @{Titles}[1]    -
+    @{Temp}=    String.Split String    @{Temp}[0]
+    ${Temp}=    Evaluate    '@{Temp}[0]'+' '+'@{Temp}[1]'
+    @{Names}=    Create List    @{Titles}[0]    ${Temp}
+    [Return]    @{Names}
+
+Get Assignment Name From Assignment List
+    [Documentation]    Keyword is used to get Assignment Name from Assignment list.(Student home page)
+    ${AssignStatus}=    Verify Element Visible    //div[@class='dgrid-content ui-widget-content']/div[text()='There are no assignments to display.']
+    ${AssignName}    Run Keyword If    ${AssignStatus}!=True    Get Text    //div[@class='dgrid-content ui-widget-content']/div[2]//td[@class='dgrid-cell dgrid-cell-padding dgrid-column-name field-name']
+    ${AssignmentName}=    Set Variable If    ${AssignStatus}==True    NA    ${AssignName}
+    [Return]    ${AssignmentName}
+
+Validate Resource Page in Assignment
+    [Documentation]    Keyword is used to validate the Resource page in Assignment.
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.AssignmentsPage.Question}    10s
+    Run Keyword If    ${bStatus}    Wait And Click Element    ${button.AssignmentsPage.Question}
+    ${ResStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='resTabBtn']/span[contains(text(),'Resources')]
+    Run Keyword And Continue On Failure    Run Keyword If    ${ResStatus}!=True    Fail    Resource content is not availalbe in resource page
+    ${QuestionTabStatus}=    Verify Element Visible    //span[@id='queTabLabel']
+    Run Keyword And Continue On Failure    Run Keyword If    ${QuestionTabStatus}!=True    Fail    Question Tab is not available in the Resource page to go back to questions.
+    ${ResourceToolBarStatus}=    Verify Element Visible    //div[@id='resTabBtn']/span[contains(text(),'Resources')]
+    Run Keyword And Continue On Failure    Run Keyword If    ${ResourceToolBarStatus}!=True    Fail    Resource tool bar is not available in the Resource page to navigate to other pages
+    Run Keyword If    ${ResourceToolBarStatus}    Click On Element    //div[@id='resTabBtn']/span[contains(text(),'Resources')]
+    : FOR    ${iCounter}    IN RANGE    0    10
+    \    ${ResourceListDD}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='widget_resourceList']    ${TimeOut}
+    \    Exit For Loop If    ${ResourceListDD}
+    \    Run Keyword Unless    ${ResourceListDD}    Wait And Click Element    //div[@id='resTabBtn']/span[contains(text(),'Resources')]
+    Run Keyword If    ${ResourceListDD}!=True    Fail    Resource list dropdown is not available in the Resource page to navigate to other pages
+
+Add a Student to a New Class
+    [Arguments]    ${ClassCodes}
+    [Documentation]    Keyword is used to add a student to a class.
+    Comment    MouseDown on arrow mark beside the User ID.
+    ${JoinClassStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    //span[@id='groups-menu-btn']    ${Delay}
+    Run Keyword If    ${JoinClassStatus}!=True    Fail    Arrow down is not visible to add a student into a new class
+    Selenium2Library.Mouse Down    //span[@id='groups-menu-btn']
+    Comment    Click On "Join A Class"
+    Wait Until Element Is Visible    //tr[contains(@id,'dijit_MenuItem') and @aria-label='Join a Class ']    ${Delay}
+    Click On Element    //tr[contains(@id,'dijit_MenuItem') and @aria-label='Join a Class ']
+    Comment    Enter a ClassCode into Code Filed which is created at TeacherRegistration TestCase.
+    Wait Until Element Is Visible    //input[@id='joinClassDlg-classCode']    ${Delay}
+    Comment    ${STDClassCodes}    BuiltIn.Catenate    SEPARATOR=,    @{ClassCodes}
+    Comment    ${characters}    String.Split String To Characters    ${ClassCodes}
+    Comment    ${listLen}    Get Length Of List    ${characters}
+    Comment    : FOR    ${iCounter}    IN RANGE    0    ${listLen}
+    Comment    \    Type Keys Into Textbox    //input[@id='joinClassDlg-classCode']    @{characters}[${iCounter}]
+    Comment    \    Sleep    2s
+    TypeCharactertoTextBox    //input[@id='joinClassDlg-classCode']    ${ClassCodes}
+    : FOR    ${iCounter}    IN RANGE    0    20
+    \    ${JoinBtnStatus}=    Get Element Attribute    //button[@id='joinClassDlg-next']@aria-disabled
+    \    Exit For Loop If    '${JoinBtnStatus}'!='true'
+    Run Keyword If    '${JoinBtnStatus}'=='true'    Fail and Capture Screenshot    Cannot click on join button as it is in disabled mode    JoinDisablError.png
+    Click On Element    //button[@id='joinClassDlg-next']
+    Sleep    5s
+    ${dialogTitle}    Get Text    //div[@class='mblSimpleDialogContainer']/div[@class='dialogTitle']
+    ${dialogMessage}    Get Text    //div[@class='mblSimpleDialogContainer']/div[@class='dialogMessage']
+    ${bStatus}    String Should Contain    ${dialogTitle}    Class Joined!
+    Run Keyword And Continue On Failure    Run Keyword Unless    ${bStatus}    Fail and Capture Screenshot    ${dialogTitle} \n${dialogMessage}    Class Join.png
+    Set Test Message    ${dialogTitle} \n${dialogMessage}
+    ${NoClassJoinedStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@class='mblSimpleDialogContainer']/div[text()='No class joined.']
+    Run Keyword And Continue On Failure    Run Keyword If    ${NoClassJoinedStatus}==True    Fail and Capture Screenshot    The User has Already joined the class
+    Run Keyword And Continue On Failure    Wait Until Element Is Visible    //div[@class='mblSimpleDialogContainer']/div[text()='Class Joined!']    30s
+    ${closeStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='joinClassDlg']//div[@class='mysCloseButton']    ${TimeOut}
+    Run Keyword If    ${closeStatus}    Click On Element    //div[@id='joinClassDlg']//div[@class='mysCloseButton']
+
+Select QuestionTool
+    [Arguments]    ${ToolName}
+    [Documentation]    Keyword is used to validate the given Tool (Scratch pad,Note pad and rular)
+    ${toolBarStatus}=    Verify Element Visible    id=questionToolbar
+    Run Keyword If    ${toolBarStatus}!=True    Fail    Tool bar is not available for the question
+    Click On Element    //div[contains(@id,'${ToolName}')]
+    ${queStatus}=    Run Keyword If    '${ToolName}'=='queHL'    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@class='highlighterNode']    10s
+    Run Keyword If    ${queStatus}!=True and '${ToolName}'=='queHL'    Fail    QueHL is not visible even after selecting
+    ${RulerStatus}=    Run Keyword If    '${ToolName}'=='ruler'    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='rulerImg']    10s
+    Run Keyword If    ${RulerStatus}!=True and '${ToolName}'=='ruler'    Fail    Ruler is not visible even after selecting
+    ${scratchPadStatus}=    Run Keyword If    '${ToolName}'=='scratchPad'    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='scratchPad']    10s
+    Run Keyword If    ${scratchPadStatus}!=True and '${ToolName}'=='scratchPad'    Fail    ScratchPad is not visible even after selecting
+
+UnSelect Assignment Class
+    [Arguments]    ${className}
+    [Documentation]    keyword is used to Un selects the given class in the class list.
+    ${classStatus}=    Verify Element Visible    //ul[@id='raClassList']//div[text()='${className}']
+    Run Keyword If    ${classStatus}==True    Unselect Checkbox    //ul[@id='raClassList']//div[text()='${className}']/following-sibling::input
+    Sleep    2s
+    [Return]    ${classStatus}
+
+ClickNextUntilNextQuestionLoaded
+    [Arguments]    ${questionNo}
+    [Documentation]    Keyword is used to click next until next question loaded.
+    : FOR    ${val}    IN RANGE    1    20
+    \    ${icon1Status}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='navContainer']//div[contains(@id,'dojox_mobile_Heading')]//ul[@id='navToolbar']//li[@id='navBtnNext']//div[@class='mblTabBarButtonIconParent mblTabBarButtonIconParent1']//img    5s
+    \    ${icon2Status}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='navContainer']//div[contains(@id,'dojox_mobile_Heading')]//ul[@id='navToolbar']//li[@id='navBtnNext']//div[@class='mblTabBarButtonIconParent mblTabBarButtonIconParent2']//img
+    \    Run Keyword If    ${icon1Status}    Wait And Click Element    //div[@id='navContainer']//div[contains(@id,'dojox_mobile_Heading')]//ul[@id='navToolbar']//li[@id='navBtnNext']//div[@class='mblTabBarButtonIconParent mblTabBarButtonIconParent1']//img
+    \    Run Keyword If    ${icon2Status}    Wait And Click Element    //div[@id='navContainer']//div[contains(@id,'dojox_mobile_Heading')]//ul[@id='navToolbar']//li[@id='navBtnNext']//div[@class='mblTabBarButtonIconParent mblTabBarButtonIconParent2']//img
+    \    ${questionClass}    Get Element Attribute    //div[@id='assmtGrid-row-${questionNo}']@class
+    \    ${activeState}    Run Keyword And Return Status    String Should Contain    ${questionClass}    ui-state-active
+    \    Run Keyword If    ${activeState}    Exit For Loop
+    \    ...    ELSE    Sleep    2s
+    [Return]    ${activeState}
+
+Validate The Assignments List
+    [Documentation]    Keyword is used to validate the assignmnet list for loged in student.
+    comment    after login check whether assignments are available
+    ${AssignmentsListStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[contains(@id,'studentAssmtGrid-row') and @role='row']    ${Delay}
+    ${NoAssignStatus}    Verify Element Visible    //div[@class='dgrid-content ui-widget-content']/div[text()='There are no assignments to display.']
+    ${AssignStatus}    Evaluate    ${AssignmentsListStatus}==True and '${NoAssignStatus}'!='True'
+    Run Keyword If    ${AssignStatus}==False    Fail    For the above logged in Student User "There are no assignments to displayed" to verify the operations.
+
+Verify Graded assignment In My Grading Page
+    [Arguments]    ${ClassName}    ${AssignmentNameTitle}    ${AssignmentNameSubTitle}
+    [Documentation]    Keyword is used to verify graded assignment in My Grading page(teacher).
+    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[contains(@id,'gradeAssmtsListGrid-row')]    60s
+    Run Keyword If    ${bStatus}==False    Fail    grade Assignment List Grid-row not dislayed.
+    ${GradedAssignmentCount}=    Get Matching Xpath Count    //div[contains(@id,'gradeAssmtsListGrid-row')]
+    Run Keyword If    ${GradedAssignmentCount}==0    Fail    No Graded Assignments are available to Grade
+    : FOR    ${iCounter}    IN RANGE    1    ${GradedAssignmentCount}+1
+    \    Wait Until Element Is Visible    //div[contains(@id,'gradeAssmtsListGrid-row')]/parent::div/div[${iCounter}+1]    ${Delay}
+    \    ${ClassAndAssignmentName}=    Get Text    //div[contains(@id,'gradeAssmtsListGrid-row')]/parent::div/div[${iCounter}+1]
+    \    ${ClassNameStatus}=    String Should Contain    ${ClassAndAssignmentName}    ${ClassName}
+    \    ${AssignmentStatus}=    String Should Contain    ${ClassAndAssignmentName}    ${AssignmentNameTitle}
+    \    ${SubTitleStatus}    String Should Contain    ${ClassAndAssignmentName}    ${AssignmentNameSubTitle}
+    \    Run Keyword If    ${AssignmentStatus}==True and ${ClassNameStatus}==True and ${SubTitleStatus}==True    Exit For Loop
+    Run Keyword If    ${AssignmentStatus}!=True or ${ClassNameStatus}!=True or ${SubTitleStatus}!=True    Fail    Assignment done by is not a Teacher graded assignment
+
+Check TurnIn And Pause Assignment Controls
+    [Arguments]    ${OperationName}
+    [Documentation]    Keyword is used to check the TurnIn and Pause Assignment controls.
+    Comment    submit the teacher graded assignment
+    ${bSttaus}    Run Keyword And Return Status    Should Be Equal As Strings    ${OperationName}    Pause
+    Wait Until Element Is Visible    //li[@id='navBtn${OperationName}']/div[@class='mblTabBarButtonIconArea']/parent::li    ${Delay}
+    ${NavBtnStatus}    Run Keyword And Return Status    Click Assignment Navigation Controller Buttons    ${OperationName}
+    Sleep    10s
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Return From Keyword If    '${NavBtnStatus}'=='False'    ${NavBtnStatus}
+    ${homePageStatus}    Run Keyword If    ${bSttaus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.studentAssignments.assignments}    ${Delay}
+    Return From Keyword If    ${bSttaus}    ${homePageStatus}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    ${DialogStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.student.unanwserQuestionsCountAsWrong}    15s
+    Run Keyword If    ${DialogStatus}    Wait And Click Element    ${button.studentAssignments.confirmTurnInPromptBttn}
+    Comment    Close the Assignment Report
+    Close Assigment Report
+    ${NextAssignStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[text()='Your next assignment is:']    ${TimeOut}
+    Run Keyword If    ${NextAssignStatus}    Wait And Click Element    ${button.studentAssignments.nextAssmtDlgNo}
+    ${homePageStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${table.studentAssignments.assignments}    ${Delay}
+    Return From Keyword    ${homePageStatus}
+
+AssignAssignmentsToClass
+    [Arguments]    ${className}    ${count}    ${SignUpTitleMenus}    ${preActivitySelectMenus}    ${activityName}    ${type}=Class
+    [Documentation]    Keyword is used to add titles to Class.
+    : FOR    ${val}    IN RANGE    0    ${count}
+    \    ${kwStatus}    Add Assignment To A Student    ${className}    @{SignUpTitleMenus}[${val}]    @{preActivitySelectMenus}[${val}]    @{activityName}[${val}]
+    [Return]    ${kwStatus}
+
+Click turnin Controller Button
+    [Arguments]    ${OperationName}
+    ${NavOperationBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //li[@id='navBtn${OperationName}']/div[@class='mblTabBarButtonIconArea']/parent::li    ${TimeOut}
+    ${isTurnInOperation}    Set Variable If    "${OperationName}"=="TurnIn"    True    False
+    ${bStatus}    Evaluate    "${NavOperationBtnStatus}"=="True" and "${isTurnInOperation}"=="True"
+    Focus    //li[@id='navBtn${OperationName}']/div[@class='mblTabBarButtonIconArea']/parent::li
+    Click Assignment Navigation Controller Buttons    ${OperationName}
+    [Return]    ${NavOperationBtnStatus}

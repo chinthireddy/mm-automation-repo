@@ -1,0 +1,15 @@
+*** Variables ***
+${link.home.termsAndConditions}    //a[@id='linkToTerms' and contains(text(),'Terms and Conditions')]
+${button.termsAndConditions.close}    //div[contains(@class,'ui-dialog ui-widget')]//div[contains(@class,'ui-dialog-buttonpane')]//span[contains(text(),'Close')]
+${link.home.contactUs}    //a[@id='linkToContactUs' and contains(text(),'Contact Us')]
+${link.login.forgotUserIdPassword}    forgotPassword
+${link.home.quickTips}    //a[@id='linktoHelpPopup' and contains(text(),'Quick Tips')]
+${link.home.emailSupport}    //a[@id='linkToSupport' and contains(text(),'Email Support')]
+${link.home.browserTest}    //a[@id='linkToBrowserTest' and contains(text(),'Browser Test')]
+${link.breadcrumb.reports}    //div[@class='breadcrumb']//span[contains(@class,'breadcrumb') and contains(text(),'Reports')]
+${link.help.LiveChat}    //div[@id='helpOpener']//a[@id='linktoLiveChat']
+${link.emailSupport.attachFiles}    //td[@class='detail_value ticket_attachments']/table//tr/td[2]/a
+${link.HelpemailSupport.attachFiles}    //a[contains(text(),'attach files »')]
+${link.management.classCodeHelper}    classCodeHelper
+${link.loginPage.studentprivacyPledge}    //a[@id='privacyPledgeLink']
+${link.home.Resources}    //div[@id='helpOpener']//a [@id='linkToResources']

@@ -1,0 +1,986 @@
+*** Settings ***
+Suite Setup
+Resource          ../../Keywords/super.txt
+
+*** Test Cases ***
+BAT1: Teacher_Registration_with_Two_Classes
+    [Documentation]    Teacher Registation with adding two classes and titles.
+    [Tags]    BAT1    CRITICAL    REGISTRATION_CLASS_SETUP_TEACHER
+    [Setup]
+    Comment    BATs New Teacher setup start.
+    ${emailAlias}    Get Unique Value    TeacherSDTdata
+    ${teacherTestData}    Catenate    SEPARATOR=    ${mailBeginning}    ${emailAlias}
+    ${newClassName}    GetUniqueValue    SDTdata_ClassA
+    ${newTeacherDetails}    Run Keyword If    ${isDemoQURL}==False    Create Dictionary    UserName    ${teacherTestData}@gmail.com    Password
+    ...    test012345    FirstName    ${emailAlias}FN    LastName    ${emailAlias}LN    ClassName
+    ...    ${newClassName}_A,${newClassName}_B    Title    ${SignUpTitleMenu},CCS Motivation Math Level 03    Activity    04 Performance Assessment,04 Performance Assessment
+    ...    ELSE    Create Dictionary    UserName    ${teacherTestData}@gmail.com    Password    test012345
+    ...    FirstName    ${emailAlias}FN    LastName    ${emailAlias}LN    ClassName    ${newClassName}_A
+    ...    Title    Questions for Testing 2014    Activity    02 Multiple Choice
+    Log Dictionary    ${newTeacherDetails}
+    ${SignUpTitleMenus}    Get From Dictionary    ${newTeacherDetails}    Title
+    ${SignUpTitleMenus}    Split String    ${SignUpTitleMenus}    ,
+    ${classesList}    Get From Dictionary    ${newTeacherDetails}    ClassName
+    ${classesList}    Split String    ${classesList}    ,
+    OpenBrowserToLoginPage    ${WizardURL}
+    ${school}    Set Variable If    ${isDemoQURL}    ${demoQPreSchoolName}    ${preSchoolName}
+    ${schoolZipCode}    Set Variable If    ${isDemoQURL}    ${demoQSchoolZipCode}    ${schoolZipCode}
+    Create New Teacher    ${newTeacherDetails}    Finished    ${school}    ${schoolZipCode}
+    ${loaderVisibleStatus }    Run Keyword And Return Status    Wait Until Element Is Visible    ${common.homepage.Loading}    10s    Loader is not visible in the given time or the user not navigated to the Management page.
+    Run Keyword If    ${loaderVisibleStatus }    Wait Until Element is Invisible    ${common.homepage.Loading}
+    ${teacherUId}    Get From Dictionary    ${newTeacherDetails}    UserName
+    ${teacherPwd}    Get From Dictionary    ${newTeacherDetails}    Password
+    ${teacherFName}    Get From Dictionary    ${newTeacherDetails}    FirstName
+    ${teacherLName}    Get From Dictionary    ${newTeacherDetails}    LastName
+    Set Global Variable    ${globalTeacherUId}    ${teacherUId}
+    Set Global Variable    ${globalTeacherPassword}    ${teacherPwd}
+    ${cList}    Get From Dictionary    ${newTeacherDetails}    ClassName
+    ${keyList}    Split String    ${cList}    ,
+    Set Global Variable    ${classNamesList}    ${keyList}
+    ${Guided tool tip}    Run Keyword And Return Status    Wait For Element Visible    //div[@class='guidedHelpTooltipFooter']/div[contains(text(),'Hide Guided Help')]    10s
+    Run Keyword If    ${Guided tool tip}    Wait And Click Element    //div[@class='guidedHelpTooltipFooter']/div[contains(text(),'Hide Guided Help')]
+    Navigate To Management Page
+    Comment    Validate whether the newly added class has been added in the 'Classes' table or not.
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    ${assignedClassesDictionary}    Add Classes And Return Class Codes    Class    ${classesList}    ${SignUpTitleMenus}
+    Set Global Variable    ${globalClassesAndClassCodes}    ${assignedClassesDictionary}
+    ${assignedClassesCode}    Get Dictionary Values    ${assignedClassesDictionary}
+    Set Global Variable    ${assignedClassesCode}    ${assignedClassesCode}
+    Table Column Sorting    ${table.classesAndGroups}    Created    descend
+    : FOR    ${class}    IN    @{classesList}
+    \    ${classStatus}    Verify Values In Table    ${table.classesAndGroups}    Name    ${class}    False
+    \    Run Keyword And Continue On Failure    Run Keyword If    ${classStatus}==False    Fail    The classes table does not contain newly added class :${class}.
+    Set Global Variable    ${TeacherRegistrationTCStatus}    Pass
+    [Teardown]    Stop Application
+
+BAT2: Student_Sign Up_with_newly Created_Classes
+    [Documentation]    Student Registration with newly created classes from Bat1.
+    [Tags]    BAT2    CRITICAL    REGISTRATION_STUDENT
+    Run Keyword If    '${TeacherRegistrationTCStatus}'!='Pass'    Fail    Teacher Registration TC need to be executed before Student Registration.
+    Comment    Open 'wizard' app.
+    OpenBrowserToLoginPage
+    ${uniqueVal}    GetUniqueValue    std
+    ${studentdetails}    Create Dictionary    User Name    ${uniqueVal}    Password    ${uniqueVal}pwd    First Name
+    ...    ${uniqueVal}Fn    Middle Name    ${uniqueVal}MN    Last Name    LN    Grade Level
+    ...    2    School    ${preSchoolName}
+    ${assignedClass}    Get Dictionary Keys    ${globalClassesAndClassCodes}
+    ${assignedClassCodes}    Get Dictionary Values    ${globalClassesAndClassCodes}
+    New Student SignUp    ${studentdetails}    @{assignedClassCodes}[0]
+    Comment    ${className}    Set Variable    @{assignedClass}[1]
+    Comment    ${classCode}    Set Variable    @{assignedClassCodes}[1]
+    Comment    ${joinClassStatus}    Add New Class Code    ${className}    ${classCode}
+    Comment    Run Keyword Unless    ${joinClassStatus}    Fail    The new class code :${ClassCode} not added to the student.
+    [Teardown]    Stop Application
+
+BAT3: Teacher_add_a_class_in_Management
+    [Documentation]    Login as a Teacher and Create a Class from Management.
+    [Tags]    BAT3    HIGH    CREATE_CLASS_TEACHER
+    Run Keyword If    '${TeacherRegistrationTCStatus}'!='Pass'    Fail    Teacher Registration TC need to be executed before Student Registration.
+    ${bStatus}=    LoginToWizardApp    ${globalTeacherUId}    ${globalTeacherPassword}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials-'${globalTeacherUId},${globalTeacherPassword}'
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    Wait Until Element Is Visible    ${table.classesAndGroups}    30s    The wait until the classes table is displayed
+    ${class}=    GetUniqueValue    SDTdata_QAClass
+    ${bStatus}=    Verify Element Visible    ${label.management.showClasses}
+    Run Keyword If    '${bStatus}'=='True'    Click Element    ${label.management.showClasses}
+    Comment    Add a class to the classes table & verify whether it is displayed in the table or not.
+    ${classStatus}    Add A Class Or Group    ${class}    \    Created by QA off shore
+    Run Keyword Unless    ${classStatus}    Fail    Newly created Class was not displayed in Classes Table in the management page.
+    [Teardown]    Stop Application
+
+BAT 4: Teacher add a student in Management and add that student to the class
+    [Documentation]    Login as a Teacher.
+    ...    Add a student to the Teacher
+    ...    Add Class student to the Above user.
+    [Tags]    BAT4    HIGH    ADD_USER_TEACHER
+    Run Keyword If    '${TeacherRegistrationTCStatus}'!='Pass'    Fail    Teacher Registration TC need to be executed before Student Registration.
+    Comment    Login to wizard app as an teacher
+    ${bStatus}=    LoginToWizardApp    ${globalTeacherUId}    ${globalTeacherPassword}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials-'${globalTeacherUId},${globalTeacherPassword}'
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    ${uniqueVal}    GetUniqueValue    Student
+    ${studentdetails}    Create Dictionary    User Name    ${uniqueVal}    Password    ${uniqueVal}pwd    First Name
+    ...    ${uniqueVal}Fn    Middle Name    ${uniqueVal}MN    Last Name    LN    Grade Level
+    ...    2
+    ${studentLName}    Get From Dictionary    ${studentdetails}    Last Name
+    ${classesList}    Get Dictionary Keys    ${globalClassesAndClassCodes}
+    Comment    Add a student to the created classes
+    ${studentAddStatus}    AddClassToStudent    ${studentdetails}    ${classesList}
+    Run Keyword If    '${studentAddStatus}'=='False'    Fail    The student is not added to class :${classesList} in management page.
+    Wait Until Element is Invisible    ${button.newUser.oK}
+    Comment    Verify whether the added user is displayed in the users table or not.
+    ${newStudentstatus}    Verify Values In Table    ${table.users}    Last Name    ${studentLName}
+    Comment    May have to comment out the validations.
+    Run Keyword If    ${newStudentstatus}==False    Fail    The user is not available in the users table.
+    [Teardown]    Stop Application
+
+BAT 5:Teacher hand out an assignment
+    [Documentation]    Teacher Hand Out an Assignment ot student.
+    ...
+    ...    1.Login into applciation with Teacher credentials and Navigate to Management Page.
+    ...    2.Create a student User and add class to the student.
+    ...    3.Handout an assignemnt from New Assignment Page.
+    [Tags]    BAT5    HIGH    HANDOUT_ASSIGNMENT_TEACHER
+    Run Keyword If    '${TeacherRegistrationTCStatus}'!='Pass'    Fail    Teacher Registration TC need to be executed before Student Registration.
+    ${classList}    Get Dictionary Keys    ${globalClassesAndClassCodes}
+    ${activity}    Set Variable If    ${isDemoQURL}==False    Page 14 - Partner Practice (2.OA.B.2)    02 Multiple Choice
+    ${activitySelectMenu}    Set Variable If    ${isDemoQURL}==False    ${activitySelectMenu}    ${EMPTY}
+    ${activityName}    Create List    ${activity}
+    ${bStatus}=    LoginToWizardApp    ${globalTeacherUId}    ${globalTeacherPassword}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials-'${globalTeacherUId},${globalTeacherPassword}'
+    Navigate To Management Page
+    Wait And Select Frame    ${header.management.schoolAdminFrame}
+    ${uniqueVal}    GetUniqueValue    Student
+    ${studentdetails}    Create Dictionary    User Name    ${uniqueVal}    Password    ${uniqueVal}pwd    First Name
+    ...    ${uniqueVal}Fn    Middle Name    ${uniqueVal}MN    Last Name    ${uniqueVal}LN    Grade Level
+    ...    2
+    Set Global Variable    ${globalStudentName}    ${uniqueVal}Fn ${uniqueVal}LN
+    Set Global Variable    ${globalStudentUId}    ${uniqueVal}
+    Set Global Variable    ${globalStudentPWD}    ${uniqueVal}pwd
+    AddClassToStudent    ${studentdetails}    ${classList}
+    Set Global Variable    ${globalclassList}    ${classList}
+    Comment    MYS-3211 : Commented the keyword which is performing save action where this action carried out in Add Class To Student keyword itself.
+    Comment    Wait And Click Element    ${button.management.newUserSave}
+    Wait Until Element is Invisible    ${button.management.newUserSave}    ${Delay}
+    Navigate BackTo Home Page    Management
+    Navigate To Assignment Page
+    Navigate To New Assignments Page
+    @{classList}    Set Variable    ${classList}
+    ${className}    Set Variable    @{classList}[0]
+    ${kwStatus}    Run Keyword If    ${isDemoQURL}==False    Add Assignment To A Student    ${className}    ${SignUpTitleMenu}    ${activitySelectMenu}
+    ...    ${activityName}    ${EMPTY}    2
+    Run Keyword If    '${kwStatus}'=='False' and '${isDemoQURL}'=='False'    Fail    Teacher handout process failed.
+    Pass Execution If    '${kwStatus}'!='False' and '${isDemoQURL}'=='False'    Assignment is handed out for student by using Regular mentoringminds URLs.
+    ${classStatus}    Select Assignment Class    ${className}
+    Run Keyword If    '${classStatus}'!='True'    Fail    Selectclass is fail
+    ${bStatus}=    Select Subject    QuestionsforTesting2014    False
+    Run Keyword If    ${bStatus}==False    Fail    Failed To Select Subject.
+    ${slStatus}    Select Level    Testing
+    Run Keyword If    ${bStatus}==False    Fail    Failed To Select Level.
+    Wait And Click Element    //td[contains(text(),'02 Multiple Choice')]//preceding-sibling::td//input
+    Wait And Click Element    handoutAssmtsBtn
+    Run Keyword And Ignore Error    Wait Until Element Is Visible    //div[@id='handOutBtnsContainer' and @class='is-loading']    10s
+    Wait Until Element is Invisible    //div[@id='handOutBtnsContainer' and @class='is-loading']
+    [Teardown]    Stop Application
+
+BAT 6: Student_do_the_Assignment
+    [Documentation]    Student do the Assigned Assignment.
+    ...
+    ...    Login as a student and do the assignment.
+    [Tags]    BAT6    HIGH    DO_ASSIGNMENT_STUDENT
+    Run Keyword If    '${TeacherRegistrationTCStatus}'!='Pass'    Fail    Teacher Registration TC need to be executed before Student Registration.
+    ${SignUpTitleMenu}    Set Variable If    ${isDemoQURL}==True    Questions for Testing 2014    CCS Motivation Math Level 02
+    ${activity}    Set Variable If    ${isDemoQURL}==True    02 Multiple Choice    ${AssignmentActivitySubName}
+    ${loginStatus}=    LoginToWizardApp    ${globalStudentUId}    ${globalStudentPWD}
+    Run Keyword If    ${loginStatus}==False    Fail and Capture Screenshot    The user is not able to login with valid credentials.
+    ${activityName}=    DoAssignment    ${SignUpTitleMenu}    ${activity}
+    ${kwStatus}    Run Keyword And Ignore Error    Assignment Writting
+    Run Keyword If    '@{kwStatus}[0]'=='FAIL'    Set Test Message    The Assigment Writting functionality is not done completely because the Next button is clickable but it is not working correctlly during runtime.
+    Sleep    10s
+    Comment    Work-around for MYS-2144: reload the page up to 10 times in an attempt to make the buttons appear
+    ${turnInBtnStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${navBtnTurnIn}    ${TimeOut}
+    : FOR    ${itr}    IN RANGE    0    10
+    \    Exit For Loop If    ${turnInBtnStatus}
+    \    Run Keyword If    '${turnInBtnStatus}'!='True'    Reload Page
+    \    Run Keyword If    '${turnInBtnStatus}'!='True'    Wait Until Element is Invisible    ${common.homepage.Loading}
+    \    ${turnInBtnStatus}    Run Keyword If    '${turnInBtnStatus}'!='True'    Run Keyword And Return Status    Wait Until Element Is Visible    ${navBtnTurnIn}
+    \    ...    ${TimeOut}
+    ${NavSubmitBtnStatus}    Run Keyword And Return Status    Click On Element    ${navBtnTurnIn}
+    Run Keyword If    ${NavSubmitBtnStatus}!=True    Fail and Capture Screenshot    No TurnIn button is available in assignment.
+    ${DialogStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@class='mblSimpleDialogContainer']/p[text()='You have not finished this assignment. If you turn it in now, then all unanswered questions will be counted wrong. Are you sure you want to turn it in?']    10s
+    Run Keyword If    ${DialogStatus}    Wait And Click Element    //div[@class='mblSimpleDialogContainer']/button[text()='Yes']
+    Wait Until Element Is Visible    //div[@id='sessionReportDlg']//div[@id='session-report-header']//span[@id='srUserName']    ${Delay}    Student Assignment report is not displayed after completing the assignment
+    ${studentName}=    Wait Until Keyword Succeeds    2m    5s    Get Text    //div[@id='sessionReportDlg']//div[@id='session-report-header']//span[@id='srUserName']
+    ${studentName}=    Replace String    ${studentName}    :    ${EMPTY}
+    Comment    ${srCurrentSessionResultDiv}    Set Variable    //div[@id='sessionReportDlg']//div[@id='srCurrentSessionResults']
+    Comment    ${srAllSessionsResultDiv}    Set Variable    //div[@id='sessionReportDlg']//div[@id='srAllSessionsResults']
+    Comment    ${morStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='sessionReportDlg']//a[text()='More Details']
+    Comment    Run Keyword If    ${morStatus}    Click Element    //div[@id='sessionReportDlg']//a[text()='More Details']
+    Comment    Wait Until Element Is Visible    ${srAllSessionsResultDiv}//div[contains(text(),'Progress:')]/parent::td/parent::tr/td[2]/div    ${Delay}
+    Comment    ${progressResults}    Get Text    ${srAllSessionsResultDiv}//div[contains(text(),'Progress:')]/parent::td/parent::tr/td[2]/div
+    Comment    @{progressResults}    Split String    ${progressResults}    ${SPACE}
+    Comment    ${progressResultsValue}    Set Variable    @{progressResults}[0]
+    Comment    ${overallCorrect}    Get Text    //div[@id='sessionReportDlg']//div[@id='srAllSessionsResults']//div[contains(text(),'Overall Progress')]/parent::td/parent::tr/td[2]/div
+    Comment    @{overallCorrect}    Split String    ${overallCorrect}    ${SPACE}
+    Comment    ${overallCorrectValue}    Set Variable    @{overallCorrect}[0]
+    Sleep    2s
+    Comment    ${AssignementSubmtTodayDate}=    Get Text    ${srCurrentSessionResultDiv}//div[contains(text(),'Today:')]/parent::td/parent::tr/td[2]/div
+    Comment    ${AssignementSubmtTodayDate}=    Replace String    ${AssignementSubmtTodayDate}    -    /
+    Close Assigment Report
+    ${NextAssignStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    //div[text()='Your next assignment is:']    ${Delay}
+    Run Keyword If    ${NextAssignStatus}!=True    Set Test Message    Submit operation is successfull.Pop up "Your next assignment " is not available
+    ...    ELSE    Wait And Click Element    ${button.studentAssignments.nextAssmtDlgNo}
+    Comment    MYS-3211 : Updated code with wait for element visible to wait for a given time accurately.
+    ${assignmentPage}    Wait For Element Visible    ${table.studentAssignments.assignments}    ${Delay}
+    Run Keyword If    ${assignmentPage}!=True    Set Test Message    Student Assignment Page is not displayed.
+    Comment    @{AssignementSubmtTodayDate}    Split String    ${AssignementSubmtTodayDate}    /
+    Comment    ${AssignementSubmtTodayDate}    Set Variable    @{AssignementSubmtTodayDate}[1]/@{AssignementSubmtTodayDate}[2]/@{AssignementSubmtTodayDate}[0]
+    ${AssignmentDetails}    Create Dictionary    Subject Name    ${SignUpTitleMenu}    Activity    ${activityName}    StudentName
+    ...    ${studentName}
+    Set Global Variable    ${AssignmentDetails}    ${AssignmentDetails}
+    [Teardown]    Stop Application
+
+BAT 7: Teacher view the Item Analysis Report
+    [Documentation]    Teacher Verifies the Item Analysis Report
+    [Tags]    BAT7    HIGH    ITEM_ANALYSIS_REPORT_TEACHER
+    ${Student Do Assignment Status}    Run Keyword And Return Status    Variable Should Exist    ${AssignmentDetails}
+    Run Keyword If    ${Student Do Assignment Status}==False    Fail    "Student_do_the_Assignment" test case need execute successfully.
+    Comment    ${globalclassList}    Get Dictionary Keys    ${globalClassesAndClassCodes}
+    ${className}    Set Variable    @{globalclassList}[0]
+    ${schoolName}    Set Variable If    ${isDemoQURL}==False    ${preSchoolName}    ${demoQPreSchoolName}
+    ${studentName}    Get From Dictionary    ${AssignmentDetails}    StudentName
+    ${SubjectName}    Get From Dictionary    ${AssignmentDetails}    Subject Name
+    ${SubjectName}    Replace String    ${SubjectName}    :    ${EMPTY}
+    ${ActivityName}    Get From Dictionary    ${AssignmentDetails}    Activity
+    ${ActivityName}    Set Variable    ${ActivityName.strip()}
+    ${reportType}    Set Variable    Item Analysis Report
+    Comment    ${items completed}    Get From Dictionary    ${AssignmentDetails}    Total Questions
+    Comment    ${Overall Correct}    Get From Dictionary    ${AssignmentDetails}    OverallCorrectValue
+    ${bStatus}=    LoginToWizardApp    ${globalTeacherUId}    ${globalTeacherPassword}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials-'${globalTeacherUId},${globalTeacherPassword}'
+    Navigate To Report Filters Page
+    Wait Until Element Is Visible    ${label.reportFilters.reportType}    ${Max Delay}    Reports page is not displayed within the given timeout. Inrease the wait time.
+    Select The Drop Down Value    Report Type    ${reportType}
+    Select The Drop Down Value    Classes/Groups    ${className}
+    Select The Drop Down Value    Title    ${SubjectName}
+    Comment    Run Keyword If    '${reportType}'=='Item Analysis Report'    Select The Drop Down Value    Activity    ${ActivityName}
+    ${fromdate}    Get Future Or Past Date From Now    -1
+    ${todate}    Get Future Or Past Date From Now
+    Wait Until Element Is Visible    ${textbox.reports.myFromDate}    ${TimeOut}    Date range fields in report filter page not visible in given timeout.
+    Input Text    ${textbox.reports.myFromDate}    ${fromdate}
+    Input Text    ${textbox.reports.myToDate}    ${todate}
+    Navigate To Reports Page
+    Wait And Select Frame    iframeReport
+    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]
+    Wait Until Element is Invisible    //div[@id='pageOverlayBg']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    5s
+    Wait Until Element is Invisible    //div[@id='pageOverlayDiv']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    5s
+    ${spinStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    8s
+    Run Keyword If    ${spinStatus}    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]
+    ${reportsPageStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.FilterHeader}    ${TimeOut}
+    ${rEMStatus}    Run Keyword Unless    ${reportsPageStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.reportEmptyMessage}
+    ${reportEmptyMessage}    Run Keyword If    '${rEMStatus}'=='True'    Get Text    ${label.reports.reportEmptyMessage}
+    Run Keyword If    '${rEMStatus}'=='True'    Fail    ${reportEmptyMessage}
+    Wait Until Element Is Visible    ${label.reports.ReportTypeHeader}    ${TimeOut}
+    ${reportbanner}    Get Text    ${label.reports.ReportTypeHeader}
+    Run Keyword And Continue On Failure    Should Contain    ${reportbanner}    ${schoolName}    School name is not displayed in report Banner.
+    Run Keyword And Continue On Failure    Should Contain    ${reportbanner}    ${reportType}    Report type is not displayed in report Banner.
+    ${totalQuestions}    Get Matching Xpath Count    //td[contains(@id,'reportTreeGrid')]/div[contains(@class,'reportTree') and contains(text(),'Item')]
+    ${repSujName}    Get Text    ${label.reports.Subject}
+    ${gridxFirstRow}    Get Text    ${label.reports.studentNames}
+    Run Keyword And Continue On Failure    Should Contain    ${repSujName}    ${SubjectName}    The subject name of the assignment ${SubjectName} is not matching with reports subject name ${repSujName}
+    @{studeNames}    Split String    ${studentName}    ${SPACE}
+    Run Keyword And Continue On Failure    Element Should Be Visible    //div[@class='gridxTreeExpandoContent gridxCellContent']//div[contains(text(),'@{studeNames}[0]')]    The first name of the student @{studeNames}[0] not matching with student details:${gridxFirstRow} in reports page.
+    Run Keyword And Continue On Failure    Element Should Be Visible    //div[@class='gridxTreeExpandoContent gridxCellContent']//div[contains(text(),'@{studeNames}[1]')]    The last name of the student @{studeNames}[1] not matching with student details :${gridxFirstRow} in reports page.
+    [Teardown]    Stop Application
+
+BAT 8: School_Admin­_Registration
+    [Documentation]    School Admin Registration from New User.
+    [Tags]    BAT8    CRITICAL    REGISTRATION_SCHOOL_ADMIN
+    Comment    Open the application
+    OpenBrowserToLoginPage
+    ${schoolAdminDetails}    Get Ms Excel Row Values Into Dictionary Based On Key    ${PrerequisitesFilePath}    SchoolAdminPrerequisites    SchoolAdmin
+    ${schoolName}    Set Variable If    ${isDemoQURL}==False    ${preSchoolName}    ${demoQPreSchoolName}
+    ${ZipCode}    Set Variable If    ${isDemoQURL}==False    ${schoolZipCode}    ${demoQSchoolZipCode}
+    ${kwStatus}    Create New School Admin    ${schoolAdminDetails}    ${schoolName}    \    ${ZipCode}
+    Run Keyword If    ${kwStatus}==False    Fail    New School Admin creation failed
+    ${SchoolAdminUid}    Get From Dictionary    ${schoolAdminDetails}    UserName
+    ${SchoolAdminPwd}    Get From Dictionary    ${schoolAdminDetails}    Password
+    Set Global Variable    ${globalSchoolAdminUid}    ${SchoolAdminUid}
+    Set Global Variable    ${globalSchoolAdminPwd}    ${SchoolAdminPwd}
+    Set Global Variable    ${globalSchoolAdminStatus}    True
+    [Teardown]    Stop Application
+
+BAT 9: District_Admin_Registration
+    [Documentation]    District Admin Registration from New User.
+    [Tags]    BAT9    CRITICAL    REGISTRATION_DISTRICT_ADMIN
+    Comment    Open 'wizard' app.
+    OpenBrowserToLoginPage
+    ${districtAdminDetails}    Get Ms Excel Row Values Into Dictionary Based On Key    ${PrerequisitesFilePath}    DistrictAdminPrerequisties    DistrictAdmin
+    ${districtName}    Set Variable If    ${isDemoQURL}    ${demoQPreDistrictName}    ${preDistrictName}
+    ${districtCode}    Set Variable If    ${isDemoQURL}    ${demoQSchoolZipCode}    ${schoolZipCode}
+    Set Global Variable    ${preDistrictAdminDetails}    ${districtAdminDetails}
+    ${DAStatus}    Run Keyword And Return Status    Create New District Admin    ${districtAdminDetails}    DADMIN-999999    \    ${districtName}
+    Run Keyword If    ${DAStatus}==False    Fail    New district admin creation failed.
+    ${districtAdminUid}    Get From Dictionary    ${districtAdminDetails}    UserName
+    ${districtAdminPwd}    Get From Dictionary    ${districtAdminDetails}    Password
+    Set Global Variable    ${globalDistrictAdminUid}    ${districtAdminUid}
+    Set Global Variable    ${globalDistrictAdminPwd}    ${districtAdminPwd}
+    Set Global Variable    ${globalDistrictAdminStatus}    True
+    [Teardown]    Stop Application
+
+BAT 10: DistrictAdmin view the Standard Mastery Report at Class Level
+    [Documentation]    District Admin View the Standard Mastery Report at All Schools Level.
+    [Tags]    BAT10    HIGH    STANDARDS_MASTERY_REPORT_CLASS_DISTRICT_ADMIN
+    ${Student Do Assignment Status}    Run Keyword And Return Status    Variable Should Exist    ${AssignmentDetails}
+    Run Keyword If    ${Student Do Assignment Status}==False    Fail    "Student_do_the_Assignment" test case need execute successfully.
+    ${bStatus}    Run Keyword And Return Status    Variable Should Exist    ${globalDistrictAdminStatus}
+    Run Keyword If    ${bStatus}==False    Fail    New district admin creation failed
+    ${globalclassList}    Get Dictionary Keys    ${globalClassesAndClassCodes}
+    ${className}    Set Variable    @{globalclassList}[0]
+    ${schoolName}    Set Variable If    ${isDemoQURL}==False    ${preSchoolName}    ${demoQPreSchoolName}
+    ${bStatus}=    LoginToWizardApp    ${globalDistrictAdminUid}    ${globalDistrictAdminPwd}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials-'${globalDistrictAdminUid}' and '${globalDistrictAdminPwd}'
+    Navigate To Report Filters Page
+    Wait Until Element Is Visible    ${label.reportFilters.reportType}    ${Max Delay}    Reports page is not displayed within the given timeout. Inrease the wait time.
+    ${SubjectName}    Get From Dictionary    ${AssignmentDetails}    Subject Name
+    ${SubjectName}    Replace String    ${SubjectName}    :    ${EMPTY}
+    ${ActivityName}    Run Keyword If    ${isDemoQURL}    Set Variable    02 Multiple Choice
+    ...    ELSE    Get From Dictionary    ${AssignmentDetails}    Activity
+    ${ActivityName}    Set Variable    ${ActivityName.strip()}
+    ${examdate}    Get Current Date
+    ${reportType}    Set Variable    Standards Mastery Report
+    Select The Drop Down Value    Report Type    ${reportType}
+    Select The Drop Down Value    School    ${schoolName}
+    Run Keyword If    '${schoolName}'!='All Schools'    Wait And Click Element    ${button.reportFilters.ShowGroups}
+    ${gStatus}=    Run Keyword If    '${schoolName}'!='All Schools'    Run Keyword And Return Status    Wait And Click Element    //div[@id='selectReportText']//span[contains(text(),'Groups')]//parent::div[contains(@id,'report') and contains(@id,'Select')]//div[@role='presentation']
+    ${noGStatus}    Run Keyword If    '${schoolName}'!='All Schools'    Run Keyword And Return Status    Wait Until Element Is Visible    //span[@id='reportGroupSelectLabelW']/span[@id='oneClassForReport' and contains(text(),'No Groups')]    10s
+    ${tempList}    Create List
+    ${glist}    Run Keyword If    '${schoolName}'!='All Schools' and ${gStatus}==True and ${noGStatus}==False    Get Matching Xpath Values    //table[@id='reportGroupSelectW_menu']/tbody/tr
+    ${glist}    Set Variable If    '${schoolName}'!='All Schools' and ${gStatus}==True and ${noGStatus}==False    ${glist}    ${tempList}
+    Log    ${glist}
+    Run Keyword If    '${schoolName}'!='All Schools' and ${gStatus}==True and ${noGStatus}==False    Wait And Click Element    //div[@id='selectReportText']//span[contains(text(),'Groups')]//parent::div[contains(@id,'report') and contains(@id,'Select')]//div[@role='presentation']
+    Run Keyword If    '${schoolName}'!='All Schools'    Wait And Click Element    ${button.reportFilters.showClasses}
+    ${cStatus}=    Run Keyword If    '${schoolName}'!='All Schools'    Run Keyword And Return Status    Wait And Click Element    //div[@id='selectReportText']//span[contains(text(),'Classes')]//parent::div[contains(@id,'report') and contains(@id,'Select')]//div[@role='presentation']
+    ${clist}    Run Keyword If    '${schoolName}'!='All Schools' and ${cStatus}    Get Matching Xpath Values    //table[@id='reportGroupSelectW_menu']/tbody/tr
+    Log    ${clist}
+    Run Keyword If    '${schoolName}'!='All Schools' and ${cStatus}    Wait And Click Element    //div[@id='selectReportText']//span[contains(text(),'Classes')]//parent::div[contains(@id,'report') and contains(@id,'Select')]//div[@role='presentation']
+    Run Keyword If    '${schoolName}'!='All Schools'    Select The Drop Down Value    Classes/Groups    ${className}
+    Select The Drop Down Value    Title    ${SubjectName}
+    Run Keyword If    '${reportType}'=='Item Analysis Report'    Select The Drop Down Value    Activity    ${ActivityName}
+    ${fromdate}    Get Future Or Past Date From Now    -1
+    ${todate}    Get Future Or Past Date From Now
+    Wait Until Element Is Visible    ${textbox.reports.myFromDate}    ${TimeOut}    Date range fields in report filter page not visible in given timeout.
+    Input Text    ${textbox.reports.myFromDate}    ${fromdate}
+    Input Text    ${textbox.reports.myToDate}    ${todate}
+    Navigate To Reports Page
+    Wait And Select Frame    iframeReport
+    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    5s
+    Wait Until Element is Invisible    //div[@id='pageOverlayBg']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    5s
+    Wait Until Element is Invisible    //div[@id='pageOverlayDiv']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    5s
+    ${spinStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    8s
+    Run Keyword If    ${spinStatus}    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]
+    ${reportsPageStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.FilterHeader}    ${TimeOut}
+    ${rEMStatus}    Run Keyword Unless    ${reportsPageStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.reportEmptyMessage}
+    ${reportEmptyMessage}    Run Keyword If    '${rEMStatus}'=='True'    Get Text    ${label.reports.reportEmptyMessage}
+    Run Keyword If    '${rEMStatus}'=='True'    Fail    ${reportEmptyMessage}
+    Capture Page Screenshot And Log    ${OUTPUTDIR}    Reportspage_0001.png
+    Wait Until Element Is Visible    ${label.reports.ReportTypeHeader}    ${Max Delay}
+    ${reportbanner}    Get Text    ${label.reports.ReportTypeHeader}
+    Wait Until Element Is Visible    ${label.reports.Class}    300s
+    ${reportHeader}    Get Text    ${label.reports.Class}
+    ${schoolsRegion}    Get Text    //div[@class='gridxTreeExpandoContent gridxCellContent']
+    Run Keyword If    '${schoolName}'!='All Schools'    Run Keyword And Continue On Failure    Should Contain    ${reportbanner}    ${schoolName}    The report banner:${reportbanner} doesn't displayed the school name :${schoolName} in the reports page.
+    Run Keyword If    '${schoolName}'!='All Schools'    Run Keyword And Continue On Failure    Should Contain    ${schoolsRegion}    ${className}    The selectted school name ${schoolName} is not matching with the reports page school name:${schoolsRegion}
+    Run Keyword If    '${schoolName}'=='All Schools'    Run Keyword And Continue On Failure    Should Contain    ${reportbanner}    ${schoolsRegion}    The report banner:${reportbanner} doesn't displayed the selected school district name :${schoolsRegion} in the reports page.
+    ${repsubjectName}    Get Text    ${label.reports.ReportGridSubjectValue}
+    ${bStatus1}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.ClassTreeExpand}
+    Run Keyword If    ${bStatus1}    Wait And Click Element    ${label.reports.ClassTreeExpand}
+    ${classesInReport}    Get Classes Names in Reports Page
+    ${classesTempList}    Create List    @{classesInReport}[0]
+    ${classesInReport}    Set Variable If    '${className}'!='All Classes'    ${classesTempList}    ${classesInReport}
+    Run Keyword If    '${schoolName}'!='All Schools'    Run Keyword And Ignore Error    Remove From List    ${glist}    1
+    Run Keyword If    '${schoolName}'!='All Schools'    Run Keyword And Ignore Error    Remove From List    ${glist}    0
+    Run Keyword If    '${schoolName}'!='All Schools'    Run Keyword And Ignore Error    Remove From List    ${clist}    1
+    Run Keyword If    '${schoolName}'!='All Schools'    Run Keyword And Ignore Error    Remove From List    ${clist}    0
+    Remove From List    ${classesInReport}    0
+    Run Keyword If    '${schoolName}'!='All Schools' and ${gStatus}    Append To List    ${clist}    @{glist}
+    Run Keyword And Continue On Failure    List Should Contain Sub List    ${clist}    ${classesInReport}    The class names of the report filter page are not matching with the reports page class names.\n${classesInReport}\n${clist}
+    Run Keyword And Continue On Failure    Should Be Equal As Strings    ${repsubjectName}    ${SubjectName}    The subject name of the assignment ${SubjectName} is not matching with reports subject name ${repsubjectName}
+    [Teardown]    Stop Application
+
+BAT 11: Teacher view the Standards Mastery Report at the class level
+    [Documentation]    Teacher View the Standard Mastery Report at Class Level.
+    [Tags]    BAT11    HIGH    STANDARDS_MASTERY_REPORT_TEACHER
+    ${schoolName}    Set Variable If    ${isDemoQURL}==False    ${preSchoolName}    ${demoQPreSchoolName}
+    ${Student Do Assignment Status}    Run Keyword And Return Status    Variable Should Exist    ${AssignmentDetails}
+    Run Keyword If    ${Student Do Assignment Status}==False    Fail    "Student_do_the_Assignment" test case need execute successfully.
+    ${bStatus}=    LoginToWizardApp    ${globalTeacherUId}    ${globalTeacherPassword}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials-'${globalTeacherUId},${globalTeacherPassword}'
+    Navigate To Report Filters Page
+    Wait Until Element Is Visible    ${label.reportFilters.reportType}    ${Max Delay}    Reports page is not displayed within the given timeout. Inrease the wait time.
+    ${className}    Set Variable    @{globalclassList}[0]
+    ${studentName}    Get From Dictionary    ${AssignmentDetails}    StudentName
+    ${SubjectName}    Get From Dictionary    ${AssignmentDetails}    Subject Name
+    ${SubjectName}    Replace String    ${SubjectName}    :    ${EMPTY}
+    ${ActivityName}    Run Keyword If    ${isDemoQURL}    Set Variable    02 Multiple Choice
+    ...    ELSE    Get From Dictionary    ${AssignmentDetails}    Activity
+    ${ActivityName}    Set Variable    ${ActivityName.strip()}
+    ${reportType}    Set Variable    ${preReportType1}
+    ${examdate}    Get Current Date
+    Select The Drop Down Value    Report Type    ${reportType}
+    Select The Drop Down Value    Classes/Groups    ${className}
+    Select The Drop Down Value    Title    ${SubjectName}
+    ${textbox.reports.myFromDate}    Set Variable    //div[contains(@id,'reportDatePicker')]//div/input[@type='text' and @id='myFromDate']
+    ${textbox.reports.myToDate}    Set Variable    //div[contains(@id,'reportDatePicker')]//div/input[@type='text' and @id='myToDate']
+    ${button.reports.Generate Report}    Set Variable    //span[text()='Generate Report']/parent::button[@class='mblButton baseBtn steelBtn']
+    ${link.breadcrumb.reports}    Set Variable    //div[@class='breadcrumb']//span[contains(@class,'breadcrumb') and contains(text(),'Reports')]
+    ${label.reports.reportEmptyMessage}    Set Variable    //div[@id='reportEmptyPanel']//div[@id='reportEmptyMessage']
+    ${fromdate}    Get Future Or Past Date From Now    -1
+    ${todate}    Get Future Or Past Date From Now
+    Wait Until Element Is Visible    ${textbox.reports.myFromDate}    ${TimeOut}    Date range fields in report filter page not visible in given timeout.
+    Input Text    ${textbox.reports.myFromDate}    ${fromdate}
+    Input Text    ${textbox.reports.myToDate}    ${todate}
+    Navigate To Reports Page
+    Wait And Select Frame    iframeReport
+    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    5s
+    Wait Until Element is Invisible    //div[@id='pageOverlayBg']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    5s
+    Wait Until Element is Invisible    //div[@id='pageOverlayDiv']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    5s
+    ${spinStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    8s
+    Run Keyword If    ${spinStatus}    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]
+    ${reportsPageStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.FilterHeader}    ${TimeOut}
+    ${rEMStatus}    Run Keyword Unless    ${reportsPageStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.reportEmptyMessage}
+    ${reportEmptyMessage}    Run Keyword If    '${rEMStatus}'=='True'    Get Text    ${label.reports.reportEmptyMessage}
+    Run Keyword If    '${rEMStatus}'=='True'    Fail    ${reportEmptyMessage}
+    Wait Until Element Is Visible    ${label.reports.ReportTypeHeader}    30s
+    ${reportbanner}    Get Text    ${label.reports.ReportTypeHeader}
+    Run Keyword And Continue On Failure    Should Contain    ${reportbanner}    ${schoolName}
+    Run Keyword And Continue On Failure    Should Contain    ${reportbanner}    ${reportType}
+    ${bStatus1}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.ClassTreeExpand}
+    Run Keyword If    ${bStatus1}    Wait And Click Element    ${label.reports.ClassTreeExpand}
+    ${repClassName}    Get Text    //div[@id='filters-container']/div[2]
+    ${repSujName}    Get Text    ${label.reports.Subject}
+    Comment    ${studentCompleteName}    Get Text    //div[@class='gridxRow gridxRowOdd']//table[@class='gridxRowTable']/tbody/tr[1]/td[1]//div[@class='gridxTreeExpandoContent gridxCellContent']
+    ${studentCompleteNames}    Get Matching Xpath Values    //div[contains(@class,'gridxRow') and @role='row']    //table[@class='gridxRowTable']/tbody/tr[1]/td[1]//div[@class='gridxTreeExpandoContent gridxCellContent']
+    Log    ${studentCompleteNames}
+    Run Keyword And Continue On Failure    Should Contain    ${repClassName}    ${className}    The class name of the assignment ${className} is not matching with reports class name ${repClassName}
+    Run Keyword And Continue On Failure    Should Contain    ${repSujName}    ${SubjectName}    The subject name of the assignment ${SubjectName} is not matching with reports subject name ${repSujName}
+    @{studeNames}    Split String    ${studentName}    ${SPACE}
+    ${studentfullname}    Set Variable    @{studeNames}[2], @{studeNames}[0] @{studeNames}[1]
+    List Should Contain Value    ${studentCompleteNames}    ${studentfullname}    the student ${studentfullname} is not matching with students list:${studentCompleteNames} in reports page.
+    Comment    Run Keyword And Continue On Failure    Should Contain    ${studentCompleteName}    @{studeNames}[0]    The first name of the student @{studeNames}[0] not matching with student details:${studentCompleteName} in reports page.
+    Comment    Run Keyword And Continue On Failure    Should Contain    ${studentCompleteName}    @{studeNames}[1]    The last name of the student @{studeNames}[1] not matching with student details :${studentCompleteName} in reports page.
+    Comment    Run Keyword And Continue On Failure    Should Be Equal As Integers    ${totalQuestions}    ${items completed}    The total questions of the assignment ${items completed} are not matching with the reports page questions count ${totalQuestions}.
+    [Teardown]    Stop Application
+
+BAT 12: School Admin view the Standards Mastery Report at Class level
+    [Documentation]    School Admin View the Standard Mastery Report at All Classes Level.
+    [Tags]    BAT12    HIGH    STANDARDS_MASTERY_REPORT_CLASS_SCHOOL_ADMIN
+    ${Student Do Assignment Status}    Run Keyword And Return Status    Variable Should Exist    ${AssignmentDetails}
+    Run Keyword If    ${Student Do Assignment Status}==False    Fail    "Student_do_the_Assignment" test case need execute successfully.
+    ${bStatus}    Run Keyword And Return Status    Variable Should Exist    ${globalSchoolAdminStatus}
+    Run Keyword If    ${bStatus}==False    Fail    New School Admin creation failed
+    ${schoolName}    Set Variable If    ${isDemoQURL}==False    ${preSchoolName}    ${demoQPreSchoolName}
+    ${bStatus}=    LoginToWizardApp    ${globalSchoolAdminUid}    ${globalSchoolAdminPwd}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials-'${globalSchoolAdminUid}' and '${globalSchoolAdminPwd}'
+    Navigate To Report Filters Page
+    Wait Until Element Is Visible    ${label.reportFilters.reportType}    ${Max Delay}    Reports page is not displayed within the given timeout. Inrease the wait time.
+    ${className}    Set Variable    @{globalclassList}[0]
+    ${SubjectName}    Get From Dictionary    ${AssignmentDetails}    Subject Name
+    ${SubjectName}    Replace String    ${SubjectName}    :    ${EMPTY}
+    ${ActivityName}    Run Keyword If    ${isDemoQURL}    Set Variable    02 Multiple Choice
+    ...    ELSE    Get From Dictionary    ${AssignmentDetails}    Activity
+    ${ActivityName}    Set Variable    ${ActivityName.strip()}
+    ${examdate}    Get Current Date
+    ${reportType}    Set Variable    Standards Mastery Report
+    Select The Drop Down Value    Report Type    ${reportType}
+    ${groupStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${button.reportFilters.ShowGroups}
+    Run Keyword If    '${schoolName}'!='All Schools' and ${groupStatus}==True    Wait And Click Element    ${button.reportFilters.ShowGroups}
+    ${gStatus}=    Run Keyword If    '${schoolName}'!='All Schools'    Run Keyword And Return Status    Wait And Click Element    //div[@id='selectReportText']//span[contains(text(),'Groups')]//parent::div[contains(@id,'report') and contains(@id,'Select')]//div[@role='presentation']
+    ${noGStatus}    Run Keyword If    '${schoolName}'!='All Schools'    Run Keyword And Return Status    Wait Until Element Is Visible    //span[@id='reportGroupSelectLabelW']/span[@id='oneClassForReport' and contains(text(),'No Groups')]    10s
+    ${tempList}    Create List
+    ${glist}    Run Keyword If    '${schoolName}'!='All Schools' and ${gStatus}==True and ${noGStatus}==False    Get Matching Xpath Values    //table[@id='reportGroupSelectW_menu']/tbody/tr
+    ${glist}    Set Variable If    '${schoolName}'!='All Schools' and ${gStatus}==True and ${noGStatus}==False    ${glist}    ${tempList}
+    Log    ${glist}
+    Run Keyword If    '${schoolName}'!='All Schools' and ${gStatus}==True and ${noGStatus}==False    Wait And Click Element    //div[@id='selectReportText']//span[contains(text(),'Groups')]//parent::div[contains(@id,'report') and contains(@id,'Select')]//div[@role='presentation']
+    Run Keyword If    '${schoolName}'!='All Schools'    Wait And Click Element    ${button.reportFilters.showClasses}
+    ${cStatus}=    Run Keyword If    '${schoolName}'!='All Schools'    Run Keyword And Return Status    Wait And Click Element    //div[@id='selectReportText']//span[contains(text(),'Classes')]//parent::div[contains(@id,'report') and contains(@id,'Select')]//div[@role='presentation']
+    ${clist}    Run Keyword If    '${schoolName}'!='All Schools' and ${cStatus}    Get Matching Xpath Values    //table[@id='reportGroupSelectW_menu']/tbody/tr
+    Log    ${clist}
+    Run Keyword If    '${schoolName}'!='All Schools' and ${cStatus}    Wait And Click Element    //div[@id='selectReportText']//span[contains(text(),'Classes')]//parent::div[contains(@id,'report') and contains(@id,'Select')]//div[@role='presentation']
+    Select The Drop Down Value    Classes/Groups    ${className}
+    Select The Drop Down Value    Title    ${SubjectName}
+    ${fromdate}    Get Future Or Past Date From Now    -1
+    ${todate}    Get Future Or Past Date From Now
+    Wait Until Element Is Visible    ${textbox.reports.myFromDate}    ${TimeOut}    Date range fields in report filter page not visible in given timeout.
+    Input Text    ${textbox.reports.myFromDate}    ${fromdate}
+    Input Text    ${textbox.reports.myToDate}    ${todate}
+    Navigate To Reports Page
+    Wait And Select Frame    iframeReport
+    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    5s
+    Wait Until Element is Invisible    //div[@id='pageOverlayBg']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    5s
+    Wait Until Element is Invisible    //div[@id='pageOverlayDiv']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    5s
+    ${spinStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    8s
+    Run Keyword If    ${spinStatus}    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]
+    ${reportsPageStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.FilterHeader}    ${TimeOut}
+    ${rEMStatus}    Run Keyword Unless    ${reportsPageStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.reportEmptyMessage}
+    ${reportEmptyMessage}    Run Keyword If    '${rEMStatus}'=='True'    Get Text    ${label.reports.reportEmptyMessage}
+    Run Keyword If    '${rEMStatus}'=='True'    Fail    ${reportEmptyMessage}
+    Wait Until Element Is Visible    ${label.reports.ReportTypeHeader}    30s
+    ${bStatus1}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.ClassTreeExpand}
+    Run Keyword If    ${bStatus1}    Wait And Click Element    ${label.reports.ClassTreeExpand}
+    ${reportbanner}    Get Text    ${label.reports.ReportTypeHeader}
+    ${reportHeader}    Get Text    ${label.reports.Class}
+    ${schoolsRegion}    Get Text    //div[@class='gridxTreeExpandoContent gridxCellContent']
+    Run Keyword If    '${schoolName}'!='All Schools'    Run Keyword And Continue On Failure    Should Contain    ${reportbanner}    ${schoolName}    The report banner:${reportbanner} doesn't displayed the school name :${schoolName} in the reports page.
+    Run Keyword If    '${schoolName}'!='All Schools'    Run Keyword And Continue On Failure    Should Contain    ${schoolsRegion}    ${className}    The selectted school name ${schoolName} is not matching with the reports page school name:${schoolsRegion}
+    Run Keyword If    '${schoolName}'=='All Schools'    Run Keyword And Continue On Failure    Should Contain    ${reportbanner}    ${schoolsRegion}    The report banner:${reportbanner} doesn't displayed the selected school district name :${schoolsRegion} in the reports page.
+    ${bStatus1}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.ClassTreeExpand}
+    Run Keyword If    ${bStatus1}    Wait And Click Element    ${label.reports.ClassTreeExpand}
+    ${repsubjectName}    Get Text    ${label.reports.ReportGridSubjectValue}
+    ${classesInReport}    Get Classes Names in Reports Page
+    ${classesTempList}    Create List    @{classesInReport}[0]
+    ${classesInReport}    Set Variable If    '${className}'!='All Classes'    ${classesTempList}    ${classesInReport}
+    Run Keyword If    '${schoolName}'!='All Schools'    Run Keyword And Ignore Error    Remove From List    ${glist}    1
+    Run Keyword If    '${schoolName}'!='All Schools'    Run Keyword And Ignore Error    Remove From List    ${glist}    0
+    Run Keyword If    '${schoolName}'!='All Schools'    Run Keyword And Ignore Error    Remove From List    ${clist}    1
+    Run Keyword If    '${schoolName}'!='All Schools'    Run Keyword And Ignore Error    Remove From List    ${clist}    0
+    Run Keyword And Ignore Error    Remove From List    ${classesInReport}    0
+    Run Keyword If    ${groupStatus} and ${noGStatus}==False    Append To List    ${clist}    @{glist}
+    Run Keyword And Continue On Failure    List Should Contain Sub List    ${clist}    ${classesInReport}    The class names of the report filter page are not matching with the reports page class names.\n${classesInReport}\n${clist}
+    Run Keyword And Continue On Failure    Should Be Equal As Strings    ${repsubjectName}    ${SubjectName}    The subject name of the assignment ${SubjectName} is not matching with reports subject name ${repsubjectName}
+    [Teardown]    Stop Application
+
+BAT 13 : School Admin view the Standards Mastery Report at all Classes level
+    [Tags]    BAT13    HIGH    STANDARDS_MASTERY_REPORT_ALL_CLASSES_SCHOOL_ADMIN
+    ${Student Do Assignment Status}    Run Keyword And Return Status    Variable Should Exist    ${AssignmentDetails}
+    Run Keyword If    ${Student Do Assignment Status}==False    Fail    "Student_do_the_Assignment" test case need execute successfully.
+    ${bStatus}    Run Keyword And Return Status    Variable Should Exist    ${globalSchoolAdminUid}
+    Run Keyword If    ${bStatus}==False    Fail    New district admin creation failed
+    ${schoolName}    Set Variable If    ${isDemoQURL}==False    ${preSchoolName}    ${demoQPreSchoolName}
+    ${className}    Set Variable    All Classes
+    ${SubjectName}    Get From Dictionary    ${AssignmentDetails}    Subject Name
+    ${SubjectName}    Replace String    ${SubjectName}    :    ${EMPTY}
+    ${activityName}    Run Keyword If    ${isDemoQURL}    Set Variable    02 Multiple Choice
+    ...    ELSE    Get From Dictionary    ${AssignmentDetails}    Activity
+    ${activityNameStripped}    Set Variable    ${activityName.strip()}
+    ${examdate}    Get Current Date
+    ${bStatus}=    LoginToWizardApp    ${globalSchoolAdminUid}    ${globalSchoolAdminPwd}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials-'${globalDistrictAdminUid}' and '${globalDistrictAdminPwd}'
+    Comment    Generating report: ${preReportType1} with detials:${className},${SubjectName},${schoolName}
+    ${fromdate}    Get Future Or Past Date From Now    -1
+    ${todate}    Get Future Or Past Date From Now
+    Get Report for A Class or Group    ${preReportType1}    Classes    ${className}    ${SubjectName}    \    ${activityNameStripped}
+    ...    ${fromdate}    ${todate}
+    Comment    Selecting Report frame.
+    Wait And Select Frame    ${header.report.reportFrame}
+    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    6s
+    Wait Until Element is Invisible    //div[@id='pageOverlayBg']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    6s
+    Wait Until Element is Invisible    //div[@id='pageOverlayDiv']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    6s
+    ${spinStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    8s
+    Run Keyword If    ${spinStatus}    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]
+    ${eStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.reportEmptyMessage}    ${TimeOut}
+    Run Keyword If    ${eStatus}    Fail    Report generated with message "There is no information to display for the current selection." OR Please check with previous day,the day might have been changed during the assignment subission and report verification time.
+    ${status}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.Subject}    ${TimeOut}
+    Run Keyword If    '${status}'!='True'    Fail and Capture Screenshot    The Report is not displayed \ with data \ in given time.    SMR.png
+    ${formateddatefrom}    Get Date Without Zeros At Pos Zero In Day And Month    ${fromdate}
+    ${formateddateto}    Get Date Without Zeros At Pos Zero In Day And Month    ${todate}
+    ${from}    Set Variable    ${formateddatefrom}
+    ${to}    Set Variable    ${formateddateto}
+    ${reporTypeInfo}    Get Text    //div[@id='displayReportType']
+    ${schoolMatchStatus}    String Should Contain    ${reporTypeInfo}    ${schoolName}
+    ${reportMatchStatus}    String Should Contain    ${reporTypeInfo}    ${preReportType1}
+    Run Keyword If    "${schoolMatchStatus}"=="False" or "${reportMatchStatus}"=="False"    Fail and Capture Screenshot    School Name("${schoolName}") / Report type ("${preReportType1}") are not displayed.
+    ${allClassesLableVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterClassLbl' and contains(text(),'Class: All')]    5s
+    ${subjectDisplayStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterSubjectLbl' and contains(text(),'Title: ${SubjectName}')]
+    Comment    ${dateRangeVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterDateRangeLbl' and contains(text(),'Date Range: ${from} to ${to}')]    5s
+    ${dateRange}    Get Text    //div[@id='filterDateRangeLbl']
+    ${dateRangeVisibleStatus}    String Should Contain    ${dateRange}    Date Range: ${from} to ${to}
+    ${reportEssentialsNotDisplayedStatus}    Evaluate    "${allClassesLableVisibleStatus}"=="False" or "${subjectDisplayStatus}"=="False" or "${dateRangeVisibleStatus}"=="False"
+    Run Keyword If    "${reportEssentialsNotDisplayedStatus}"=="True"    Fail and Capture Screenshot    The report generation essentials are not displayed in generated report.
+    ${classNamesReportExpadoIconStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@class='gridxTreeExpandoContent gridxCellContent']//img    10s
+    ${noOfVisibleClasses}    Run Keyword If    "${classNamesReportExpadoIconStatus}"=="False"    Fail and Capture Screenshot    No classes are displayed in the generated report.
+    [Teardown]    Stop Application
+
+BAT 14 : School Admin view the Item Analysis Report at Class level
+    [Tags]    BAT14    HIGH    ITEM_ANALYSIS_REPORT_CLASS_SCHOOL_ADMIN
+    ${Student Do Assignment Status}    Run Keyword And Return Status    Variable Should Exist    ${AssignmentDetails}
+    Run Keyword If    ${Student Do Assignment Status}==False    Fail    "Student_do_the_Assignment" test case need execute successfully.
+    ${bStatus}    Run Keyword And Return Status    Variable Should Exist    ${globalSchoolAdminUid}
+    Run Keyword If    ${bStatus}==False    Fail    New district admin creation failed
+    ${schoolName}    Set Variable If    ${isDemoQURL}==False    ${preSchoolName}    ${demoQPreSchoolName}
+    ${className}    Set Variable    @{globalclassList}[0]
+    ${SubjectName}    Get From Dictionary    ${AssignmentDetails}    Subject Name
+    ${SubjectName}    Replace String    ${SubjectName}    :    ${EMPTY}
+    ${activityName}    Set Variable If    ${isDemoQURL}    02 Multiple Choice    Page 14 - Partner Practice: Use Mental Strategies to Add and Subtract Within 20 (2.OA.B.2)
+    ${activityNameStripped}    Set Variable    ${activityName.strip()}
+    ${examdate}    Get Current Date
+    ${bStatus}=    LoginToWizardApp    ${globalSchoolAdminUid}    ${globalSchoolAdminPwd}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials-'${globalDistrictAdminUid}' and '${globalDistrictAdminPwd}'
+    ${fromdate}    Get Future Or Past Date From Now    -1
+    ${todate}    Get Future Or Past Date From Now
+    Comment    Generating report: ${preReportType2} with detials:${className},${SubjectName},${schoolName}
+    Get Report for A Class or Group    ${preReportType2}    Classes    ${className}    ${SubjectName}    \    ${activityNameStripped}
+    ...    ${fromdate}    ${todate}
+    Comment    Selecting Report frame.
+    Wait And Select Frame    ${header.report.reportFrame}
+    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    6s
+    Wait Until Element is Invisible    //div[@id='pageOverlayBg']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    6s
+    Wait Until Element is Invisible    //div[@id='pageOverlayDiv']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    6s
+    ${spinStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    8s
+    Run Keyword If    ${spinStatus}    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]
+    ${eStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.reportEmptyMessage}    ${TimeOut}
+    Run Keyword If    ${eStatus}    Fail    Report generated with message "There is no information to display for the current selection." OR Please check with previous day,the day might have been changed during the assignment subission and report verification time.
+    ${status}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.Subject}    ${TimeOut}
+    Run Keyword If    '${status}'!='True'    Fail and Capture Screenshot    The \ Report is not displayed \ with data \ in given time.    SMR.png
+    ${formateddatefrom}    Get Date Without Zeros At Pos Zero In Day And Month    ${fromdate}
+    ${formateddateto}    Get Date Without Zeros At Pos Zero In Day And Month    ${todate}
+    ${from}    Set Variable    ${formateddatefrom}
+    ${to}    Set Variable    ${formateddateto}
+    ${reporTypeInfo}    Get Text    //div[@id='displayReportType']
+    ${schoolMatchStatus}    String Should Contain    ${reporTypeInfo}    ${schoolName}
+    ${reportMatchStatus}    String Should Contain    ${reporTypeInfo}    ${preReportType2}
+    ${activityMatchStatus1}    Run Keyword If    ${isDemoQURL}    String Should Contain    ${reporTypeInfo}    02 Multiple Choice
+    ...    ELSE    String Should Contain    ${reporTypeInfo}    (2.OA.B.2)
+    Run Keyword If    "${schoolMatchStatus}"=="False" or "${reportMatchStatus}"=="False" or "${activityMatchStatus1}"=="False"    Fail and Capture Screenshot    School Name("${schoolName}") / Report type ("${preReportType2}") are not displayed.
+    ${allClassesLableVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterClassLbl' and contains(text(),'Class: ${className}')]    5s
+    ${subjectDisplayStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterSubjectLbl' and contains(text(),'Title: ${SubjectName}')]
+    Comment    ${dateRangeVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterDateRangeLbl' and contains(text(),'Date Range: ${from} to ${to}')]    5s
+    ${dateRange}    Get Text    //div[@id='filterDateRangeLbl']
+    ${dateRangeVisibleStatus}    String Should Contain    ${dateRange}    Date Range: ${from} to ${to}
+    ${reportEssentialsNotDisplayedStatus}    Evaluate    "${allClassesLableVisibleStatus}"=="False" or "${subjectDisplayStatus}"=="False" or "${dateRangeVisibleStatus}"=="False"
+    Run Keyword If    "${reportEssentialsNotDisplayedStatus}"=="True"    Fail and Capture Screenshot    The report generation essentials are not displayed in generated report.
+    ${classStudentsDetails}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@class='gridxRow']//table//tr//td//div/div[2]    10s
+    ${classAndStudentsRecords}    Run Keyword If    "${classStudentsDetails}"!="False"    Get Matching Xpath Count    //div[@class='gridxRow']//table//tr//td//div/div[2]
+    ${noOfVisibleClasses}    Run Keyword If    "${classStudentsDetails}"=="False" or ${classAndStudentsRecords}<1    Fail and Capture Screenshot    No class / Students are displayed in the generated report.
+    [Teardown]    Stop Application
+
+BAT 15 : School Admin view the Item Analysis Report at all Classes level
+    [Tags]    BAT15    HIGH    ITEM_ANALYSIS_REPORT_ALL_CLASSES_SCHOOL_ADMIN
+    ${Student Do Assignment Status}    Run Keyword And Return Status    Variable Should Exist    ${AssignmentDetails}
+    Run Keyword If    ${Student Do Assignment Status}==False    Fail    "Student_do_the_Assignment" test case need execute successfully.
+    ${bStatus}    Run Keyword And Return Status    Variable Should Exist    ${globalSchoolAdminUid}
+    Run Keyword If    ${bStatus}==False    Fail    New district admin creation failed
+    ${schoolName}    Set Variable If    ${isDemoQURL}==False    ${preSchoolName}    ${demoQPreSchoolName}
+    ${className}    Set Variable    All Classes
+    ${SubjectName}    Get From Dictionary    ${AssignmentDetails}    Subject Name
+    ${SubjectName}    Replace String    ${SubjectName}    :    ${EMPTY}
+    ${activityName}    Run Keyword If    ${isDemoQURL}    Set Variable    02 Multiple Choice
+    ...    ELSE    Get From Dictionary    ${AssignmentDetails}    Activity
+    ${activityNameStripped}    Set Variable    ${activityName.strip()}
+    ${examdate}    Get Current Date
+    ${bStatus}=    LoginToWizardApp    ${globalSchoolAdminUid}    ${globalSchoolAdminPwd}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials-'${globalDistrictAdminUid}' and '${globalDistrictAdminPwd}'
+    ${fromdate}    Get Future Or Past Date From Now    -1
+    ${todate}    Get Future Or Past Date From Now
+    Comment    Generating report: ${preReportType2} with detials:${className},${SubjectName},${schoolName}
+    Get Report for A Class or Group    ${preReportType2}    Classes    ${className}    ${SubjectName}    \    ${activityNameStripped}
+    ...    ${fromdate}    ${todate}
+    Comment    Selecting Report frame.
+    Wait And Select Frame    ${header.report.reportFrame}
+    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    6s
+    Wait Until Element is Invisible    //div[@id='pageOverlayBg']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    6s
+    Wait Until Element is Invisible    //div[@id='pageOverlayDiv']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    6s
+    ${spinStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    8s
+    Run Keyword If    ${spinStatus}    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]
+    ${eStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.reportEmptyMessage}    ${TimeOut}
+    Run Keyword If    ${eStatus}    Fail    Report generated with message "There is no information to display for the current selection." OR Please check with previous day,the day might have been changed during the assignment subission and report verification time.
+    ${status}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.Subject}    ${TimeOut}
+    Run Keyword If    '${status}'!='True'    Fail and Capture Screenshot    The Report is not displayed \ with data \ in given time.    SMR.png
+    ${formateddatefrom}    Get Date Without Zeros At Pos Zero In Day And Month    ${fromdate}
+    ${formateddateto}    Get Date Without Zeros At Pos Zero In Day And Month    ${todate}
+    ${from}    Set Variable    ${formateddatefrom}
+    ${to}    Set Variable    ${formateddateto}
+    ${reporTypeInfo}    Get Text    //div[@id='displayReportType']
+    ${schoolMatchStatus}    String Should Contain    ${reporTypeInfo}    ${schoolName}
+    ${reportMatchStatus}    String Should Contain    ${reporTypeInfo}    ${preReportType2}
+    ${activityMatchStatus1}    Run Keyword If    ${isDemoQURL}    String Should Contain    ${reporTypeInfo}    02 Multiple Choice
+    ...    ELSE    String Should Contain    ${reporTypeInfo}    (2.OA.B.2)
+    Run Keyword If    "${schoolMatchStatus}"=="False" or "${reportMatchStatus}"=="False" or "${activityMatchStatus1}"=="False"    Fail and Capture Screenshot    School Name("${schoolName}") / Report type ("${preReportType2}") are not displayed.
+    ${allClassesLableVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterClassLbl' and contains(text(),'Class: All')]    5s
+    ${subjectDisplayStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterSubjectLbl' and contains(text(),'Title: ${SubjectName}')]
+    Comment    ${dateRangeVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterDateRangeLbl' and contains(text(),'Date Range: ${from} to ${to}')]    5s
+    ${dateRange}    Get Text    //div[@id='filterDateRangeLbl']
+    ${dateRangeVisibleStatus}    String Should Contain    ${dateRange}    Date Range: ${from} to ${to}
+    ${reportEssentialsNotDisplayedStatus}    Evaluate    "${allClassesLableVisibleStatus}"=="False" or "${subjectDisplayStatus}"=="False" or "${dateRangeVisibleStatus}"=="False"
+    Run Keyword If    "${reportEssentialsNotDisplayedStatus}"=="True"    Fail and Capture Screenshot    The report generation essentials are not displayed in generated report.
+    ${classNamesReportExpadoIconStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@class='gridxTreeExpandoContent gridxCellContent']//img    10s
+    ${noOfVisibleClasses}    Run Keyword If    "${classNamesReportExpadoIconStatus}"=="False"    Fail and Capture Screenshot    No classes are displayed in the generated report.
+    [Teardown]    Stop Application
+
+BAT 16 : District Admin view the Item Analysis Report at one School with one class
+    [Tags]    BAT16    HIGH    ITEM_ANALYSIS_REPORT_SCHOOL_CLASS_DISTRICT_ADMIN
+    Comment    This test depends on ATC 30A sttaus.
+    ${Student Do Assignment Status}    Run Keyword And Return Status    Variable Should Exist    ${AssignmentDetails}
+    Run Keyword If    ${Student Do Assignment Status}==False    Fail    "Student_do_the_Assignment" test case need execute successfully.
+    ${bStatus}    Run Keyword And Return Status    Variable Should Exist    ${globalDistrictAdminStatus}
+    Run Keyword If    ${bStatus}==False    Fail    New district admin creation failed
+    ${schoolName}    Set Variable If    ${isDemoQURL}==False    ${preSchoolName}    ${demoQPreSchoolName}
+    ${className}    Set Variable    @{globalclassList}[0]
+    ${SubjectName}    Get From Dictionary    ${AssignmentDetails}    Subject Name
+    ${SubjectName}    Replace String    ${SubjectName}    :    ${EMPTY}
+    ${activityName}    Run Keyword If    ${isDemoQURL}    Set Variable    02 Multiple Choice
+    ...    ELSE    Get From Dictionary    ${AssignmentDetails}    Activity
+    Comment    ${activityName}    Get From Dictionary    ${AssignmentDetails}    Activity
+    ${activityNameStripped}    Set Variable    ${activityName.strip()}
+    ${examdate}    Get Current Date
+    ${bStatus}=    LoginToWizardApp    ${globalDistrictAdminUid}    ${globalDistrictAdminPwd}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials-'${globalDistrictAdminUid}' and '${globalDistrictAdminPwd}'
+    ${fromdate}    Get Future Or Past Date From Now    -1
+    ${todate}    Get Future Or Past Date From Now
+    Comment    Generating report: ${preReportType2} with detials:${className},${SubjectName},${schoolName}
+    Get Report for A Class or Group    ${preReportType2}    Classes    ${className}    ${SubjectName}    ${schoolName}    ${activityNameStripped}
+    ...    ${fromdate}    ${todate}
+    Comment    Selecting Report frame.
+    Wait And Select Frame    ${header.report.reportFrame}
+    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    6s
+    Wait Until Element is Invisible    //div[@id='pageOverlayBg']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    6s
+    Wait Until Element is Invisible    //div[@id='pageOverlayDiv']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    6s
+    ${spinStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    8s
+    Run Keyword If    ${spinStatus}    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]
+    ${eStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.reportEmptyMessage}    ${TimeOut}
+    Run Keyword If    ${eStatus}    Fail    Report generated with message "There is no information to display for the current selection." OR Please check with previous day,the day might have been changed during the assignment subission and report verification time.
+    Comment    MYS-3211 : Updated code with wait for element visible to wait for a given time accurately.
+    ${status}    Wait For Element Visible    ${label.reports.Subject}    ${TimeOut}    Report is not yet loaded.
+    Run Keyword If    '${status}'!='True'    Fail and Capture Screenshot    The Report is not displayed \ with data \ in given time.    SMR.png
+    ${formateddatefrom}    Get Date Without Zeros At Pos Zero In Day And Month    ${fromdate}
+    ${formateddateto}    Get Date Without Zeros At Pos Zero In Day And Month    ${todate}
+    ${from}    Set Variable    ${formateddatefrom}
+    ${to}    Set Variable    ${formateddateto}
+    ${reporTypeInfo}    Get Text    //div[@id='displayReportType']
+    ${schoolMatchStatus}    String Should Contain    ${reporTypeInfo}    ${schoolName}
+    ${reportMatchStatus}    String Should Contain    ${reporTypeInfo}    ${preReportType2}
+    ${activityMatchStatus1}    Run Keyword If    ${isDemoQURL}    String Should Contain    ${reporTypeInfo}    02 Multiple Choice
+    ...    ELSE    String Should Contain    ${reporTypeInfo}    (2.OA.B.2)
+    Run Keyword If    "${schoolMatchStatus}"=="False" or "${reportMatchStatus}"=="False" or "${activityMatchStatus1}"=="False"    Fail and Capture Screenshot    School Name("${schoolName}") / Report type ("${preReportType2}") are not displayed.
+    ${allClassesLableVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterClassLbl' and contains(text(),'Class: ${className}')]    5s
+    ${subjectDisplayStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterSubjectLbl' and contains(text(),'Title: ${SubjectName}')]
+    Comment    ${dateRangeVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterDateRangeLbl' and contains(text(),'Date Range: ${from} to ${to}')]    5s
+    ${dateRange}    Get Text    //div[@id='filterDateRangeLbl']
+    ${dateRangeVisibleStatus}    String Should Contain    ${dateRange}    Date Range: ${from} to ${to}
+    ${reportEssentialsNotDisplayedStatus}    Evaluate    "${allClassesLableVisibleStatus}"=="False" or "${subjectDisplayStatus}"=="False" or "${dateRangeVisibleStatus}"=="False"
+    Run Keyword If    "${reportEssentialsNotDisplayedStatus}"=="True"    Fail and Capture Screenshot    The report generation essentials are not displayed in generated report.
+    ${classStudentsDetails}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@class='gridxRow']//table//tr//td//div/div[2]    10s
+    ${classAndStudentsRecords}    Run Keyword If    "${classStudentsDetails}"!="False"    Get Matching Xpath Count    //div[@class='gridxRow']//table//tr//td//div/div[2]
+    ${noOfVisibleClasses}    Run Keyword If    "${classStudentsDetails}"=="False" or ${classAndStudentsRecords}<2    Fail and Capture Screenshot    No class / Students are displayed in the generated report.
+    [Teardown]    Stop Application
+
+BAT 17 : District Admin view the Item Analysis Report at one School with all classes
+    [Tags]    BAT17    HIGH    ITEM_ANALYSIS_REPORT_SCHOOL_ALL_CLASSES_DISTRICT_ADMIN
+    ${Student Do Assignment Status}    Run Keyword And Return Status    Variable Should Exist    ${AssignmentDetails}
+    Run Keyword If    ${Student Do Assignment Status}==False    Fail    "Student_do_the_Assignment" test case need execute successfully.
+    ${bStatus}    Run Keyword And Return Status    Variable Should Exist    ${globalDistrictAdminStatus}
+    Run Keyword If    ${bStatus}==False    Fail    New district admin creation failed
+    ${schoolName}    Set Variable If    ${isDemoQURL}==False    ${preSchoolName}    ${demoQPreSchoolName}
+    ${className}    Set Variable    All Classes
+    ${SubjectName}    Get From Dictionary    ${AssignmentDetails}    Subject Name
+    ${SubjectName}    Replace String    ${SubjectName}    :    ${EMPTY}
+    ${activityName}    Run Keyword If    ${isDemoQURL}    Set Variable    02 Multiple Choice
+    ...    ELSE    Get From Dictionary    ${AssignmentDetails}    Activity
+    Comment    ${activityName}    Get From Dictionary    ${AssignmentDetails}    Activity
+    ${activityNameStripped}    Set Variable    ${activityName.strip()}
+    ${examdate}    Get Current Date
+    ${bStatus}=    LoginToWizardApp    ${globalDistrictAdminUid}    ${globalDistrictAdminPwd}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials-'${globalDistrictAdminUid}' and '${globalDistrictAdminPwd}'
+    ${fromdate}    Get Future Or Past Date From Now    -1
+    ${todate}    Get Future Or Past Date From Now
+    Comment    Generating report: ${preReportType2} with detials:${className},${SubjectName},${schoolName}
+    Get Report for A Class or Group    ${preReportType2}    Classes    ${className}    ${SubjectName}    ${schoolName}    ${activityNameStripped}
+    ...    ${fromdate}    ${todate}
+    Comment    Selecting Report frame.
+    Wait And Select Frame    ${header.report.reportFrame}
+    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    6s
+    Wait Until Element is Invisible    //div[@id='pageOverlayBg']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    6s
+    Wait Until Element is Invisible    //div[@id='pageOverlayDiv']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    6s
+    ${spinStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    8s
+    Run Keyword If    ${spinStatus}    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]
+    ${eStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.reportEmptyMessage}    ${TimeOut}
+    Run Keyword If    ${eStatus}    Fail    Report generated with message "There is no information to display for the current selection." OR Please check with previous day,the day might have been changed during the assignment subission and report verification time.
+    ${status}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.Subject}    ${TimeOut}
+    Run Keyword If    '${status}'!='True'    Fail and Capture Screenshot    The \ Report is not displayed \ with data \ in given time.    SMR.png
+    ${formateddatefrom}    Get Date Without Zeros At Pos Zero In Day And Month    ${fromdate}
+    ${formateddateto}    Get Date Without Zeros At Pos Zero In Day And Month    ${todate}
+    ${from}    Set Variable    ${formateddatefrom}
+    ${to}    Set Variable    ${formateddateto}
+    ${reporTypeInfo}    Get Text    //div[@id='displayReportType']
+    ${schoolMatchStatus}    String Should Contain    ${reporTypeInfo}    ${schoolName}
+    ${reportMatchStatus}    String Should Contain    ${reporTypeInfo}    ${preReportType2}
+    ${activityMatchStatus1}    Run Keyword If    ${isDemoQURL}    String Should Contain    ${reporTypeInfo}    02 Multiple Choice
+    ...    ELSE    String Should Contain    ${reporTypeInfo}    (2.OA.B.2)
+    Run Keyword If    "${schoolMatchStatus}"=="False" or "${reportMatchStatus}"=="False" or "${activityMatchStatus1}"=="False"    Fail and Capture Screenshot    School Name("${schoolName}") / Report type ("${preReportType2}") are not displayed.
+    ${allClassesLableVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterClassLbl' and contains(text(),'Class: All')]    5s
+    ${subjectDisplayStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterSubjectLbl' and contains(text(),'Title: ${SubjectName}')]
+    Comment    ${dateRangeVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterDateRangeLbl' and contains(text(),'Date Range: ${from} to ${to}')]    5s
+    ${dateRange}    Get Text    //div[@id='filterDateRangeLbl']
+    ${dateRangeVisibleStatus}    String Should Contain    ${dateRange}    Date Range: ${from} to ${to}
+    ${reportEssentialsNotDisplayedStatus}    Evaluate    "${allClassesLableVisibleStatus}"=="False" or "${subjectDisplayStatus}"=="False" or "${dateRangeVisibleStatus}"=="False"
+    Run Keyword If    "${reportEssentialsNotDisplayedStatus}"=="True"    Fail and Capture Screenshot    The report generation essentials are not displayed in generated report.
+    ${classNamesReportExpadoIconStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@class='gridxTreeExpandoContent gridxCellContent']//img    10s
+    ${noOfVisibleClasses}    Run Keyword If    "${classNamesReportExpadoIconStatus}"=="False"    Fail and Capture Screenshot    No classes are displayed in the generated report.
+    [Teardown]    Stop Application
+
+BAT 18 : District Admin view the Item Analysis Report at all Schools
+    [Tags]    BAT18    HIGH    ITEM_ANALYSIS_REPORT_ALL_SCHOOLS_DISTRICT_ADMIN
+    ${Student Do Assignment Status}    Run Keyword And Return Status    Variable Should Exist    ${AssignmentDetails}
+    Run Keyword If    ${Student Do Assignment Status}==False    Fail    "Student_do_the_Assignment" test case need execute successfully.
+    ${bStatus}    Run Keyword And Return Status    Variable Should Exist    ${globalDistrictAdminStatus}
+    Run Keyword If    ${bStatus}==False    Fail    New district admin creation failed
+    ${className}    Set Variable    @{globalclassList}[0]
+    ${SubjectName}    Get From Dictionary    ${AssignmentDetails}    Subject Name
+    ${SubjectName}    Replace String    ${SubjectName}    :    ${EMPTY}
+    ${activityName}    Run Keyword If    ${isDemoQURL}    Set Variable    02 Multiple Choice
+    ...    ELSE    Get From Dictionary    ${AssignmentDetails}    Activity
+    Comment    ${activityName}    Get From Dictionary    ${AssignmentDetails}    Activity
+    ${activityNameStripped}    Set Variable    ${activityName.strip()}
+    ${examdate}    Get Current Date
+    ${SchoolName}    Set Variable    All Schools
+    ${bStatus}=    LoginToWizardApp    ${globalDistrictAdminUid}    ${globalDistrictAdminPwd}
+    ${districtName}    Set Variable If    ${isDemoQURL}    ${demoQPreDistrictName}    ${preDistrictName}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials-'${globalDistrictAdminUid}' and '${globalDistrictAdminPwd}'
+    ${fromdate}    Get Future Or Past Date From Now    -1
+    ${todate}    Get Future Or Past Date From Now
+    Comment    Generating report: ${preReportType2} with detials:${className},${SubjectName},${SchoolName}
+    Get Report for A Class or Group    ${preReportType2}    Classes    ${className}    ${SubjectName}    ${SchoolName}    ${activityNameStripped}
+    ...    ${fromdate}    ${todate}
+    Comment    Selecting Report frame.
+    Wait And Select Frame    ${header.report.reportFrame}
+    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    6s
+    Wait Until Element is Invisible    //div[@id='pageOverlayBg']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    6s
+    Wait Until Element is Invisible    //div[@id='pageOverlayDiv']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    6s
+    ${spinStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    8s
+    Run Keyword If    ${spinStatus}    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]
+    ${eStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.reportEmptyMessage}    ${TimeOut}
+    Run Keyword If    ${eStatus}    Fail    Report generated with message "There is no information to display for the current selection." OR Please check with previous day,the day might have been changed during the assignment subission and report verification time.
+    ${status}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.Subject}    ${TimeOut}
+    Run Keyword If    '${status}'!='True'    Fail and Capture Screenshot    The Report is not displayed \ with data in given time.    SMR.png
+    ${formateddatefrom}    Get Date Without Zeros At Pos Zero In Day And Month    ${fromdate}
+    ${formateddateto}    Get Date Without Zeros At Pos Zero In Day And Month    ${todate}
+    ${from}    Set Variable    ${formateddatefrom}
+    ${to}    Set Variable    ${formateddateto}
+    ${reporTypeInfo}    Get Text    //div[@id='displayReportType']
+    ${schoolMatchStatus}    String Should Contain    ${reporTypeInfo}    ${districtName}
+    ${reportMatchStatus}    String Should Contain    ${reporTypeInfo}    ${preReportType2}
+    ${activityMatchStatus1}    Run Keyword If    ${isDemoQURL}    String Should Contain    ${reporTypeInfo}    02 Multiple Choice
+    ...    ELSE    String Should Contain    ${reporTypeInfo}    (2.OA.B.2)
+    Run Keyword If    "${schoolMatchStatus}"=="False" or "${reportMatchStatus}"=="False" or "${activityMatchStatus1}"=="False"    Fail and Capture Screenshot    School Name("${districtName}") / Report type ("${preReportType2}") are not displayed.
+    ${allClassesLableVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterClassLbl' and contains(text(),'School: All')]    5s
+    ${subjectDisplayStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterSubjectLbl' and contains(text(),'Title: ${SubjectName}')]
+    Comment    ${dateRangeVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterDateRangeLbl' and contains(text(),'Date Range: ${from} to ${to}')]    5s
+    ${dateRange}    Get Text    //div[@id='filterDateRangeLbl']
+    ${dateRangeVisibleStatus}    String Should Contain    ${dateRange}    Date Range: ${from} to ${to}
+    ${reportEssentialsNotDisplayedStatus}    Evaluate    "${allClassesLableVisibleStatus}"=="False" or "${subjectDisplayStatus}"=="False" or "${dateRangeVisibleStatus}"=="False"
+    Run Keyword If    "${reportEssentialsNotDisplayedStatus}"=="True"    Fail and Capture Screenshot    The report generation essentials are not displayed in generated report.
+    ${classNamesReportExpadoIconStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@class='gridxTreeExpandoContent gridxCellContent']//img    10s
+    ${noOfVisibleClasses}    Run Keyword If    "${classNamesReportExpadoIconStatus}"=="False"    Fail and Capture Screenshot    No Schools are displayed in the generated report.
+    [Teardown]    Stop Application
+
+BAT 19 : District Admin view the Standard Mastery Report at one School with all classes
+    [Tags]    BAT19    HIGH    STANDARDS_MASTERY_REPORT_SCHOOL_ALL_CLASSES_DISTRICT_ADMIN
+    Comment    This test depends on ATC 30A sttaus.
+    ${Student Do Assignment Status}    Run Keyword And Return Status    Variable Should Exist    ${AssignmentDetails}
+    Run Keyword If    ${Student Do Assignment Status}==False    Fail    "Student_do_the_Assignment" test case need execute successfully.
+    ${bStatus}    Run Keyword And Return Status    Variable Should Exist    ${globalDistrictAdminStatus}
+    Run Keyword If    ${bStatus}==False    Fail    New district admin creation failed
+    ${className}    Set Variable    All Classes
+    ${SubjectName}    Get From Dictionary    ${AssignmentDetails}    Subject Name
+    ${SubjectName}    Replace String    ${SubjectName}    :    ${EMPTY}
+    Comment    ${activityName}    Get From Dictionary    ${AssignmentDetails}    Activity
+    ${activityName}    Set Variable If    ${isDemoQURL}    02 Multiple Choice    Page 14 - Partner Practice: Use Mental Strategies to Add and Subtract Within 20 (2.OA.B.2)
+    ${activityNameStripped}    Set Variable    ${activityName.strip()}
+    ${examdate}    Get Current Date
+    ${reportType}    Set Variable    ${preReportType1}
+    ${SchoolName}    Set Variable If    ${isDemoQURL}    ${demoQPreSchoolName}    ${preSchoolName}
+    ${bStatus}=    LoginToWizardApp    ${globalDistrictAdminUid}    ${globalDistrictAdminPwd}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials-'${globalDistrictAdminUid}' and '${globalDistrictAdminPwd}'
+    ${fromdate}    Get Future Or Past Date From Now    -1
+    ${todate}    Get Future Or Past Date From Now
+    Comment    Generating report: ${reportType} with detials:${className},${SubjectName},${SchoolName}
+    Get Report for A Class or Group    ${reportType}    Classes    ${className}    ${SubjectName}    ${SchoolName}    ${activityNameStripped}
+    ...    ${fromdate}    ${todate}
+    Comment    Selecting Report frame.
+    Wait And Select Frame    ${header.report.reportFrame}
+    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    6s
+    Wait Until Element is Invisible    //div[@id='pageOverlayBg']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    6s
+    Wait Until Element is Invisible    //div[@id='pageOverlayDiv']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    6s
+    ${spinStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    8s
+    Run Keyword If    ${spinStatus}    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]
+    ${eStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.reportEmptyMessage}    ${TimeOut}
+    Run Keyword If    ${eStatus}    Fail    Report generated with message "There is no information to display for the current selection." OR Please check with previous day,the day might have been changed during the assignment subission and report verification time.
+    ${status}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.Subject}    ${TimeOut}
+    Run Keyword If    '${status}'!='True'    Fail and Capture Screenshot    The \ Report is not displayed \ with data \ in given time.    SMR.png
+    ${formateddatefrom}    Get Date Without Zeros At Pos Zero In Day And Month    ${fromdate}
+    ${formateddateto}    Get Date Without Zeros At Pos Zero In Day And Month    ${todate}
+    ${from}    Set Variable    ${formateddatefrom}
+    ${to}    Set Variable    ${formateddateto}
+    ${reporTypeInfo}    Get Text    //div[@id='displayReportType']
+    ${schoolMatchStatus}    String Should Contain    ${reporTypeInfo}    ${SchoolName}
+    ${reportMatchStatus}    String Should Contain    ${reporTypeInfo}    ${preReportType1}
+    Run Keyword If    "${schoolMatchStatus}"=="False" or "${reportMatchStatus}"=="False"    Fail and Capture Screenshot    School Name("${SchoolName}") / Report type ("${reportType}") are not displayed.
+    ${allClassesLableVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterClassLbl' and contains(text(),'Class: All')]    5s
+    ${subjectDisplayStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterSubjectLbl' and contains(text(),'Title: ${SubjectName}')]
+    Comment    ${dateRangeVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterDateRangeLbl' and contains(text(),'Date Range: ${from} to ${to}')]    5s
+    ${dateRange}    Get Text    //div[@id='filterDateRangeLbl']
+    ${dateRangeVisibleStatus}    String Should Contain    ${dateRange}    Date Range: ${from} to ${to}
+    ${reportEssentialsNotDisplayedStatus}    Evaluate    "${allClassesLableVisibleStatus}"=="False" or "${subjectDisplayStatus}"=="False" or "${dateRangeVisibleStatus}"=="False"
+    Run Keyword If    "${reportEssentialsNotDisplayedStatus}"=="True"    Fail and Capture Screenshot    The report generation essentials are not displayed in generated report.
+    ${classNamesReportExpadoIconStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@class='gridxTreeExpandoContent gridxCellContent']//img    10s
+    ${noOfVisibleClasses}    Run Keyword If    "${classNamesReportExpadoIconStatus}"=="False"    Fail and Capture Screenshot    No classes are displayed in the generated report.
+    [Teardown]    Stop Application
+
+BAT 20 : District Admin view the Standard Mastery Report at all Schools
+    [Tags]    BAT20    HIGH    STANDARDS_MASTERY_REPORT_ALL_SCHOOLS_DISTRICT_ADMIN
+    ${Student Do Assignment Status}    Run Keyword And Return Status    Variable Should Exist    ${AssignmentDetails}
+    Run Keyword If    ${Student Do Assignment Status}==False    Fail    "Student_do_the_Assignment" test case need execute successfully.
+    ${bStatus}    Run Keyword And Return Status    Variable Should Exist    ${globalDistrictAdminStatus}
+    Run Keyword If    ${bStatus}==False    Fail    New district admin creation failed
+    ${className}    Set Variable    @{globalclassList}[0]
+    ${SubjectName}    Get From Dictionary    ${AssignmentDetails}    Subject Name
+    ${SubjectName}    Replace String    ${SubjectName}    :    ${EMPTY}
+    ${activityName}    Run Keyword If    ${isDemoQURL}    Set Variable    02 Multiple Choice
+    ...    ELSE    Get From Dictionary    ${AssignmentDetails}    Activity
+    ${activityNameStripped}    Set Variable    ${activityName.strip()}
+    ${examdate}    Get Current Date
+    ${reportType}    Set Variable    ${preReportType1}
+    ${SchoolName}    Set Variable    All Schools
+    ${districtName}    Set Variable If    ${isDemoQURL}    ${demoQPreDistrictName}    ${preDistrictName}
+    ${bStatus}=    LoginToWizardApp    ${globalDistrictAdminUid}    ${globalDistrictAdminPwd}
+    Run Keyword If    '${bStatus}'=='False'    Fail    The user is not able to login with these ctredentials-'${globalDistrictAdminUid}' and '${globalDistrictAdminPwd}'
+    ${fromdate}    Get Future Or Past Date From Now    -1
+    ${todate}    Get Future Or Past Date From Now
+    Comment    Generating report: ${reportType} with detials:${className},${SubjectName},${SchoolName}
+    Get Report for A Class or Group    ${reportType}    Classes    ${className}    ${SubjectName}    ${SchoolName}    ${activityNameStripped}
+    ...    ${fromdate}    ${todate}
+    Comment    Selecting Report frame.
+    Wait And Select Frame    ${header.report.reportFrame}
+    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    6s
+    Wait Until Element is Invisible    //div[@id='pageOverlayBg']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    6s
+    Wait Until Element is Invisible    //div[@id='pageOverlayDiv']//div[@id='pageOverlayMsg' and contains(text(),'Generating Report')]    6s
+    ${spinStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]    8s
+    Run Keyword If    ${spinStatus}    Wait Until Element is Invisible    //img[contains(@src,'/loading.gif') and contains(@alt,'Please Wait...')]
+    ${eStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.reportEmptyMessage}    ${TimeOut}
+    Run Keyword If    ${eStatus}    Fail    Report generated with message "There is no information to display for the current selection." OR Please check with previous day,the day might have been changed during the assignment subission and report verification time.
+    ${status}    Run Keyword And Return Status    Wait Until Element Is Visible    ${label.reports.Subject}    ${TimeOut}
+    Run Keyword If    '${status}'!='True'    Fail and Capture Screenshot    The Report is not displayed \ with data in given time.    SMR.png
+    ${formateddatefrom}    Get Date Without Zeros At Pos Zero In Day And Month    ${fromdate}
+    ${formateddateto}    Get Date Without Zeros At Pos Zero In Day And Month    ${todate}
+    ${from}    Set Variable    ${formateddatefrom}
+    ${to}    Set Variable    ${formateddateto}
+    ${reporTypeInfo}    Get Text    //div[@id='displayReportType']
+    ${schoolMatchStatus}    String Should Contain    ${reporTypeInfo}    ${districtName}
+    ${reportMatchStatus}    String Should Contain    ${reporTypeInfo}    ${preReportType1}
+    Run Keyword If    "${schoolMatchStatus}"=="False" or "${reportMatchStatus}"=="False"    Fail and Capture Screenshot    School Name("${districtName}") / Report type ("${reportType}") are not displayed.
+    ${allClassesLableVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterClassLbl' and contains(text(),'School: All')]    5s
+    ${subjectDisplayStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterSubjectLbl' and contains(text(),'Title: ${SubjectName}')]
+    Comment    ${dateRangeVisibleStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='filterDateRangeLbl' and contains(text(),'Date Range: ${from} to ${to}')]    5s
+    ${dateRange}    Get Text    //div[@id='filterDateRangeLbl']
+    ${dateRangeVisibleStatus}    String Should Contain    ${dateRange}    Date Range: ${from} to ${to}
+    ${reportEssentialsNotDisplayedStatus}    Evaluate    "${allClassesLableVisibleStatus}"=="False" or "${subjectDisplayStatus}"=="False" or "${dateRangeVisibleStatus}"=="False"
+    Run Keyword If    "${reportEssentialsNotDisplayedStatus}"=="True"    Fail and Capture Screenshot    The report generation essentials are not displayed in generated report.
+    ${classNamesReportExpadoIconStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@class='gridxTreeExpandoContent gridxCellContent']//img    10s
+    ${noOfVisibleClasses}    Run Keyword If    "${classNamesReportExpadoIconStatus}"=="False"    Fail and Capture Screenshot    No Schools are displayed in the generated report.
+    [Teardown]    Stop Application

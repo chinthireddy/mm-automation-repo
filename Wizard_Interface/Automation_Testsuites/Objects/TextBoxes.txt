@@ -1,0 +1,97 @@
+*** Variables ***
+${text.wizard.userID}    loginUserID
+${text.wizard.password}    userPasswd
+${text.signUp.SignUpCode}    //input[@id='signUpCode']
+${text.signUp.firstName}    //input[@id='studentSignUpDlg-first']
+${text.signUp.lastName}    //input[@id='studentSignUpDlg-last']
+${text.signUp.userId}    //input[@id='studentSignUpDlg-uid']
+${text.signUp.password}    //input[@id='studentSignUpDlg-password']
+${text.signUp.numOfClasses}    //input[@id='signUpNumClasses']
+${text.signUp.className1}    //input[@id='signUpClass1']
+${text.signUp.className2}    //input[@id='signUpClass2']
+${text.signUp.email}    //input[@id='signUpEmail']
+${text.home.assignmentCode}    //input[@id='assignmentCode']/following-sibling::span
+${text.newClass.Name}    //input[@id='newGroupName']
+${text.newClass.toasterMsg}    //div[@id='toasterMsg']/div[@class='dijitToasterContainer dijitToasterError']/div[@class='dijitToasterContent']
+${text.masterToolTip}    //div[contains(@id,'_MasterTooltip')]/div[contains(@class,'TooltipContainer')]
+${text.forgotDlg.userId}    //input[@id='forgotUserId']
+${text.forgotDlg.activationCode}    //input[@id='forgotCode']
+${text.forgotDlg.forgotPasswd}    //div[@id='widget_forgotPasswd']//input[@id='forgotPasswd']
+${text.userDetails.firstName}    userFirstName
+${text.userDetails.lastName}    userLastName
+${text.classesAndUsers.Password}    userPassword
+${text.newUser.firstName}    //input[@id='newUserFirstName']    # MYS-2577 : Updated locator
+${text.newUser.userId}    //input[@id='newUserUserId']    # MYS-2577 : Updated locator
+${text.newUser.lastName}    //input[@id='newUserLastName']    # MYS-2577 : Updated locator
+${text.newUser.password}    //input[@id='newUserPassword']    # MYS-2577 : Updated locator
+${text.classDetails.description}    groupDescription
+${text.support.itsAbout}    subject_field
+${text.support.description}    description_field
+${text.support.emailId}    email_field
+${text.classDetails.name}    groupName
+${text.userDetails.firtName}    userFirstName
+${text.userDetails.middleName}    userMiddleName
+${text.classesAndUsers.Username}    userUserId
+${text.signUp.confirmPassword}    //input[@id='studentSignUpDlg-passwordConfirm']
+${text.signUp.classCode}    //input[@id='studentSignUpDlg-classCode']
+${text.reports.myFromDate}    //div[contains(@id,'reportDatePicker')]//div/input[@type='text' and @id='myFromDate']
+${text.reports.myToDate}    //div[contains(@id,'reportDatePicker')]//div/input[@type='text' and @id='myToDate']
+${text.caseDetail.middleName}    //input[@id='userMiddleName']
+${textbox.reports.myFromDate}    //div[contains(@id,'reportDatePicker')]//div/input[@type='text' and @id='myFromDate']
+${textbox.reports.myToDate}    //div[contains(@id,'reportDatePicker')]//div/input[@type='text' and @id='myToDate']
+${text.teacherSignUp.email}    //input[@id='teacherSignUpDlg-email']
+${text.teacherSignUp.password}    //input[@id='teacherSignUpDlg-password']
+${text.teacherSignUp.confirmPassword}    //input[@id='teacherSignUpDlg-passwordConfirm']
+${text.teacherSignUp.firstName}    //input[@id='teacherSignUpDlg-first']
+${text.teacherSignUp.lastName}    //input[@id='teacherSignUpDlg-last']
+${text.teacherSignUp.class}    //input[@id='teacherSignUpDlg-class']
+${text.studentSignUp.firstName}    //input[@id='studentSignUpDlg-first']
+${text.studentSignUp.lastName}    //input[@id='studentSignUpDlg-last']
+${text.studentSignUp.confirmPassword}    //input[@id='studentSignUpDlg-passwordConfirm']
+${text.studentSignUp.Password}    //input[@id='studentSignUpDlg-password']
+${text.studentSignUp.UserId}    //input[@id='studentSignUpDlg-uid']
+${text.studentHomePage.joinClassCode}    //input[@id='joinClassDlg-classCode']
+${text.teacherSignUp.class}    //input[@id='teacherSignUpDlg-class']
+${text.teacherSignUp.TECode}    //input[@id='teacherSignUpDlg-teCode']
+${text.adminSignUp.email}    //input[@id='adminSignUpDlg-email']
+${text.adminSignUp.password}    //input[@id='adminSignUpDlg-password']
+${text.adminSignUp.confirmPassword}    //input[@id='adminSignUpDlg-passwordConfirm']
+${text.adminSignUp.firstName}    //input[@id='adminSignUpDlg-first']
+${text.adminSignUp.lastName}    //input[@id='adminSignUpDlg-last']
+${text.adminSignUp.adminRegCode}    //div[@id='widget_adminSignUpDlg-adminCode']//input[@id='adminSignUpDlg-adminCode']
+${text.reports.reportsettings.value}    //input[@id='sliderGreen']
+${text.Details.Alert}    //p[@id='alertMessage']
+${text.home.schoolName}    //div[@class='headerLabelSchool']
+${text.adminSignUp.adminRegCodeRedBorder}    //div[@id='widget_adminSignUpDlg-adminCode' and contains(@class,'fieldRedBorder')]
+${text.newGroup.Description}    //textarea[@id='newGroupDescription']
+${text.management.createdClassCode}    //div[@class='dijitToasterContent']/div/p/span
+${text.newUser.teacherCode}    //input[contains(@id,'teCode')]
+${text.user.passwordValue}    //input[@id='userPassword']@value
+${text.user.userIdValue}    //input[@id='userUserId']@value
+${text.student.assignmentReport}    //div[@id='sessionReportDlg']//div[@id='session-report-header']//span[@id='srUserName']
+${text.emailSupport.subject}    subject
+${text.emailSupport.description}    description_field
+${text.emailSupport.email}    email_field
+${text.classor group.Group name}    //input[@id='groupName']
+${textbox.studentAssignment.TexAreabox}    //div[contains(@id,'DisplayDiv') and @class='frBlank']
+${text.passwordRecovery.emailAddress}    forgotPasswdEmail
+${text.userDetails.disabled.firstName}    //div[@id="widget_userMiddleName"]//input[@aria-disabled="false"]
+${text.userDetails.userName}    //input[@id='userUserId']
+${text.userDetails.userPassword}    //input[@id='userPassword']
+${text.management.addTeCode}    //input[@id="addTeCode-teCode"]
+${text.forgotDlg.inputEmailID}    //input[@id='forgotPasswdEmail']
+${text.Alert.Details.passwordRecovery}    //div[@class='dialogTitle' and text()='Password Recovery']
+${text.writeAssignment.notePad.textBody}    //div[@id='dijitEditorBody']
+${text.assignmentWriting.firstInputControl}    //div[@id='blank001EditorDiv' and contains(@style,'visibility: visible;')]//input
+${text.management.search}    //input[contains(@id,'dijit_form_TextBox_')]
+${Text.search.studentOrTitles}    //input[@id='listEditorSearch']
+${textbox.signUp.zipcode}    //input[@id='adminSignUpDlg-zip']
+${text.Details.prompt}    //p[@id='promptMessage']
+${text.home.ForgotPwdAlert}    //div[@id="forgotMessage"]
+${text.TeacherSignup.Zip}    //input[@id='teacherSignUpDlg-zip']
+${text.studentAssignment.textDisplay}    //div[@id='blank001Display']
+${text.teacherSignUp.registrationCode}    //input[@id='teacherSignUpDlg-registrationCode']
+${text.teacherSignUp.emailConfirm}    teacherSignUpDlg-emailConfirm
+${text.archiveStudents.gradeValue}    //div[contains(@class,'dijitButtonText')]
+${text.teacherSignUp.EmptyClass}    //input[@class='dijitReset dijitInputInner' and @aria-invalid='true']
+${text.adminsignup.ConfirmEmail}    //input[@id='adminSignUpDlg-emailConfirm']

@@ -1,0 +1,38 @@
+*** Settings ***
+Resource          super.txt
+
+*** Keywords ***
+Select The Drop Down Value
+    [Arguments]    ${listName}    ${listValue}    ${iterationsCount}=2
+    Wait Until Element Is Visible    //div[@id='selectReportText']//span[contains(text(),'${listName}')]//parent::div[contains(@id,'report') and contains(@id,'Select')]//div[@role='presentation']    30s    Reports page is not displayed within the given timeout. Inrease the wait time.
+    Click On Element    //div[@id='selectReportText']//span[contains(text(),'${listName}')]//parent::div[contains(@id,'report') and contains(@id,'Select')]//div[@role='presentation']
+    :FOR    ${iCounter}    IN RANGE    1    ${iterationsCount}
+    \    ${bStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //td[contains(@id,'MenuItem') and contains(text(),'${listValue}')]    10s
+    \    Run Keyword If    ${bStatus}    Exit For Loop
+    \    Run Keyword If    ${bStatus}==False    Click On Element    //div[@id='selectReportText']//span[contains(text(),'${listName}')]//parent::div[contains(@id,'report') and contains(@id,'Select')]//div[@role='presentation']
+    \    Run Keyword If    ${bStatus}==False    Sleep    2s
+    \    Run Keyword If    ${bStatus}==False    Click On Element    //div[@id='selectReportText']//span[contains(text(),'${listName}')]//parent::div[contains(@id,'report') and contains(@id,'Select')]//div[@role='presentation']
+    Click On Element    //td[contains(@id,'MenuItem') and contains(text(),'${listValue}')]
+    Sleep    3s
+
+Get Matching Xpath Values
+    [Arguments]    ${baselocator}    ${childlocator}=${EMPTY}
+    Run Keyword And Ignore Error    Wait Until Element Is Visible    ${baselocator}    ${TimeOut}
+    ${count}    Get Matching Xpath Count    ${baselocator}
+    ${matching values list}    Create List
+    : FOR    ${iIndex}    IN RANGE    1    ${count}+1
+    \    Comment    MYS-3211 : Updated keyword to run until the text is readable from the parsed loactor.
+    \    ${val}    Wait Until Keyword Succeeds    1m    5s    Get Text    ${baselocator}[${iIndex}]${childlocator}
+    \    Append To List    ${matching values list}    ${val}
+    [Return]    ${matching values list}
+
+Get Classes Names in Reports Page
+    ${baselocator}    Set Variable    //div[@id='reportTreeGrid']//div[@class='gridxMain']//div[@class='gridxBody gridxBodyRowHoverEffect']/div[contains(@class,'gridxRow')]
+    ${childlocator}    Set Variable    //table/tbody/tr/td[1]/div
+    ${count}    Get Matching Xpath Count    ${baselocator}
+    ${schools or classes list}    Create List
+    : FOR    ${iIndex}    IN RANGE    1    ${count}+1
+    \    ${val}    Get Text    ${baselocator}[${iIndex}]${childlocator}
+    \    ${status}    Run Keyword And Return Status    List Should Contain Value    ${schools or classes list}    ${val}
+    \    Run Keyword If    '${status}'=='False' and "${val}"!="${EMPTY}"    Append To List    ${schools or classes list}    ${val}
+    [Return]    ${schools or classes list}

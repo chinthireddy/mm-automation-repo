@@ -1,0 +1,581 @@
+*** Settings ***
+Resource          super.txt
+
+*** Keywords ***
+validateThe MandatoryField
+    [Arguments]    ${field}
+    [Documentation]    Validates whether the specific 'field' is highlighted or not.
+    ${classAttributeValue}=    Get Element Attribute    widget_studentSignUpDlg-${field}@class
+    ${highlightedStatus}=    String Should Contain    ${classAttributeValue}    fieldRedBorder
+    [Return]    ${highlightedStatus}
+
+Select Role in Create Account
+    [Arguments]    ${role}
+    [Documentation]    This keyword is used to select the Role in Create Account.
+    ${kwStatus}    Set Variable    False
+    ${subMenuItem}    Set Variable    //td[contains(@id,'dijit_MenuItem') and contains(text(),'${role}')]
+    Wait Until Element Is Visible    ${subMenuItem}    ${TimeOut}    The submenu item - ${role} is not visible.
+    comment    Keyword is used to wait for a specified element visibility and if it is visible click on that element.
+    ${kwStatus}    Wait And Click Element    ${subMenuItem}
+    [Return]    ${kwStatus}
+
+Raise A Ticket
+    [Arguments]    ${subject}    ${description}    ${emailId}
+    [Documentation]    Raises a ticket to the support team.
+    Input Text    ${text.support.itsAbout}    ${subject}
+    Input Text    ${text.support.description}    ${description}
+    Input Text    ${text.support.emailId}    ${emailId}
+    Comment    Choose a File
+    Comment    Click Element    //a[contains(text(),'attach files')]
+    Comment    Sleep    3s
+    Comment    Choose File    attachment_content[1]    D:\\Mentoring_Minds\\Docs\\SampleTest.txt
+    Comment    Sleep    10s
+    Click On Element    ${button.support.send}
+    Sleep    4s
+
+Enter Class Code
+    [Arguments]    ${classCode}
+    [Documentation]    This Keyword is used to Enter the Class code at Student signUp.
+    ${classCodeStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${header.signUp.studentSignUp}    ${Delay}    Student SignUp window is not displayed.
+    Run Keyword If    ${classCodeStatus}==True    Input Text    ${text.signUp.classCode}    ${classCode}
+    ...    ELSE    Fail    Class Code filed is not displayed in Student SignUp window.
+    Run Keyword If    ${classCodeStatus}==True    Press Space Key    ${text.signUp.classCode}
+    Run Keyword If    ${classCodeStatus}==True    Press Back Space Key    ${text.signUp.classCode}
+    Sleep    5s
+    [Return]    ${classCodeStatus}
+
+Input FirstName
+    [Arguments]    ${testData}
+    [Documentation]    This keyword is used to enter first name of the user.
+    Input Text    ${text.signUp.firstName}    ${testData}
+
+Input LastName
+    [Arguments]    ${testData}
+    [Documentation]    This keyword is used to enter Last name of the user.
+    Input Text    ${text.signUp.lastName}    ${testData}
+
+Input UserId
+    [Arguments]    ${testData}
+    [Documentation]    This keyword is used to enter the userId.
+    Input Text    ${text.signUp.userId}    ${testData}
+
+Input Password
+    [Arguments]    ${passworddata}
+    [Documentation]    This keyword is used to enter the password.
+    Input Text    ${text.signUp.password}    ${passworddata}
+
+Input ConfirmPassword
+    [Arguments]    ${passworddata}
+    [Documentation]    This keyword is used to enter the confirm password.
+    Input Text    ${text.signUp.confirmPassword}    ${passworddata}
+
+Enter Zip Code And Select School
+    [Arguments]    ${schoolZipCode}    ${role}    ${AssignedSchoolName}
+    [Documentation]    This Keyword is used to Enter the School's Zip code and Select school from type radio button at Teacher's signUp.
+    Comment    Keyword is used to check every navigation steps in new user signup.
+    Validate The Step Precondition    ${label.TeacherSignUp.dialogMessage}    zip code    "Enter your school’s zip code" step was not displayed in ${role} Signup process.
+    Comment    MYS-3211:Replaced with wait for element visible keyword.
+    ${schoolZipCodeStatus}=    Wait For Element Visible    //div[contains(@class,'dialogTitle') and contains(text(),'Registration')]    5s    ${role} School Zip window is not displayed.
+    log    ${AssignedSchoolName}    info
+    Comment    Keyword is used to enter school zip code.
+    Run Keyword If    ${schoolZipCodeStatus}==True    TypeCharactertoTextBox    //input[@id='${role}SignUpDlg-zip']    ${schoolZipCode}
+    ...    ELSE    Fail    School's Zip Code filed is not displayed in ${role} SignUp window.
+    Comment    MYS-3211:Replaced with wait for element visible keyword.
+    ${buttonStatus}    Wait For Element Visible    //label[text()="${AssignedSchoolName}"]//preceding-sibling::input    5s
+    Run Keyword If    ${schoolZipCodeStatus}==True and ${buttonStatus}==False    Press Back Space Key    //input[@id='${role}SignUpDlg-zip']
+    Run Keyword If    ${schoolZipCodeStatus}==True and ${buttonStatus}==False    Press Back Space Key    //input[@id='${role}SignUpDlg-zip']
+    Comment    Enter school zip code.
+    Run Keyword If    ${schoolZipCodeStatus}==True and ${buttonStatus}==False    TypeCharactertoTextBox    //input[@id='${role}SignUpDlg-zip']    ${schoolZipCode}
+    Comment    MYS-3394:Updated the radiobutton selection to deal with element staleness.
+    Comment    Wait For Element Visible    //label[text()="${AssignedSchoolName}"]//preceding-sibling::input    ${TimeOut}    School's Radio button is not displayed in ${role} SignUp window.
+    Comment    Click On Element    //div[contains(text(),'Registration')]
+    log    ${AssignedSchoolName}    info
+    Comment    ${val}    Wait Until Keyword Succeeds    2m    3s    Get Element Attribute    //label[text()="${AssignedSchoolName}"]//preceding-sibling::input@value
+    Comment    Wait Until Keyword Succeeds    1m    3s    Select Radio Button    school    ${val}
+    ${spinnerVisibility}    Run Keyword And Return Status    Wait Until Element Is Visible    ${common.spinner.loadingIcon}
+    Run Keyword If    ${spinnerVisibility}    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Click Element Using Javascript    //td[@class='dijitReset dijitMenuItemLabel' and text()='${AssignedSchoolName}']
+
+Select Random Registration Code From Excel File
+    [Documentation]    To Select Random Registration Code From MS-Excel File .
+    Comment    Get Row's Count From Ms Excel
+    ${excelRowsCount}=    Get Ms Excel File Rows Count    ${TECodesFilePath}
+    log    ${excelRowsCount}
+    Comment    Get Column Header Names into List
+    ${columnsNames}    Get Ms Excel Row Values Into List    ${TECodesFilePath}    1
+    log    ${columnsNames}
+    Comment    Get Index Of "RegistrationCode" Column.
+    ${registrationCodeIndex}    Get Index From List    ${columnsNames}    RegistrationCode
+    ${registrationCodeIndex}    Evaluate    ${registrationCodeIndex}+1
+    Comment    Get "RegistrationCode" Column Valus Into List.
+    @{listOfRegistrationCodes}=    Get Ms Excel Column Values Into List    ${TECodesFilePath}    ${registrationCodeIndex}    RegistrationCodes
+    ${listOfRegistrationCodes}    Set Variable    @{listOfRegistrationCodes}
+    ${lengthOfList}=    Get Length Of List    ${listOfRegistrationCodes}
+    ${randomNumber}=    Get Random Number In Given Range    0    ${lengthOfList}
+    ${randomelySelectedValue}=    Set Variable    @{listOfRegistrationCodes}[${randomNumber}]
+    Sleep    2s
+    [Return]    ${randomelySelectedValue}
+
+Generate Multiple Classes In Teacher SignUp
+    [Arguments]    ${count}    ${buttonName}    ${SignUpTitleMenu}
+    [Documentation]    This keyword is used to genetate multiple classes in teacher signup.
+    [Timeout]
+    ${assignedClassesNames}=    Create List
+    ${assignedClassesCode}=    Create List
+    ${count}    Run Keyword If    '${buttonName}'=='No'    Set Variable    1
+    ...    ELSE    Set Variable    ${count}
+    log    ${count}
+    : FOR    ${iCounter}    IN RANGE    1    ${count}+1
+    \    Comment    ${randomNumber}=    Get Random Number In Given Range    1    500
+    \    Comment    Keyword is used to generate Unique QAclass name based on timestamp.
+    \    ${classNameTestData}=    GetUniqueValue    QAClass
+    \    Comment    ${classNameTestData}=    Set Variable    QAClass${randomNumber}
+    \    Comment    Keyword is used to wait and enter data in the specified textbox(element).
+    \    Enter Text In Text Field    //input[@id='teacherSignUpDlg-class']    ${classNameTestData}
+    \    Comment    Keyword is used to wait for a specified element visibility and if it is visible click on that element.
+    \    Wait And Click Element    ${button.signUp.next}
+    \    Sleep    2s
+    \    Comment    Select a Title's From List at Teacher's signUp.
+    \    ${titleSelectionStatus}=    Run Keyword And Return Status    Wait Until Element Is Visible    //select[@id='teacherSignUpDlg-classTitles']    ${Delay}
+    \    Run Keyword If    ${titleSelectionStatus}==True    Select From List By Label    //select[@id='teacherSignUpDlg-classTitles']    ${SignUpTitleMenu}
+    \    ...    ELSE    Fail    The Select Option list is not visible.
+    \    Comment    Keyword is used to wait for a specified element visibility and if it is visible click on that element.
+    \    Wait And Click Element    ${button.signUp.next}
+    \    Comment    ${AssignedClassName}=    Get Text    //div[contains(@id,'teacherSignUpDlg')]//div[contains(@class,'newClassTitles')]//tbody//tr[${iCounter}]//td[1]
+    \    Wait Until Element Is Visible    //div[contains(@id,'teacherSignUpDlg')]//div[contains(@class,'newClassTitles')]//tbody//tr[${iCounter}]//td[2]    ${TimeOut}
+    \    ${AssignedClassCode}=    Get Text    //div[contains(@id,'teacherSignUpDlg')]//div[contains(@class,'newClassTitles')]//tbody//tr[${iCounter}]//td[2]
+    \    Sleep    10s
+    \    Comment    Click on "No" button at Teacher's signUp.
+    \    Run Keyword If    '${count}'!='${iCounter}'    Wait And Click Element    //div[contains(@class,'signup-step is-visible')]//button[contains(@id,'dojox_mobile_Button_') and contains(text(),'${buttonName}')]
+    \    ...    ELSE    Wait And Click Element    //div[contains(@class,'signup-step is-visible')]//button[contains(@id,'dojox_mobile_Button_') and contains(text(),'No')]
+    \    Append To List    ${assignedClassesCode}    ${AssignedClassCode}
+    \    Append To List    ${assignedClassesNames}    ${classNameTestData}
+    Set Global Variable    ${assignedClassesCode}    ${assignedClassesCode}
+    [Return]    ${assignedClassesNames}
+
+Select and Validate the Registration Code and Title Assements
+    [Arguments]    ${SignUpTitle}=${EMPTY}
+    [Documentation]    This keyword is used to Select and Validate the Registration Code and Title Assements
+    ...
+    ...    1. Enter the registration code into registration Field from Ms Excel.
+    ...
+    ...    2. Select Assessment Title from dropdown.
+    Comment    Enter the registration code and Get Row's Count From Ms Excel
+    ${SignUpTitleMenu}    Set Variable If    '${SignUpTitle}'=='${EMPTY}'    ${SignUpTitleMenu}    ${SignUpTitle}
+    ${excelRowsCount}=    Get Ms Excel File Rows Count    ${RegCodesFilePath}
+    : FOR    ${iCounter}    IN RANGE    1    ${excelRowsCount}
+    \    comment    To Select Random Registration Code From MS-Excel File .
+    \    ${randomelySelectedValue}=    Select Random Registration Code From Excel File
+    \    Log    ${randomelySelectedValue}
+    \    Wait Until Keyword Succeeds    2m    5s    Clear Text    //input[contains(@id,'teCode')]
+    \    comment    Keyword is used to enter text by charachter wise.
+    \    TypeCharactertoTextBox    //input[contains(@id,'teCode')]    ${randomelySelectedValue}
+    \    Comment    Enter Text In Text Field    //input[@id='teacherSignUpDlg-teCode']    ${randomelySelectedValue}
+    \    Sleep    6s
+    \    ${attributeOfTextBox}=    Get Element Attribute    //div[contains(@id,'widget') and contains(@id,'teCode')]@class
+    \    log    ${attributeOfTextBox}
+    \    ${statusOfTextBox}=    Run Keyword And Return Status    Should Contain    ${attributeOfTextBox}    fieldRedBorder
+    \    Run Keyword If    ${statusOfTextBox}==True    Continue For Loop
+    \    Sleep    5s
+    \    Comment    Wait And Click Element    //input[@class='dijitReset dijitInputField dijitArrowButtonInner']
+    \    Comment    Keyword is used to wait for a specified element visibility and if it is visible click on that element.
+    \    Wait And Click Element    //table[contains(@id,'titles')]//td[contains(@class,'DownArrowButton')]//input
+    \    ${SignUpTitleMenuStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //td[contains(@id,'dijit_MenuItem') and contains(text(),'${SignUpTitleMenu}')]    ${TimeOut}
+    \    ${title}    Wait And Click Element    //td[contains(@id,'dijit_MenuItem') and contains(text(),'${SignUpTitleMenu}')]
+    \    ${nextStatus}    Run Keyword And Return Status    Wait And Click Element    ${button.signUp.next}
+    \    Run Keyword Unless    ${nextStatus}    Wait And Click Element    //table[contains(@id,'titles')]//td[contains(@class,'DownArrowButton')]//input
+    \    Run Keyword Unless    ${nextStatus}    Wait Until Element Is Visible    //td[contains(@id,'dijit_MenuItem') and contains(text(),'${SignUpTitleMenu}')]    ${TimeOut}
+    \    Run Keyword Unless    ${nextStatus}    Wait And Click Element    //td[contains(@id,'dijit_MenuItem') and contains(text(),'${SignUpTitleMenu}')]
+    \    Run Keyword Unless    ${nextStatus}    Wait And Click Element    ${button.signUp.next}
+    \    ${alertMessageStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@id='globalAlertPopup']//p[@id='alertMessage' and text()='This is not a valid Teacher Edition code.']    5s
+    \    Run Keyword If    ${alertMessageStatus}    Click On Element    //div[@id='alertOkBtn']/button[text()='Ok']
+    \    Run Keyword If    ${alertMessageStatus}    Continue For Loop
+    \    ...    ELSE    Exit For Loop
+    Sleep    5s
+    Set Global Variable    ${global Registration Code}    ${randomelySelectedValue}
+    [Return]    ${SignUpTitleMenu}
+
+Teacher SignUp Registration
+    [Arguments]    ${count}=1
+    [Documentation]    This keyword is used to registor as a teacher.
+    : FOR    ${iCounter}    IN RANGE    0    ${count}
+    \    Comment    Open 'wizard' app.
+    \    OpenBrowserToLoginPage
+    \    Sleep    ${Delay}
+    \    Comment    Click on 'NewUser' button.
+    \    Wait And Click Element    ${button.login.newUser}
+    \    Sleep    2s
+    \    Comment    Creating a 'Teacher'.
+    \    Select Role in Create Account    ${teacherRole}
+    \    ${AssignedSchoolName}=    Enter Zip Code And Select School    ${schoolZipCode}    teacher
+    \    Comment    Click on 'Next' button at Teacher's signUp.
+    \    Wait And Click Element    ${button.signUp.next}
+    \    Comment    Enter a valid Email address to use as your User ID.
+    \    ${randomNumber}=    Get Random Number In Given Range    5    1000
+    \    ${teacherTestData}=    Set Variable    rpaschburg+Datateacher${randomNumber}
+    \    Set Global Variable    ${teacherEmailId}    ${teacherTestData}@gmail.com
+    \    Enter Text In Text Field    //input[@id='teacherSignUpDlg-email']    ${teacherEmailId}
+    \    Wait And Click Element    ${button.signUp.next}
+    \    Comment    Enter a Password into TextFiled.
+    \    Enter Text In Text Field    //input[@id='teacherSignUpDlg-password']    ${teacherPassword}
+    \    Wait And Click Element    ${button.signUp.next}
+    \    Comment    Enter a Confirm Password into TextFiled.
+    \    Enter Text In Text Field    //input[@id='teacherSignUpDlg-passwordConfirm']    ${teacherPassword}
+    \    Wait And Click Element    ${button.signUp.next}
+    \    Comment    Enter a FirstName into TextFiled.
+    \    Enter Text In Text Field    //input[@id='teacherSignUpDlg-first']    ${teacherTestData}
+    \    Comment    Enter a LastName into TextFiled.
+    \    Enter Text In Text Field    //input[@id='teacherSignUpDlg-last']    ${teacherTestData}
+    \    Wait And Click Element    ${button.signUp.next}
+    \    Comment    Enter the registration code into registration Field from Ms Excel and Select Assessment Title from dropdown.
+    \    ${AssessmentTitle}    Select and Validate the Registration Code and Title Assements
+    \    Set Global Variable    ${AssessmentTitle}    ${AssessmentTitle}
+    \    Wait And Click Element    ${button.signUp.next}
+    \    Comment    Choose Yes or No at Teacher's signUp.
+    \    Wait And Click Element    //button[contains(@id,'dojox_mobile_Button_') and contains(text(),'No')]
+    \    Comment    Click on "Terms and Conditions" at Teacher's signUp.
+    \    Wait And Click Element    //button[contains(@id,'dojox_mobile_Button_') and contains(text(),'Terms and Conditions')]
+    \    Comment    Click on "I understand and accept the terms and conditions" at Teacher's signUp.
+    \    Wait And Click Element    //button[contains(@id,'dojox_mobile_Button_') and contains(text(),'I understand and accept the terms and conditions')]
+    \    Comment    Click on "Create Account" at Teacher's signUp.
+    \    Wait And Click Element    //button[contains(@id,'teacherSignUpDlg-next') and contains(text(),'Create Account')]
+    \    Comment    Click on "Now" button at Teacher's signUp.
+    \    Wait And Click Element    //button[contains(@id,'dojox_mobile_Button_') and contains(text(),'Now')]
+    \    Comment    Create multiple "ClassName's" at Teacher's signUp by Choosing "Yes or No" at Teacher's signUp.
+    \    ${assignedClassesNames}=    Generate Multiple Classes In Teacher SignUp    2    Yes    ${AssessmentTitle}
+    \    Comment    Click on "Finished" button at Teacher's signUp.
+    \    Wait And Click Element    //button[contains(@id,'dojox_mobile_Button_') and contains(text(),'Finished')]
+    \    Comment    Click on "SignIn" at Teacher's signUp.
+    \    Wait And Click Element    //button[contains(@id,'dojox_mobile_Button_') and contains(text(),'Sign In')]
+    \    Sleep    5s
+    \    Comment    Verifying whether loginName of the user is displayed or not.
+    \    Close All Browsers
+
+Select Random Titles From SignUp
+    [Documentation]    This keyword is used to Select Random Titles From SignUp.
+    ${xpathCount}=    Get Matching Xpath Count    //table[@id='teacherSignUpDlg-titles_menu']//tr
+    ${randomNoValue}    Get Random Number In Given Range    2    ${xpathCount}
+    ${SignUpTitleMenu}    Get Text    //table[@id='teacherSignUpDlg-titles_menu']//tr[${randomNoValue}]//td[contains(@id,'dijit_MenuItem')]
+    comment    Keyword is used to wait for a specified element visibility and if it is visible click on that element.
+    Wait And Click Element    //td[contains(@id,'dijit_MenuItem') and contains(text(),'${SignUpTitleMenu}')]
+
+Validate Registration Code
+    [Arguments]    ${role}    ${typeOfLocator}    ${registrationCode}='
+    [Documentation]    This keyword is used to verify the valid admin registration code.
+    [Timeout]
+    ${statusOfRegistration}    Evaluate    '${typeOfLocator}'=='input'
+    comment    Enter the admin registration code.
+    Run Keyword If    '${typeOfLocator}'=='input'    Enter Text In Text Field    //input[@id='adminSignUpDlg-adminCode']    ${registrationCode}
+    ...    ELSE    Wait And Click Element    //button[@id='adminSignUpDlg-noRegCode']
+    Comment    Keyword is used to wait for a specified element visibility and if it is visible click on that element.
+    Run Keyword If    '${typeOfLocator}'=='input'    Wait And Click Element    ${button.signUp.next}
+    [Return]    ${statusOfRegistration}
+
+Validate Valid User Login Details
+    [Arguments]    ${TestData}
+    [Documentation]    This keyword is used to verify the Valid User Login Details or not.
+    Comment    Verifying whether loginName of the user is displayed or not.
+    Wait Until Element Is Visible    //div[@class='dashLink']/div[@class='headerLabelUser']    ${preloaderTimeOut}    Logged In UserName is not visible.
+    ${loginName}=    Get Text    //div[@class='dashLink']/div[@class='headerLabelUser']
+    ${bLoginNameStatus}=    Run Keyword And Return Status    Should Contain    ${loginName}    ${TestData}${SPACE}${TestData}
+    Run Keyword If    '${bLoginNameStatus}'!='True'    Fail    The Actual UserName Mismatches with Expected UserName.
+    ...    ELSE    Set Test Message    The Actual UserName Matches with Expected UserName.
+
+ValidateTheUser
+    [Arguments]    ${lastName}    ${firstName}
+    [Documentation]    This keyword is used to verify the valid user or not.
+    ${rowsCount}=    Get Matching Xpath Count    ${table.users}/div[@class='dgrid-scroller']/div[@class='dgrid-content ui-widget-content']/div[@role='row']
+    Log    ${rowsCount}
+
+EnterValidRegCode
+    [Arguments]    ${schoolAdminRegCodes}
+    [Documentation]    This keyword is used to enter valid registration code or not.
+    ${count}    Get Length Of List    ${schoolAdminRegCodes}
+    : FOR    ${vlaIndex}    IN RANGE    5    ${count}
+    \    Clear Text    ${text.adminSignUp.adminRegCode}
+    \    Comment    Enter school admin registration code.
+    \    TypeCharactertoTextBox    ${text.adminSignUp.adminRegCode}    @{schoolAdminRegCodes}[${vlaIndex}]
+    \    ${statusOfTextBox}    Run Keyword And Return Status    Wait Until Element Is Visible    ${text.adminSignUp.adminRegCodeRedBorder}
+    \    Run Keyword If    ${statusOfTextBox}==True    Continue For Loop
+    \    ...    ELSE    Exit For Loop
+    Comment    "Click on Next button"
+    Run Keyword If    ${statusOfTextBox}!=True    Wait And Click Element    ${button.signUp.next}
+    [Return]    ${statusOfTextBox}
+
+Teacher SignUp
+    [Arguments]    ${schoolZipCode}    ${schoolName}    ${count}=1
+    [Documentation]    This keyword is used to signup as a teacher.
+    ${newTeachers}=    Create Dictionary
+    : FOR    ${iCounter}    IN RANGE    0    ${count}
+    \    Comment    Open 'wizard' app.
+    \    OpenBrowserToLoginPage
+    \    Wait Until Element Is Visible    ${button.login.newUser}    ${Delay}
+    \    Comment    Click on 'NewUser' button.
+    \    Wait And Click Element    ${button.login.newUser}
+    \    Sleep    2s
+    \    Comment    Creating a 'Teacher'.
+    \    Select Role in Create Account    ${teacherRole}
+    \    Enter Zip Code And Select School    ${schoolZipCode}    teacher    ${schoolName}
+    \    Comment    Click on 'Next' button at Teacher's signUp.
+    \    Wait And Click Element    ${button.signUp.next}
+    \    Comment    Enter a valid Email address to use as your User ID.
+    \    ${teacherTestData}=    GetUniqueValue    DataTeacher
+    \    Set Global Variable    ${globalTeacherUId}    ${mailBeginning}${teacherTestData}@gmail.com
+    \    Enter Text In Text Field    //input[@id='teacherSignUpDlg-email']    ${globalTeacherUId}
+    \    Wait And Click Element    ${button.signUp.next}
+    \    Comment    Enter a Password into TextFiled.
+    \    Set Global Variable    ${globalTeacherPassword}    ${teacherTestData}
+    \    Enter Text In Text Field    //input[@id='teacherSignUpDlg-password']    ${globalTeacherPassword}
+    \    Wait And Click Element    ${button.signUp.next}
+    \    Comment    Enter a Confirm Password into TextFiled.
+    \    Enter Text In Text Field    //input[@id='teacherSignUpDlg-passwordConfirm']    ${globalTeacherPassword}
+    \    Wait And Click Element    ${button.signUp.next}
+    \    Comment    Enter a FirstName into TextFiled.
+    \    Enter Text In Text Field    //input[@id='teacherSignUpDlg-first']    ${teacherTestData}
+    \    Comment    Enter a LastName into TextFiled.
+    \    Enter Text In Text Field    //input[@id='teacherSignUpDlg-last']    ${teacherTestData}
+    \    Wait And Click Element    ${button.signUp.next}
+    \    ${alertStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    //div[@widgetid='globalAlertPopup']//button[@widgetid='mysAlertBtn']    5s
+    \    Run Keyword If    ${alertStatus}    Sleep    2s
+    \    Run Keyword If    ${alertStatus}    Click On Element    //button[@widgetid='mysAlertBtn']
+    \    Run Keyword If    ${alertStatus}    Wait And Click Element    ${button.signUp.next}
+    \    Sleep    5s
+    \    Comment    Enter the registration code into registration Field from Ms Excel and Select Assessment Title from dropdown.
+    \    ${SignUpTitleMenu}    Select and Validate the Registration Code and Title Assements
+    \    Set Global Variable    ${SignUpTitleMenu}    ${SignUpTitleMenu}
+    \    Wait And Click Element    ${button.signUp.next}
+    \    Comment    Choose Yes or No at Teacher's signUp.
+    \    Wait And Click Element    //button[contains(@id,'dojox_mobile_Button_') and contains(text(),'No')]
+    \    Comment    Click on "Terms and Conditions" at Teacher's signUp.
+    \    Wait And Click Element    //button[contains(@id,'dojox_mobile_Button_') and contains(text(),'Terms and Conditions')]
+    \    Comment    Click on "I understand and accept the terms and conditions" at Teacher's signUp.
+    \    Wait And Click Element    //button[contains(@id,'dojox_mobile_Button_') and contains(text(),'I Agree')]
+    \    Comment    Click on "Create Account" at Teacher's signUp.
+    \    Wait And Click Element    //button[contains(@id,'teacherSignUpDlg-next') and contains(text(),'Create Account')]
+    \    Comment    Click on "Now" button at Teacher's signUp.
+    \    Wait And Click Element    //button[contains(@id,'dojox_mobile_Button_') and contains(text(),'Now')]
+    \    Comment    Create multiple "ClassName's" at Teacher's signUp by Choosing "Yes or No" at Teacher's signUp.
+    \    ${assignedClassesNames}=    Generate Multiple Classes In Teacher SignUp    2    Yes    ${SignUpTitleMenu}
+    \    Set To Dictionary    ${newTeachers}    ${teacherTestData}    ${assignedClassesNames}
+    \    Comment    Click on "Finished" button at Teacher's signUp.
+    \    Wait And Click Element    //button[contains(@id,'dojox_mobile_Button_') and contains(text(),'Finished')]
+    \    Comment    Click on "SignIn" at Teacher's signUp.
+    \    Wait And Click Element    //button[contains(@id,'dojox_mobile_Button_') and contains(text(),'Sign In')]
+    \    Close All Browsers
+    [Return]    ${newTeachers}
+
+Get Zipcode For School
+    [Arguments]    ${filePath}    ${sheetName}    ${schoolName}
+    [Documentation]    This keyword is used to get zipcode for school from MS Excel sheet.
+    ${rowList}    Get Ms Excel Row Values Into List    ${filePath}    1    ${sheetName}
+    ${index}    Get Index From List    ${rowList}    ${schoolName}
+    ${collumnNo}    Evaluate    ${index}+1
+    ${list}=    Get Ms Excel Column Values Into List    ${filePath}    ${collumnNo}    ${sheetName}
+    ${lengthOfSchoolAdminRegCodes}=    Get Length Of List    ${list}
+    @{list}    Set Variable    ${list}
+    ${zipCode}=    Set Variable    @{list}[0]
+    ${zipCode}=    Split String    ${zipCode}    Zip:${SPACE}
+    @{zipCode}=    Set Variable    ${zipCode}
+    ${zipCode}    Set Variable    @{zipCode}[1]
+    [Return]    ${zipCode}
+
+TypeCharactertoTextBox
+    [Arguments]    ${locator}    ${entervalue}
+    [Documentation]    Keyword is used to enter text by charachter wise.
+    Clear Text    ${locator}
+    ${entervalue}    Convert To String    ${entervalue}
+    ${characters}    Split String To Characters    ${entervalue}
+    Log    ${characters}
+    ${charLen}    Get Length    ${characters}
+    : FOR    ${iCount}    IN RANGE    0    ${charLen}
+    \    Type Keys Into Textbox    ${locator}    @{characters}[${iCount}]
+    \    Sleep    500ms
+
+Upload Students From CSV
+    [Arguments]    ${filePath}
+    [Documentation]    This keyword is used to upload students details from CSV file.
+    Comment    Validate the guided Help tool tip in home page
+    ${fileExistenceStatus}    Run Keyword And Return Status    File Should Exist    ${filePath}
+    Run Keyword If    '${fileExistenceStatus}'!='True'    Return From Keyword    ${fileExistenceStatus}
+    Navigate To Import Users Page
+    Comment    Wait Until Element Is Visible    ${button.importTemplate.IAmReadyToImport}    10s
+    Comment    MYS-2352: Updated the keyword to upload the users on chrome even if the window is not in focus.
+    Run Keyword If    "${BROWSER}"=="ie"    Wait And Click Element    ${button.importTemplate.IAmReadyToImport}
+    ...    ELSE    Wait Until Page Contains Element    importUsersFileInput    ${TimeOut}
+    Run Keyword If    "${BROWSER}"=="ie"    sleep    2s
+    ...    ELSE    Input File Name    importUsersFileInput    ${filePath}
+    Run Keyword If    "${BROWSER}"=="ie"    send    !N
+    Run Keyword If    "${BROWSER}"=="ie"    sleep    2s
+    Run Keyword If    "${BROWSER}"=="ie"    send    !N
+    Run Keyword If    "${BROWSER}"=="ie"    send    ${filePath}
+    Run Keyword If    "${BROWSER}"=="ie"    send    {ENTER}
+    Comment    Wait Until Page Contains Element    importUsersFileInput    ${TimeOut}
+    Comment    Input File Name    importUsersFileInput    ${filePath}
+    Comment    Added sleep for handle the Import Users Application \ issue in new build
+    Sleep    4s
+    Comment    MYS-3394 : Replaced with wait for element visible keyword.
+    ${impErrStatus}    Wait For Element Visible    ${label.importTemplate.importFailure}    ${TimeOut}
+    Comment    MYS-3394 : Updated script to set an appropriate message to the variable to avoid 'None' value type exceptions.
+    ${impErrMsg}    Run Keyword If    ${impErrStatus}    Get Text    ${label.importTemplate.importFailure}
+    ...    ELSE    Set Variable    No error message found while importing users.
+    Set Global Variable    ${impUsersMsg}    ${impErrMsg}
+    Run Keyword If    ${impErrStatus}    Return From Keyword    False
+    Comment    MYS-3394 : Replaced with wait for element visible keyword.
+    ${impExpStatus}    Wait For Element Visible    ${label.importTemplate.importException}    ${TimeOut}
+    Comment    MYS-3394 : Updated script to set an appropriate message to the variable to avoid 'None' value type exceptions.
+    ${impExpMsg}    Run Keyword If    ${impExpStatus}    Get Text    ${label.importTemplate.importException}
+    ...    ELSE    Set Variable    No Exception messages found while importing users.
+    Set Global Variable    ${impUsersMsg}    ${impErrMsg}
+    Run Keyword If    ${impExpStatus}    Return From Keyword    False
+    Comment    MYS-3394 : Replaced with wait for element visible keyword and increased wait time to 10m.
+    ${impSucStatus}    Wait For Element Visible    ${label.importTemplate.importSuccessMsg}    10s
+    Set Global Variable    ${impUsersMsg}    ${impErrMsg}
+    Run Keyword If    ${impSucStatus}    Return From Keyword    ${impSucStatus}
+
+Create New District Admin
+    [Arguments]    ${DistrictAdminDetails}    ${DistrictCode}=${EMPTY}    ${districtZipCode}=${EMPTY}    ${districtName}=${EMPTY}
+    [Documentation]    This keyword is used to create New District Admin.
+    ${kwStatus}    Set Variable    False
+    Comment    Click on 'NewUser' button.
+    Wait And Click Element    ${button.login.newUser}
+    Comment    Creating a 'DistrictAdmin'.
+    Select Role in Create Account    ${districtAdmin}
+    ${districtadminSchoolName}    Run Keyword If    "${districtName}"=="${EMPTY}"    Set Variable    ${preDistrictName}
+    ...    ELSE    Set Variable    ${districtName}
+    ${sheetName}=    Set Variable If    ${isDemoQURL}    STAAR mysdb_m3    CCS
+    ${filePath}    Set Variable    ${daRegistrationCodesFile}
+    Validate The Step Precondition    ${label.adminSignUp.zipCodeDlgMessage}    zip code.    The zip code step was not displayed in District Admin Registration process.
+    ${zipCode}=    Run Keyword If    "${districtZipCode}"=="${EMPTY}"    Get Zipcode For School    ${filePath}    ${sheetName}    ${districtadminSchoolName}
+    ...    ELSE    Set Variable    ${districtZipCode}
+    ${role}    Set Variable    admin
+    Enter Zip Code And Select School    ${zipCode}    ${role}    ${districtadminSchoolName}
+    ${spinnerStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${common.spinner.loadingIcon}
+    ${loadingIconInvisibleStatus}    Run Keyword If    ${spinnerStatus}    Run Keyword And Return Status    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Comment    Run Keyword If    ${loadingIconInvisibleStatus}!=False    Wait And Click Element    ${button.signUp.next}
+    ${districtAdminUid}    Get From Dictionary    ${DistrictAdminDetails}    UserName
+    ${districtAdminPwd}    Get From Dictionary    ${DistrictAdminDetails}    Password
+    ${districtAdminFName}    Get From Dictionary    ${DistrictAdminDetails}    FirstName
+    ${districtAdminLName}    Get From Dictionary    ${DistrictAdminDetails}    LastName
+    Enter Text In Text Field    ${text.adminSignUp.firstName}    ${districtAdminFName}
+    Enter Text In Text Field    ${text.adminSignUp.lastName}    ${districtAdminLName}
+    Enter Text In Text Field    ${text.adminSignUp.email}    ${districtAdminUid}
+    Enter Text In Text Field    ${text.adminsignup.ConfirmEmail}    ${districtAdminUid}
+    TypeCharactertoTextBox    ${text.adminSignUp.password}    ${districtAdminPwd}
+    TypeCharactertoTextBox    ${text.adminSignUp.confirmPassword}    ${districtAdminPwd}
+    Comment    Select Job Title from job List.
+    Select DropDown Values    ${dropdown.adminSignUp.jobTitleDrpDwn}    //table[@id='adminSignUpDlg-jobTitle_menu']//tr
+    Wait And Click Element    //input[@id='adminSignUpDlg-subscribe']
+    Wait And Click Element    ${button.signUp.next}
+    Validate The Step Precondition    ${label.adminSignUp.adminRegCodeDlgMessage}    Administrator Registration Code below.    The "Enter the Administrator Registration Code below" step was not displayed in District Admin Registration process.
+    ${list}=    Get Ms Excel Column Values Into List By Column Name    ${filePath}    ${sheetName}    ${districtadminSchoolName}
+    Remove Values From List    ${list}    ${EMPTY}
+    Remove Values From List    ${list}    ${SPACE}
+    ${lengthOfDistrictAdminRegCodes}=    Get Length Of List    ${list}
+    ${statusOfRegistration}=    Run Keyword If    '${DistrictCode}'!='${EMPTY}'    Enter DA or SA Registration Code    ${DistrictCode}
+    ...    ELSE    EnterValidRegCode    ${lengthOfDistrictAdminRegCodes}=
+    Run Keyword If    ${statusOfRegistration}    Fail    Admin registration are code already used.
+    ${IAgreeButton}    Set Variable If    ${isDemoQURL}    //div[@id='genericTermsDlg']${common.SignUp.IAgreeBttn}    //div[@id='termsDlg']${common.SignUp.IAgreeBttn}
+    Wait And Click Element    ${IAgreeButton}
+    Comment    Click on "Create Account" at SchoolAdmin signUp.
+    Wait And Click Element    ${button.adminSignUp.createAccount}
+    Wait Until Element is Invisible    ${common.homepage.Loading}
+    ${statusOfRegistration}    Validate User Login Details    ${districtAdminFName}    ${districtAdminLName}
+    ${kwStatus}    Set Variable    ${statusOfRegistration}
+
+Enter DA or SA Registration Code
+    [Arguments]    ${Code}
+    [Documentation]    Keyword is used to Enter the Admin Registration codes.
+    Clear Text    ${text.adminSignUp.adminRegCode}
+    comment    Enter the admin registration code.
+    Enter Text In Text Field    ${text.adminSignUp.adminRegCode}    ${Code}
+    Sleep    2s
+    ${regodeStatus}    Run Keyword And Return Status    Wait Until Element Is Visible    ${text.adminSignUp.adminRegCodeRedBorder}    5s
+    Run Keyword If    ${regodeStatus}==False    Wait And Click Element    ${button.signUp.next}
+    ...    ELSE    Set Test Message    "Next" Button was not enable for valid Registration code.
+    [Return]    ${regodeStatus}
+
+Get Alert Tool Tips
+    [Arguments]    ${Locator}    ${FieldValue}=${EMPTY}
+    [Documentation]    This keyword is used for getting alert tool tips.
+    Run Keyword If    '${FieldValue}'=='${EMPTY}'    Click On Element    //p[text()='Create a password.']
+    Run Keyword If    '${FieldValue}'=='${EMPTY}'    Sleep    2s
+    Run Keyword If    '${FieldValue}'=='${EMPTY}'    Click On Element    id=teacherSignUpDlg-password
+    Run Keyword If    '${FieldValue}'!='${EMPTY}'    Input Text    id=teacherSignUpDlg-password    ${FieldValue}
+    Wait Until Element Is Visible    ${Locator}    10s
+    ${AlertMsg}    Get Text    ${Locator}
+    [Return]    ${AlertMsg}
+
+Validate The Step Precondition
+    [Arguments]    ${elementlocator}    ${expctedtext}    ${errorMessage}    ${TimeOut}=10s
+    [Documentation]    Keyword is used to check every navigation steps in new user signup.
+    ${kwStatus}    Set Variable    False
+    Comment    MYS-3211:Replaced with wait for element visible keyword to wait accurately til the given time elapse.
+    ${status}    Wait For Element Visible    ${elementlocator}    ${TimeOut}    ${errorMessage}
+    Return From Keyword If    ${status}==False    ${status}
+    : FOR    ${iCounter}    IN RANGE    1    5
+    \    ${actText}    Get Text    ${elementlocator}
+    \    ${labelStatus}    String Should Contain    ${actText}    ${expctedtext}
+    \    Exit For Loop If    ${labelStatus}
+    \    Sleep    2
+    ${kwStatus}    Set Variable    ${labelStatus}
+
+Select Zip code
+    [Arguments]    ${schoolZipCode}    ${role}    ${school}
+    [Documentation]    This Keyword is used to Enter the School's Zip code in Teacher's signUp.
+    Comment    Keyword is used to check every navigation steps in new user signup.
+    ${schoolZipCodeStatus}=    Wait For Element Visible    //div[contains(@class,'dialogTitle') and contains(text(),'Registration')]    5s    ${role} School Zip window is not displayed.
+    Comment    Keyword is used to enter school zip code.
+    Comment    Run Keyword If    ${schoolZipCodeStatus}==True    TypeCharactertoTextBox    //input[@id='${role}SignUpDlg-zip']    ${schoolZipCode}
+    ...    ELSE    Fail    School's Zip Code filed is not displayed in ${role} SignUp window.
+    Comment    MYS-3211:Replaced with wait for element visible keyword.
+    ${buttonStatus}    Wait For Element Visible    //td[@class='dijitReset dijitMenuItemLabel' and text()='${school}']    5s
+    Comment    Run Keyword If    ${schoolZipCodeStatus}==True and ${buttonStatus}==False    Press Back Space Key    //input[@id='${role}SignUpDlg-zip']
+    Comment    Run Keyword If    ${schoolZipCodeStatus}==True and ${buttonStatus}==False    Press Back Space Key    //input[@id='${role}SignUpDlg-zip']
+    Comment    Enter school zip code.
+    Run Keyword If    ${schoolZipCodeStatus}==True and ${buttonStatus}==False    TypeCharactertoTextBox    //input[@id='${role}SignUpDlg-zip']    ${schoolZipCode}
+    Comment    Click On Element    //div[contains(text(),'Registration')]
+    ${spinnerVisibility}    Run Keyword And Return Status    Wait Until Element Is Visible    ${common.spinner.loadingIcon}
+    Run Keyword If    ${spinnerVisibility}    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    Wait Until Keyword Succeeds    1m    3s    Click Element    //input[@id='${role}SignUpDlg-zip']
+    Run Keyword And Ignore Error    Wait Until Keyword Succeeds    1m    3s    Click Element    //div[@class='dialogTitle' and contains(text(),'Registration')]
+    Wait Until Keyword Succeeds    1m    3s    Click Element    //table[@id='${role}SignUpDlg-schoolList']//span
+    Wait Until Keyword Succeeds    1m    3s    Click Element    //td[@class='dijitReset dijitMenuItemLabel' and text()='${school}']
+    ${spinnerVisibility}    Run Keyword And Return Status    Wait Until Element Is Visible    ${common.spinner.loadingIcon}
+    Run Keyword If    ${spinnerVisibility}    Wait Until Element is Invisible    ${common.spinner.loadingIcon}
+    [Teardown]
+
+Upload students
+    [Arguments]    ${filePath}
+    Comment    Validate the guided Help tool tip in home page
+    ${fileExistenceStatus}    Run Keyword And Return Status    File Should Exist    ${filePath}
+    Run Keyword If    '${fileExistenceStatus}'!='True'    Return From Keyword    ${fileExistenceStatus}
+    Navigate To Import Users Page
+    Comment    Wait Until Element Is Visible    ${button.importTemplate.IAmReadyToImport}    10s
+    Comment    MYS-2352: Updated the keyword to upload the users on chrome even if the window is not in focus.
+    Run Keyword If    "${BROWSER}"=="ie"    Wait And Click Element    ${button.importTemplate.IAmReadyToImport}
+    ...    ELSE    Wait Until Page Contains Element    importUsersFileInput    ${TimeOut}
+    Run Keyword If    "${BROWSER}"=="ie"    sleep    2s
+    ...    ELSE    Input File Name    importUsersFileInput    ${filePath}
+    Run Keyword If    "${BROWSER}"=="ie"    send    !N
+    Run Keyword If    "${BROWSER}"=="ie"    sleep    2s
+    Run Keyword If    "${BROWSER}"=="ie"    send    !N
+    Run Keyword If    "${BROWSER}"=="ie"    send    ${filePath}
+    Run Keyword If    "${BROWSER}"=="ie"    send    {ENTER}
+    Comment    Wait Until Page Contains Element    importUsersFileInput    ${TimeOut}
+    Comment    Input File Name    importUsersFileInput    ${filePath}
+    Comment    Added sleep for handle the Import Users Application \ issue in new build
+    Sleep    10s
+    Comment    MYS-3394 : Replaced with wait for element visible keyword.
+    Comment    MYS-3394 : Updated script to set an appropriate message to the variable to avoid 'None' value type exceptions.
+    ${impSucStatus}    Wait For Element Visible    ${label.importTemplate.importSuccessMsg}    ${Delay}
+    Run Keyword If    ${impSucStatus}    Return From Keyword    ${impSucStatus}
+    ${impErrStatus}    Verify Element Visible    ${label.importTemplate.importFailure}
+    ${impErrMsg}    Run Keyword If    ${impErrStatus}    Get Text    ${label.importTemplate.importFailure}
+    ...    ELSE    Set Variable    No error message found while importing users.
+    Set Global Variable    ${impUsersMsg}    ${impErrMsg}
+    Run Keyword If    ${impErrStatus}    Return From Keyword    False
+    ${impExpStatus}    Verify Element Visible    ${label.importTemplate.importException}
+    ${impExpMsg}    Run Keyword If    ${impExpStatus}    Get Text    ${label.importTemplate.importException}
+    ...    ELSE    Set Variable    No Exception messages found while importing users.
+    Set Global Variable    ${impUsersMsg}    ${impErrMsg}
+    Run Keyword If    ${impExpStatus}    Return From Keyword    False

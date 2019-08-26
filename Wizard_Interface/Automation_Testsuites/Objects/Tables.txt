@@ -1,0 +1,51 @@
+*** Variables ***
+${table.classesAndGroups}    //div[contains(@id,'groupGrid')]
+${table.users}    //div[@id='userGrid']
+${table.fromTable}    //div[contains(@class,'fromInlineDijit')]//div[@class='header']/following-sibling::div
+${table.toTable}    //div[contains(@class,'toInlineDigit')]//div[@class='header']/following-sibling::div
+${table.studentsFrame.rows}    //div[contains(@id,'groupUsersList-row')]
+${table.tiltlesFrame.rows}    //div[contains(@id,'groupSyllabusList-row')]
+${table.splitter}    //div[contains(@id,'GroupPropsBC_splitter')]
+${table.user.splitter}    //div[contains(@id,'UserPropsBC_splitter')]
+${table.usersGroupList}    //div[contains(@id,'userGroupsList')]
+${table.studentAssignments.questionCount}    //td[@class='dgrid-cell dgrid-cell-padding dgrid-column-qn field-qn']
+${table.studentAssignments.answeredQuestionCount}    //td[@class='dgrid-cell dgrid-cell-padding dgrid-column-qn field-qn']/following-sibling::td/img[contains(@src,'bullet.png')]
+${table.studentAssignments.assignments}    studentAssmtGrid
+${table.common.'groupUsersList}    //div[@id='groupUsersList']//div[@class='dgrid-scroller']/div/div
+${table.StudentHome.AssignmentsRow}    //div[contains(@id,'studentAssmtGrid-row') and @role='row']
+${table.schoolAdmin.userGradeMenuItem}    //table[@id='userGrade_menu']//tr[contains(@id,'MenuItem')]
+${table.Management.userGradeArrowButton}    //table[contains(@id,'userGrade')]//td/input[contains(@class,'ArrowButtonInner')]
+${table.schoolAdmin.printUsersTable}    //table[@class='printUsersTable']
+${table.report.row}    //div[contains(@class,'gridxRow') and @role='row']
+${table.report.expandCellContent}    //table[@class='gridxRowTable']/tbody/tr[1]/td[1]//div[@class='gridxTreeExpandoContent gridxCellContent']
+${table.grid.firstRow}    //div[@class='dgrid-content ui-widget-content']/div[@role='row']
+${table.assignment.row}    //div[contains(@id,'assmt_GroupList-row')]
+${table.printUsers.usersTable}    //table[@class='printUsersTable']
+${table.classOrGroupDetails.groupLeader}    //table[@id='groupLeader']//span
+${table.report.expandButton}    //div[@class='dgrid-expando-icon ui-icon ui-icon-triangle-1-e']/parent::td
+${table.assignment.grid}    //div[@id='assmtTreeGrid']
+${table.manageAssignments.grid}    //div[@id='assmtTreeGridInstr']
+${table.gridCell.styleBold}    //td[contains(@class,'dgrid-cell dgrid-cell-padding dgrid-column')]//span[contains(@style,'font-weight:bold;')]
+${table.gradeLevel.arrowButton}    //table[contains(@id,'newUserGrade')]//td/input[contains(@class,'ArrowButtonInner')]
+${table.grade.menuItem}    //table[@id='newUserGrade_menu']//tr[contains(@id,'MenuItem')]
+${table.assignmentGridRow.14}    //div[@id="assmtGrid-row-14"]
+${table.reports.schoolNameRows}    //table[@id='reportSchoolSelectW']//tr
+${table.gradeAssignments.rows}    //div[@class='dgrid-scroller']//div[@role='row']
+${table.users.row}    //div[contains(@id,"userGrid-row")]
+${table.userDetails.grade}    //table[@id="userGrade_menu"]
+${table.gradeAssignments.Show-Hide-graded.rows}    //div[contains(@id,'gradeAssmtsListGrid-row')]
+${table.gradelevel.red}    //table[@aria-invalid='true']
+${table.gradelevel.gradelevel}    //table[contains(@class,'dijitValidationTextBoxError dijitError')]
+${table.teacherSignup.Zipcodes.values}    //div[contains(@id,'teacherSignUpDlg-zip_popup')]//span[text()='7']
+${table.management.chooseTitleArrowButton}    //table[@id='addTeCode-titles']//td[@class='dijitReset dijitRight dijitButtonNode dijitArrowButton dijitDownArrowButton dijitArrowButtonContainer']//input
+${table.groupUsersList.firstStudent}    //div[@id='groupUsersList']//div[@id='groupUsersList-row-0']
+${table.users.selected}    //div[@id='userGrid']//div[contains(@class,'selected')]//td[contains(@class,'field-last_name')]
+${table.reports.ItemsCount}    //td[contains(@id,'reportTreeGrid')]/div[contains(@class,'reportTree') and contains(text(),'Item')]
+${table.gradeAssignments.dateCreated}    //th[contains(@class,'dgrid-column-date field-date dgrid-sortable') and text()='Date Created']
+${table.manageAssignments.allGroupList}    //div[@id='assmt_GroupList']
+${table.manageAssignments.allStudentsList}    //div[contains(@id,'assmt_UserList')]
+${table.manageAssignments.allTitlesList}    //div[contains(@id,'assmt_SyllabusList')]
+${table.showgradedassignments.gradeAssmtsListGrid}    //div[@id='gradeAssmtsListGrid']
+${table.studentAssignment.dijitPaletteTable}    //tbody[@dojoattachpoint='gridNode']
+${table.archiveStudents.gradeMenu}    //table[@id='gradeDropSelect_menu']//tr[contains(@class,'dijitMenuItem')]
+${table.fromTable.firstRow}    //div[contains(@class,'fromInlineDijit')]//div[@class='dgrid-scroller']/div/div/table[@class='dgrid-row-table']

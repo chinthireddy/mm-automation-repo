@@ -1,0 +1,197 @@
+*** Test Cases ***
+Validate Manage assignments
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'Manage Assignments' button in Assignments page    \    Manage Assignments page should be displayed
+    Select the any class,student and title    \    List of Assignments for selected student should be dispalyed in Assignments Window
+
+Validate show completed Assignments
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'Manage Assignments' button in Assignments page    \    Manage Assignments page should be displayed
+    Select a student from class    class21    List of Assignments for selected student should be dispalyed in Assignments Window
+    Click on 'Show completed Assignments' button    \    Completed Assignments Should be displayed with 100% status
+
+Validate "View by Students" functionality in Manage Assignments
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'Manage Assignments' button in Assignments page    \    Manage Assignments page should be displayed
+    Select the student in any class    class21    List of Assignments for selected student should be dispalyed in Assignments Window
+    click on 'View by Students' button    \    List of students should be displayed for selected class
+
+Validate collect Assignments
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'Manage Assignments' button in Assignments page    \    Manage Assignments page should be displayed
+    Select the student in any class    class21    List of Assignments for selected student should be dispalyed in Assignments Window
+    Click on 'Collect' button for Selected Assignment    \    "Are you sure you want to collect this assignment?" Alert message should be displayed
+    Click on 'OK' and 'Yes' button    \    Status of the selected Assignment should be displayed as "collected".
+
+Validate Remove functionality in Assignments
+    Steps    Test Data    Expected Result    Actual Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button    \    Assignments page should be displayed
+    Click on 'Manage Assignments' button    \    Manage Assignments page should be displayed
+    Select the student in any class    class21    List of Assignments for selected student should be dispalyed in Assignments Window
+    Click on 'Remove' button    \    "Are you sure you want to remove this assignment?" Alert message should be displayed.
+    Click on 'OK' button    \    Selected Assignment should be deleted from list of Assignments
+
+Validate "View by Assignments" functionality in Manage Assignments
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'Manage Assignments' button in Assignments page    \    Manage Assignments page should be displayed
+    Select the student in any class    class21    List of Assignments for selected student should be dispalyed in Assignments Window
+    click on 'View by Students' button    \    List of students should be displayed for selected class
+    Click on 'View by Assignments' button    \    List of Assignments should be displayed for selected student
+
+Verify sort functionality for all columnsin Manage Assignments page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'Manage Assignments' button in Assignments page    \    Manage Assignments page should be displayed
+    Select any class    Class:Class2502    List of Assignments for selected class should be dispalyed in Assignments Window
+    Click on name column    \    Records should be sorted in ascending and descending order
+    Click on progresss column    \    Records should be sorted in ascending and descending order
+    Click on unfinished work column    \    Records should be sorted in ascending and descending order
+    Click on date assigned column    \    Records should be sorted in ascending and descending order
+    Click on type column    \    Records should be sorted in ascending and descending order
+
+Verify Expand and collapse(+,-) for class and assignment levels
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'Manage Assignments' button in Assignments page    \    Manage Assignments page should be displayed
+    Select any class    Class:Class2502    List of Assignments for selected class should be dispalyed in Assignments Window
+    Click on + button in Assignments window.    \    Student assignments details should be displayed
+    Click on - button in Assignments window.    \    Student assignments details should be closed
+
+Validate 'Hide completed Assignments' in Manage Assignments window.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'Manage Assignments' button in Assignments page    \    Manage Assignments page should be displayed
+    Select the student in any class    class21    List of Assignments for selected student should be dispalyed in Assignments Window
+    Click on 'Hide completed assignments' button    \    List of completed assignments should be hided from the list
+
+Validate Collect Functionality for 'No' button
+    Steps    Test Data    Expected Result
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'Manage Assignments' button in Assignments page    \    Manage Assignments page should be displayed
+    Select the student in any class    class21    List of Assignments for selected student should be dispalyed in Assignments Window
+    Click on 'Collect' button for Selected Assignment    \    "Are you sure you want to collect this assignment?" Alert message should be displayed
+    Click on 'OK' button    \    'Confirm' alert should be displayed
+    Click on 'no' button    \    Status of the selected Assignment should be displayed as "collected".
+
+Validate collect Assignments functionality for 'Yes' button
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'Manage Assignments' button in Assignments page    \    Manage Assignments page should be displayed
+    Select the student in any class    class21    List of Assignments for selected student should be dispalyed in Assignments Window
+    Click on 'Collect' button for Selected Assignment    \    "Are you sure you want to collect this assignment?" Alert message should be displayed
+    Click on 'OK' button    \    'Confirm' alert should be displayed
+    Click on 'yes' button    \    Status of the selected Assignment should be displayed as "collected".
+
+Verify assignment details for student
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'Manage Assignments' button in Assignments page    \    Manage Assignments page should be displayed
+    Select any class    Class:Class2502    List of Assignments for selected class should be dispalyed in Assignments Window
+    Click on + button in Assignments window.    \    Student assignments details should be displayed
+    Click on student and click on 'separator'    \    Assignments details should be displayed.
+
+Verify removed assignments in Grade page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button    \    Assignments page should be displayed
+    Click on 'Manage Assignments' button    \    Manage Assignments page should be displayed
+    Select the student in any class    class21    List of Assignments for selected student should be dispalyed in Assignments Window
+    Click on 'Remove' button    \    "Are you sure you want to remove this assignment?" Alert message should be displayed.
+    Click on 'OK' button    \    Selected Assignment should be deleted from list of Assignments
+    Click on 'Grade Assignments' icon    \    Navigate to My Grading page and 'Review' should be displayed for remove assignment.
+
+Validate assignments for All class/group with single title
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'Manage Assignments' button in Assignments page    \    Manage Assignments page should be displayed
+    Select the All classes and single student and title    \    List of Assignments for selected student should be dispalyed in Assignments Window
+
+Validate assignments for single class/group with All title
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'Manage Assignments' button in Assignments page    \    Manage Assignments page should be displayed
+    Select the any class,student and All titles    \    List of Assignments for selected student should be dispalyed in Assignments Window
+
+Validate assignments for All class/group with all title
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    click on Sign in button    \    Teacher home page should be displayed
+    Click on 'Assignments' button in Home Page    \    Assignments page should be displayed
+    Click on 'Manage Assignments' button in Assignments page    \    Manage Assignments page should be displayed
+    Select the All class,student and title    \    List of Assignments for selected student should be dispalyed in Assignments Window
+
+Validate Pause assignments in Manage Assignments page in Teacher role.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Teacher Login Credentials    User Id: rhwpte+ts85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    Teacher Home Page should be displayed
+    Click on 'Assignments' button    \    "Assignments" page should be displayed
+    Click on 'New Assignments' button    \    "New Assignments" page should be displayed
+    Select Class and Student    Class86, Student86    Subject should be enabled
+    Select Subject    CCS Motivation Reading    Level should be enabled
+    Select Level    Level 02    Assignment grid should be enabled
+    Select the Assignment    Comprehension    Assignments should be selected
+    Click on 'Assign Now' button    \    The Selected Assignments should be assigned
+    Click on 'Sign Out' button    \    The Teacher should be Sign out and should be navigate to the LogIn Page
+    Enter the Student UserId and Password    User Id: student86 , password:test1234
+    Click on 'Sign in' button    \    Student Home page should be Displayed
+    Click 'Start' button on the Assignment    Motivation Reading Level 4    The Assignment should be opened
+    Click on 'Pause' Button    \    Page should get navigated to the assignment in progress page.
+    Login with Teacher Credentials and Navigate to Manage Assignments page    User Id: rhwpte+ts85@gmail.com \ Password: test1234    List of Assignments for selected student should be dispalyed in appropriate progress bar
+
+Validate submit assignments in Manage Assignments page in Teacher role.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Teacher Login Credentials    User Id: rhwpte+ts85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    Teacher Home Page should be displayed
+    Click on 'Assignments' button    \    "Assignments" page should be displayed
+    Click on 'New Assignments' button    \    "New Assignments" page should be displayed
+    Select Class and Student    Class86, Student86    Subject should be enabled
+    Select Subject    CCS Motivation Reading    Level should be enabled
+    Select Level    Level 02    Assignment grid should be enabled
+    Select the Assignment    Comprehension    Assignments should be selected
+    Click on 'Assign Now' button    \    The Selected Assignments should be assigned
+    Click on 'Sign Out' button    \    The Teacher should be Sign out and should be navigate to the LogIn Page
+    Enter the Student UserId and Password    User Id: student86 , password:test1234
+    Click on 'Sign in' button    \    Student Home page should be Displayed
+    Click 'Start' button on the Assignment    Motivation Reading Level 4    The Assignment should be opened
+    Complete the assignment and click 'Submit' button    \    "Assignment Report" pop-up should be displayed
+    Click on 'x' button    \    The Assignment should be submitted and it should disappear from the Student Home page
+    Login with Teacher Credentials and Navigate to Manage Assignments page    User Id: rhwpte+ts85@gmail.com \ Password: test1234    List of Assignments for selected student should be dispalyed in Assignments Window

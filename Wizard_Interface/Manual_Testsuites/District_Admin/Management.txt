@@ -1,0 +1,1016 @@
+*** Test Cases ***
+Add new Disctict Admin through Management
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed    Actual result
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Click on Add button in All Users Tab    \    New User pop up should be displayed with its screen elements
+    Select Role as District Admin    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name    First Name: DAdminFN , Middle Name: AdmintMN , Last Name: SAdminLN
+    Enter UserId and Password    User Id: rhwpte+dadmin5421@gmail.com \ Password: test1234
+    Click on Edit button in the Class Tab    \    Edit Student's Class popup should be displayed
+    Check the checkboxs to select the classes in Available classes Tab    \    Selected classes should be displayed in New User's Classes Tab
+    Click on 'Save' button in Edit Student's Class popup    \    Classes should be added to the student and display in Classes tab
+    Click on 'Save' button    \    District Admin should be added in the All users grid
+
+MTC114-Verify whether multiple roles are created using Add functionality
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Click on 'Add' button in All Users Tab    \    New User pop up should be displayed with its screen elements
+    Select Role as District Admin ,School Admin and Teacher    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name    First Name: district , Middle Name: admin , Last Name: dist87
+    Enter UserId and Password    User Id: rhwpte+dist87@gmail.com \ Password: test1234
+    Click on 'Edit' button in the Class Tab    \    Edit Student's Class popup should be displayed
+    Enter First, Middle & Last Name    First Name: DAdminFN , Middle Name: AdmintMN , Last Name: SAdminLN
+    Enter UserId and Password    User Id: rhwpte+dadmin@gmail.com \ Password: test1234
+    Click on Edit button in the Class Tab    \    Edit Student's Class popup should be displayed
+    Check the checkboxs to select the classes in Available classes Tab    \    Selected classes should be displayed in New User's Classes Tab
+    Click on 'Save' button in Edit Student's Class popup    \    Classes should be added to the student and display in Classes Tab
+    Click on 'Save' button    \    District Admin should be added in the All users grid
+    Click on Save button in Edit Student's Class popup    \    Classes should be added to the student and display in Classes Tab
+    Click on Save button    \    "District Admins can only have the District Admin role." alert message should be displayed
+
+MTC120-Verify whether in 10 seconds a class is added when clicked on "Ok" button in Add Class
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Click on 'Add' button in classes grid    \    New Classe window should be displayed .
+    Enter / Select Mandatory fields    Name: Class91 , Teacher: ts, teacher85
+    Click on 'OK' button    \    Class should be added to the selected teacher and Class Code Information should be displayed with in less than 10 seconds after ok button
+    Enter / Select Mandatory fields    Name: classs25051 , Teacher: ta ta
+    Click on OK button    \    Class should be added to the selected teacher and Class Code Information should be displayed with in less than 10 seconds after ok button
+
+MTC131,MTC133-Verify whether students and Titles are added to group
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Click on " Show Groups" button    \    Groups records should be displayed.
+    Select the particular record in the groups Tab to which students and title is going to be added    \    Details Tab should be displayed
+    Click on 'Edit' button    \    Details Tab should be highlighted with different colour and Save , Cancel button should get enabled
+    Click on Edit button in the student Tab to Add student    \    'Edit Students in the group' popup should be displayed.
+    Select the students in 'Avaliable students' grid    \    Selected students should be displayed in 'New class members ' grid
+    Click on 'Save' button    \    Selected students should be displayed in 'Student' Tab.
+    Click on Edit button in the Title Tab    \    Edit Syllabus of the class popup should be displayed
+    Select the Title in the Available Title grid    \    Selected title should be displayed in New class Syllabus
+    Click on 'Save' button    \    Selected students should be displayed in 'Titles' Tab.
+    Click on 'Save' button in the details tab    \    Students and Title should be added to the class
+    Click on Save button    \    Selected students should be displayed in 'Students' Tab.
+    Click on Edit button in the Titles Tab    \    Edit Syllabus of the group popup should be displayed
+    Select the Title in the Subscription Titles grid    \    Selected titles should be displayed in '(Groupname(ex: group12345) Syllabus' grid
+    Click on Save button    \    "Please Confirm" alert message should be displayed.
+    Click on 'Proceed' button    \    Selected titles should be added to 'Titles' Tab in Group details window.
+    Click on Save button in the details tab    \    Students and Title should be added to the group
+
+MTC109-Create Student user from Management
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Click on 'Add' button in All Users grid    \    New User pop up should be displayed with its screen elements
+    Select Role as Student    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name and Select Grade from autocomplete    First Name: student , Middle Name: std , Last Name: std90
+    Enter UserId and Password    User Id: student90 , password:test1234
+    Click on 'Add' button in the Class Tab    \    Edit Student's Class popup should be displayed
+    Check the checkboxs to select the classes in Available classes Tab    \    Selected classes should be displayed in New User's Classes Tab
+    Enter First, Middle & Last Name and Select Grade from autocomplete    First Name: StudentFN , Middle Name: StudentMN , Last Name: StudentLN
+    Enter UserId and Password    User Id: Student21 , password:Student021
+    Click on 'Edit' button in the Class Tab    \    'Edit Student's Classes and groups' popup should be displayed
+    Check the checkboxs to select the classes in 'Available classes and groups'Tab    \    Selected classes should be displayed in 'New User's Classes and groups ' Tab
+    Click on Save button in Edit Student's Class popup    \    Classes should be added to the student and display in Classes Tab
+    Click on 'Save' button in Edit Student's Class popup    \    Classes should be added to the student and display in Classes Tab
+    Click on 'Save' button    \    Student should be added in the All users grid
+
+MTC111-Create School Admin from Management
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Click on 'Add' button in All Users grid    \    New User pop up should be displayed with its screen elements
+    Select Role as School Admin    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name    First Name: school , Middle Name: admin , Last Name: sch87
+    Enter UserId and Password    User Id: rhwpte+sch87@gmail.com \ Password: test1234
+    Click on 'Add' button in the Class Tab    \    Edit Student's Class popup should be displayed
+    Check the checkboxs to select the classes in Available classes Tab    \    Selected classes should be displayed in New User's Classes Tab
+    Enter First, Middle & Last Name    First Name: StudentFN , Middle Name: StudentMN , Last Name: StudentLN
+    Enter UserId and Password    User Id: rhwpte+Mentor28@gmail.com \ Password: Mentor08
+    Click on 'Edit' button in the Class Tab    \    'Edit Student's Classes and groups' popup should be displayed
+    Check the checkboxs to select the classes in 'Available classes and groups'Tab    \    Selected classes should be displayed in 'New User's Classes and groups ' Tab
+    Click on Save button in Edit Student's Class popup    \    Classes should be added to the student and display in Classes Tab
+    Click on 'Save' button in Edit Student's Class popup    \    Classes should be added to the student and display in Classes Tab
+    Click on 'Save' button    \    School Admin should be added in the All users grid
+
+MTC113-Validate to create District Admin from Management without giving password
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Click on Add button in All Users Tab    \    New User pop up should be displayed with its screen elements
+    Select Role as District Admin    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name    First Name: district , Middle Name: admin , Last Name: dist87
+    Enter UserId and Password    User Id: rhwpte+dist87@gmail.com \ Password: test1234
+    Click on 'Save' button    \    District Admin should be added in the All users grid
+    Enter First, Middle & Last Name    First Name: DAdminFN , Middle Name: AdmintMN , Last Name: SAdminLN
+    Enter UserId and Password    User Id: rhwpte+dadmin2504@gmail.com
+    Click on Save button    \    "Password is not valid " alert message should be displayed.
+
+MTC112-Validate Create Group functionality.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    New Group pop up should be displayed .
+    Click on 'Show Groups' button in Management page    \    Groups records should be displayed.
+    Click on 'Add' button in groups table    \    New group window should be displayed
+    Enter Select Mandatory fields    Name: Group ABC , Teacher: ta ta
+    Click on Edit button in the student Tab to Add student    \    'Edit Students in the class' popup should be displayed.
+    Select the students in 'Avaliable students' grid    \    Selected students should be displayed in 'New class members ' grid
+    Click on Save button    \    Selected students should be displayed in 'Student' Tab.
+    Click on Edit button in the Titles Tab    \    Edit Syllabus of the class popup should be displayed
+    Select the Title in the Subscription Titles grid    \    Selected title should be displayed in classname(ex: class875) Syllabus
+    Click on Save button    \    "Please Confirm" alert message should be displayed.
+    Click on 'Proceed' button    \    Selected titles should be added to 'Titles' Tab in Group details window.
+    Click on OK button    \    Group should be added to the selected teacher.
+
+MTC114-Valiadate Create Class fuctionality and add Students,Titles to the class
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Click on 'Add' button in Classes table    \    New Class pop up window should be displayed .
+    Enter Select Mandatory fields to create class    Name: class90, Teache: ts85, teacher
+    Enter Select Mandatory fields to create class    Name: class2136, Teacher: ta ta
+    Click on Edit button in the student Tab to Add student    \    'Edit Students in the class' popup should be displayed.
+    Select the students in 'Avaliable students' grid    \    Selected students should be displayed in 'New class members ' grid
+    Click on 'Save' button    \    Selected students should be displayed in 'Student' Tab.
+    Click on Edit button in the Title Tab    \    Edit Syllabus of the class popup should be displayed
+    Select the Title in the Available Title grid    \    Selected title should be displayed in New class Syllabus
+    Click on 'Save' button    \    Selected students should be displayed in 'Titles' Tab.
+    Click on 'OK' button    \    Class should be added to the selected teacher
+    Click on Edit button in the Titles Tab    \    Edit Syllabus of the class popup should be displayed
+    Select the Title in the Subscription Titles grid    \    Selected title should be displayed in classname(ex: class875) Syllabus
+    Click on Save button    \    "Please Confirm" alert message should be displayed.
+    Click on 'Proceed' button    \    Selected titles should be added to 'Titles' Tab in class details window.
+    Click on Save button in the details tab    \    Students and Title should be added to the class.
+
+MTC146-Verify whether District admin can edit the teacher role in a class and login with the modified teacher.
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Classes    \    Classes records should be displayed.
+    Select the particular record in the classes Tab to which Instructor is going to change    \    Details Tab should be displayed
+    Click on 'Edit' button    \    Details Tab should be highlighted with different colour and Save , Cancel button should get enabled
+    Select Teacher from dropdown    \    Another teacher should be selected.
+    Click on 'Edit' button in the Title Tab    \    Edit Syllabus of the class popup should be displayed
+    Select the Title in the Available Title grid    \    Selected title should be displayed in New class Syllabus
+    Click on 'Save' button    \    Selected students should be displayed in 'Titles' Tab.
+    Click on 'Save' button in the details tab    \    Existing Students ,Class should be added to the New Instructor or teacher.
+    Click on 'Sign Out' button    \    User should get logged off.
+    Enter Modified teacher User Id & Password and Click on Sign In button    Url=http://b33test1.mentoringmindsonline.com \ User Id: rhwpte+ts87@gmail.com Password: test1234    Home page should be displayed
+    Click on 'Management' button    \    Class and Students should be added to the respective \ Classes and My Studnets \ grid.
+    Select Teacher from dropdown    Test Data : ta ta    Another teacher should be selected.
+    Click on Edit button in the Titles Tab    \    Edit Syllabus of the class popup should be displayed
+    Select the Title in the Subscription Titles grid    \    Selected title should be displayed in classname(ex: class875) Syllabus
+    Click on Save button    \    "Please Confirm" alert message should be displayed.
+    Click on 'Proceed' button    \    Selected titles should be added to 'Titles' Tab in class details window.
+    Click on Save button in the details tab    \    Existing Students ,Class should be added to the New Instructor or teacher.
+    Click on Sign Out    \    User should get logged off.
+    Enter Modified teacher User Id & Password and Click on Sign In button    Url=http:b33test1.mentoringmindsonline.com/ User Id: rhwpte+tareports@gmail.com\ Password: test1234    Tecaher Home page should be displayed
+    Click on Management    \    Class and Students should be added to the respective \ Classes and My Studnets \ grid.
+
+MTC148-Verify whether District admin can edit the teacher role in a group and login with the modified teacher
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > show groups    \    Groups records should be displayed.
+    Select the particular record in the Groups Tab to which Instructor is going to change    \    Details Tab should be displayed
+    Click on 'Edit' button    \    Details Tab should be highlighted with different colour and Save , Cancel button should get enabled
+    Select Teacher from dropdown    \    Another teacher should be selected.
+    Click on 'Edit' button in the Title Tab    \    Edit Syllabus of the class popup should be displayed
+    Select the Title in the Available Title grid    \    Selected title should be displayed in New class Syllabus
+    Click on 'Save' button    \    Selected students should be displayed in 'Titles' Tab.
+    Click on 'Save' button in the details tab    \    Existing Students ,Class should be added to the New Instructor or teacher.
+    Click on 'Sign Out' button    \    User should get logged off.
+    Enter Modified teacher User Id & Password and Click on 'Sign In' button    Url=http://b33test1.mentoringmindsonline.com \ User Id: rhwpte+ts87@gmail.com Password: test1234    Home page should be displayed
+    Click on Management > Show groups    \    Groups and Students should be added to the respective Groups and My Studnets \ grid.
+    Click on Edit button in the Titles Tab    \    Edit Syllabus of the classes and groups popup should be displayed
+    Select the Title in the Subscription Titles grid    \    Selected title should be displayed in classname(ex: class875) Syllabus
+    Click on Save button    \    "Please Confirm" alert message should be displayed.
+    Click on 'Proceed' button    \    Selected titles should be added to 'Titles' Tab in class details window.
+    Click on Save button in the details tab    \    Existing Students ,Class should be added to the New Instructor or teacher.
+    Click on Sign Out    \    User should get logged off.
+    Enter Modified teacher User Id & Password and Click on Sign In button    Url=http:b33test1.mentoringmindsonline.com/ \ User Id: rhwpte+Mentor29@gmail.com Password: Mentor09    Home page should be displayed
+    Click on Management > Show groups    \    Groups and Students should be added to the respective Groups and My Studnets grid.
+
+MTC120-Verify whether in 10 seconds a user is added when clicked on "Save" in New User
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > All Users > Add    \    Expected result: New User pop up should be displayed with its screen elements
+    Select Role as Student    \    Expected result: Fields should be changed according to the role selected
+    Enter First, Middle & Last Name and Select Grade from autocomplete    Test Data: First Name: StudentFN , Middle Name: StudentMN , Last Name: StudentLN
+    Enter UserId and Password    Test Data : User Id: Student21 , password:Student021
+    Select the Status    \    Expected result:Active status should be selected
+    Click on Edit button in the Classes and groups Tab    \    Expected result:Edit Student's Classes and groups \ popup should be displayed
+    Check the checkboxs to select the classes in Available classes and Groups Tab    \    Expected result:Selected classes should be displayed in New User's Classes and groups Tab
+    Click on Save button in 'Edit Student's Classes and groups' Window    \    Expected result:Classes and groups should be added to the student and display in 'Classes and groups' Tab
+    Click on Save button    \    Expected result:Student should be added in the All users grid with in less than 10 seconds
+
+Create Teacher from Management_Denim
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > All User Tab > Add    \    New User pop up should be displayed with its screen elements
+    Select Role as Teacher    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name    First Name: teacher , Middle Name: ts , Last Name: ts87
+    Enter UserId and Password    User Id: rhwpte+ts87@gmail.com \ Password: test1234
+    Click on 'Add' button in the Class Tab    \    Edit Student's Class popup should be displayed
+    Check the checkboxs to select the classes in Available classes Tab    \    Selected classes should be displayed in New User's Classes Tab
+    Select Role as Teacher    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name    First Name: TaFN , Middle Name: tadfg , Last Name: tafgh
+    Enter UserId and Password    User Id: rhwpte+ta123aa@gmail.com , \ Password: test1234
+    Click on 'Edit' button in the 'Class and groups' Tab    \    "Edit Student's Classes and groups " popup should be displayed
+    Check the checkboxs to select the classes in "Available classes and groups" Tab    \    Selected classes should be displayed in "New User's Classes and groups" grid.
+    Click on 'Save' button in Edit Student's Class popup    \    Classes should be added to the student and display in Classes Tab
+    Click on 'Save' button    \    Teacher should be added in the All users grid
+
+Validate Archive Classes & Groups fuctionality
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Classes & Groups    \    "Classes and Groups Archive" pop page should be displayed with its screen elements
+    Click on particular Classes/Groups checkbox to archive in "Classes & Groups" grid    \    Selected Classes/Groups should be displayed in "Archived Classes & Groups"
+    Click on 'Save' button    \    "Archiving Classes and Groups Can Only Partially Be Undone" alert message should be displayed
+    Click on 'Proceed' button in the alert pop-up    \    "Collecting Assignments" loading pop-up should be displayed along with "The requested action has been completed." alert message
+    Click on 'Ok' button in the alert message pop-up    \    Archived Classes/Groups should not be displayed in the Classes/Groups grid list
+
+Validate Re-Archive Classes & Groups fuctionality
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Classes & Groups    \    "Classes and Groups Archive" pop page should be displayed with its screen elements
+    Click on particular Classes/Groups to uncheck archived classes/groups in "Classes & Groups" grid    \    Unchecked Classes/Groups should not be displayed in "Archived Classes & Groups"
+    Click on 'Save' button    \    "Archiving Classes and Groups Can Only Partially Be Undone" alert message should be displayed
+    Click on 'Proceed' button in the alert pop-up    \    "The requested action has been completed." alert message is displayed
+    Click on 'Ok' button in the alert message pop-up    \    Re-Archived Classes/Groups should be displayed in the Classes/Groups grid list
+
+Validate Search functionality in Archive Classes & Groups
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Classes & Groups    \    "Classes and Groups Archive" pop page should be displayed with its screen elements
+    Enter Valid class/group name in the 'Search' field    \    The Particular Class/Group should be displayed in "Classes & Groups" grid with respect to Name entered in the search field
+    Enter Invalid class/group name in the 'Search' field    \    "Classes & Group" grid should not display the Invalid Class/Group entered in the Search field
+
+Validate Check All functionality in Archive Classes & Groups
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Classes & Groups    \    "Classes and Groups Archive" pop page should be displayed with its screen elements
+    Click on column header Checkbox in the 'Classes & Groups' grid    \    All Classes & Groups in the "Classes & Groups" grid should be selected \ and the selected Classes & Groups should be displayed in the "Archived Classes & Groups" grid
+
+Validate Archive all functionality in Archive Classes & Groups
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Classes & Groups    \    "Classes and Groups Archive" pop page should be displayed with its screen elements
+    Click on column header Checkbox in the "Classes & Groups" grid    \    All Classes & Groups in the "Classes & Groups" grid should be selected \ and the selected Classes & Groups should be displayed in the "Archived Classes & Groups" grid
+    Click on 'Save' button    \    "Archiving Classes and Groups Can Only Partially Be Undone" alert message should be displayed
+    Click on 'Proceed' button in the alert pop-up    \    "Collecting Assignments" loading pop-up should be displayed along with "The requested action has been completed." alert message
+    Click on 'Ok' button in the alert message pop-up    \    Archived Classes/Groups should not be displayed in the Classes/Groups grid list
+
+Validate Re-Archive all functionality in Archive Classes & Groups
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Classes & Groups    \    "Classes and Groups Archive" pop page should be displayed with its screen elements
+    Click on column header to uncheck the Checkbox in the "Classes & Groups" grid    \    All Classes & Groups in the "Classes & Groups" grid should be deselected \ and the deselected Classes & Groups should not be displayed in the "Archived Classes & Groups" grid
+    Click on 'Save' button    \    "Archiving Classes and Groups Can Only Partially Be Undone" alert message should be displayed
+    Click on 'Proceed' button in the alert pop-up    \    "Collecting Assignments" loading pop-up should be displayed along with "The requested action has been completed." alert message
+    Click on 'Ok' button in the alert message pop-up    \    Re-Archived Classes/Groups should be displayed in the Classes/Groups grid list
+
+Validate Cancel functionality in "Archiving Classes and Groups Can Only Partially Be Undone" alert Pop-up
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Classes & Groups    \    "Classes and Groups Archive" pop page should be displayed with its screen elements
+    Click on particular Classes/Groups checkbox to archive in "Classes & Groups" grid    \    Selected Classes/Groups should be displayed in "Archived Classes & Groups"
+    Click on 'Save' button    \    "Archiving Classes and Groups Can Only Partially Be Undone" alert message should be displayed
+    Click on 'Cancel' button in the alert pop-up    \    Archive functionality should not be performed and the alert pop-up should be closed
+
+Validate Archive Teachers & Admins fuctionality
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Teachers & Admins    \    "Instructor, School Admin Archive" pop page should be displayed with its screen elements
+    Click on particular Teacher/Admin checkbox to archive in "All Teachers and Admins" grid    \    Selected Teacher/Admin should be displayed in "Archived Teachers and Admins"
+    Click on 'Save' button    \    "Archiving Teachers and Admins" alert message should be displayed
+    Click on 'Proceed' button in the alert pop-up    \    "The requested action has been completed." alert message should be displayed
+    Click on 'Ok' button in the alert message pop-up    \    Archived Teacher/Admin should not be displayed in the "All Users" grid list
+
+Validate Re-Archive Teachers & Admins fuctionality
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Teachers & Admins    \    "Instructor, School Admin Archive" pop page should be displayed with its screen elements
+    Click on particular archieved Teacher/Admin to uncheck in "All Teachers and Admins" grid    \    Unchecked Teacher/Admin should not be displayed in "Archived Teachers and Admins"
+    Click on 'Save' button    \    "Archiving Teachers and Admins" alert message should be displayed
+    Click on 'Proceed' button in the alert pop-up    \    "The requested action has been completed." alert message is displayed
+    Click on 'Ok' button in the alert message pop-up    \    Re-Archived Teacher/Admin should be displayed in the Classes/Groups grid list
+
+Validate Search functionality in Archive Teachers & Admins
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Teachers & Admins    \    "Instructor, School Admin Archive" pop page should be displayed with its screen elements
+    Enter Valid Teacher/Admin name in the 'Search' field    \    The Particular Teacher/Admin should be displayed in "All Teachers & Admins" grid with respect to Name entered in the search field
+    Enter Invalid Teacher/Admin name in the 'Search' field    \    "All Teachers & Admins" grid should not display the Invalid Teacher/Admin entered in the Search field
+
+Validate Check All functionality in Archive Teachers & Admins
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Teachers & Admins    \    "Instructor, School Admin Archive" pop page should be displayed with its screen elements
+    Click on column header Checkbox in the 'All Teachers & Admins' grid    \    All Teachers & Admins in the "All Teachers & Admins" grid should be selected \ and the selected Teachers & Admins should be displayed in the "Archived Teachers and Admins" grid
+
+Validate Archive all functionality in ArchiveTeachers & Admins
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Teachers & Admins    \    "Instructor, School Admin Archive" pop page should be displayed with its screen elements
+    Click on column header Checkbox in the "All Teachers & Admins " grid    \    All Teachers & Admins in the "All Teachers & Admins" grid should be selected \ and the selected Teachers & Admins should be displayed in the "Archived Teachers and Admins" grid
+    Click on 'Save' button    \    "Archiving Teachers and Admins" alert message should be displayed
+    Click on 'Proceed' button in the alert pop-up    \    "The requested action has been completed." alert message is displayed
+    Click on 'Ok' button in the alert message pop-up    \    Archived Teacher/Admin should not be displayed in the "All Users" grid list
+
+Validate Re-Archive all functionality in Archive Teachers & Admins
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Teachers & Admins    \    "Instructor, School Admin Archive" pop page should be displayed with its screen elements
+    Click on column header to uncheck the Checkbox in the "All Teachers & Admins" grid    \    All Teachers & Admins in the "All Teachers & Admins" grid should be deselected \ and the deselected Teachers & Admins should not be displayed in the "Archived Teachers and Admins" grid
+    Click on 'Save' button    \    "Archiving Teachers and Admins" alert message should be displayed
+    Click on 'Proceed' button in the alert pop-up    \    "The requested action has been completed." alert message is displayed
+    Click on 'Ok' button in the alert message pop-up    \    Re-Archived Teacher/Admin should be displayed in the "All Users" grid list
+
+Validate Cancel functionality in "Archiving Teachers and Admins" alert Pop-up
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Teachers & Admins    \    "Instructor, School Admin Archive" pop page should be displayed with its screen elements
+    Click on particular Teacher/Admin checkbox to archive in "All Teachers and Admins" grid    \    Selected Teacher/Admin should be displayed in "Archived Teachers and Admins"
+    Click on 'Save' button    \    "Archiving Teachers and Admins" alert message should be displayed
+    Click on 'Cancel' button in the alert pop-up    \    Archive functionality should not be performed and the alert pop-up should be closed
+
+Validate Archive Students fuctionality
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Students    \    "Student Archive" pop page should be displayed with its screen elements
+    Click on particular Student checkbox to archive in "Choose Students to Archive" grid    \    Selected Student should be displayed in "Students to be Archived"
+    Click on 'Save' button    \    "Archiving Students Can Only Partially Be Undone" alert message should be displayed
+    Click on 'Proceed' button in the alert pop-up    \    "The requested action has been completed." alert message should be displayed
+    Click on 'Ok' button in the alert message pop-up    \    Archived Student should not be displayed in the "All Users" grid list
+
+Validate Re-Archive Students fuctionality
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Students    \    "Student Archive" pop page should be displayed with its screen elements
+    Click on particular Student Archived checkbox to Re-Archive in "Choose Students to Archive" grid    \    Student should not be displayed in "Students to be Archived"
+    Click on 'Save' button    \    "Archiving Students Can Only Partially Be Undone" alert message should be displayed
+    Click on 'Proceed' button in the alert pop-up    \    "The requested action has been completed." alert message should be displayed
+    Click on 'Ok' button in the alert message pop-up    \    Re-Archived Student should be displayed in the "All Users" grid list
+
+Validate Search functionality in Archive Students
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Students    \    "Student Archive" pop page should be displayed with its screen elements
+    Enter Valid Student name in the 'Search' field    \    The Particular Student should be displayed in "Choose Students to Archive" grid with respect to Name entered in the search field
+    Enter Invalid Student name in the 'Search' field    \    "Choose Students to Archive" grid should not display the Invalid Teacher/Admin entered in the Search field
+
+Validate Check All functionality in Archive Students
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Students    \    "Student Archive" pop page should be displayed with its screen elements
+    Click on column header Checkbox in the 'Choose Students to Archive' grid    \    All Students in the "Choose Students to Archive" grid should be selected and the selected Students should be displayed in the "Students to be Archived" grid
+
+Validate Archive all functionality in Archive Students
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Students    \    "Student Archive" pop page should be displayed with its screen elements
+    Click on column header Checkbox in the "Choose Students to Archive" grid    \    All Students in the "Choose Students to Archive" grid should be selected and the selected Students should be displayed in the "Students to be Archived" grid
+    Click on 'Save' button    \    "Archiving Students Can Only Partially Be Undone" alert message should be displayed
+    Click on 'Proceed' button in the alert pop-up    \    "The requested action has been completed." alert message is displayed
+    Click on 'Ok' button in the alert message pop-up    \    Archived Students should not be displayed in the "All Users" grid list
+
+Validate Re-Archive all functionality in Archive Students
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Students    \    "Student Archive" pop page should be displayed with its screen elements
+    Click on column header to uncheck the Checkbox in the "Choose Students to Archive" grid    \    All Students in the "Choose Students to Archive" grid should be deselected and the deselected Students should not be displayed in the "Students to be Archived" grid
+    Click on 'Save' button    \    "Archiving Students Can Only Partially Be Undone" alert message should be displayed
+    Click on 'Proceed' button in the alert pop-up    \    "The requested action has been completed." alert message is displayed
+    Click on 'Ok' button in the alert message pop-up    \    Archived Students should be displayed in the "All Users" grid list
+
+Validate Cancel functionality in "Archiving Students" alert Pop-up
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Students    \    "Student Archive" pop page should be displayed with its screen elements
+    Click on particular Student checkbox to archive in "Choose Students to Archive" grid    \    Selected Student should be displayed in "Students to be Archived"
+    Click on 'Save' button    \    "Archiving Students Can Only Partially Be Undone" alert message should be displayed
+    Click on 'Cancel' button in the alert pop-up    \    Archive functionality should not be performed and the alert pop-up should be closed
+
+Validate Promote Students fuctionality
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on "Promote Students" button    \    "Promote and Reverting the Grade Level of Students" pop page should be displayed with its screen elements
+    Click on particular Student checkbox to Promote in "Choose Students to Promote or Revert" grid    \    Selected Students should be displayed in "Students to be Promoted or Reverted"
+    Click on 'Promote to Next Grade Level' button    \    "Students Have Been Promoted to \ the Next Grade Level" alert message should be displayed
+    Click on 'Ok' button in the alert message pop-up    \    Students should be promoted to the next grade level and should be displayed in the "All Users" grid list
+
+Validate Revert Students fuctionality
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on "Promote Students" button    \    "Promote and Reverting the Grade Level of Students" pop page should be displayed with its screen elements
+    Click on particular Student checkbox to Revert in "Choose Students to Promote or Revert" grid    \    Selected Students should be displayed in "Students to be Promoted or Reverted"
+    Click on 'Revert to Previous Grade Level' button    \    "Students Have Been Reverted to the Previous Grade Level" alert message should be displayed
+    Click on 'Ok' button in the alert message pop-up    \    Students should be reverted to the Previous grade level and should be displayed in the "All Users" grid list
+
+Validate Search functionality in Promote Students
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on "Promote Students" button    \    "Promote and Reverting the Grade Level of Students" pop page should be displayed with its screen elements
+    Enter Valid Student name in the 'Search' field    \    The Particular Student should be displayed in "Choose Students to Promote or Revert" grid with respect to Name entered in the search field
+    Enter Invalid Student name in the 'Search' field    \    "Choose Students to Promote or Revert" grid should not display the Invalid Teacher/Admin entered in the Search field
+
+Validate Check All functionality in Promote Students
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on "Promote Students" button    \    "Promote and Reverting the Grade Level of Students" pop page should be displayed with its screen elements
+    Click on column header Checkbox in the 'Choose Students to Archive' grid    \    All Students in the "Choose Students to Promote or Revert" grid should be selected and the selected Students should be displayed in the "Students to be Promoted or Reverted" grid
+
+Validate Promote all functionality in Promote Students
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on "Promote Students" button    \    "Promote and Reverting the Grade Level of Students" pop page should be displayed with its screen elements
+    Click on column header Checkbox in the "Choose Students to Promote or Revert" grid    \    All Students in the "Choose Students to Promote or Revert" grid should be selected and the selected Students should be displayed in the "Students to be Promoted or Reverted" grid
+    Click on 'Promote to Next Grade Level' button    \    "Students Have Been Promoted to \ the Next Grade Level" alert message should be displayed
+    Click on 'Ok' button in the alert message pop-up    \    All Students should be promoted to the next grade level and should be displayed in the "All Users" grid list
+
+Validate Revert all functionality in Revert Students
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on "Promote Students" button    \    "Promote and Reverting the Grade Level of Students" pop page should be displayed with its screen elements
+    Click on column header Checkbox in the "Choose Students to Promote or Revert" grid    \    All Students in the "Choose Students to Promote or Revert" grid should be selected and the selected Students should be displayed in the "Students to be Promoted or Reverted" grid
+    Click on 'Revert to Previous Grade Level' button    \    "Students Have Been Reverted to the Previous Grade Level" alert message should be displayed
+    Click on 'Ok' button in the alert message pop-up    \    All Students should be reverted to the Previous grade level and should be displayed in the "All Users" grid list
+    Click on Save button in Edit Student's Class popup    \    Classes should be added to the student and display in Classes Tab
+    Click on Save button    \    Teacher should be added in the All users grid
+
+Validate to promoting the student grade level
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management    \    Management Page should be displayed
+    Click on "Promote Students" button    \    "Promoting and reverting the grade level of students" window should be dsiplayed.
+    Select the students in the "Choose students to promote or revert" grid    \    Selected students should be displayed in "Students to be promoted or reverted" grid.
+    Clcik on "Promote to Next Grade level" button    \    "Students Have Been Promoted to the Next Grade Level" popup should be displayed.
+    Click on OK button    \    Selected students should be promoted to next grade level
+
+Validate to Reverting the student grade level
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management    \    Management Page should be displayed
+    Click on "Promote Students" button    \    "Promoting and reverting the grade level of students" window should be dsiplayed.
+    Select the students in the "Choose students to promote or revert" grid    \    Selected students should be displayed in "Students to be promoted or reverted" grid.
+    Clcik on "Revert to previous Grade level" button    \    "Students Have Been Reverted to the Previous Grade Level " popup should be displayed.
+    Click on OK button    \    Selected students should be reverted to previous grade level
+
+Verify the Sorting fuctionality in "promoting and reverting the grade level of students" window.
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Click on "Promote Students" button    \    "Promoting and reverting the grade level of students" window should be displayed.
+    Click on "Last Name" column    \    Students data should be displayed in alphabetical order.
+    Click on "First Name" column    \    Students data should be displayed in alphabetical order.
+    Click on "User ID" column    \    Students data should be displayed in alphabetical order.
+    Click on "Grade" column    \    grade level of the students should displayed in Ascending order or descending order.
+
+Verify the Search functionality in "promoting and reverting the grade level of students" wndow
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Management' Button    \    Management Page should be displayed
+    Click on "Promote Students" button    \    "Promoting and reverting the grade level of students" window should be displayed.
+    Enter Some text in the Search box.    Test Data: mr    Students list should be displayed with entered details in the search field.
+
+Verify whether the grade level is promoted or not in "All users" grid.
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Click on "Promote Students" button    \    "Promoting and reverting the grade level of students" window should be displayed.
+    Select the students in the "Choose students to promote or revert" grid    \    Selected students should be displayed in "Students to be promoted or reverted" grid.
+    Clcik on "Promote to Next Grade level" button    \    "Students Have Been Promoted to the Next Grade Level" popup should be displayed.
+    Click on OK button    \    Selected students should be promoted to next grade level
+    Verify the promoted student in "All Users" grid    \    The student grade level should be promoted to next Grade level.
+
+Verify whether the grade level is Reverted or not in "All users" grid.
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Click on "Promote Students" button    \    "Promoting and reverting the grade level of students" window should be dsiplayed.
+    Select the students in the "Choose students to promote or revert" grid    \    Selected students should be displayed in "Students to be promoted or reverted" grid.
+    Clcik on "Revert to previous Grade level" button    \    "Students Have Been Reverted to the Previous Grade Level " popup should be displayed.
+    Click on 'OK' button    \    Selected students should be reverted to previous grade level
+    Verify the reverted student in "All Users" grid    \    Student grade level should be reverted to previous Grade level.
+
+Validate the school is switched to other school in District admin home page
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on "Schools" button    \    Drop down should be displayed with all schools.
+    Select a different school(s)    Test Data: Aledo middle School    District Admin should be switched to another school.
+
+Validate the Show Groups and Show Classes functionalities
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management button    \    Management Page should be displayed
+    Click on 'Show Classes' button.    \    All Classes should be displayed
+    Click on 'Show Groups' button.    \    All groups should be displayed
+
+Validate the Print functionalty of Entire School users in District Admin
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management    \    Management Page should be displayed
+    Click on "Print/Export" button    \    'Print/Export Students" pop up should be displayed.
+    Click on 'Make a Selection' and Select "Entire School" from dropdown list    \    Entire School should be selected.
+    Click on continue button    \    "Select Users to be printed or Exported " window should be displayed.
+    Select All users and Click on print button    \    "Roster Report for Selected Users" should be displayed with all users in another tab.
+
+Validate the Export functionality of Entire School users in District Admin.
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management    \    Management Page should be displayed.
+    Click on "Print/Export" button    \    'Print/Export Students" pop up should be displayed.
+    Click on 'Make a Selection' and Select "Entire School" from dropdown list    \    Entire School should be selected.
+    Click on continue button    \    "Select Users to be printed or Exported " window should be displayed.
+    Select All users and Click on Export button    \    Template should be downloaded with all user details.
+
+Verify delete class from management in District Admin
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Select one Class from Classes table    \    Selected class should be highlighted
+    Click on "Delete" button    \    Alert message should be displayed as"Are you sure you want to delete the class 'class name"
+    Click on "Yes" button    \    Selected Class should be deleted from classes window and deleted class should be disappear in Teacher Management.
+
+Verify delete group from management \ in District Admin
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Select one group from groups table    \    Selected group should be highlighted
+    Click on "Delete" button    \    Alert message should be displayed as"Are you sure you want to delete the group 'group name"
+    Click on "Yes" button    \    Selected group should be deleted from groups window and deleted group should be disappear in Teacher Management.
+
+Verify delete student from management in District Admin
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Select one student from All users table    \    Selected student should be highlighted
+    Click on "Delete" button    \    Alert message should be displayed as"Are you sure you want to delete the user 'First name and Lat name of user"
+    Click on "Yes" button    \    Selected student should be deleted from All users table.
+
+Delete multiple role combination from management
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Select multiple role combination of user from All users table    \    Selected user should be highlighted
+    Click on "Delete" button    \    Alert message should be displayed as"Are you sure you want to delete the user 'First name and Lat name of user"
+    Click on "Yes" button    \    Selected user should be deleted from All users table.
+
+Verify delete teacher from management
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Select Teacher from All users table    \    Selected user should be highlighted
+    Click on "Delete" button    \    Alert message should be displayed as"Are you sure you want to delete the user 'First name and Lat name of user"
+    Click on "Yes" button    \    Selected user should be deleted from All users table.
+
+Verify delete school admin \ from management
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Select School Admin from All users table    \    Selected student should be highlighted
+    Click on "Delete" button    \    Alert message should be displayed as"Are you sure you want to delete the user 'First name and Lat name of user"
+    Click on "Yes" button    \    Selected user should be deleted from All users table.
+
+Verify delete district admin from management
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Select one student from All users table    \    Selected student should be highlighted
+    Click on "Delete" button    \    Alert message should be displayed as"Are you sure you want to delete the user 'First name and Lat name of user"
+    Click on "Yes" button    \    Selected user should be deleted from All users table.
+
+Verify print functionality for single class in management for District Admin
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management    \    Management Page should be displayed
+    Click on "Print/Export" button    \    'Print/Export Students" pop up should be displayed.
+    Select a class from 'Make a selection' dropdown    \    Class should be selected
+    Click on "Continue" button    \    "Select Users to be printed or Exported " window should be displayed.
+    Select users and Click on print button    \    "Roster Report for Selected Users" should be displayed with selected users in another tab.
+
+Verify print functionality for single group in management for District Admin
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management    \    Management Page should be displayed
+    Click on "Print/Export" button    \    'Print/Export Students" pop up should be displayed.
+    Select a group from 'Make a selection' dropdown    \    group should be selected
+    Click on "Continue" button    \    "Select Users to be printed or Exported " window should be displayed.
+    Select users and Click on print button    \    "Roster Report for Selected Users" should be displayed with all users in another tab.
+
+Verify export functionality for single class in management for District Admin
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management    \    Management Page should be displayed
+    Click on "Print/Export" button    \    'Print/Export Students" pop up should be displayed.
+    Select a class from 'Make a selection' dropdown    \    Class should be selected
+    Click on"Continue" button    \    "Select Users to be printed or Exported " window should be displayed.
+    Select users and Click on print button    \    Template should be downlaoded in CSV format
+
+Verify export functionality for single group in management for District Admin
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management    \    Management Page should be displayed
+    Click on "Print/Export" button    \    'Print/Export Students" pop up should be displayed.
+    Select a group from 'Make a selection' dropdown    \    group should be selected
+    Click on "Continue" button    \    "Select Users to be printed or Exported " window should be displayed.
+    Select users and Click on print button    \    Template should be downlaoded in CSV format
+
+Verify delete group from management in District Admin
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Select one group from groups table    \    Selected group should be highlighted
+    Click on "Delete" button    \    Alert message should be displayed as"Are you sure you want to delete the group 'group name"
+    Click on "Yes" button    \    Selected group should be deleted from groups window and deleted group should be disappear in Teacher Management.
+
+Validate 'Print one user per page' functionality for single class
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Print/Export' button in the "All Users" grid    \    "Print/Export Students" pop-up should be displayed
+    Select a Class from 'Make a Selection' drop down in the "Print/Export Students" pop-up    \    Selected Class should be displayed
+    Click on 'Continue' button in the "Print/Export Students" pop-up    \    "Select Users to be Printed or Exported" pop-up should be displayed
+    Choose All Users from "Select Users" List    \    All Selected Users should be displayed in the "Users Ready To Print/Export" grid
+    Select 'Print One User Per Page' Checkbox    \    'Print One User Per Page' Checkbox should be changed according to the selection
+    Click on 'Print' button in the "Select Users to be Printed or Exported" pop-up    \    "Roster Report for Selected Users" should be displayed one user per page.
+
+Validate 'print one user per page' functionality for entire school
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Print/Export' button in the "All Users" grid    \    "Print/Export Students" pop-up should be displayed
+    Select Entire School from 'Make a Selection' drop down in the "Print/Export Students" pop-up    \    Selected Entire School should be displayed
+    Click on 'Continue' button in the "Print/Export Students" pop-up    \    "Select Users to be Printed or Exported" pop-up should be displayed
+    Choose All Users from "Select Users" List    \    All Selected Users should be displayed in the "Users Ready To Print/Export" grid
+    Select 'Print One User Per Page' Checkbox    \    'Print One User Per Page' Checkbox should be changed according to the selection
+    Click on 'Print' button in the "Select Users to be Printed or Exported" pop-up    \    "Roster Report for Selected Users" should be displayed one user per page.
+
+Validate 'Print one user per page' functionality for single Group
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Print/Export' button in the "All Users" grid    \    "Print/Export Students" pop-up should be displayed
+    Select a Class from 'Make a Selection' drop down in the "Print/Export Students" pop-up    \    Selected Class should be displayed
+    Click on 'Continue' button in the "Print/Export Students" pop-up    \    "Select Users to be Printed or Exported" pop-up should be displayed
+    Choose All Users from "Select Users" List    \    All Selected Users should be displayed in the "Users Ready To Print/Export" grid
+    Select 'Print One User Per Page' Checkbox    \    'Print One User Per Page' Checkbox should be changed according to the selection
+    Click on 'Print' button in the "Select Users to be Printed or Exported" pop-up    \    "Roster Report for Selected Users" should be displayed one user per page.
+
+Verify search functionality works for All users grid
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Enter User Role/First Name/Last Name in the 'Search' field on the "All Users" grid    \    The Entered user in the 'Search' field should be displayed if the data exists under the "All Users" grid
+
+Verify students are displayed based on grade drop down in student archive window.
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management > Archive Students    \    "Student Archive" pop page window should be displayed with its screen elements
+    Select grade from 'grade' dropdown    3    List of students who is having given grade level should be displayed in 'Choose students to archive' window.
+
+Verify search functionality is working in print & export window.
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on Management    \    Management Page should be displayed
+    Click on "Print/Export" button    \    'Print/Export Students" pop up should be displayed.
+    Select a class from 'Make a selection' dropdown    \    Class should be selected
+    Click on "Continue" button    \    "Select Users to be printed or Exported " window should be displayed.
+    Enter Valid User First Name/Last Name/User ID in the "Search" field    \    The Users should be displayed in the "Select Users" grid if the entered User matches with the "Select Users" list
+    Enter Invalid User Details(First Name/Last Name/User ID) in the "Search" field    \    The "Select Users" grid should be displayed as Empty if the entered user doesn't matches with the "Select Users" list
+
+Verify 'Show all' and 'Show students only' buttons are working 'Edit student class' window
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Select one Class from Classes table    \    Selected class should be highlighted
+    Click on 'edit' button
+    Click on 'Edit' for students    \    'Edit Students in a class' window should be displayed
+    Click on 'Show All' and 'Show students only' buttons    \    List of All users should be displayed when click on 'Show all' and list of students only should displayed when click on 'Show students only' buttons
+
+Verify 'Show all' and 'Show students only' buttons are working 'Edit student Group' window
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on Management > Show Groups    \    List of groups should be displayed .
+    Select one group from groups table    \    Selected group should be highlighted
+    Click on 'edit' button
+    Click on 'Edit' for students    \    'Edit Students in a group' window should be displayed
+    Click on 'Show All' and 'Show students only' buttons    \    List of All users should be displayed when click on 'Show all' and list of students only should displayed when click on 'Show students only' buttons
+
+Verify search functionality is working in 'Edit students in class' window.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Select one Class from Classes table    \    Selected class should be highlighted
+    Click on 'edit' button
+    Click on 'Edit' for students    \    'Edit Students in a class' window should be displayed
+    Enter Valid User First Name/Last Name/User ID in the "Search" field    \    The Users should be displayed in the "Select Users" grid if the enteredUser matches with the "Select Users" list
+    Enter Invalid User Details(First Name/Last Name/User ID) in the "Search" field    \    The "Select Users" grid should be displayed as Empty if the entered user doesn't matches with the "Select Users" list
+
+Verify search functionality is working in 'Edit students in group' window.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on Management > Show Groups    \    List of groups should be displayed .
+    Select one group from groups table    \    Selected group should be highlighted
+    Click on 'edit' button
+    Click on 'Edit' for students    \    'Edit Students in a group' window should be displayed
+    Enter Valid User First Name/Last Name/User ID in the "Search" field    \    The Users should be displayed in the "Select Users" grid if the enteredUser matches with the "Select Users" list
+    Enter Invalid User Details(First Name/Last Name/User ID) in the "Search" field    \    The "Select Users" grid should be displayed as Empty if the entered user doesn't matches with the "Select Users" list
+
+Verify search functionality is working in 'Edit syllabus of class' window.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Select one Class from Classes table    \    Selected class should be highlighted
+    Click on 'edit' button
+    Click on 'Edit' for titles    \    'Edit syllabus of class' window should be displayed
+    Enter Valid User First Name/Last Name/User ID in the "Search" field    \    The Users should be displayed in the "Select Users" grid if the enteredUser matches with the "Select Users" list
+    Enter Invalid User Details(First Name/Last Name/User ID) in the "Search" field    \    The "Select Users" grid should be displayed as Empty if the entered user doesn't matches with the "Select Users" list
+
+Verify search functionality is working in 'Edit syllabus of group' window.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on Management > Show Groups    \    List of groups should be displayed .
+    Select one group from groups table    \    Selected group should be highlighted
+    Click on 'edit' button
+    Click on 'Edit' for titles    \    'Edit syllabus of group' window should be displayed
+    Enter Valid User First Name/Last Name/User ID in the "Search" field    \    The Users should be displayed in the "Select Users" grid if the enteredUser matches with the "Select Users" list
+    Enter Invalid User Details(First Name/Last Name/User ID) in the "Search" field    \    The "Select Users" grid should be displayed as Empty if the entered user doesn't matches with the "Select Users" list
+
+Verify search functionality in 'All Users' details tab.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Enter Valid User First Name/Last Name/User ID in the "Search" field    \    The Users should be displayed in the "Select Users" grid if the enteredUser matches with the "Select Users" list
+    Enter Invalid User Details(First Name/Last Name/User ID) in the "Search" field    \    The "Select Users" grid should be displayed as Empty if the entered user doesn't matches with the "Select Users" list
+
+Verify sort functionality for classes panel
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Click on Name column to sort    \    Records should be sorted in ascending and descending order
+    Click on teacher column    \    Records should be sorted in ascending and descending order
+    Click on description columns    \    Records should be sorted in ascending and descending order
+    Click on class code column to sort    \    Records should be sorted in ascending and descending order
+    Click on created column to sort    \    Records should be sorted in ascending and descending order
+
+Verify sort functionality for groups panel
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on "Management" button    \    Management page should be displayed
+    Click on 'Show Groups'    \    List of groups should be displayed
+    Click on Name column to sort    \    Records should be sorted in ascending and descending order
+    Click on teacher column    \    Records should be sorted in ascending and descending order
+    Click on description columns    \    Records should be sorted in ascending and descending order
+    Click on created column to sort    \    Records should be sorted in ascending and descending order
+
+Verify sort functionality for 'Edit Students in class' window
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Select one Class from Classes table    \    Selected class should be highlighted
+    Click on 'edit' button    \    Details widow should be editable.
+    Click on 'Edit' for students panel.    \    'Edit Students in a class' window should be displayed
+    Click on Name column to sort    \    Records should be sorted in ascending and descending order
+    Click on teacher column    \    Records should be sorted in ascending and descending order
+    Click on description columns    \    Records should be sorted in ascending and descending order
+    Click on created column to sort    \    Records should be sorted in ascending and descending order
+
+Verify sort functionality for 'Edit Students in group' window
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on Management > Show Groups    \    List of groups should be displayed .
+    Select one group from groups table    \    Selected group should be highlighted
+    Click on 'edit' button
+    Click on 'Edit' for students    \    'Edit Students in a group' window should be displayed
+    Click on Name column to sort    \    Records should be sorted in ascending and descending order
+    Click on teacher column    \    Records should be sorted in ascending and descending order
+    Click on description columns    \    Records should be sorted in ascending and descending order
+    Click on created column to sort    \    Records should be sorted in ascending and descending order
+
+Verify sort functionality for 'printed or exported' window
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on "Management" button    \    Management Page should be displayed
+    Click on "Print/Export" button    \    'Print/Export Students" pop up window should be displayed.
+    Select a class from 'Make a selection' dropdown    \    Selected Class should be highlighted
+    Click on "Continue" button    \    "Selected students to be printed or Exported " window should be displayed.
+    Click on lastName column to sort    \    Records should be sorted in ascending and descending order
+    Click on first name column    \    Records should be sorted in ascending and descending order
+    Click on grade columns    \    Records should be sorted in ascending and descending order
+    Click on user column to sort    \    Records should be sorted in ascending and descending order
+    Click on role column to sort    \    Records should be sorted in ascending and descending order
+
+Validate Close(x) functionality in print/export window
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Print/Export' button in the "All Users" grid    \    "Print/Export Students" pop-up should be displayed
+    Select School/Class from 'Make a Selection' drop down in the "Print/Export Students" pop-up    \    Selected School/Class should be displayed
+    Click on 'Continue' button in the "Print/Export Students" pop-up    \    "Select Users to be Printed or Exported" pop-up should be displayed
+    Click on 'x' button in the "Select Users to be Printed or Exported" pop-up    \    "Select Users to be Printed or Exported" pop-up should be Closed and "Print/Export Students" pop-up should be displayed
+
+Validate Close(x) functionality in promote/revert students window
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Promote Students' button in Management page    \    "Promote and Reverting the Grade Level of Students" pop page should be displayed
+    Click on 'x' button in the "Promote and Reverting the Grade Level of Students" pop page    \    "Promote and Reverting the Grade Level of Students" pop page should be closed.
+
+Validate whether District admin is able to change the instructor of a group
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Show Groups' button in the Classes grid    \    "Groups" grid should be displayed
+    Select existing group to change the instructor    \    The selected group should be highlighted and the details of the group should be displayed
+    Click on 'Edit' button in the "Details" grid    \    Details window should be editable
+    Select the 'Teacher' drop down to change the teacher    \    'Teacher' drop down should display the list of teachers
+    Select a teacher from the 'Teacher' drop down    \    The selected teacher should be displayed
+    Click on 'Save' button in the details grid    \    The Teacher should be added to the group and the group should be saved
+
+Validate whether District admin is able to change the instructor of a Class
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Select existing class to change the instructor    \    The selected class should be highlighted and the details of the group should be displayed
+    Click on 'Edit' button in the "Details" grid    \    The group should be edited
+    Select the 'Teacher' drop down to change the teacher    \    'Teacher' drop down should display the list of teachers
+    Select a teacher from the 'Teacher' drop down    \    The selected teacher should be displayed
+    Click on 'Save' button in the details grid    \    The Teacher should be added to the group and the group should be saved
+
+Validate whether district admin is able to create a student without a grade level
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Add' button in the "All Users" grid    \    "New User" pop-up should be displayed
+    Select the Roles as Student    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name and Select Grade    First Name: student, Middle Name: std, Last Name: std94, Grade:Not Available
+    Enter UserId and Password    User Id: student94, password:test1234
+    Click on 'Save' button    \    Alert Message should be displayed as "Grade Level is required for students"
+
+Validate whether district admin is able to create Multiple roles(school admin,Teacher,student)
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Add' button in the "All Users" grid    \    "New User" pop-up should be displayed
+    Select the Roles as School Admin, Teacher and Student    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name and Select Grade    First Name: student, Middle Name: school, Last Name: Admin
+    Enter UserId and Password    User Id: rhwpte+studentadmin@gmail.com, password:test1234
+    Click on 'Save' button    \    Alert Message should be displayed as "School Admins can have only teacher role. All other roles are not allowed"
+
+Validate whether district admin is able to create Multiple roles(school admin and student)
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Click on 'Add' button in the "All Users" grid    \    "New User" pop-up should be displayed
+    Select the Roles as School Admin and Student    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name and Select Grade from autocomplete    First Name: student, Middle Name: school, Last Name: Admin
+    Enter UserId and Password    User Id: rhwpte+studentadmin@gmail.com, password:test1234
+    Click on 'Save' button    \    Alert Message should be displayed as "School Admins can have only teacher role. All other roles are not allowed"
+
+Validate whether user can able to add Multiple Roles(Teacher,School Admin)
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button in home page    \    "Management" page should be displayed
+    Select the Existing class in 'Classes' grid to which teacher should be added    \    The selected Class should be highlighted and details of the class should be displayed
+    Click on 'Edit' button in the Details grid    \    The Class should be Edited
+    Select the Teacher,School Admin from 'Teacher' drop down    \    Selected Teacher,School Admin should be displayed
+    Click on 'Save' button in the Details grid    \    The Selected Teacher,School Admin should be added to the Class and the class details should be saved
+
+Validate Cancel functionality in "Archiving Classes and Groups Can Only Partially Be Undone" alert Pop-up from Management
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on Management > Archive Classes & Groups    \    "Classes and Groups Archive" pop page should be displayed with its screen elements
+    Click on particular Classes/Groups checkbox to archive in "Classes & Groups" grid    \    Selected Classes/Groups should be displayed in "Archived Classes & Groups"
+    Click on "Save" button    \    "Archiving Classes and Groups Can Only Partially Be Undone" alert message should be displayed
+    Click on "Cancel" button in the alert pop-up    \    Archive functionality should not be performed and the alert pop-up should be closed
+
+Verify district admin can edit user id and password for a student
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Select a student and click on 'edit' button    Student: studentreports
+    Edit userID and Password and click on 'save' button    UserID: Studentreports12 , Password : test12345    Edited details should be saved and updated
+
+Verify district admin can edit user id and password for another teacher
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Select a teacher and click on 'edit' button    Teacher:teacher    Eidt button should be enabled
+    Edit userID and Password and click on 'save' button    \    Edited details should be saved and updated
+
+Verify district admin can edit user id and password forSchool Admin
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Select a school admin and click on 'edit' button    School Admin:rhwpte+sa@gmail.com    Eidt button should be enabled
+    Edit userID and Password and click on 'save' button    \    Edited details should be saved and updated
+
+Verify district admin can edit user id and password for District Admin
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Management' button    \    Management page should be displayed
+    Select a district admin role and click on 'edit' button    District Admin:rhwpte+da@gmail.com    Eidt button should be enabled
+    Edit userID and Password and click on 'save' button    \    Edited details should be saved and updated

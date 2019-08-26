@@ -1,0 +1,11 @@
+*** Settings ***
+Resource          Buttons.txt
+Resource          Labels.txt
+Resource          TextBoxes.txt
+Resource          Links.txt
+Resource          Tables.txt
+Resource          CheckBoxes.txt
+Resource          Images.txt
+Resource          Headers.txt
+Resource          CommonObjects.txt
+Resource          DropDowns.txt

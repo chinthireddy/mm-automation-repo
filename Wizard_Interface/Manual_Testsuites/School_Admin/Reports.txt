@@ -1,0 +1,247 @@
+*** Test Cases ***
+MTC85-Validate Standards Mastery Report for selected class and subject
+    [Documentation]    This Test Case describes whether the School Admin can generate Standard Mastery Report functionality for a Class and Subject
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and Classes drop down should be enabled
+    Select Class from 'Classes' drop down    Class85    Selected Class should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    CSS Motivation Math Level 02    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select date from 'Date Range' drop down    6/30/2015 to 7/10/2015    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the selected Group and subject should be displayed
+
+MTC87-Validate Item Analysis Report for selected class,subject and activity
+    [Documentation]    This Test Case describes whether the School Admin can generate Item Analysis Report functionality for a Class Subject and Activity
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis Report from 'Report Type' drop down    \    Item Analysis Report should be selected and Classes drop down should be enabled
+    Select Class from 'Classes' drop down    \    Selected Class should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the selected Group and subject should be displayed
+
+MTC94-Validate whether Standards Mastery Report is displayed based on the selected class and subject in 10 seconds.
+    [Documentation]    This Test Case describes whether the School Admin can generate Standard Mastery Report functionality for a Selected Class and Subject in 10 seconds
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and Classes drop down should be enabled
+    Select Class from 'Classes' drop down    Class85    Selected Class should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    CSS Motivation Math Level 02    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select date from 'Date Range' drop down    6/30/2015 to 7/10/2015    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard MasteryReport" for the selected Class and subject should be displayed in 10 seconds
+
+MTC95-Verify whether Item Analysis Report is displayed based on the selected class and subject in 10 seconds.
+    [Documentation]    This Test Case describes whether the School Admin can generate Item Anlaysis Report functionality for a Class,Subject and Activity in 10 seconds
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis Report from 'Report Type' drop down    \    Item Analysis Report should be selected and Classes dop down should be enabled
+    Select Class from 'Classes' drop down    \    Selected Class should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be enabled
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the selected Group and subject should be displayed in 10 seconds
+
+MTC140-Verify standard mastery report of Selected Group and subject.
+    [Documentation]    This Test Case describes whether the School Admin can generate Standard Mastery Report functionality for a Selected Group and Subject
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and Class drop down should be enabled
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select Group from 'Groups' drop down    Group85    Selected Group should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    CSS Motivation Math Level 02    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select date from 'Date Range' drop down    6/30/2015 to 7/10/2015    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the selected Group and subject should be displayed
+
+MTC141-Verify Item analysis report of selected Group,subject and Activity
+    [Documentation]    This Test Case describes whether the School Admin can generate Item Anlaysis Report functionality for a Group,Subject and Activity
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis Report from 'Report Type' drop down    \    Item Analysis Report should be selected and Classes drop down should be enabled
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select Group from 'Groups' drop down    \    Selected Group should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' from drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the selected Group and subject should be displayed
+
+Verify Standards Mastery Report for All classes in School Admin
+    [Documentation]    This Test Case describes whether the School Admin can generate Standard Mastery Report functionality for all Classes
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    School Admin: rhwpte+sch85@gmail.com password:test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and Classes drop down should be enabled
+    Select All Classes from 'Classes' drop down    \    All Classes should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    CSS Motivation Math Level 02    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select date from 'Date Range' drop down    6/3/2015 to 6/10/2015    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the All Classes and subject should be displayed
+
+Verify Standards Mastery Report for All groups in School Admin
+    [Documentation]    This Test Case describes whether the School Admin can generate Standard Mastery Report functionality for all groups
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    School Admin: rhwpte+sch85@gmail.com password:test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and Classes drop down should be enabled
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select All Groups from 'Groups' drop down    \    All Groups should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    CSS Motivation Math Level 02    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select valid date from 'Date Range' drop down    6/30/2015 to 7/10/2015    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the All Groups and subject should be displayed
+
+Verify Item Analysis Report for All classes in School Admin
+    [Documentation]    This Test Case describes whether the School Admin can generate Item Anlaysis Report functionality for all Classes
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    School Admin: rhwpte+sch85@gmail.com password:test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis report from 'Report Type' drop down    \    Item Analysis Report should be selected and Classes drop down should be enabled
+    Select All Class from 'Classes' drop down    \    All Classes should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the All Classes and subject should be displayed
+
+Verify Item Analysis Report for All groups in School Admin
+    [Documentation]    This Test Case describes whether the School Admin can generate Item Anlaysis Report functionality for all groups
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    School Admin: rhwpte+sch85@gmail.com password:test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis report from 'Report Type' drop down    \    Item Analysis Report should be selected and Classes drop down should be enabled
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select All Groups from 'Groups' drop down    \    All Groups should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the All Groups and subject should be displayed
+
+Validate Edit,Print,Export & Sort by functionalities in Class Standard Mastery Report
+    [Documentation]    This Test Case describes whether the School Admin can Validate the functionality for Edit,Print,Export & Sort by in Reports page
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+sch85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and Classes drop down should be enabled
+    Select All Classes from 'Classes' drop down    \    All Classes should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the All Classes and subject should be displayed
+    Click on 'Edit' Button in Legend grid in reports page    \    "Report Settings" pop-up should be displayed
+    Click on 'Print' Button in reports page    \    Printed Standard Mastery Report should be displayed in another window
+    Click on 'Export' Button in reports page    \    ".csv" file should be downloaded for the Standard Mastery Report
+    Click on 'Sort by' Button in reports page    \    Students should be sorted with respect to percentage for the Standard Mastery Report
+
+Validate Edit,Print & Export functionalities in Class Item Analysis Report
+    [Documentation]    This Test Case describes whether the School Admin can Validate the functionality for Edit,Print & Export in Reports page
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis report from 'Report Type' drop down    \    Item Analysis Report should be selected and Classes drop down should be enabled
+    Select All Class from 'Classes' drop down    \    All Classes should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the All Classes and subject should be displayed
+    Click on 'Edit' Button in Legend grid in reports page    \    "Report Settings" pop-up should be displayed
+    Click on 'Print' Button in reports page    \    Printed Item Analysis Report should be displayed in another window
+    Click on 'Export' Button in reports page    \    ".csv" file should be downloaded for the Item Analysis Report
+
+Validate Standard Mastery Report is generated for Invalid date ranges
+    [Documentation]    This Test Case describes whether the School Admin can generate Standard Mastery Report functionality for Invalid date ranges
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    School Admin: rhwpte+sch85@gmail.com password:test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and Classes drop down should be enabled
+    Select All Classes from 'Classes' drop down    \    All Classes should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select Invalid date from 'Date Range' drop down    5/20/2015 to 5/25/2015    Selected Date Range should be displayed
+    Click on 'Generate Report' Button    \    Standard Mastery Report should display the message as "There is no information to display for the current selection"
+
+Validate Item Analysis Report is generated for Invalid date ranges
+    [Documentation]    This Test Case describes whether the School Admin can generate Item Analysis Report functionality for Invalid date ranges
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    School Admin: rhwpte+sch85@gmail.com password:test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis report from 'Report Type' drop down    \    Item Analysis Report should be selected and Classes drop down should be enabled
+    Select All Class from 'Classes' drop down    \    All Classes should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select Invalid date from 'Date Range' drop down    5/20/2015 to 5/25/2015    Selected Date Range should be displayed
+    Click on 'Generate Report' Button    \    Item Anlaysis Report should display the message as "There is no information to display for the current selection"
+
+Validate Edit,Print,Export & Sort by functionalities in Group Standard Mastery Report
+    [Documentation]    This Test Case describes whether the Edit,Print, Export & Sort by functionalities work correctly or not? in Standard Mastery Report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+sch85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and Classes drop down should be enabled
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select All Groups from 'Groups' drop down    \    All Groups should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    CSS Motivation Math Level 02    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select valid date from 'Date Range' drop down    6/30/2015 to 7/10/2015    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Standard Mastery Report" for the All Groups and subject should be displayed
+    Click on 'Edit' Button in Legend grid in reports page    \    "Report Settings" pop-up should be displayed
+    Click on 'Print' Button in reports page    \    Printed Standard Mastery Report should be displayed in another window
+    Click on 'Export' Button in reports page    \    ".csv" file should be downloaded for the Standard Mastery Report
+    Click on 'Sort by' Button in reports page    \    Students should be sorted with respect to percentage for the Standard Mastery Report
+
+Validate Edit,Print & Export functionalities in Group Item Analysis Report
+    [Documentation]    This Test Case describes whether the Edit,Print, Export & Sort by functionalities work correctly or not? in Item Analysis Report
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Log In Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District Admin Home page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis report from 'Report Type' drop down    \    Item Analysis Report should be selected and Classes drop down should be enabled
+    Click on 'Show Groups' button    \    Groups drop down should be displayed
+    Select All Groups from 'Groups' drop down    \    All Groups should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the All Groups and subject should be displayed
+    Click on 'Edit' Button in Legend grid in reports page    \    "Report Settings" pop-up should be displayed
+    Click on 'Print' Button in reports page    \    Printed Item Analysis Report should be displayed in another window
+    Click on 'Export' Button in reports page    \    ".csv" file should be downloaded for the Item Analysis Report
+
+Verify needs grading icon is displayed for ungraded question in standard master report
+    [Documentation]    This Test Case describes whether the Grading icon is displayed or not? in Standard Mastery Report
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    School Admin: rhwpte+sch85@gmail.com password:test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Standard mastery report from 'Report Type' drop down    \    Standard Mastery Report should be selected and Classes drop down should be enabled
+    Select All Classes from 'Classes' drop down    \    All Classes should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    CSS Motivation Math Level 02    Selected Subject should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select date from 'Date Range' drop down    6/3/2015 to 6/10/2015    Selected Date Range should be displayed
+    Click on 'Generate Report' Button    \    "Standard Mastery Report" for the All Classes should be displayed
+    Verify Needs Grading Icon for Ungraded Questions    \    Grading Icon should be displayed for the Ungraded questions
+
+Verify needs grading icon is displayed for ungraded question in item analysis report
+    [Documentation]    This Test Case describes whether the Grading icon is displayed or not? in Item Analysis Report
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    School Admin: rhwpte+sch85@gmail.com password:test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Reports' Button    \    Reports filter page should be displayed
+    Select Item Analysis report from 'Report Type' drop down    \    Item Analysis Report should be selected and Classes drop down should be enabled
+    Select All Class from 'Classes' drop down    \    All Classes should be displayed and Subject/Level drop down should be enabled
+    Select Subject from 'Subject/Level' drop down    \    Selected Subject should be displayed and Activity drop down should be displayed
+    Select 'Activity' drop down    \    Selected Activity should be displayed and Date Range drop down along with 'Generate' button should be enabled
+    Select valid date from 'Date Range' drop down    \    Selected Date Range should be displayed
+    Click on 'Generate' Button    \    "Item Analysis Report" for the All Classes should be displayed
+    Verify Needs Grading Icon for Ungraded Questions    \    Grading Icon should be displayed for the Ungraded questions

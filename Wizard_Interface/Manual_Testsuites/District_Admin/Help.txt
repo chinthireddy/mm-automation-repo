@@ -1,0 +1,168 @@
+*** Test Cases ***
+MTC104-Verify Help and its sub menu items
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+da2505@gmail.com, rhwpte+test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on "Help" button in Home Page    \    Help drop down should be displayed
+    Click on "Quick Tips" button    \    Quick Tips window should be displayed
+    Click on "Live Chat" button    \    Live Chat window should be displayed in another window
+    Click on "Email Support" button    \    " How Can We Help You? " pop up should be displayed
+    Click on "Contact Us" button    \    "Motivation Online Support" pop up should be displayed
+    Click on "Browser Test" button    \    Browser details should be displayed in another tab
+    Click on "Terms and Conditions" button    \    Terms and Conditions pop up should be displayed
+    Click on "Resources" button    \    "Total Motivation resources" should be displayed in another window.
+
+Validate Quick Tips in Help drop down on Home page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: User Id: rhwpte+dadmin2505@gmail.com Password: test1234
+    Click on Sign In button    \    DIstrict Admin Home Page should be displayed
+    Click on "Help" button in Home Page    \    Help drop down should be displayed
+    Click on "Quick Tips" button    \    Quick Tips window should be displayed
+
+Validate Live Chat in Help drop down on Home page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: User Id: rhwpte+dadmin2505@gmail.com Password: test1234
+    Click on Sign In button    \    DIstrict Admin Home Page should be displayed
+    Click on "Help" button in Home Page    \    Help drop down should be displayed
+    Click on "Live Chat" button    \    Live Chat window should be displayed in another window
+    Enter all Mandatory fields and Click on Begin Chat button    \    Window should be displayed for the online chatting.
+
+Validate Email Support in Help drop down on Home page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: User Id: rhwpte+dadmin2505@gmail.com Password: test1234
+    Click on Sign In button    \    DIstrict Admin Home Page should be displayed
+    Click on "Help" button in Home Page    \    Help drop down should be displayed
+    Click on "Email Support" button    \    " How Can We Help You? " pop up window should be displayed.
+    Enter text in "Its about fields    Test Data: SDT Test    Text should be entered
+    Enter text in Your message field    Test Data: SDT Test    Text should be entered
+    Enter email ID in Your Email Address field    sivakuamri.p@tenxlabs.com    Email ID should be entered
+    Click on Send button    \    "Your message has been sent successfully." pop up window should be displayed.
+
+Validate Contact us in Help drop down on Home page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: User Id: rhwpte+dadmin2505@gmail.com Password: test1234
+    Click on Sign In button    \    DIstrict Admin Home Page should be displayed
+    Click on "Help" button in Home Page    \    Help drop down should be displayed
+    Click on "Contact Us" button    \    "Motivation Online Support" Popup should be displayed.
+    Click on "Email Support" button    \    " How Can We Help You? " pop up window should be displayed.
+    Enter text in "Its about , Your message and Your Email Address" fields    Test Data: SDT Test,SDT Test, sivakuamri.p@tenxlabs.com    "Your message has been sent successfully." pop up window should be displayed.
+
+Validate Terms and Conditions in Help drop down on Home page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: User Id: rhwpte+dadmin2505@gmail.com Password: test1234
+    Click on Sign In button    \    DIstrict Admin Home Page should be displayed
+    Click on "Help" button in Home Page    \    Help drop down should be displayed
+    Click on "Terms and Conditions" button    \    "Terms and Conditions" pop up window should be displayed
+    Click on "Cancel (X)" button    \    "Terms and Conditions" pop up window should be closed.
+
+Validate Resources in Help drop down on Home page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: User Id: rhwpte+dadmin2505@gmail.com Password: test1234
+    Click on Sign In button    \    DIstrict Admin Home Page should be displayed
+    Click on "Help" button in Home Page    \    Help drop down should be displayed
+    Click on "Resources" button    \    "Total Motivation resources" should be displayed in another window.
+
+Validate Browser Test in Help drop down on Home page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: User Id: rhwpte+dadmin2505@gmail.com Password: test1234
+    Click on Sign In button    \    DIstrict Admin Home Page should be displayed
+    Click on "Help" button in Home Page    \    Help drop down should be displayed
+    Click on "Browser Test" button    \    Browser details should be displayed in another tab
+
+Validate Email Support without giving Email Address in Help drop down on Home page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: User Id: rhwpte+dadmin2505@gmail.com Password: test1234
+    Click on Sign In button    \    DIstrict Admin Home Page should be displayed.
+    Click on "Help" button in Home Page    \    Help drop down should be displayed
+    Click on "Email Support" button    \    " How Can We Help You? " pop up window should be displayed.
+    Enter text in "Its about and Your message " fields    Test Data: SDT Test,SDT Test
+    Enter Invalid Data in "Your Email Address" field    Test Data: t5ytyt    "Email ID is invalid" alert message should be displayed.
+
+Validate Email ID for chat on Live Chat window
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: User Id: rhwpte+dadmin2505@gmail.com Password: test1234
+    Click on Sign In button    \    DIstrict Admin Home Page should be displayed
+    Click on "Help" button in Home Page    \    Help drop down should be displayed
+    Click on "Live Chat" button    \    Live Chat window should be displayed in another window
+    Enter invalid Email ID    Test Data: SDT Test
+    Click on Begin Chat button    \    Error message should be displayed as "Enter a valid email address."
+
+Validate Help and its sub menu items
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on Sign In button    \    District Admin Home Page should be displayed
+    Click on 'Help button' in Home Page    \    Drop down should be displayed for Help
+    Click on 'Email Support' button    \    " How Can We Help You? " pop up should be displayed
+    Enter text in ""Its about and Your message" field    testdata    Text should be entered
+    Enter text in Your message field    testing process    Text should be entered
+    Enter email ID in Your Email Address field    test123@gmail.com    Email ID should be entered
+    Click on 'attach files' link    \    It should display and enable the 'Choose File' buttons
+    Click on 'Choose File' button    \    Open pop-up window should be displayed
+    Select file from the local drive of the system and click on 'open' button    \    The selected file should be uploaded
+    Click on 'x' button    \    " How Can We Help You? " pop up should be closed
+    Click on 'Help button' in Home Page    \    Drop down should be displayed for Help
+    Click on 'Email Support' button    \    " How Can We Help You? " pop up should be displayed and the previously entered Data and Files should be cleared
+
+Validate Live Chat functionality without data in the mandatory fields
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District \ Admin Home Page should be displayed
+    Click on 'Help button' in Home Page    \    Drop down should be displayed for Help
+    Click on 'Live Chat' button    \    "Engagement window" should be displayed in another tab
+    Click on 'Begin Chat' button without entering the data in the Mandatory fields    \    Alert message should be displayed on the top of window as "3 fields were not completed correctly."
+
+Validate Live Chat functionality with Invalid email id
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District \ \ Admin Home Page should be displayed
+    Click on 'Help button' in Home Page    \    Help Drop down should be displayed
+    Click on 'Live Chat' button    \    "Engagement window" should be displayed in another tab
+    Enter Invalid data in the Mandatory Fields    email id:testuser1    Invalid data should be displayed in the Mandatory Fields
+    Click on 'Begin Chat' button    \    Alert message should be displayed on the top of window as "1 field was not completed correctly."
+
+Validate Email Support functionality with invalid email id
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District \ Admin Home Page should be displayed
+    Click on 'Help button' in Home Page    \    Help Drop down should be displayed
+    Click on 'Email Support' button    \    " How Can We Help You? " pop up should be displayed
+    Enter Invalid Data in the all the fields    email id: testuser    All the fields should be displayed with the invalid data
+    Click on 'Send' button    \    Alert message should be displayed as ""Email" is invalid"
+
+Validate Email Support functionality with out data in the fields
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District \ Admin Home Page should be displayed
+    Click on 'Help button' in Home Page    \    Help Drop down should be displayed
+    Click on 'Email Support' button    \    " How Can We Help You? " pop up should be displayed
+    Click on 'Send' button without entering the data in the fields    \    Alert message should be displayed as "It's about" can't be empty "Your message" can't be empty "Email" is invalid"
+
+Validate Email Support functionality without data in Contact Us pop up
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District \ Admin Home Page should be displayed
+    Click on 'Help' button in Home Page    \    Help drop down should be displayed
+    Click on 'Contact Us' button    \    "Motivation Online Support" Popup should be displayed.
+    Click on 'Email Support' button    \    " How Can We Help You? " pop up window should be displayed.
+    Click on 'Send' button without entering the data in the fields    \    Alert message should be displayed as "It's about" can't be empty "Your message" can't be empty "Email" is invalid"
+
+Validate Email Support functionality with invalid email id in Contact Us menu
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District \ Admin Home Page should be displayed
+    Click on 'Help' button in Home Page    \    Help drop down should be displayed
+    Click on 'Contact Us' button    \    "Motivation Online Support" Popup should be displayed.
+    Click on 'Email Support' button    \    " How Can We Help You? " pop up window should be displayed.
+    Enter Invalid Data in the all the fields    email id: testuser    All the fields should be displayed with the invalid data
+    Click on 'Send' button    \    Alert message should be displayed as ""Email" is invalid"
+
+Validate close (x) button for Email Support window in contact us menu
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    District Admin: rhwpte+dist85@gmail.com password:test1234
+    Click on 'Sign In' button    \    District \ Admin Home Page should be displayed
+    Click on 'Help' button in Home Page    \    Help drop down should be displayed
+    Click on 'Contact Us' button    \    "Motivation Online Support" Popup should be displayed.
+    Click on 'Email Support' button    \    " How Can We Help You? " pop up window should be displayed.
+    Enter Valid Data in the all the fields    \    All the fields should be displayed with the Valid data
+    Click on 'x' button    \    " How Can We Help You? " pop up window should be closed and "Motivation Online Support" pop-up, District \ Admin home page should be displayed
+

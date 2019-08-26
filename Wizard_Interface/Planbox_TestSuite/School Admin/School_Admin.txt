@@ -1,0 +1,71 @@
+*** Test Cases ***
+Verify wether roles are getting swithched for valid roles.
+    Open application ,Enter Valid School Admin User Id & Password and Click on Sign In button    Test Data: Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Expected Result: Home page should be displayed
+    Click on Management >Select a record>Click on Edit    \    Expected Result:Details Tab should be displayed
+    Change Role as School admin & Teacher    \    Roles should be changed.
+
+Verify wether roles are getting swithched for IN- valid roles.
+    Open application ,Enter Valid School Admin User Id & Password and Click on Sign In button    Test Data: Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Expected Result: Home page should be displayed
+    Click on Management >Select a record>Click on Edit    \    Expected Result:Details Tab should be displayed
+    Change Role as School admin,Student & Teacher    \    "Teachers can only have a teacher role. All other roles are not allowed" alert message should be displayed.
+
+Verify wether duplicate Users are created.
+    Open application ,Enter Valid School Admin User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Home page should be displayed
+    Click on Management > All Users > Add    \    New User pop up should be displayed with its screen elements
+    Select Role as School Admin    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name    First Name: DAdminFN , Middle Name: AdmintMN , Last Name: SAdminLN
+    Enter UserId and Password    User Id: rhwpte+ddMentor28@gmail.com \ Password: Mentor08
+    Select the Status    \    Active status should be selected
+    Click on Save button    \    School Admin should be added in the All users grid
+    Again click on Management > All Users > Add    \    New User pop up should be displayed with its screen elements
+    Select Role as School Admin    \    Fields should be changed according to the role selected
+    Enter same First, Middle & Last Name    First Name: DAdminFN , Middle Name: AdmintMN , Last Name: SAdminLN
+    Enter same UserId and Password    User Id: rhwpte+ddMentor28@gmail.com \ Password: Mentor08    Message should be displayed"User ID already Exits"
+
+Verify wether duplicate Classes are created.
+    Open application    Url=http://b11test1.mentoringmindsonline.com/    Login Page should displayed
+    Enter Valid School Admin User Id & Password    User Id: rhwpte+ddMentor29@gmail.com \ Password: Mentor09
+    Click on Sign In    \    Home page should be displayed
+    Click on Management > Show Classes > Add button    \    New Class \ pop up should be displayed .
+    Enter / Select Mandatory fields    Name: Class \ ABC \ , \ Teacher: John-TA TA
+    Click on OK button    \    Class should be added to the selected teacher.
+    Click on Management > Show Class > Add button    \    New Class \ pop up should be displayed .
+    Enter / Select Mandatory fields    Name: Class \ ABC \ , \ Teacher: John-TA TA    Alert should be displayed "Class \ name already Exists"
+
+Verify wether duplicate Groups are created.
+    Open application    Url=http://b11test1.mentoringmindsonline.com/    Login Page should displayed
+    Enter Valid School Admin User Id & Password    User Id: rhwpte+ddMentor29@gmail.com \ Password: Mentor09
+    Click on Sign In    \    Home page should be displayed
+    Click on Management > Show Groups > Add button    \    New Group pop up should be displayed .
+    Enter / Select Mandatory fields    Name: Group ABC \ , \ Teacher: John-TA TA
+    Click on OK button    \    Group should be added to the selected teacher.
+    Click on Management > Show Groups > Add button    \    New Group pop up should be displayed .
+    Enter / Select Mandatory fields    Name: Group ABC \ , \ Teacher: John-TA TA    Alert should be displayed "Group name already Exists"
+
+Verify the functionality of Active radio buttons
+    Open application ,Enter Valid School Admin User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Home page should be displayed
+    Click on Management > All Users > Add    \    New User pop up should be displayed with its screen elements
+    Select Role as School Admin    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name    First Name: DAdminFN , Middle Name: AdmintMN , Last Name: SAdminLN
+    Enter UserId and Password    User Id: rhwpte+ddMentor28@gmail.com \ Password: Mentor08
+    Select the Status    \    Active status should be selected
+    Click on Save button    \    School Admin should be added in the All users grid
+
+Verify the functionality of Active and Inactive radio buttons when Status of User is moved to 'Inactive
+    Open application ,Enter Valid School Admin User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Home page should be displayed
+    Click on Management > All Users > Add    \    New User pop up should be displayed with its screen elements
+    Select Role as School Admin    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name    First Name: DAdminFN , Middle Name: AdmintMN , Last Name: SAdminLN
+    Enter UserId and Password    User Id: rhwpte+ddMentor28@gmail.com \ Password: Mentor08
+    Select the Status    \    Active status should be selected
+    Click on Save button    \    School Admin should be added in the All users grid
+    Again Select the same user and change the status to Inactive> and click on save button    \    Status should change to Inactive
+
+Verify the functionality of In-Active radio buttons
+    Open application ,Enter Valid School Admin User Id & Password and Click on Sign In button    Url=http://b11test1.mentoringmindsonline.com/ \ \ User Id: rhwpte+sdMentor29@gmail.com \ Password: Mentor09    Home page should be displayed
+    Click on Management > All Users > Add    \    New User pop up should be displayed with its screen elements
+    Select Role as School Admin    \    Fields should be changed according to the role selected
+    Enter First, Middle & Last Name    First Name: DAdminFN , Middle Name: AdmintMN , Last Name: SAdminLN
+    Enter UserId and Password    User Id: rhwpte+ddMentor28@gmail.com \ Password: Mentor08
+    Select the Status    \    In-Active status should be selected
+    Click on Save button    \    School Admin should be added in the All users grid

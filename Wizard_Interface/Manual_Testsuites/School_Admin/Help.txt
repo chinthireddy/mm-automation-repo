@@ -1,0 +1,187 @@
+*** Test Cases ***
+MTC72-Verify Help and its sub menu items
+    [Documentation]    This Test Case Validates the functionality of Help button and its sub menu items in the School Admin home page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sadmin2505@gmail.com, Password: test1234
+    Click on Sign In button    \    School Admin Home page should be displayed
+    Click on "Help" button in Home Page    \    Expected Result: Help drop down should be displayed
+    Click on "Quick Tips" button    \    Expected Result: Quick Tips window should be displayed
+    Click on "Live Chat" button    \    Expected Result : Live Chat window should be displayed in another window
+    Click on "Email Support" button    \    Expected Result : " How Can We Help You? " pop up should be displayed
+    Click on "Contact Us" button    \    Expected Result : "Motivation Online Support" pop up should be displayed
+    Click on "Browser Test" button    \    Expected Result: Browser details should be displayed in another tab
+    Click on "Terms and Conditions" button    \    Expected Result: Terms and Conditions pop up should be displayed
+    Click on "Resources" button    \    Expected Result: "Total Motivation resources" should be displayed in another window.
+
+Validate whether quick tips are opening according to the open module or not
+    [Documentation]    This Test Case describes the functionality of Quick tips sub menu item under the help button
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    School Admin: User Id: rhwpte+sadmin2505@gmail.com Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Help' button in Home Page    \    Help drop down should be displayed
+    Click on 'Quick Tips' button    \    Quick Tips window should be displayed in "Administrator View"
+
+Validate Live Chat in Help drop down on Home page
+    [Documentation]    This Test Case validates the functionality of Live chat sub menu item under the help button
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    School Admin: User Id: rhwpte+sadmin2505@gmail.com Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on "Help" button in Home Page    \    Help drop down should be displayed
+    Click on "Live Chat" button    \    Live Chat window should be displayed in another window
+    Enter all Mandatory fields and Click on Begin Chat button    \    Window should be displayed for the online chatting.
+
+Validate Email Support in Help drop down on Home page
+    [Documentation]    This Test Case describes the functinality of Email support sub menu item under the Help button
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    School Admin: User Id: rhwpte+sadmin2505@gmail.com Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on "Help" button in Home Page    \    Help drop down should be displayed
+    Click on "Email Support" button    \    " How Can We Help You? " pop up window should be displayed.
+    Enter text in "Its about fields    Test Data: SDT Test    Text should be entered
+    Enter text in Your message field    Test Data: SDT Test    Text should be entered
+    Enter email ID in Your Email Address field    sivakuamri.p@tenxlabs.com    Email ID should be entered
+    Click on Send button    \    "Your message has been sent successfully." pop up window should be displayed.
+
+Validate Contact us in Help drop down on Home page
+    [Documentation]    This Test Case Validates the functionality of Contact Us sub menu item under the help button
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    School Admin: User Id: rhwpte+sadmin2505@gmail.com Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on "Help" button in Home Page    \    Help drop down should be displayed
+    Click on "Contact Us" button    \    "Motivation Online Support" Popup should be displayed.
+    Click on "Email Support" button    \    " How Can We Help You? " pop up window should be displayed.
+    Enter text in "Its about , Your message and Your Email Address" fields    Test Data: SDT Test,SDT Test, sivakuamri.p@tenxlabs.com    "Your message has been sent successfully." pop up window should be displayed.
+
+Validate Terms and Conditions in Help drop down on Home page
+    [Documentation]    This Test Case Validates the Terms and Conditons sub menu item under the help button
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    School Admin: User Id: rhwpte+sadmin2505@gmail.com Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on "Help" button in Home Page    \    Help drop down should be displayed
+    Click on "Terms and Conditions" button    \    "Terms and Conditions" pop up window should be displayed
+    Click on "Cancel (X)" button    \    "Terms and Conditions" pop up window should be closed.
+
+Validate Resources in Help drop down on Home page
+    [Documentation]    This Test Case Validates the Resources sub menu item under the help button
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    School Admin: User Id: rhwpte+sadmin2505@gmail.com Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on "Help" button in Home Page    \    Help drop down should be displayed
+    Click on "Resources" button    \    "Total Motivation resources" should be displayed in another window.
+
+Validate Browser Test in Help drop down on Home page
+    [Documentation]    This Test Case Validates the Browser Test sub menu item under the help button
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    School Admin: User Id: rhwpte+sadmin2505@gmail.com Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on "Help" button in Home Page    \    Help drop down should be displayed
+    Click on "Browser Test" button    \    Browser details should be displayed in another tab
+
+Validate Email Support without giving Email Address in Help drop down on Home page
+    [Documentation]    This Test Case describes the functionality of Email Support without giving Email address
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    School Admin: User Id: rhwpte+sadmin2505@gmail.com Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed.
+    Click on "Help" button in Home Page    \    Help drop down should be displayed
+    Click on "Email Support" button    \    " How Can We Help You? " pop up window should be displayed.
+    Enter text in "Its about and Your message " fields    Test Data: SDT Test,SDT Test
+    Enter Invalid Data in "Your Email Address" field    Test Data: t5ytyt    "Email ID is invalid" alert message should be displayed.
+
+Validate Email ID for chat on Live Chat window
+    [Documentation]    This Test Case describes the functionality of Live chat by giving Invalid Email Id
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    School Admin: User Id: rhwpte+sadmin2505@gmail.com Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on "Help" button in Home Page    \    Help drop down should be displayed
+    Click on "Live Chat" button    \    Live Chat window should be displayed in another window
+    Enter invalid Email ID    Test Data: SDT Test
+    Click on Begin Chat button    \    Error message should be displayed as "Enter a valid email address."
+
+Reopen the email support window to Validate the data and attached files are cleared
+    [Documentation]    This Test Case describes whether the data and attached files in the email support window are Cleared or not? when it is reopened
+
+Validate Help and its sub menu items
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on Sign In button    \    School Admin Home Page should be displayed
+    Click on 'Help button' in Home Page    \    Drop down should be displayed for Help
+    Click on 'Email Support' button    \    " How Can We Help You? " pop up should be displayed
+    Enter text in ""Its about and Your message" field    testdata    Text should be entered
+    Enter text in Your message field    testing process    Text should be entered
+    Enter email ID in Your Email Address field    test123@gmail.com    Email ID should be entered
+    Click on 'attach files' link    \    It should display and enable the 'Choose File' buttons
+    Click on 'Choose File' button    \    Open pop-up window should be displayed
+    Select file from the local drive of the system and click on 'open' button    \    The selected file should be uploaded
+    Click on 'x' button    \    " How Can We Help You? " pop up should be closed
+    Click on 'Help button' in Home Page    \    Drop down should be displayed for Help
+    Click on 'Email Support' button    \    " How Can We Help You? " pop up should be displayed and the previously entered Data and Files should be cleared
+
+Validate Live Chat functionality without data in the mandatory fields
+    [Documentation]    This Test Case validates the functionality of Live Chat without giving the Mandatory details in the respective fields
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Help button' in Home Page    \    Drop down should be displayed for Help
+    Click on 'Live Chat' button    \    "Engagement window" should be displayed in another tab
+    Click on 'Begin Chat' button without entering the data in the Mandatory fields    \    Alert message should be displayed on the top of window as "3 fields were not completed correctly."
+
+Validate Live Chat functionality with Invalid data in the mandatory fields
+    [Documentation]    This Test Case validates the functionality of Live Chat by giving Invalid data in the Mandatory fields
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Help button' in Home Page    \    Help Drop down should be displayed
+    Click on 'Live Chat' button    \    "Engagement window" should be displayed in another tab
+    Enter Invalid data in the Mandatory Fields    \    Invalid data should be displayed in the Mandatory Fields
+    Click on 'Begin Chat' button    \    Alert message should be displayed on the top of window as "3 fields was not completed correctly."
+
+Validate Email Support functionality with invalid data
+    [Documentation]    This Test Case validates the functionality of Email Support by giving invalid data in the Mandatory fields
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Help button' in Home Page    \    Help Drop down should be displayed
+    Click on 'Email Support' button    \    " How Can We Help You? " pop up should be displayed
+    Enter Invalid Data in the all the fields    \    All the fields should be displayed with the invalid data
+    Click on 'Send' button    \    Alert message should be displayed as ""Email" is invalid"
+
+Validate Email Support functionality with out data in the fields
+    [Documentation]    This Test Case validates the functionality of Email Support without giving the data in the Mandatory fields
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Help button' in Home Page    \    Help Drop down should be displayed
+    Click on 'Email Support' button    \    " How Can We Help You? " pop up should be displayed
+    Click on 'Send' button without entering the data in the fields    \    Alert message should be displayed as "It's about" can't be empty "Your message" can't be empty "Email" is invalid"
+
+Validate Email Support functionality in Contact Us with out data in the fields
+    [Documentation]    This Test Case validates the functionality of Email Support in the Contact us sub menu item without giving the data in the Mandatory fields
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Help' button in Home Page    \    Help drop down should be displayed
+    Click on 'Contact Us' button    \    "Motivation Online Support" Popup should be displayed.
+    Click on 'Email Support' button    \    " How Can We Help You? " pop up window should be displayed.
+    Click on 'Send' button without entering the data in the fields    \    Alert message should be displayed as "It's about" can't be empty "Your message" can't be empty "Email" is invalid"
+
+Validate Email Support functionality in Contact Us with invalid data in the fields
+    [Documentation]    This Test Case validates the functionality of Email Support in the Contact us sub menu item by giving the invalid data in the Mandatory fields
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Help' button in Home Page    \    Help drop down should be displayed
+    Click on 'Contact Us' button    \    "Motivation Online Support" Popup should be displayed.
+    Click on 'Email Support' button    \    " How Can We Help You? " pop up window should be displayed.
+    Enter Invalid Data in the all the fields    \    All the fields should be displayed with the invalid data
+    Click on 'Send' button    \    Alert message should be displayed as ""Email" is invalid"
+
+Validate close (x) button Email Support functionality in contact us with valid data in the fields
+    [Documentation]    This Test Case validates the functionality of the Email Support Close(x) button in Contact us sub menu item
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    User Id: rhwpte+sch85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    School Admin Home Page should be displayed
+    Click on 'Help' button in Home Page    \    Help drop down should be displayed
+    Click on 'Contact Us' button    \    "Motivation Online Support" Popup should be displayed.
+    Click on 'Email Support' button    \    " How Can We Help You? " pop up window should be displayed.
+    Enter Valid Data in the all the fields    \    All the fields should be displayed with the Valid data
+    Click on 'x' button    \    " How Can We Help You? " pop up window should be closed and "Motivation Online Support" pop-up, School Admin home page should be displayed

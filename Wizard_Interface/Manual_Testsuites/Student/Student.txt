@@ -1,0 +1,364 @@
+*** Test Cases ***
+MTC01-Validate the registration of Student from new user
+    [Documentation]    This Test Case describes whether New User can register for a student role or not?
+    Open the browser and enter the URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Click on New User >Student    \    Student Sign Up Pop Up should be displayed with header as "Enter the class code from the teacher" with a Text box.
+    Enter a valid Class code and click on 'Next' button    Test data: Class code : k6r    A pop up should be displayed with student's necessary details fields to create an account for the student
+    Enter valid details of the student in the respective fields and click on 'Next' button    Test data: First name:Student , Middle name(Optional):xyz, Last name:std, Create a user Id:Student21, Grade level:k, Create a password:passwd123, Retype your Password:passwd123.    Congratulations Pop up should be displayed with Sign In button
+    Click on 'Sign' In button    \    Student Home page should be displayed
+
+MTC04-Login with Student created from management view and verify First name and last name of the student
+    [Documentation]    This Test Case describes whether the created New Student User from Management is able to Login and Verify his First Name and Last name
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Teacher Login Credentials    User Id: rhwpte+ts85@gmail.com \ Password: test1234
+    Click on Sign In button    \    Teacher Home Page should be displayed
+    Click on 'Management' button    \    Management Page should be displayed
+    Click on 'Add' button on the "My Students" grid    \    New User pop up should be displayed with its screen elements
+    Enter First, Middle & Last Name and Select Grade from auto complete    First Name: student , Middle Name: std , Last Name: std87, Grade: 5
+    Click on 'Save' button    \    The User should be saved and should be displayed in the "My Students" grid
+    Click on 'Sign Out' button    \    The Teacher should be Sign out and should be navigate to the LogIn Page
+    Enter the Created Student UserId and Password    User Id: student87 , password:test1234
+    Click on Sign in button    \    Student Home page should be Displayed with Student First Name and Last Name
+
+Sign Up for an Invalid credentials
+    [Documentation]    This Test Case describes whether the Student home page is displayed or not? for Invalid User Credentials
+    Open the browser and enter the URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter In-valid User Id and In-valid password    Test data: user Id:Student, \ password:Student
+    click on Sign In Button    \    Alert message should be displayed as " The User ID or Password is incorrect. Please try again. "
+
+Validate the assignment is completed
+    [Documentation]    This Test Case describes whether the completed assignment is displayed in the home page or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Student Id: std500 ,Password: std123
+    Click on Sign in button    \    Student Home page should be displayed, along with the assignments which were assigned by the teacher
+    Click on 'Start button' to answer the questions    \    Questions should be displayed
+    Click on 'submit' Button    \    Confirmation Pop up should be displayed
+    Click On 'NO' button    \    Questions should be displayed
+    Click on 'Yes' > 'Cancel'    \    Assignment report pop up should be displayed > Your "Next assignment" pop up should be displayed
+    Click on 'Yes' button    \    Next assignment Page should be displayed
+    Click on 'No' button    \    Home page of the student with the remaining assignments should be displayed
+
+Verify the assignment is paused
+    [Documentation]    This Test Case describes whether the Assignment pause functionality works correctly or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Student Id: std500 ,Password: std123
+    Click on Sign in button    \    Student Home page should be displayed, along with the assignments which were assigned by the teacher
+    Click on 'Start' button to answer the questions    \    Expected data: Questions should be displayed
+    Click on 'Pause' Button    \    Expected data: Home page of the student should be displayed with appropriate progress percentage.
+
+MTC05,MTC11-Verify assignment questions navigation controllers
+    [Documentation]    This Test Case describes whether the assignment navigation controllers work correctly or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Student Id: std500 ,Password: std123
+    Click on Sign in button    \    Student Home page should be displayed, along with the assignments which were assigned by the teacher
+    Click on 'Start' button to answer the questions    \    Questions should be displayed
+    Click on 'Flag' button    \    'Respective question should be flagged with a flag symbol adjacent to the question
+    Click on 'Next' button    \    Next question should be displayed
+    Click on 'Previous' button    \    Previous question should be displayed
+    Click on 'Save Answer' button    \    Answer should be saved
+
+Validate Sign out for Student
+    [Documentation]    This Test Case describes whether the Signout functionality for Student work correctly or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Student Id: std500 ,Password: std123
+    Click on Sign in button    \    Student Home page should be displayed, along with the assignments which were assigned by the teacher
+    Click on Sign out Button    \    Login page should be displayed
+
+Verifying Student created from management view and verifying First name and last name of the student.
+    [Documentation]    This Test Case describes whether the Student created in the Management can be logged In or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displyed
+    Click on 'Management' button > 'Add' button > Enter all the credentials > Save    Test data: Student id - student0011 \ password - Student1100    A new student should be created in Teacehr management
+    Sign out and Sign in with the created student credentials    \    Home page of the student should be displayed
+
+Verify adding new Student with new credentials.
+    [Documentation]    This Test Case describes whether the created New Student in the Management can be logged In or not?
+    Open the browser and enter the URL    Url- b33test1.mentoringmindsonline.com    Expected data: Login page should be displayed
+    Enter valid User Id and valid password and click on Sign In Button    Test data: teacher : rhwpte+t0521@gmail.com \ \ \ \ \ \ \ \ \ \ password : passwd123    Expected data: Home page should be displayed
+    Click management > Add > Enter all the credentials > Save    Test data: Student id - student25 \ password - passwd123    Expected data: A new student should be created
+    Sign out and Sign in with the created credentials    \    Expected data: Home page of the student should be displayed
+
+MTC07-Verifying Student assignment report after completing the assignment
+    [Documentation]    This Test Case describes whether the Student assignment report is generated or not? after completing the assignment
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Student Id: std500 ,Password: std123
+    Click on Sign in button    \    Student Home page should be displayed, along with the assignments which were assigned by the teacher.
+    Click on 'Start' button to answer the questions    \    Questions should be displayed.
+    Click on 'Submit' Button    \    "Assignment Report" Pop up window should be displayed.
+    Click on "Close(X)" button    \    Pop up window should be displayed as "Your Next Assignment is:".
+    Click on 'NO' button    \    Student Home page should be displayed with remaining questions.
+
+MTC02-validate class code from "Join a class" drop down in student home page
+    [Documentation]    This Test Case describes whether the Student is able to join a class or not? by entering the Valid Class code
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Student Id: std500 ,Password: std123
+    Click on Sign in button    \    Student Home page should be displayed, along with the assignments which were assigned by the teacher
+    Click on 'Join a class' link and enter an exciting class code    Test data: Class code - t5a    "You have joined the following class Class code" confirmation message should be displayed.
+
+Joining a single class with Invalid class code from "Join a class" drop down in student home page
+    [Documentation]    This Test Case describes whether the Student is able to join a class or not? by entering the Invalid Class code
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Student Id: std500 ,Password: std123
+    Click on Sign in button    \    Student Home page should be displayed, along with the assignments which were assigned by the teacher
+    Click on 'Join a class' link and enter a Invalid class code    Test data: Class code - 23e    "Not a valid class code" pop up should be displayed
+
+Validate existing class code with "Join a class" drop down in student home page
+    [Documentation]    This Test Case describes whether the Student is able to join Existing class or not? by entering the existing Class code
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Student Id: std500 ,Password: std123
+    Click on Sign in button    \    Student Home page should be displayed, along with the assignments which were assigned by the teacher
+    Click on "Join a class" link and enter an existing class code    \    "You are already in the class" pop up should be displayed
+
+MTC10-Verify "New Assignment" which are assigned by the teacher.
+    [Documentation]    This Test Case describes whether the Student is able to see New Assignment assigned or not?
+    Open browser and Enter URL    Url- b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter valid User ID    Test data: rhwpte+t0521@gmail.com
+    Enter valid Password    Test data: passwd123
+    Clcik on Sign in button    \    Teacher home page should be displayed
+    Click on Assignments > New Assignments button    \    New Assignments page should be displayed
+    Select > class > subject > level > assignment > select the assignment    \    Assignment should be assigned
+    Click on sign out    \    Login page should be displayed
+    Enter valid User Id and valid password and click on Sign In Button    Test data: user Id:Student21, \ password:passwd123    Home page should be displayed, along with the assignments which were assigned by the teacher
+
+MTC09-Verify assignment controllers while writing the exam
+    [Documentation]    This Test Case describes whether the assignment controllers are displayed or not? in the assignment page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Student Id: std500 ,Password: std123
+    Click on Sign in button    \    Student Home page should be displayed, along with the assignments which were assigned by the teacher
+    Click on Start button, answer the questions    \    Questions should be displayed
+    Click on assignment controllers    \    Assignment controllers should be displayed as per the controller's functionality
+
+MTC12-Verify whether Resources are displayed when clicked on "Resources" button while writing the exam
+    [Documentation]    This Test Case describes whether Resources are displayed or not? in the assignment page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Student Id: std500 ,Password: std123
+    Click on Sign in button    \    Student Home page should be displayed, along with the assignments which were assigned by the teacher
+    Click on Start button, answer the questions    \    Questions should be displayed
+    Click on Resources Button    \    Resources should be displayed on the screen
+
+MTC137-Verify group name in drop down list of student home page
+    [Documentation]    This Test Case describes whether the group names are displayed in the drop down list
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Teacher Id: rhwpte+ta2505@gmail.com Password: test1234
+    Click on Sign in button    \    Teacher home page should be displayed
+    Click on Management > Show groups > Edit    \    New User pop up should be displayed with its screen elements
+    Add student in the group    \    Student should be added into the group
+    Click on 'Sign' out Button    \    Login page should be displayed
+    Enter valid student User Id and valid password and click on Sign In Button    Test data: user Id:Student21, password:passwd123    Home page should be displayed with Student Name
+    Verify group name in drop down list of student home page.    \    Group name should be displayed
+
+MTC136-Verify assignments name in student home page who are in groups
+    [Documentation]    This Test Case describes whether the assignment Names are displayed or not? in the Student home page
+    Login to application as teacher with valid credentials    Test data: b33test1.mentoringmindsonline.com, rhwpte+t0521@gmail.com, passwd123    Home page should be displayed
+    Click on Assignments and New Assignments button    \    New Assignments page should be displayed
+    Click on Show groups button    \    Groups should be displayed which are created in management module
+    Select > class > subject > level > assignment > select the assignment    \    Assignment should be assigned
+    Click on sign out    \    Login page should be displayed
+    Enter valid User Id and valid password and click on Sign In Button    Test data: user Id:Std200, \ password:Std123    Home page should be displayed, along with the assignments which were assigned by the teacher
+
+Create a Student with Invalid class code
+    [Documentation]    This Test Case describes whether a Student is created or not? for Invalid Class code
+    Open the browser and enter the URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Click on 'New User' link in the "Login Page"    \    It Should display the list Items //Student, Teacher, School Admin, District Admin//
+    Select 'Student' from the Item List    \    Student Sign Up Pop Up should be displayed with header as "Enter the class code from the teacher" with a Text box.
+    Enter the Invalid Class code in the text box and Click on 'Next' button    tsr    Alert message should be displayed as "Sorry but the class code you entered is not valid."
+
+Verfiy whether student is able to write teacher graded assignments
+    [Documentation]    This Test Cases describes whether the Student is able to write Teacher graded assignments or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Teacher Login Credentials    User Id: rhwpte+ts85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    Teacher Home Page should be displayed
+    Click on 'Assignments' button    \    "Assignments" page should be displayed
+    Click on 'New Assignments' button    \    "New Assignments" page should be displayed
+    Select Class and Student    Class86, Student86    Subject should be enabled
+    Select Subject    Motivation Reading    Level should be enabled
+    Select Level    Level 4    Assignment grid should be enabled
+    Select the Assignment    \    Assignments should be selected
+    Click on 'Assign Now' button    \    The Selected Assignments should be assigned to the student
+    Click on 'Sign Out' button    \    The Teacher should be Sign out and should be navigate to the LogIn Page
+    Enter the Student UserId and Password to check the Graded Assignments    User Id: student86 , password:test1234
+    Click on Sign in button    \    Student Home page should be Displayed
+    Click 'Start' button on the Assignment    \    Assignment page should be displayed
+    Verify whether Student is able to write Teacher graded questions in the Assignment    \    The Student should be able to Write the Teacher Graded questions in the Assignment
+
+Verify the Multiple choice items function correctly in Student assignments
+    [Documentation]    This Test Case describes whether the Multiple choice Items function correctly in student assignments or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Teacher Login Credentials    User Id: rhwpte+ts85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    Teacher Home Page should be displayed
+    Click on 'Assignments' button    \    "Assignments" page should be displayed
+    Click on 'New Assignments' button    \    "New Assignments" page should be displayed
+    Select Class and Student    Class86, Student86    Subject should be enabled
+    Select Subject    Motivation Reading    Level should be enabled
+    Select Level    Level 4    Assignment grid should be enabled
+    Select the Assignment    \    Assignments should be selected
+    Click on 'Assign Now' button    \    The Selected Assignments should be assigned
+    Click on 'Sign Out' button    \    The Teacher should be Sign out and should be navigate to the LogIn Page
+    Enter the Student UserId and Password    User Id: student86 , password:test1234
+    Click on 'Sign in' button    \    Student Home page should be Displayed
+    Click 'Start' button on the Assignment    Motivation Reading Level 4    The Assignment should be opened
+    Verify Whether Multiple choice Items function correctly    \    The Multiple choice should be Selected according to its functionality
+
+Verify Whether Split screen functions are working correctly
+    [Documentation]    This Test Case describes whether Split Screen functionality in the Assignment window functions correctly or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Teacher Login Credentials    User Id: rhwpte+ts85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    Teacher Home Page should be displayed
+    Click on 'Assignments' button    \    "Assignments" page should be displayed
+    Click on 'New Assignments' button    \    "New Assignments" page should be displayed
+    Select Class and Student    Class86, Student86    Subject should be enabled
+    Select Subject    Motivation Reading    Level should be enabled
+    Select Level    Level 4    Assignment grid should be enabled
+    Select the Assignment    \    Assignments should be selected
+    Click on 'Assign Now' button    \    The Selected Assignments should be assigned
+    Click on 'Sign Out' button    \    The Teacher should be Sign out and should be navigate to the LogIn Page
+    Enter the Student UserId and Password    User Id: student86 , password:test1234
+    Click on 'Sign in' button    \    Student Home page should be Displayed
+    Click 'Start' button on the Assignment    Motivation Reading Level 4    The Assignment should be opened
+    Click on 'Split Screen' buttons on the right side tab    \    The Assignment page should be Split according to the selected 'Split Screen' button
+
+Verify Quick tips in Student home page
+    [Documentation]    This Test Case describes whether Quick tips pop-up window is displayed or not? in the Student Home page
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter the Student UserId and Password    User Id: student86 , password:test1234
+    Click on 'Sign in' button    \    Student Home page should be Displayed
+    Click on 'Help' button    \    "Quick Tips" pop-up should be displayed in the form of Student View
+
+Verify whether student is able to join multiple classes at a time
+    [Documentation]    This Test Case describes whether student can join Multiple Classes at a time or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter the Student UserId and Password    User Id: student86 , password:test1234
+    Click on 'Sign in' button    \    Student Home page should be Displayed
+    Click on drop down in the Student First Name and Last Name tab    \    List of Classes and Join a Class options should be displayed
+    Select 'Join a Class' from the drop down    \    'Join a Class' pop-up should be displayed
+    Enter Multiple Class Codes in the "Enter the class code to join a class" Text field on the pop-up    srw,ecf    An Alert should be displayed in the "Enter the class code to join a class" text field and 'Join' button should be displayed as disable
+
+verify Open ended questions function correctly
+    [Documentation]    This Test Case describes whether Open ended questions function correctly or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Teacher Login Credentials    User Id: rhwpte+ts85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    Teacher Home Page should be displayed
+    Click on 'Assignments' button    \    "Assignments" page should be displayed
+    Click on 'New Assignments' button    \    "New Assignments" page should be displayed
+    Select Class and Student    Class86, Student86    Subject should be enabled
+    Select Subject    CCS Motivation Reading    Level should be enabled
+    Select Level    Level 02    Assignment grid should be enabled
+    Select the Assignment    Comprehension    Assignments should be selected
+    Click on 'Assign Now' button    \    The Selected Assignments should be assigned
+    Click on 'Sign Out' button    \    The Teacher should be Sign out and should be navigate to the LogIn Page
+    Enter the Student UserId and Password    User Id: student86 , password:test1234
+    Click on 'Sign in' button    \    Student Home page should be Displayed
+    Click 'Start' button on the Assignment    Motivation Reading Level 4    The Assignment should be opened
+    Verify Whether the Open ended question function correctly in the assignment page    \    Open ended questions should accept the entered text according to its intended functionality
+
+Verify Submit functionality for Completed Assignments
+    [Documentation]    This Test Case describes whether the Submit functionality in the assignment page works correctly or not?
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Teacher Login Credentials    User Id: rhwpte+ts85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    Teacher Home Page should be displayed
+    Click on 'Assignments' button    \    "Assignments" page should be displayed
+    Click on 'New Assignments' button    \    "New Assignments" page should be displayed
+    Select Class and Student    Class86, Student86    Subject should be enabled
+    Select Subject    CCS Motivation Reading    Level should be enabled
+    Select Level    Level 02    Assignment grid should be enabled
+    Select the Assignment    Comprehension    Assignments should be selected
+    Click on 'Assign Now' button    \    The Selected Assignments should be assigned
+    Click on 'Sign Out' button    \    The Teacher should be Sign out and should be navigate to the LogIn Page
+    Enter the Student UserId and Password    User Id: student86 , password:test1234
+    Click on 'Sign in' button    \    Student Home page should be Displayed
+    Click 'Start' button on the Assignment    Motivation Reading Level 4    The Assignment should be opened
+    Complete the assignment and click 'Submit' button    \    "Assignment Report" pop-up should be displayed
+    Click on 'x' button    \    The Assignment should be submitted and it should disappear from the Student Home page
+
+Verify Submit functionality for InCompleted Assignments
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Teacher Login Credentials    User Id: rhwpte+ts85@gmail.com \ Password: test1234
+    Click on 'Sign In' button    \    Teacher Home Page should be displayed
+    Click on 'Assignments' button    \    "Assignments" page should be displayed
+    Click on 'New Assignments' button    \    "New Assignments" page should be displayed
+    Select Class and Student    Class86, Student86    Subject should be enabled
+    Select Subject    CCS Motivation Reading    Level should be enabled
+    Select Level    Level 02    Assignment grid should be enabled
+    Select the Assignment    Comprehension    Assignments should be selected
+    Click on 'Assign Now' button    \    The Selected Assignments should be assigned
+    Click on 'Sign Out' button    \    The Teacher should be Sign out and should be navigate to the LogIn Page
+    Enter the Student UserId and Password    User Id: student86 , password:test1234
+    Click on 'Sign in' button    \    Student Home page should be Displayed
+    Click 'Start' button on the Assignment    Motivation Reading Level 4    The Assignment should be opened
+    Click on 'Submit' button without Completing the assignment    \    Alert Message should be displayed as "You have not finished this assignment. If you turn it in now, then all unanswered questions will be counted wrong. Are you sure you want to turn it in?"
+    Click on 'No' button in the alert message    \    The Assignment should not be submitted and the assigment page should be displayed
+    Click on 'Yes' button in the alert message    \    The Assignment should be submitted and it should disappear from the Student Home page
+
+Verify the assignment with 'Continue' button.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Student Id: std500 ,Password: std123
+    Click on Sign in button    \    Student Home page should be displayed, along with the assignments which were assigned by the teacher
+    Click on 'Start' button to answer the questions    \    Expected data: Questions should be displayed
+    Click on 'Pause' Button    \    Expected data:particular Assignment should get paused.Home page should display with 'Continue' button with appropriate progress percentage. \
+    Click on 'Continue' button.    \    Page should get navigated to the assignment in progress page.
+
+Verify "Tools' in Assignment
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Student Id: std500 ,Password: std123
+    Click on Sign in button    \    Student Home page should be displayed, along with the assignments which were assigned by the teacher
+    Click on 'Start button' to answer the questions    \    Questions should be displayed
+    Click on 'submit' Button    \    Confirmation Pop up should be displayed
+    Click on Tools bar 'Note Editor'    \    Note Editor should get displayed with cross button
+    Click on Tools bar 'cale'    \    Scale should get displayed with measurements and Nudge,Rotate,Close button.
+    Click on Tools bar 'Scratch pad'    \    Scratch pad should get opened.
+
+Validate "Note Editor" tool bar in Assignments
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Student Id: std500 ,Password: std123
+    Click on Sign in button    \    Student Home page should be displayed, along with the assignments which were assigned by the teacher
+    Click on 'Start button' to answer the questions    \    Questions should be displayed
+    Click on 'submit' Button    \    Confirmation Pop up should be displayed
+    Click on Tools bar'Note Editor'    \    Note Editor should get displayed with cross button
+    Enter text by using functionalities like Bold,italic,Underline,Strikrthrough,sub script,superscript and Clickon "OK" button    \    Text should get Entered
+    Click on "cancle" button    \    "Note Editor should get closed"
+
+Validate "Scale" Tool bar in Assignment
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Student Id: std500 ,Password: std123
+    Click on Sign in button    \    Student Home page should be displayed, along with the assignments which were assigned by the teacher
+    Click on 'Start button' to answer the questions    \    Questions should be displayed
+    Click on 'submit' Button    \    Confirmation Pop up should be displayed
+    Click on Tools bar'Scale'    \    Scale should get displayed with cross button
+    Click on "Nudge Arrow" like Left,Right,Up,Down buttons    \    Scale should get ,move according to the selected direction.
+    Click on "Rotate" button    \    Scale should get \ rotate as selected direction.
+    Click on Close button.    \    Scale should get closed.
+
+Verify "Scratch pad" tool bar in assignment.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Student Id: std500 ,Password: std123
+    Click on Sign in button    \    Student Home page should be displayed, along with the assignments which were assigned by the teacher
+    Click on 'Start button' to answer the questions    \    Questions should be displayed
+    Click on 'submit' Button    \    Confirmation Pop up should be displayed
+    Click on Tools bar'Scratch pad'    \    Scratch pad should get opened with (rectangle,pencil,text,line,ellipse,eraser,fill colour,stroke colour) Functionalities
+    Click on "Cross" Button    \    Scratch pad should get closed.
+
+Verify "Resource" button in Assignment.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Student Id: std500 ,Password: std123
+    Click on Sign in button    \    Student Home page should be displayed, along with the assignments which were assigned by the teacher
+    Click on 'Start button' to answer the questions    \    Questions should be displayed
+    Click on 'submit' Button    \    Confirmation Pop up should be displayed
+    Click on "Resources" button    \    It should get navigate to the next page with mathematics chart
+    Click on "Question" button    \    It should get navigate to the Previous question page
+
+Verify Column headers in assignment page.
+    Open browser and Enter URL    b33test1.mentoringmindsonline.com    Login page should be displayed
+    Enter Login Credentials    Student Id: std500 ,Password: std123
+    Click on Sign in button    \    Student Home page should be displayed, along with the assignments which were assigned by the teacher
+    Click on 'Start button' to answer the questions    \    Questions should be displayed
+    Click on 'submit' Button    \    Confirmation Pop up should be displayed
+    Click on 'Flag' button    \    Selected question should get mark as flagged question.
+    Click on 'Question number' button    \    Particular question should get navigate to the next/previous question with question number.
+    Click on 'Score indicator'    \    score should get indicated to the particular question
+    Click on 'Skip'    \    Selected question should get skipped
+    Click on 'Number of Attempts'    \    It will display the count of \ 'number of attempts'
+    Click on \ 'Number of Items in a question'    \    It will display the count of Number of Items in a question'
+    Click on 'Number of teacher graded items in a question'    \    It will display the count of Number of teacher graded items in a question'
+    Click on 'weight of graded \ items'    \    It will display the count of 'weight of graded \ items'
+
